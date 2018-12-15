@@ -1,0 +1,58 @@
+<div ref:root>
+  <div>
+    <h4>Individual Neurons</h4>
+    <LazyImage
+      src="assets/images/overview-neuron.jpg"
+      border={false}
+    />
+    <div class="figcaption">Visualizing individual neurons make hidden layers somewhate meaningful, but misses interactions between neurons.</div>
+  </div>
+  <div>
+    <h4>Pairwise Interactions</h4>
+    <LazyImage
+      src="assets/images/overview-pairwise.jpg"
+      border={false}
+    />
+    <div class="figcaption">Studying pairwise interaction surfaces some interaction effects, but doesn't show interactions between many and the space of possible pairs is huge.</div>
+  </div>
+  <div>
+    <h4>Spatial Activations</h4>
+    <LazyImage
+      src="assets/images/activation-grid.png"
+      border={false}
+    />
+    <div class="figcaption">Spatial activations show important combinations of many neurons, but are focused on a single example.</div>
+  </div>
+  <div>
+    <h4>Activation Atlas</h4>
+    <LazyImage
+      src="assets/images/overview-atlas.jpg"
+      border={false}
+    />
+    <div class="figcaption">Activation atlases show important combinations of neurons, but give a bigger picture overview.</div>
+  </div>
+</div>
+
+<script>
+  export default {
+    components: {
+      LazyImage: "../library/LazyImage.html"
+    }
+  }
+</script>
+
+<style>
+  ref:root {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  h4 {
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    padding-bottom: 8px;
+    margin-top: 0;
+  }
+  .figcaption {
+    margin-top: 16px;
+  }
+</style>

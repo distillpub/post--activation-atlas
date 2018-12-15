@@ -1,0 +1,141 @@
+<div class="showapath" style="display: grid; grid-template-columns: 1fr {height}px; ">  
+  <div>
+    <SetOfIcons
+      {pointList}
+      {layers}
+      {config}
+      {color}
+    />
+  </div>
+  <div class="atlas" style="width:{height-atlasMargin*2}px; height:{height-atlasMargin*2}px; margin:{atlasMargin}px">
+    <div class="thumbnail">
+      <AtlasThumbnail
+        {layerName}
+        gridSize={1}
+        bind:clientWidth=viewWidth
+        bind:height=viewHeight
+      />
+    </div>
+    <svg 
+      class="pathArrow"
+      style="width: {edgeLength};
+        height: {edgeLength};
+        left: {(viewWidth - edgeLength) / 2};
+        top: {(viewHeight - edgeLength) / 2}"
+      >
+      <defs>
+        <marker 
+          id={'head' + uniqueId}
+          fill={color}
+          viewBox="0 0 10 10" 
+          refX="5" 
+          refY="5"
+          markerWidth="5" 
+          markerHeight="5"
+          orient="auto-start-reverse"
+          >
+          <circle cx="5" cy="5" r="3"/>
+        </marker>
+        <marker id={'arrow' + uniqueId}
+        fill={color} 
+        viewBox="0 0 10 10" 
+        refX="5" 
+        refY="5"
+        markerWidth="3"
+        markerHeight="3"
+        orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+      </defs>
+      <path
+        ref:clickPath
+        d={path_d}
+        stroke={color}
+        stroke-width="3"
+        fill="transparent"
+        marker-end="url(#{'arrow' + uniqueId})"
+        marker-start="url(#{'head' + uniqueId})"
+        />
+    </svg>
+  </div>
+  <AtlasDataLoader 
+    id="inceptionv1_{layerName}"
+    layer={0}
+    layout={0}
+    classFilter={0}
+    filter={0}
+    bind:config
+    bind:layers 
+    bind:labels 
+  />
+</div>
+
+<script>
+export default {
+  components: { 
+    AtlasThumbnail: "../AtlasThumbnail.html",
+    SetOfIcons: "../SetOfIcons.html",
+    AtlasDataLoader: '../AtlasDataLoader.html', 
+  },
+  data() {
+    return {
+      gridSize: 1,
+      height: 160,
+      color: '#ff6600',
+      uniqueId: Math.random(),
+      atlasMargin: 20,
+    }
+  },
+  computed: {
+    numIcons: ({pointList}) => pointList.length,
+    edgeLength: ({viewWidth, viewHeight}) => {
+      if(viewWidth && viewHeight){
+        return Math.min(viewWidth, viewHeight)
+      }
+      return 0
+    },
+    topLeft: ({viewWidth, viewHeight, edgeLength}) => {
+      if(viewWidth && viewHeight){
+        return [(viewWidth - edgeLength) / 2, (viewHeight - edgeLength) / 2]
+      }
+      return [0,0]
+    },
+    path_d: ({pointList, topLeft, edgeLength}) => {
+      // need to adjust for size
+      let path_d = [];
+      let d = "M";
+      pointList.forEach(function(point){
+          d = d + (point[0]) * edgeLength  + 
+            " " + (point[1]) * edgeLength + " L"
+
+        
+      })
+      path_d.push(d.substring(0, d.length - 2))
+      return path_d
+    },
+  },
+}
+</script>
+
+<style>
+  svg {
+    position: absolute;
+    pointer-events: none;
+  }
+  .thumbnail {
+    opacity: .2;
+  }
+  .atlas {
+    position: relative;
+  }
+  .pathArrow {
+    opacity: 1;
+  }
+  .column {
+    position: relative;
+  }
+  .set-of-icons {
+    position: relative;
+  }
+</style>

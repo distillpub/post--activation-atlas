@@ -1,0 +1,146 @@
+<div class="root" bind:clientWidth="width" bind:clientHeight="height">
+  {#if scale}
+  <svg {width} {height}>
+    <path
+      class="{background ? '' : 'transparent'}"
+      on:mousemove="mouseMove(event)"
+      on:mouseup="mouseUp(event)"
+      d="M0,0 L{width},0 L{width},{height} L0,{height} z M{left},{top} L{left},{bottom} L{right},{bottom}  L{right},{top} z"
+    />
+  </svg>
+  <div
+    class="reticle {round ? 'round' : ''}"
+    on:mousemove="mouseMove(event)"
+    on:mousedown="mouseDown(event)"
+    on:mouseup="mouseUp(event)"
+    style="box-sizing:content-box;
+      border-color: {color};
+      top:{top-2.5}px;
+      left:{left-2.5}px; 
+      width:{(right-left-1)}px; 
+      height:{(bottom-top-1)}px; 
+      cursor:{enableDragging ? 'move' : 'default'}
+      "
+  >
+    {#if annotationValue}
+      <div class="annotationTabParent" style="top:{(w * width-2)/2}px;">
+        <div class="annotationTab" style="background:{color};">
+          <p class="annotation"
+            >{annotationValue} 
+          </p>
+        </div>
+      </div>
+    {/if}
+  </div>
+  {/if}
+</div>
+
+<script>
+  export default {
+    data() {
+      return {
+        width: 0,
+        height: 0,
+        dragging: false,
+        startPos: {x: -100, y: -100},
+        background: true,
+        round: false,
+        color: "#ff6600",
+        enableDragging: true,
+      }
+    },
+    computed: {
+      h: ({scale}) => 1 / scale,
+      w: ({scale, aspectRatio}) => 1 / scale * aspectRatio,
+      l: ({gcx, w, width}) => (gcx - w / 2),
+      t: ({gcy, h, height, aspectRatio}) => (gcy - h / 2),
+      r: ({l, w}) => l + w, 
+      b: ({t, h}) => t + h,
+      left: ({l, width, gcx, gcy, scale, aspectRatio, w, r}) => l * width,
+      right: ({r, width}) => r * width,
+      top: ({t, height}) => t * height,
+      bottom: ({b, height}) => b * height,
+    },
+    methods: {
+      mouseUp() {
+        const { startPos, height, width, scale, aspectRatio, gcx, gcy} = this.get();
+        this.set({dragging: false})
+      },
+      mouseDown(event) {
+        const {enableDragging} = this.get();
+        if(enableDragging){
+          event.preventDefault();
+          this.set({dragging: true, startPos: {x: event.screenX, y: event.screenY}})
+        }
+      },
+      mouseMove(event) {
+        const {dragging, startPos, scale, width, aspectRatio, height, left, top} = this.get();
+        if(dragging){
+           this.set({
+              gcx: (event.screenX - startPos.x + left) / width + 1 / scale * aspectRatio / 2, 
+              gcy: (event.screenY - startPos.y + top) / height + 1 / scale / 2, 
+           })
+           this.set({
+            startPos: {x: event.screenX, y: event.screenY}
+           })
+        }
+      },
+    },
+  }
+</script>
+
+<style>
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  svg path {
+    fill: white;
+    fill-opacity: 0.8;
+  }
+  svg path.transparent {
+    fill-opacity: 0;
+  }
+  .root {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .reticle {
+    top: 0;
+    left: 0;
+    position: absolute;
+    border: solid 3px black;
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0);
+  }
+  .reticle.round {
+    border-radius: 50%;
+  }
+  .annotationTabParent {
+    position: absolute;
+    left:0px;
+  }
+  .annotationTab {
+    width: 16px;
+    height: 16px;
+    left: -16px;
+    top: -8px;
+    position: absolute;
+    border-radius: 3px 0px 0px 3px;
+  }
+  .annotation {
+    font-size: 12px;
+    top: -6px;
+    left: 4px;
+    color: white;
+    position: absolute;
+    text-align: center;
+  }
+</style>

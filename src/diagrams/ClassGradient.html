@@ -1,0 +1,137 @@
+<!-- {#each $classComparisons as comparison, i}
+  <button on:click="set({currentClassComparisonIndex: i})">{comparison.leftLabel} vs. {comparison.rightLabel}</button>
+{/each} -->
+
+<div class="overlay-wrap" >
+  <svg class="overlay" viewBox="0 0 {outerWidth} {outerHeight}">
+
+    <!-- arrowheads -->
+
+  	<defs>
+      	<marker id="{'arrow'}" markerWidth="7" markerHeight="7" refX="10" refY="5" orient="auto" markerUnits="strokeWidth" viewBox="0 0 10 10">
+        		<path d="M0,0 L0,10 L10,5 z" fill="{color}" />
+      	</marker>
+  	</defs>
+
+    <g transform="translate({margin.left},{margin.top})">
+
+      <!-- image -->
+
+      <image 
+        id="comparisonImg"
+        {width}
+        {height}
+        xlink:href="https://storage.googleapis.com/activation-atlas/build/gradients/gradients/gradients--comparison={comparison.id}--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg" 
+        alt={comparison.label}
+      />
+
+      <!-- x-axis labels -->
+
+      <g transform="translate({width / 2}, 0)">
+        <text y="-50" text-anchor="end">
+          <tspan x="-10" dy="1.3em">more attributed to </tspan>
+          <tspan x="-10" dy="1.3em" font-weight="bold">{comparison.leftLabel}</tspan>
+        </text>
+        <text y="-50">
+          <tspan x="10" dy="1.3em">more attributed to </tspan>
+          <tspan x="10" dy="1.3em" font-weight="bold">{comparison.rightLabel}</tspan>
+        </text>
+
+        <g transform="translate(0, -28)">
+          <line x2="-50" transform="translate(-120,0)" stroke={color} marker-end="url(#{'arrow'})"></line>
+          <line x2="50" transform="translate(120,0)" stroke={color} marker-end="url(#{'arrow'})"></line>
+        </g>
+      </g>
+
+      <!-- y-axis labels -->
+
+      <g transform="translate({- margin.left + 8},{height/2})">
+        <g transform="translate(10, 0)">
+          <line y2="-50" transform="translate(0,-38)" stroke={color} marker-end="url(#{'arrow'})"></line>
+          <line y2="50" transform="translate(0,30)" stroke={color} marker-end="url(#{'arrow'})"></line>
+        </g>
+        <text alignment-baseline="middle">
+          <tspan x="0" y="-1.8em">positioned</tspan>
+          <tspan x="0" y="-0.6em">by similarity</tspan>
+          <tspan x="0" y="0.6em">(one-dimensional</tspan>
+          <tspan x="0" y="1.8em">t-SNE)</tspan>
+        </text>
+      </g>
+
+      <!-- Ticks -->
+
+      <g transform="translate({width / 2}, 0)">
+        <line y1={-margin.top + 4} y2="{height + 8}" stroke="white" stroke-width="5" stroke-opacity="0.6"></line>
+        <line y1={-margin.top + 4} y2="{height + 8}" stroke="black"></line>
+      </g>
+
+      {#each range(11) as tick}
+        <line x2={width} transform="translate(0, {tick * (height / 10)})" stroke="black" stroke-opacity="0.15" stroke-dasharray="2,2"/>
+      {/each}
+
+      {#each range(11) as tick}
+        <line y2={width} transform="translate({tick * (height / 10)}, 0)" stroke="black" stroke-opacity="0.15" stroke-dasharray="2,2"/>
+      {/each}
+
+      <!-- Annotations -->
+
+      {#if comparison.annotation}
+        {#each comparison.annotation as annotation,iter}
+          <g transform="translate(0, {(annotation.pos.x + 0.5) * cellWidth})">
+            <line x1={(annotation.pos.y + 0.5) * cellWidth + cellWidth / 2 * Math.sqrt(2)} x2={width + 10} stroke="black" stroke-opacity="0.4"/>
+            <text x={width + 20} alignment-baseline="middle">{annotation.desc}</text>
+          </g>
+          <g transform="translate({(annotation.pos.y + 0.5) * cellWidth}, {(annotation.pos.x + 0.5) * cellWidth})">
+            <circle r={cellWidth / 2 * Math.sqrt(2)} fill="none" stroke="white" stroke-opacity="0.5" stroke-width="5"/>
+            <circle r={cellWidth / 2 * Math.sqrt(2)} fill="none" stroke="black" stroke-opacity="1"/>
+          </g>
+        {/each}
+      {/if}
+
+    </g>
+  </svg>
+</div>
+<script>
+
+import {range} from "d3-array";
+
+export default {
+  components: { 
+  },
+  data() {
+    return {
+      width: 504,
+      selected: 0,
+      margin: {
+        top: 60,
+        right: 80,
+        bottom: 40,
+        left: 80
+      },
+      color: '#9a9cad',
+      currentClassComparisonIndex: 0
+    }
+  },
+  computed: {
+    height: ({width}) => width,
+    outerWidth: ({width, margin}) => width + margin.left + margin.right,
+    outerHeight: ({height, margin}) => height + margin.top + margin.bottom,
+    cellWidth: ({width}) => width / 10,
+    comparison: ({currentClassComparisonIndex, $classComparisons}) => $classComparisons[currentClassComparisonIndex],
+  },
+  helpers: {
+    range
+  }
+}
+</script>
+
+<style>
+  svg text {
+    font-size: 13px;
+    fill-opacity: 0.6;
+  }
+  .overlay-wrap {
+  	position: relative;
+  }
+</style>
+

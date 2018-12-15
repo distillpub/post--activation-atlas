@@ -1,0 +1,36 @@
+
+<div class="root">
+  <div>
+    <LazyImage 
+      src="assets/images/dogcat.jpg"
+      alt="input image"
+    />
+    <div class="figcaption">Input image from ImageNet.</div>
+  </div>
+  <div>
+    <LazyImage 
+      src="assets/images/dogcat-grid.jpg"
+      alt="activation grid"
+    />
+    <div class="figcaption">Activation grid from InceptionV1, layer mixed4d.</div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: {
+    LazyImage: "../library/LazyImage.html"
+  }
+}
+</script>
+
+<style>
+  .root {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
+  .figcaption {
+    margin-top: 8px;
+  }
+</style>

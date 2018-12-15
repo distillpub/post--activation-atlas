@@ -1,0 +1,55 @@
+<div class="chooser">
+  {#each labels as l}
+    <label class="{classHeatmap === l.i ? 'selected' : ''}">
+      <input type=radio bind:group=classHeatmap value={l.i}>{l.label} ({l.i})
+    </label>
+  {/each}
+</div>
+
+<script>
+import classesToKeep from './../classesToKeep.js';
+import inceptionLabels from './../Labels.js';
+
+export default {
+  data() {
+    return {
+      classesToKeep,
+      inceptionLabels,
+      classHeatmap: 235
+    }
+  },
+  computed: {
+    labels: ({inceptionLabels}) => {
+      let out = classesToKeep.map(k => {
+        let l = inceptionLabels.inception[k];
+        return {label: l, i: k};
+      });
+      return [{label: "All", i: -1}].concat(out);
+    }
+  }
+}
+</script>
+
+<style>
+  .chooser label {
+    position: relative;
+    font-size: 10px;
+    line-height: 1em;
+    display: block;
+    border-left: solid 3px white;
+    padding: 5px 16px 5px 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-y: hidden;
+  }
+  .chooser label input {
+    position: absolute;
+    opacity: 0;
+  }
+  .chooser label.selected {
+    border-left-color: rgb(255, 130, 0);
+    color: rgb(255, 130, 0);
+    background-color: rgba(255, 130, 0, 0.08);
+    font-weight: bold;
+  }
+</style>

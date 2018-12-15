@@ -1,0 +1,89 @@
+<!-- 
+  Defers initialization of a component until it comes into view.
+  Also allows for external loading of the component's module.
+
+  component: a constructor for the component to initialize lazily.
+  url: optional url to a module.js file to load an then use to initialize
+  the component.
+  componentData: The data to pass to the component when initializing.
+
+  This requires us to know the size of the component before it's initialized.
+  We do this with two properties.
+
+  height: Simply uses this constant value.
+
+  aspectRatio (w/h): used the width of the element to compute the height based on 
+  this ratio. When aspectRatio is used, an optional property "minHeight" is 
+  available.
+ -->
+
+<Radar bind:ready="radarReady" :offscreen :onscreen >
+  <div ref:container bind:clientWidth="width" style="height: {finalHeight}px;">
+    {#if ready}
+      <svelte:component this={component} {...componentData}/>
+    {:else}
+      <Loading />
+    {/if}
+  </div>
+</Radar>
+
+<script>
+  export default {
+    components: {
+      Radar: "./Radar.html",
+      Loading: "./Loading.html"
+    },
+    data() {
+      return {
+        component: null,
+        url: null,
+        componentData: null,
+        radarReady: false,
+        onscreen: false,
+        offsreen: true,
+        height: false,
+        width: null,
+        aspectRatio: null,
+        minHeight: null
+      }
+    },
+    computed: {
+      ready: ({radarReady, component}) => (radarReady && component) ? true : false,
+      finalHeight: ({width, height, aspectRatio, minHeight}) => {
+        if (height) {
+          return height;
+        } else if (aspectRatio) {
+          let h = width / aspectRatio;
+          if (minHeight) {
+            return Math.min(minHeight, h);
+          } else {
+            return h;
+          }
+        }
+      } 
+    },
+    oncreate() {
+      // TODO: Make sure we have some sizes set.
+      const {height, aspectRatio} = this.get();
+      if (!height && !aspectRatio) {
+        console.warn(`Require 'height'${height} or 'aspectRatio'${aspectRatio} not set on LazyComponent.html`, this)
+      }
+      // Import a remote component if given
+      const {url} = this.get();
+      if (url) {
+        import(url).then(c => {
+          this.set({component: c.default});
+        });
+      }
+    }
+  }
+</script>
+
+<style>
+ref:container {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  contain: layout paint;
+}
+</style>

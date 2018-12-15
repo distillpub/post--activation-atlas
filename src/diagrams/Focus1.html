@@ -1,0 +1,102 @@
+<div class="focus">
+  <div class="atlas">
+    <Atlas
+    id="inceptionv1_{layerName}"
+    bind:gridSize
+    alphaAttributionFactor=10
+    bind:showLabels
+    scaleCountFactor=10
+    iconCrop=0.2
+    bind:classHeatmap
+  />
+  <AtlasReticle
+    bind:aspectRatio
+    bind:scale
+    bind:gcx
+    bind:gcy
+    background={false}
+    round={true}
+    enableDragging={false}
+  />
+  </div>
+  <div class="details">
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        bind:classHeatmap
+        bind:homeX 
+        bind:homeY 
+        bind:homeScale
+        bind:aspectRatio
+        bind:scale
+        bind:gcx
+        bind:gcy
+      />
+    </div>
+    <div class="figcaption">When we map opacity to the amount that each activation contributes to "fireboat", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.</div>
+  </div>
+</div>
+<!-- <div>
+  {@html gcx},{@html gcy},{@html scale}
+</div> -->
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasReticle: "../AtlasReticle.html"
+  },
+  data() {
+    return {
+      layerName: "mixed5b",
+      gridSize: 1,
+      classHeatmap: 235,
+      homeX: 0.844,
+      homeY: 0.510,
+      homeScale: 6
+    }
+  }
+}
+</script>
+
+<style>
+  .focus {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 350px;
+    grid-gap: 20px;
+  }
+  .atlas {
+    position: relative;
+    height: 712px;
+    width: 712px;
+  }
+  .atlas > :global(div) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .figcaption {
+    margin: 20px auto 0;
+    max-width: 250px;
+  }
+  .detail {
+    overflow: hidden;
+    height: 350px;
+    border: solid 3px #ff6600;
+    border-radius: 50%;
+  }
+  /* .detail > :global(div) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  } */
+</style>

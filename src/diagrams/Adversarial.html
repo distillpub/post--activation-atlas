@@ -1,0 +1,73 @@
+<div class="adversarial" style="grid-template-columns: repeat({classifications.length}, 1fr);">
+  {#each classifications as c}
+    <div>
+      <LazyImage 
+        src="{c.image}"
+        alt="{left} / {right}"
+        {aspectRatio}
+      />
+      <table>
+        {#each c.rows as row, i}
+        <tr class="{row[0] === left ? 'left' : ''} {row[0] === right ? 'right' : ''}">
+          <td>{i + 1}. </td>
+          <td>{row[0]}</td>
+          <td>{f(row[1])}%</td>
+        </tr>
+        {/each}
+      </table>
+      <div class="figcaption">{c.caption}</div>
+    </div>
+  {/each}
+</div>
+
+
+<script>
+import {format} from "d3-format";
+export default {
+  components: {
+    LazyImage: "../library/LazyImage.html"
+  },
+  data() {
+    return {
+      image: "",
+      left: "", 
+      right: "",
+      classifications: [],
+      aspectRatio: 1
+    }
+  },
+  helpers: {
+    f: format(".1f")
+  }
+}
+</script>
+
+<style>
+.adversarial {
+  display: grid;
+  grid-column-gap: 30px;
+}
+table {
+  width: 100%;
+  border-top: solid 1px #ddd;
+  margin: 8px 0 16px 0;
+}
+table td {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+table td:last-child {
+  text-align: right;
+}
+table tr:first-child {
+  font-weight: bold;
+}
+.left {
+  background-color: hsla(100, 90%, 50%, 0.15);
+}
+.right {
+  background-color: hsla(200, 90%, 50%, 0.15);
+}
+</style>

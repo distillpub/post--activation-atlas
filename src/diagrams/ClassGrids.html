@@ -1,0 +1,32 @@
+<div style="display: grid; grid-auto-flow: column; grid-column-gap: 20px; grid-auto-columns: 1fr;">
+  <div>
+      <div class="atlas">
+        <LazyImage src="assets/images/grid-size-32x32.png" alt="32 x 32"/>
+      </div>
+      <div class="figcaption"><b>32 x 32</b> When the grid is too small, the feature visualizations are too small to see.</div>
+  </div>
+  <div>
+      <div class="atlas">
+        <LazyImage src="assets/images/grid-size-8x8.png" alt="8 x 8"/>
+      </div>
+      <div class="figcaption"><b>8 x 8</b> When just right, the activation atlas shows all the concepts with feature visualizations that are big enough to see.</div>
+  </div>
+  <div>
+      <div class="atlas">
+        <LazyImage src="assets/images/grid-size-2x2.png" alt="2 x 2"/>
+      </div>
+      <div class="figcaption"><b>2 x 2</b> When the grid is too big, concepts are lost in the averages. One sees less diversity within related concepts.</div>
+  </div>
+</div>
+
+<script>
+  export default {
+    components: { LazyImage: "../library/LazyImage.html" }
+  }
+</script>
+
+<style>
+  .figcaption {
+    margin-top: 8px;
+  }
+</style>

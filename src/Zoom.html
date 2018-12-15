@@ -1,0 +1,79 @@
+<div ref:capture>
+<!-- <p style="position: absolute; left: 0; right: 0;">x: {x} y: {y} scale: {scale}</p> -->
+
+</div>
+
+
+<script>
+// import {zoom as d3zoom} from 'd3-zoom';
+// import {event as d3event, select as d3select} from 'd3-selection';
+import { tween } from 'svelte-extras';
+import * as eases from 'eases-jsnext';
+
+export default {
+  data() {
+    return {
+      width: 100,
+      height: 100,
+      gcx: 0.5,
+      gcy: 0.5,
+      scx: 0.5,
+      scy: 0.5,
+      unit: 100,
+
+      //tweenTarget: {
+      //  scale: null, gcx: null, gcy: null
+      //}
+    }
+  },
+  computed: {
+    //translateX: ({gcx, scx, scale, width}) =>  scx * width - gcx * scale * width,
+    //translateY: ({gcy, scy, scale, height}) => scy * height - gcy * scale * height,
+    //transformString: ({translateX, translateY, scale}) => `translate(${translateX},${translateY})scale(${scale})`,
+    scale: ({width, unit}) => {
+      return width / unit
+    }
+  },
+  oncreate() {
+  },
+  methods: {
+    tween,
+    setScale(scale) {
+      const {width} = this.get();
+      this.set({'unit': width / scale})
+    },
+    panTo(newgcx, newgcy, duration) {
+      if (duration === undefined) duration = 1000;
+      if(duration == 0) {
+        this.set({gcx: newgcx, gcy: newgcy})
+      } else {
+        this.tween('gcx', newgcx, {duration, easing: eases.cubicInOut})
+        this.tween('gcy', newgcy, {duration, easing: eases.cubicInOut})
+      }
+    },
+    scaleTo(newScale, duration) {
+      if (duration === undefined) duration = 1000;
+      const {width} = this.get();
+      this.tween('unit', width / newScale, {duration, easing: eases.cubicInOut})
+    },
+    transitionTo(newgcx, newgcy, newScale, duration) {
+      if (duration === undefined) duration = 1000;
+      const {width} = this.get();
+      const newUnit = width / newScale;
+      this.tween('unit', newUnit, {duration, easing: eases.cubicInOut})
+      this.tween('gcx', newgcx, {duration, easing: eases.cubicInOut})
+      this.tween('gcy', newgcy, {duration, easing: eases.cubicInOut})
+    },
+  }
+}
+</script>
+
+<style>
+ref:capture {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+}
+</style>

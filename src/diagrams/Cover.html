@@ -1,0 +1,146 @@
+<AtlasNav 
+  on:home="refs.detail.home()"
+  on:fullscreen="refs.detail.fullscreen()"
+  on:zoomin="refs.detail.zoomit(2)"
+  on:zoomout="refs.detail.zoomit(0.5)"
+  bind:unit
+  bind:layer_name
+/>
+
+<!--<span style="font-size: 11px; color: #ddd; position: absolute; right: 4px; top: 4px;">gcx: {gcx}, gcy: {gcy}, scale: {scale}</span>-->
+
+<div class="base-grid" style="min-height: 500px;">
+  <div class="detail" style="grid-column: screen/text;">
+    <div style="margin-left: 20px; position: relative;width: calc(100% - 20px); height: 100%;">
+      <Atlas 
+        ref:detail 
+        id="inceptionv1_{layer_name}" 
+        bind:scale 
+        bind:gcx 
+        bind:gcy 
+        bind:layer
+        bind:aspectRatio
+        iconCrop={0.2} 
+        homeScale={8}
+        homeX={.22}
+        homeY={.32}
+        scaleCountFactor={10}
+        alphaAttributionFactor={10}
+        showLabels={true}
+        strokeColor="#666"
+        backgroundColor="#333"
+      />
+      <div class="shadow"></div>
+    </div>
+  </div>
+
+  <div class="overview" style="grid-column: text-end / screen-end;">
+    <div style="margin-right: 20px; position: relative;width: calc(100% - 20px); height: 100%;">
+      <div style="position: relative;padding-top: 100%;height:0; overflow: hidden;">
+        <div style="position: absolute; width: 100%; height: 100%;top: 0; left: 0;">
+          <Atlas ref:overview id="inceptionv1_{layer_name}" 
+            bind:layer 
+            gridSize={2} 
+            iconCrop={0.3} 
+            scaleCountFactor={200} 
+            alphaAttributionFactor={10}
+          />
+          <AtlasReticle
+            bind:aspectRatio
+            bind:scale
+            bind:gcx
+            bind:gcy
+            enableDragging={true}
+
+          />
+          </div>
+        </div>
+      <div class="figcaption">
+        <b>An activation atlas</b> of the second to last layer of the InceptionV1 vision classification network reveals many fully realized features, such as  
+        <span class="link" on:click="goto(.55, .08, 8)">electronics</span>, 
+        <span class="link" on:click="goto(.90, .26, 8)">vehicles</span>, 
+        <span class="link" on:click="goto(.13, .26, 8)">food</span>, 
+        <span class="link" on:click="goto(.23, .76, 8)">birds</span>, 
+        <span class="link" on:click="goto(.54, .93, 8)">dogs</span>, and
+        <span class="link" on:click="goto(.46, .52, 8)">backgrounds</span>.
+        Each grid cell is labeled with the classification it most supports.
+        <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote>
+        <div style="margin-top: 16px;">
+          <NotebookLink url=""/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasNav: "../AtlasNav.html",
+    AtlasReticle: "../AtlasReticle.html",
+    NotebookLink: "../library/NotebookLink.html"
+  },
+  data()  {
+    return {
+      layer_name: "mixed5a",
+      layer: 0,
+      gcx: 0.2,
+      gcy: 0.299
+    }
+  },
+  methods: {
+    goto(x, y, scale) {
+      this.refs.detail.transitionTo(x, y, scale, 1200);
+    }
+  }
+}
+</script>
+
+<style>
+  :global(d-title) {
+    /* overflow-x: visible!important; */
+    /* contain: none!important; */
+  }
+  .overview {
+    position: relative;
+  }
+  .overview > :global(div) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .detail {
+    position: relative;
+    box-sizing: border-box;
+  }
+  .shadow {
+    box-sizing: border-box;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 18px 4px rgba(0, 0, 0, 0.3);
+    border: solid 3px #ff6600
+  }
+  figure {
+    margin: 0;
+  }
+  figcaption {
+    margin-top: 40px;
+  }
+  figcaption b {
+    text-transform: uppercase;
+  }
+  figcaption a {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .link {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>

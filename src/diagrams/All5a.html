@@ -1,0 +1,67 @@
+
+<div style="grid-column: text">
+  <label><input type=radio bind:group=layerName value=mixed3b> mixed3b</label>
+  <label><input type=radio bind:group=layerName value=mixed4a> mixed4a</label>
+  <label><input type=radio bind:group=layerName value=mixed4d> mixed4d</label>
+  <label><input type=radio bind:group=layerName value=mixed5a> mixed5a</label>
+  <label><input type=radio bind:group=layerName value=mixed5b> mixed5b</label>
+|
+  <label><input type=radio bind:group=gridSize value={0}> 0</label>
+  <label><input type=radio bind:group=gridSize value={1}> 1</label>
+  <label><input type=radio bind:group=gridSize value={2}> 2</label>
+  <label><input type=radio bind:group=gridSize value={3}> 3</label>
+  <label><input type=radio bind:group=gridSize value={4}> 4</label>
+|
+  <label><input type=checkbox bind:checked=showLabels> show labels</label>
+
+</div>
+
+<div style="grid-column: screen; display: grid; grid-template-columns: 1fr 3fr;">
+<div class="atlas" style="grid-column: screen">
+  <Atlas id="inceptionv1_{layerName}" bind:gridSize alphaAttributionFactor=10 bind:showLabels scaleCountFactor=10 iconCrop=0.2/>
+</div>
+
+<div style="display: grid; grid-column-gap: 20px; grid-auto-flow: column;margin: 0 20px;">
+  <div class="column">
+    <figcaption>Fabrics</figcaption>
+    <Atlas id="inceptionv1_{layerName}" gridSize={3} homeX={0.77} homeY={0.71} homeScale={14}/>
+  </div>
+  <div class="column">
+    <figcaption>Electronics</figcaption>
+    <Atlas id="inceptionv1_{layerName}" gridSize={3} homeX={0.83} homeY={0.50} homeScale={14}/>
+  </div>
+  <div class="column">
+    <figcaption>Plants</figcaption>
+    <Atlas id="inceptionv1_{layerName}" gridSize={3} homeX={0.22} homeY={0.52} homeScale={14}/>
+  </div>
+  <div class="column">
+    <figcaption>Dog ears</figcaption>
+    <Atlas id="inceptionv1_{layerName}" gridSize={3} homeX={0.28} homeY={0.90} homeScale={14}/>
+  </div>
+</div>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html"
+  },
+  data() {
+    return {
+      layerName: "mixed5b",
+      gridSize: 2
+    }
+  }
+}
+</script>
+
+<style>
+  .atlas {
+    position: relative;
+    margin: 20px;
+  }
+  .column {
+    position: relative;
+    height: 300px;
+  }
+</style>

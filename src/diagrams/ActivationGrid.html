@@ -1,0 +1,180 @@
+<div style="position: relative; background: white; text-align: right;" on:mouseout="set({timerCount: 47})">
+  <Figure bind:onscreen on:onscreen="set({timerCount: 47})"/>
+
+  <svg style="width: 100%;" viewBox="0 0 {width} {height}">
+    <clipPath id="activationGridClipRect">
+      <rect x={windowX * cellWidth} y={windowY * cellWidth} width={cellWidth} height={cellWidth}/>
+    </clipPath>
+
+    <clipPath id="activationGridClipRectInput">
+      <rect x={windowX * inputCellWidth} y={windowY * inputCellWidth} width={inputCellWidth * windowSize} height={inputCellWidth * windowSize}/>
+    </clipPath>
+
+    <g transform="translate(0, 30)">
+      <!-- 0 -->
+      <g transform="translate(0, 0)">
+        <text class="head" dy="-13">Input image</text>
+        <image xlink:href="assets/images/dogcat.jpg" width={inputWidth} height={inputWidth}/>
+        {#each range(numInputCells) as y}
+          {#each range(numInputCells) as x}
+            <rect 
+              on:mouseover="set({timerCount: Math.min(numCells - 1, Math.max(0, y - windowSize + 2)) * numCells + Math.min(numCells - 1, Math.max(0, x - windowSize + 2))})"
+              stroke="white"
+              fill="#aaa" 
+              fill-opacity={x >= windowX && x < (windowX + windowSize) && y >= windowY && y < (windowY + windowSize) ? 0.01 : 0.5} 
+              stroke-opacity=0.2 stroke-width=1 x={x * (inputCellWidth + cellPadding)} y={y * (inputCellWidth + cellPadding)} 
+              width={inputCellWidth} height={inputCellWidth}
+            />
+          {/each}
+        {/each}
+        <rect stroke="rgb(255, 170, 0)" pointer-events="none" stroke-width=2 fill-opacity=0 x={windowX * inputCellWidth} y={windowY * inputCellWidth} width={inputCellWidth * windowSize} height={inputCellWidth * windowSize}/>
+      </g>
+      <!-- 1 -->
+      <g transform="translate({inputWidth + columnMargin}, 0)">
+        <path class="arrow" transform="translate(0,{columnWidth / 2})" d="M{-2 * columnMargin / 3},0 L{-columnMargin / 3},0 m-5,-5 l5,5 l-5,5"/>
+        <text class="head" dy="-13">Image patch</text>
+        <g transform="scale({columnWidth / (inputCellWidth * windowSize)})translate(-{windowX * inputCellWidth}, -{windowY * inputCellWidth})">
+          <image
+            image-rendering="pixelated"
+            xlink:href="assets/images/dogcat.jpg" width={inputWidth} height={inputWidth}
+            clip-path="url(#activationGridClipRectInput)"
+          />
+        </g>
+        <rect stroke="rgb(255, 170, 0)" stroke-width=4 fill-opacity=0 width={columnWidth} height={columnWidth}/>
+        <text class="figcaption" transform="translate(0, {columnWidth + 10})">
+          <tspan x=0 dy="1.4em">Overlapping patches</tspan>
+          <tspan x=0 dy="1.4em">of the input image are</tspan>
+          <tspan x=0 dy="1.4em">evaluated one by one.</tspan>
+        </text>
+      </g>
+      <!-- 2 -->
+      <g transform="translate({inputWidth + columnMargin + columnWidth + columnMargin}, 0)">
+        <path class="arrow" transform="translate(0,{columnWidth / 2})" d="M{-2 * columnMargin / 3},0 L{-columnMargin / 3},0 m-5,-5 l5,5 l-5,5"/>
+        <text class="head" dy="-13">Activations</text>
+      {#each activations[windowX][windowY] as activation, i}
+        {#if i !== activations[windowX][windowY].length - 1}
+        <g transform="translate(0,{20 + 20 * (activations[0][0].length - 1)})">
+          <text transform="rotate(90)translate(-7, -25)" font-size=11>…</text>
+          <line y1=7 y2=7 stroke="#eee" x2={inputWidth * 2 / 3 - 20} />
+        </g>
+        {/if}
+        <g transform="translate(0,{i === activations[0][0].length - 1 ? 20 + 20 * (i + 1) : 20 + 20 * i })">
+          <text font-size=11 fill="#999" dy=>neuron {i === activations[0][0].length - 1 ? 512 : i}:</text>
+          <text text-anchor="end" font-size=11 font-family="monospace" dx={inputWidth * 2 / 3 - 20}>{format(activation)}</text>
+          <line y1=7 y2=7 stroke="#eee" x2={columnWidth} />
+        </g>
+      {/each}
+
+      <text class="figcaption" transform="translate(0, {columnWidth + 10})">
+          <tspan x=0 dy="1.4em">We record a single </tspan>
+          <tspan x=0 dy="1.4em">activation value for each </tspan>
+          <tspan x=0 dy="1.4em">of the 512 neurons.</tspan>
+          <tspan x=0 dy="1.4em">(values shown are mocked)</tspan>
+        </text>
+        
+      </g>
+      <!-- 3 -->
+      <g transform="translate({inputWidth + columnMargin + 2 * (columnWidth + columnMargin)}, 0)">
+        <path class="arrow" transform="translate(0,{columnWidth / 2})" d="M{-2 * columnMargin / 3},0 L{-columnMargin / 3},0 m-5,-5 l5,5 l-5,5"/>
+        <text class="head" dy="-13">Feature visualization</text>
+        <g transform="scale({columnWidth / cellWidth})translate(-{windowX * cellWidth}, -{windowY * cellWidth})">
+          <image 
+            image-rendering="pixelated"
+            xlink:href="assets/images/dogcat-grid.jpg" width={inputWidth} height={inputWidth}
+            clip-path="url(#activationGridClipRect)"
+          />
+        </g>
+        <rect stroke="#ff6600" stroke-width=4 fill-opacity=0 width={columnWidth} height={columnWidth}/>
+
+        <text class="figcaption" transform="translate(0, {columnWidth + 10})">
+          <tspan x=0 dy="1.4em">We then produce a  </tspan>
+          <tspan x=0 dy="1.4em">feature visualization</tspan>
+          <tspan x=0 dy="1.4em">and place them on a grid.</tspan>
+        </text>
+      </g>
+      <!-- 4 -->
+      <g transform="translate({inputWidth + columnMargin + 3 * (columnWidth + columnMargin)}, 0)">
+        <path class="arrow" transform="translate(0,{columnWidth / 2})" d="M{-2 * columnMargin / 3},0 L{-columnMargin / 3},0 m-5,-5 l5,5 l-5,5"/>
+        <text class="head" dy="-13">Activation grid</text>
+        <image xlink:href="assets/images/dogcat-grid.jpg" width={inputWidth} height={inputWidth}/>
+        {#each range(numCells) as y}
+          {#each range(numCells) as x}
+            <rect 
+              on:mouseover="set({timerCount: y * numCells + x})"
+              stroke="#ddd" 
+              fill="#aaa"
+              fill-opacity={y === windowY && x === windowX ? 0.01 : 0.5} 
+              stroke-width=1 x={x * (cellWidth + cellPadding)} y={y * (cellWidth + cellPadding)} width={cellWidth} height={cellWidth}
+              />
+          {/each}
+        {/each}
+        <rect stroke="#ff6600" pointer-events="none" stroke-width=2 fill-opacity=0 x={windowX * cellWidth} y={windowY * cellWidth} width={cellWidth} height={cellWidth}/>
+      </g>
+
+    </g>
+
+  </svg>
+  <NotebookLink url="https://colab.sandbox.google.com/github/tensorflow/lucid/blob/master/notebooks/building-blocks/ActivationGrid.ipynb"/>
+</div>
+
+<script>
+import { range } from "d3-array";
+import { format } from "d3-format";
+
+export default {
+  components: {
+    Figure: "../components/Figure.html",
+    NotebookLink: "../library/NotebookLink.html"
+  },
+  data() {
+    return {
+      paused: true,
+      inputWidth: 250,
+      columnWidth: 150,
+      columnMargin: 50,
+      numCells: 14,
+      cellPadding: 0,
+
+      windowSize: 3,
+      windowX: 0,
+      windowY: 0,
+
+      activations: range,
+
+      timerCount: 47
+
+    };
+  },
+  computed: {
+    width: ({inputWidth, columnWidth, columnMargin}) => inputWidth * 2 + columnWidth * 3 + 4 * columnMargin,
+    height: ({inputWidth}) => inputWidth + 40,
+    clippedCount: ({timerCount, numCells}) => Math.round(timerCount) % (numCells * numCells),
+    windowX: ({clippedCount, numCells}) => clippedCount % numCells,
+    windowY: ({clippedCount, numCells}) => Math.floor(clippedCount / numCells),
+    cellWidth: ({inputWidth, numCells, cellPadding}) => (inputWidth + cellPadding) / numCells - cellPadding,
+    numInputCells: ({numCells, windowSize}) => numCells + windowSize - 1,
+    inputCellWidth: ({inputWidth, numInputCells, cellPadding}) => (inputWidth + cellPadding) / numInputCells - cellPadding,
+    activations: ({numCells}) => range(numCells).map(i => range(numCells).map( i => range(6).map(i => Math.random() - 0.5)))
+  },
+  helpers: {
+    range: range,
+    format: format(" .5f")
+  }
+}
+</script>
+
+<style>
+.head {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.arrow {
+  fill: none;
+  stroke: black;
+}
+.figcaption {
+  fill: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+</style>

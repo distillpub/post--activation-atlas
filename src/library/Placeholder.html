@@ -1,0 +1,37 @@
+<div class="root" bind:clientWidth style="display: {display}; padding-bottom: {100 / aspectRatio}%">
+  <div class="container">
+    <slot></slot>
+  </div>
+</div>
+
+<script>
+  export default {
+    data() {
+      return {
+        display: "block",
+        aspectRatio: 1,
+        clientWidth: 0,
+        
+      }
+    },
+    computed: {
+      width: ({clientWidth}) => clientWidth,
+      height: ({width, aspectRatio}) => width / aspectRatio
+    }
+  }
+</script>
+
+<style>
+.root {
+  position: relative;
+  box-sizing: border-box;
+}
+.container {
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -1,0 +1,122 @@
+<div ref:annotation bind:clientWidth=width bind:clientHeight=height>
+  <canvas ref:arrow width={width} height={arrowHeight}></canvas>
+  <div ref:icons class="icons">
+    {#each imgList as icon, i}
+      <ClippedIcon
+        icon={icon}
+        width={100}
+        {config}
+      />
+    {/each}
+  </div>
+</div>
+
+
+<script>
+import { load } from 'lucid-components';
+export default {
+  components: { 
+    ClippedIcon: "./ClippedIcon.html",
+  },
+  data() {
+    return {
+      container: null,
+      arrow: null,
+      arrowHeight: 30,
+      imgList: [],
+    }
+  },
+  computed: {
+    // choose the deepest available layer for the images
+    pathZoomIndex: ({layers}) => {
+      if(layers){
+        return layers.length - 1
+      }
+      return 1
+    },
+  },
+  onupdate({ changed, current, previous }) {
+    this.set({container: this.refs.icons, arrow: this.refs.arrow.getContext('2d')});
+    if (changed.pointList, changed.layers) {
+      this.render();
+    }
+    if (changed.width) {
+      this.drawArrow();
+    }
+  },
+  methods: {
+    drawArrow() {
+      const {arrow, width, color, arrowHeight} = this.get();
+
+      const vertAdjust = arrowHeight / 2;
+      arrow.clearRect(0, 0, width, arrowHeight);
+      
+      arrow.lineWidth=2;
+      arrow.strokeStyle=color
+      arrow.fillStyle=color
+      arrow.beginPath();
+      arrow.moveTo(2, vertAdjust);
+      arrow.lineTo(width, vertAdjust);
+      arrow.stroke();
+      arrow.beginPath();
+      arrow.arc(4,vertAdjust,4,0,2*Math.PI);
+      arrow.fill();
+      arrow.beginPath();
+      arrow.moveTo(width, vertAdjust);
+      arrow.lineTo(width - 10, vertAdjust - 5);
+      arrow.lineTo(width - 10, vertAdjust + 5);
+      arrow.fill();
+
+    },
+    render() {
+      const {pointList} = this.get();
+
+      if(pointList){
+
+        let lastIcon = {};
+        let i = 0;
+
+        let imgList = [];
+        pointList.forEach((globalPosPercent) => {
+          let thisIcon = this.getIconData({x: globalPosPercent[0], y: globalPosPercent[1]});
+
+          if(thisIcon != lastIcon){
+            imgList.push(thisIcon)
+            i += 1;
+          }
+          lastIcon = thisIcon;
+        })
+        this.set({imgList})
+        console.log(imgList)
+      }
+    },
+    getIconData(globalPosPercent) {
+      const {layers, pathZoomIndex} = this.get();
+      if(layers && layers[pathZoomIndex]) {
+
+        const gridSelected = {
+          // assumes layers is always square
+          x: Math.floor(globalPosPercent.x * layers[pathZoomIndex].length),
+          y: Math.floor(globalPosPercent.y * layers[pathZoomIndex].length),
+        }
+      
+        if(layers[pathZoomIndex][gridSelected.y] && 
+            layers[pathZoomIndex][gridSelected.y][gridSelected.x]
+          ){
+            const currentIcon = layers[pathZoomIndex][gridSelected.y][gridSelected.x];
+            if(currentIcon.num_activations > 0){
+              return layers[pathZoomIndex][gridSelected.y][gridSelected.x];
+            }
+          }
+      }
+    }
+  }
+}
+</script>
+
+<style>
+  .icons {
+    display: grid;
+    grid-auto-flow: column;
+  }
+</style>

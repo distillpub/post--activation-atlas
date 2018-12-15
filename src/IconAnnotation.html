@@ -1,0 +1,50 @@
+<div ref:annotation class="root">
+  <div class="iconBox" style="width: {iconSize-4 + 'px'}; height: {iconSize-4 + 'px'}; top: {pixelCorner.x + 'px'}; left: {pixelCorner.y + 'px'}"><p>{iter}</p></div>
+  <div class="figcaption" style="top: {(height - marginBottom + iter * 20 + 20) + 'px'}"><b>{iter + ": "}</b>{" " + annotation.desc}</div>
+</div>
+
+
+<script>
+
+export default {
+  data() {
+    return {
+    }
+  },
+  computed: {
+    iconSize: ({width}) => width / 10,
+    pixelCorner: ({annotation, iconSize, marginTop}) => {
+      return {
+        x: annotation.pos.x * iconSize + marginTop - 2,
+        y: annotation.pos.y * iconSize - 2
+    }},
+  }
+}
+</script>
+
+<style>
+  .root {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .iconBox {
+    position: absolute;
+    background: none;
+    border: 4px solid white;
+    border-radius: 8px;
+    box-shadow: 0 0 0 .1rem #9a9cad;
+  }
+  p {
+    position: absolute;
+    font-size: 18px;
+    color: white;
+    top: -3px;
+    left: 2px;
+  }
+  figcaption {
+    position: absolute;
+  }
+</style>

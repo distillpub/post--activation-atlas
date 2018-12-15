@@ -1,0 +1,66 @@
+
+<div>
+{#if labelsInception}
+  {#each classesInception as c, i}
+    <button on:click="setClass(i)">{labelsInception[c]}</button>
+  {/each}
+{/if}
+</div>
+
+<div style="display: grid; grid-auto-flow: column; grid-column-gap: 1px; grid-auto-columns: 1fr;">
+  <div>
+    <div class="atlas">
+      <Atlas id="class_filter_inceptionv1" layout={0} bind:config=configInception bind:labels=labelsInception classFilter={currentInceptionClass}/>
+    </div>
+    <figcaption><b>Inceptionv1</b> Notice something about inception.</figcaption>
+  </div>
+  <div>
+    <div class="atlas">
+      <Atlas id="class_filter_alexnet" bind:config=configAlexnet bind:labels=labelsAlexnet classFilter={currentAlexnetClass}/>
+    </div>
+    <figcaption><b>Alexnet</b> Notice something about alexnet.</figcaption>
+  </div>
+</div>
+
+<script>
+export default {
+  components: { Atlas: "../Atlas.html" },
+  data() {
+    return {
+      currentInceptionClass: 9,
+      currentAlexnetClass: 9,
+      classesInception: [9, 622, 780, 665, 652, 322, 288, 233, 225, 188, 169, 80,  76,  62,  61,    7, 355, 990, 897, 746],
+      classesAlexnet: [350, 301, 858, 891, 112, 953, 802, 417, 327, 330, 388, 340, 282, 277, 294, 387, 776, 884, 538, 947]
+    };
+  },
+  methods: {
+    setClass(i) {
+      const {configAlexnet, configInception, classesInception, classesAlexnet} = this.get();
+
+      const inceptionMatch = configInception.class_filter.indexOf(classesInception[i]);
+      if (inceptionMatch > -1) {
+        this.set({currentInceptionClass: inceptionMatch})
+      }
+
+      const alexnetMatch = configAlexnet.class_filter.indexOf(classesAlexnet[i]);
+      console.log(inceptionMatch, alexnetMatch)
+      if (alexnetMatch > -1) {
+        this.set({currentAlexnetClass: alexnetMatch})
+      }
+    }
+  }
+}
+</script>
+
+<style>
+figcaption {
+  margin-top: 20px;
+}
+figcaption b {
+  text-transform: uppercase;
+  margin-right: 8px;
+}
+.atlas {
+  height: 500px;
+}
+</style>

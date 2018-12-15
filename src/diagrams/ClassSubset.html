@@ -1,0 +1,83 @@
+<h4>Class Activation Atlas for “{$inceptionLabels[currentClass]}”</h4>
+<div ref:root>
+  <div style="position: relative;">
+    <ClassAtlas classFilter={currentClass}/>
+  </div>
+  <div class="chooser-container">
+    <div class="chooser">
+      {#each classes as c}
+        <label class="{currentClass === c ? 'selected' : ''}">
+          <input type=radio bind:group=currentClass value={c}>
+          {$inceptionLabels[c]} ({c})
+        </label>
+      {/each}
+    </div>
+  </div>
+</div>
+<div style="margin-top: 16px;">
+  <NotebookLink url=""/>
+</div>
+
+<script>
+export default {
+  components: { 
+    ClassAtlas: "./ClassAtlas.html",
+    NotebookLink: "../library/NotebookLink.html"
+  },
+  data() {
+    return {
+      layout: 0,
+      currentClass: 62,
+      // classes: [7,9,1,2,12,13,14,24,61,62,76,80,81,169,188,225,226,233,249,288,309,312,322,323,378,652,665,780,804,901,946,992,274,279,286,543,544,55,76,622,631,645,643,671,672,507,982,897,701,777,831,990,677,822,947,348,355,746,827, 721,582,827,359,361,367,359,367,364,543,544,737,738,737,738,736,744,176,67,28,205,102,62,791,287,235],
+      classes: [62,7,2,12,80,225,652,233,322,323,378,665,780,804,901,946,992,622,631,643,671,672,507,982,990,677,822,947,348,355,721,582,361,364,737,738,736,744,791,287,235],
+    }
+  }
+}
+</script>
+
+<style>
+  ref:root {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-gap: 20px;
+  }
+  h4 {
+    margin-top: 0;
+  }
+  button {
+    display: block;
+    width: 100%;
+  }
+  .chooser-container {
+    overflow-y: scroll;
+    height: 100%;
+    position: relative;
+  }
+
+  .chooser {
+    position: absolute;
+    border-left: solid 1px #ddd;
+  }
+  .chooser label {
+    position: relative;
+    font-size: 10px;
+    line-height: 1em;
+    display: block;
+    border-left: solid 3px white;
+    padding: 5px 20px 5px 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-y: hidden;
+  }
+  .chooser label input {
+    position: absolute;
+    opacity: 0;
+  }
+  .chooser label.selected {
+    border-left-color: rgb(255, 130, 0);
+    color: rgb(255, 130, 0);
+    background-color: rgba(255, 130, 0, 0.08);
+    font-weight: bold;
+  }
+</style>

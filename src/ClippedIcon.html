@@ -1,0 +1,58 @@
+<div style="position: relative; overflow: hidden;height: {width}px;border-right: solid 1px rgba(255, 255, 255, 0.2);">
+  <canvas
+    style="position: absolute;top: 0;left: calc(50% - {width / 2}px);"
+    ref:canvas
+    class="singleIcon"
+    {width}
+    {height}
+  ></canvas>
+</div>
+
+<script>
+  import { load } from 'lucid-components';
+  export default {
+    data() {
+      return {
+        iconCrop: 0.02,
+        width: null,
+        icon: null,
+        config: null
+      }
+    },
+    computed: {
+      height: ({width}) => width,
+    },
+    oncreate() {
+      this.render();
+    },
+    methods: {
+      render() {
+        const {icon, config, width, height, iconCrop} = this.get();
+        let context = this.refs.canvas.getContext('2d');
+        context.clearRect(0, 0, width, height);
+
+        if(icon){
+          const iconOffset = (iconCrop * config.icon_size) / 2
+
+          load(icon.url).then(response => {
+
+            context.drawImage(
+              response,
+              //source
+              // NOTE X/Y swap
+              icon.localY * config.icon_size + iconOffset, 
+              icon.localX * config.icon_size + iconOffset, 
+              (config.icon_size - iconOffset * 2),
+              config.icon_size - iconOffset * 2,
+              //destination
+              0,
+              0, 
+              width,
+              height
+            );
+          })        
+        }
+      }
+    },
+  }
+</script>

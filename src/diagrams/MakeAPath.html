@@ -1,0 +1,152 @@
+
+<div style="grid-column: screen">
+
+  <label><input type=checkbox bind:checked=showLabels> show labels</label>
+
+  <button on:click=clearStartEnd()>Clear Line</button>
+  <select name="layer" bind:value="layerName">
+    <option value="mixed3b">mixed3b</option>
+    <option value="mixed4a">mixed4a</option>
+    <option value="mixed4b">mixed4b</option>
+    <option value="mixed4c">mixed4c</option>
+    <option value="mixed4d">mixed4d</option>
+    <option value="mixed4e">mixed4e</option>
+    <option value="mixed5a">mixed5a</option>
+    <option value="mixed5b">mixed5b</option> 
+  </select>
+
+</div>
+
+<!-- TODO(zan):remove hardcode 300px-->
+<div style="grid-column: screen; display: grid; grid-template-columns: {height + 'px'} 1fr">
+
+  <div class="atlas">
+    <Atlas id="inceptionv1_{layerName}"
+      bind:gridSize
+      bind:strokeColor
+      bind:labels 
+      bind:iconCrop 
+      alphaAttributionFactor={10}
+      bind:metaInfo 
+      bind:layers 
+      bind:viewWidth
+      bind:viewHeight
+      bind:config 
+      bind:showLabels
+      scaleCountFactor={2000} 
+      iconCrop=0.2/>
+    <svg style="width: {edgeLength};
+      pointer-events: {interactive ? 'visiblePainted' : 'none'};
+      height: {edgeLength};
+      left: {(viewWidth - edgeLength) / 2};
+      top: {(viewHeight - edgeLength) / 2}"
+      on:mousedown="mouseDown(event)">
+      <path 
+        ref:clickPath 
+        d={path_d} 
+        stroke="orange" 
+        stroke-width="5" 
+        fill="transparent"/>
+    </svg>
+  </div>
+
+  <div style="display: grid; grid-column-gap: 0px; margin: 0 20px;">
+    <div class="column">
+      <SetOfIcons
+        {pointList}
+        {layers}
+        {config}
+        {iconCrop}
+        {labels}
+        {metaInfo}
+        strokeColor={'orange'}
+        showLabels={false}
+        color={'orange'}
+        {numIcons}
+        {height}
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    SetOfIcons: "../SetOfIcons.html"
+  },
+  data() {
+    return {
+      gridSize: 1,
+      points: [],
+      interactive: true,
+      pointList: [],
+      height: 400,
+      numIcons: 20
+    }
+  },
+  computed: {
+    edgeLength: ({viewWidth, viewHeight}) => {
+      if(viewWidth && viewHeight){
+        return Math.min(viewWidth, viewHeight)
+      }
+      return 0
+    },
+    topLeft: ({viewWidth, viewHeight, edgeLength}) => {
+      if(viewWidth && viewHeight){
+        return [(viewWidth - edgeLength) / 2, (viewHeight - edgeLength) / 2]
+      }
+      return [0,0]
+    },
+    path_d: ({points, topLeft, edgeLength}) => {
+      let d = "M";
+      points.forEach(function(point){
+        d = d + (point[0] * edgeLength) + 
+          " " + (point[1] * edgeLength) + " L"
+      })
+      d = d.substring(0, d.length - 2)
+      return d
+    },
+  },
+  onupdate({changed}) {
+    const {edgeLength, numIcons} = this.get();
+    let currentpath = this.refs['clickPath'];
+    let pointList = [];
+    if(currentpath){
+      const length = currentpath.getTotalLength();
+        for(var i = 0; i < numIcons; i++){
+          let pos = currentpath.getPointAtLength(i/numIcons*length);
+          pointList[i] = [pos.x / edgeLength, pos.y / edgeLength];
+      } 
+    }
+    this.set({pointList})
+      
+  },
+  methods: {
+    mouseDown(event) {
+      const {points, topLeft, edgeLength, layerName} = this.get();
+      points.push([(event.offsetX)/edgeLength,(event.offsetY)/edgeLength])
+      this.set({points: points})
+    },
+    clearStartEnd() {
+      this.set({points: []})
+    }
+  }
+}
+</script>
+
+<style>
+  .atlas {
+    position: relative;
+    margin: 20px;
+    pointer-events: none;
+  }
+  svg {
+    position: absolute;
+    cursor: pointer;
+  }
+  .column {
+    position: relative;
+    height: 400px;
+  }
+</style>

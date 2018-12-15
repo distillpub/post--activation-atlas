@@ -1,0 +1,30 @@
+<div class="controls">
+  {#if config}
+    <div>layer: <input type="range" bind:value=layer min=0 max={config.layer.length - 1} step=1 /> {@html config.layer[layer]}</div>
+    <div>classFilter: <input type="range" bind:value=classFilter min=0 max={config.class_filter.length - 1} step=1 /> {@html config.class_filter[classFilter]}</div>
+    <div>gridSize: <input type="range" bind:value=gridSize min=0 max={config.grid_size.length - 1} step=1 /> {@html gridSize}</div>
+    <div>iconCrop: <input type="range" bind:value=iconCrop min=0 max=1 step=0.01 /> {@html iconCrop}</div>
+    <div>alphaAttributionFactor: <input type="range" bind:value=alphaAttributionFactor max=8 step=0.0001 /> {@html alphaAttributionFactor}</div>
+    <div>scaleCountFactor: <input type="range" bind:value=scaleCountFactor min=1 max=1000 step=1 /> {@html scaleCountFactor}</div>
+    <div>showLabels: <input type="checkbox" bind:checked=showLabels></div>
+  {/if}
+</div>
+
+<script>
+
+  export default {
+    data() {
+      return {
+        
+      }
+    }
+  }
+
+</script>
+
+<style>
+  .controls {
+    font-size: 12px;
+    line-height: 12px;
+  }
+</style>

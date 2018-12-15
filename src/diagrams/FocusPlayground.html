@@ -1,0 +1,113 @@
+
+<div class="container">
+  <div class="chooser">
+    {#each labels as l}
+      <label class="{classHeatmap === l.i ? 'selected' : ''}"><input type=radio bind:group=classHeatmap value={l.i}>{l.label} ({l.i})</label>
+    {/each}
+  </div>
+
+  <div class="layer-chooser">
+    <AtlasStack bind:selectedLayerName="layerName"/>
+  </div>
+  
+  <div class="display">
+    <div class="resolution">
+      <button>Zoom In</button>
+      <button>Zoom Out</button>
+    </div>
+    <div class="atlas">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        bind:classHeatmap
+        bind:showHoverImage
+        />
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+import classesToKeep from './../classesToKeep.js';
+
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasStack: "../AtlasStack.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4d",
+      gridSize: 1,
+      classHeatmap: 235,
+      showHoverImage: 1,
+    }
+  },
+  computed: {
+    labels: ({$inceptionLabels}) => {
+      return classesToKeep.map(k => {
+        return {label: $inceptionLabels[k], i: k};
+      })
+    }
+  }
+}
+</script>
+
+<style>
+  .container {
+    position: relative;
+    grid-column: screen;
+    display: grid; 
+    grid-template-columns: 170px 170px 1fr;
+    height: 600px;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+  }
+  .display {
+    display: grid;
+    grid-template-rows: 50px 1fr;
+  }
+  .atlas {
+    position: relative;
+  }
+  .column {
+    position: relative;
+    height: 300px;
+  }
+  .chooser {
+    border-right: solid 1px #ddd;
+    overflow-y: scroll;
+  }
+  .chooser label {
+    position: relative;
+    font-size: 10px;
+    line-height: 1em;
+    display: block;
+    border-right: solid 3px white;
+    padding: 5px 20px 5px 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-y: hidden;
+  }
+  .chooser label input {
+    position: absolute;
+    opacity: 0;
+  }
+  .chooser label.selected {
+    border-right-color: rgb(255, 130, 0);
+    color: rgb(255, 130, 0);
+    background-color: rgba(255, 130, 0, 0.08);
+    font-weight: bold;
+  }
+  .layer-chooser label {
+    display: block;
+  }
+  .resolution label {
+    display: inline;
+  }
+</style>

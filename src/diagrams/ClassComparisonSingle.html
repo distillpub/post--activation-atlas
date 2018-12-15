@@ -1,0 +1,51 @@
+
+
+<!-- {#each $classComparisons as comparison, i}
+  <button on:click="set({currentClassComparisonIndex: i})">{comparison.leftLabel} vs. {comparison.rightLabel}</button>
+{/each}
+
+<input type="range" min=0 max=3 step=1 bind:value='layout' /> -->
+
+<div style="display: grid; grid-auto-flow: column; grid-column-gap: 1px; grid-auto-columns: 1fr;">
+  <div>
+    <div class="atlas">
+      <Atlas id="class_filter_inceptionv1" bind:layout classFilter={leftIndex} debug={true} bind:config />
+    </div>
+    <div class="figcaption"><b>red fox</b> </div>
+  </div>
+  <div>
+    <div class="atlas">
+      <Atlas id="class_filter_inceptionv1" bind:layout classFilter={rightIndex} debug={true} bind:config />
+    </div>
+    <div class="figcaption"><b>grey fox</b> </div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: { Atlas:  "../Atlas.html" },
+  data() {
+    return {
+      currentClassComparisonIndex: 6,
+      layout: 0
+    };
+  },
+  computed: {
+    rightIndex: ({config, $classComparisons, currentClassComparisonIndex}) => config ? config.class_filter.indexOf($classComparisons[currentClassComparisonIndex].left) : null,
+    leftIndex: ({config, $classComparisons, currentClassComparisonIndex}) => config ? config.class_filter.indexOf($classComparisons[currentClassComparisonIndex].right) : null,
+  }
+}
+</script>
+
+<style>
+.figcaption {
+  margin-top: 20px;
+}
+.figcaption b {
+  text-transform: uppercase;
+  margin-right: 8px;
+}
+.atlas {
+  height: 500px;
+}
+</style>

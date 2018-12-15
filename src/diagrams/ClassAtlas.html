@@ -1,0 +1,51 @@
+<div ref:root>
+
+  <LazyImage 
+    {src}
+    alt="class activation atlas"
+  />
+
+  <svg viewBox="0 0 500 500">
+  {#each ticks as i}
+    <line x2={500} y1={500 * i / gridSize} y2={500 * i / gridSize} stroke="black" stroke-opacity="0.15" stroke-dasharray="2,2"/>
+  {/each}
+  
+  {#each ticks as i}
+    <line y2={500} x1={500 * i / gridSize} x2={500 * i / gridSize} stroke="black" stroke-opacity="0.15" stroke-dasharray="2,2"/>
+  {/each}
+  </svg>
+
+</div>
+
+<script>
+  import {range} from "d3-array";
+  export default {
+    components: {
+      LazyImage: '../library/LazyImage.html'
+    },
+    data() {
+      return {
+        root: `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/render/`,
+        classFilter: 62,
+        gridSize: 8
+      }
+    },
+    computed: {
+      ticks: ({gridSize}) => range(1, gridSize),
+      src: ({root, classFilter, gridSize}) => `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1024--icon_size=80--grid_size=${gridSize}--layout=20_0.01_cosine--class_filter=${classFilter}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`
+    }
+  }
+ </script>
+
+ <style>
+  ref:root {
+    position: relative;
+  }
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+ </style>

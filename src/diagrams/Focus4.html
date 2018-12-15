@@ -1,0 +1,212 @@
+<div class="focus">
+  
+  <div class="row">
+  <h4>Streetcar</h4>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={287}
+        bind:homeX="highlights[0].homeX" 
+        bind:homeY="highlights[0].homeY" 
+        bind:homeScale="highlights[0].homeScale"
+        bind:aspectRatio="aspectRatio0"
+        bind:scale="scale0"
+        bind:gcx="gcx0"
+        bind:gcy="gcy0"
+      />
+    </div>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={287}
+        bind:homeX="highlights[2].homeX" 
+        bind:homeY="highlights[2].homeY" 
+        bind:homeScale="highlights[2].homeScale"
+        bind:aspectRatio="aspectRatio2"
+        bind:scale="scale2"
+        bind:gcx="gcx2"
+        bind:gcy="gcy2"
+      />
+    </div>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={287}
+        bind:homeX="highlights[1].homeX" 
+        bind:homeY="highlights[1].homeY" 
+        bind:homeScale="highlights[1].homeScale"
+        bind:aspectRatio="aspectRatio1"
+        bind:scale="scale1"
+        bind:gcx="gcx1"
+        bind:gcy="gcy1"
+      />
+    </div>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={287}
+        bind:homeX="highlights[3].homeX" 
+        bind:homeY="highlights[3].homeY" 
+        bind:homeScale="highlights[3].homeScale"
+        bind:aspectRatio="aspectRatio3"
+        bind:scale="scale3"
+        bind:gcx="gcx3"
+        bind:gcy="gcy3"
+      />
+    </div>
+  </div>
+
+
+  <div class="row">
+  <h4>Fireboat</h4>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={235}
+        bind:homeX="highlights[0].homeX" 
+        bind:homeY="highlights[0].homeY" 
+        bind:homeScale="highlights[0].homeScale"
+        bind:aspectRatio="aspectRatio0"
+        bind:scale="scale0"
+        bind:gcx="gcx0"
+        bind:gcy="gcy0"
+      />
+    </div>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={235}
+        bind:homeX="highlights[2].homeX" 
+        bind:homeY="highlights[2].homeY" 
+        bind:homeScale="highlights[2].homeScale"
+        bind:aspectRatio="aspectRatio2"
+        bind:scale="scale2"
+        bind:gcx="gcx2"
+        bind:gcy="gcy2"
+      />
+    </div>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={235}
+        bind:homeX="highlights[1].homeX" 
+        bind:homeY="highlights[1].homeY" 
+        bind:homeScale="highlights[1].homeScale"
+        bind:aspectRatio="aspectRatio1"
+        bind:scale="scale1"
+        bind:gcx="gcx1"
+        bind:gcy="gcy1"
+      />
+    </div>
+    <div class="detail">
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        classHeatmap={235}
+        bind:homeX="highlights[3].homeX" 
+        bind:homeY="highlights[3].homeY" 
+        bind:homeScale="highlights[3].homeScale"
+        bind:aspectRatio="aspectRatio3"
+        bind:scale="scale3"
+        bind:gcx="gcx3"
+        bind:gcy="gcy3"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4d",
+      gridSize: 1,
+      highlights: [
+        {
+          homeX: 0.873,
+          homeY: 0.415,
+          homeScale: 12
+        },
+        {
+          homeX: 0.807,
+          homeY: 0.333,
+          homeScale: 12
+        },
+        {
+          homeX: 0.660,
+          homeY: 0.405,
+          homeScale: 12
+        },
+        {
+          homeX: 0.221,
+          homeY: 0.138,
+          homeScale: 12
+        },
+      ]
+
+    }
+  }
+}
+</script>
+
+<style>
+  .focus {
+  }
+  .row {
+    height: 250px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+  }
+  .detail {
+    position: relative;
+  }
+  /* .detail > :global(div) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  } */
+</style>
+

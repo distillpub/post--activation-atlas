@@ -1,0 +1,117 @@
+
+<canvas ref:canvas :width height={realHeight}></canvas>
+
+<script>
+  // We need to create a global cache of loaded images independent of any sprite instance.
+  const cache = new Map();
+
+  export default {
+    data() {
+      return {
+        url: '',
+        index: 0,
+        width: 100,
+        loaded: null,
+        columns: Infinity,
+        height: null,
+        img: null
+      }
+    },
+    computed: {
+      realHeight: ({width, height}) => {
+        return height ? height : width;
+      }
+    },
+    onstate({ changed, current, previous }) {
+			// this fires before oncreate, and on every state change.
+			// the first time it runs, `previous` is undefined
+			const done = (e) => {
+        this.set({loaded: true});
+        const {img} = this.get()
+        img.removeEventListener('loaded', done);
+        this.draw();
+      }
+      // this.observe('index', index => {
+      // this.draw();
+      // });
+      // this.observe('img', index => {
+      //   this.draw();
+      // });
+      // this.observe('loaded', loaded => {
+      //   this.draw();
+      // });
+      if (changed.url) {
+        // this.draw();
+        // console.log(current.url)
+        // Clear any pending events for old urls.
+        const {currentImg} = this.get();
+        if (currentImg) {currentImg.removeEventListener('load', done); }
+        // Check if we've already seen this url in the global cache
+        if (cache.has(current.url)) {
+          const cached = cache.get(current.url);
+          // If we've seen it, we need to check if we're currently loading it.
+          if (cached.loaded) {
+            // If it's loaded, just start using it!
+            this.set({
+              loaded: true,
+              img: cached.img
+            });
+          } else {
+            // If it's not loaded, we need to wait until the other request is done before we start drawing.
+            this.set({
+              loaded: false,
+              img: cached.img
+            });
+            cached.img.addEventListener('load', done);
+          }
+        } else {
+          // If we haven't seen the url yet, we need to load the image.
+          const img = new Image();
+          this.set({ 
+            loaded: false,
+            img: img
+           });
+          const data = {img};
+          // We need this event to persist, so that we still know when an abandoned image is done loading.
+          const finished = (e) => {
+            data.loaded = true;
+            img.removeEventListener('load', finished);
+          }
+          img.addEventListener('load', finished);
+          img.addEventListener('load', done);
+          cache.set(current.url, data);
+          img.src = current.url;
+        }
+
+      }
+
+      this.draw();
+      
+		},
+    oncreate() {
+      
+      
+    },
+    methods: {
+      draw() {
+        if (this.refs.canvas) {
+          const context = this.refs.canvas.getContext('2d');
+          const { img, index, width, realHeight, columns, loaded } = this.get();
+          context.clearRect(0, 0, width, realHeight);
+          const sx = Array.isArray(index) ? index[0] * width : (index % columns) * width;
+          const sy = Array.isArray(index) ? index[1] * realHeight : Math.floor(index / columns) * realHeight;
+          if (loaded) {
+            context.drawImage(img, sx, sy, width, realHeight, 0, 0, width, realHeight);
+          } else {
+            context.fillStyle = '#ccc';
+            context.fillRect(0, 0, width, realHeight);
+            context.fillStyle = "#eee";
+            context.textAlign = 'center';
+            context.font = '16px sans-serif';
+            context.fillText('...', width / 2, realHeight / 2);
+          }
+        }
+      }
+    }
+  }
+</script>

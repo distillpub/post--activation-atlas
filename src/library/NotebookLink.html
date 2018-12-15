@@ -1,0 +1,69 @@
+<a href="{url}"class="root emphasis-{emphasis}">
+  <svg viewBox="0 0 18 18">
+    <path d="M14,2c0-0.3-0.2-0.5-0.5-0.5S13,1.7,13,2v12c0,0.6-0.4,1-1,1H3.1c-0.3,0-0.5-0.1-0.7-0.3L1.7,14h8.8c0.8,0,1.5-0.7,1.5-1.5
+      l0-11C12,0.7,11.3,0,10.5,0l-9,0C0.7,0,0,0.7,0,1.5v12.1c0,0.3,0.1,0.5,0.3,0.7l1.4,1.4C1.9,15.9,2.1,16,2.4,16h10.1
+      c0.8,0,1.5-0.7,1.5-1.5l0-1.8C14,9,14,2,14,2z M9.1,9.6c0,0.3-0.2,0.5-0.5,0.5H5.4c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h3.1
+      C8.8,9.1,9.1,9.3,9.1,9.6z M2.3,4.7C2.1,4.5,2.1,4.2,2.3,4C2.5,3.8,2.8,3.8,3,4l2.8,2.6L3,9.3C2.9,9.4,2.8,9.4,2.7,9.4
+      c-0.1,0-0.3-0.1-0.4-0.2c-0.2-0.2-0.2-0.5,0-0.7l2-1.9L2.3,4.7z"/>
+  </svg>
+  <span>{text}</span>
+</a>
+
+<script>
+export default {
+  data() {
+    return {
+      url: "",
+      text: "Try in a notebook",
+      emphasis: 1, // 0,1,2
+    }
+  }
+}
+</script>
+
+<style>
+  .root {
+    position: relative;
+    display: inline-block;
+    padding: 4px 8px 4px 24px;
+    border-radius: 4px;
+    font-size: 11px!important;
+    text-decoration: none;
+    font-weight: 500;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    line-height: 16px;
+  }
+  .emphasis-0.root {
+    border-color: rgba(0, 0, 0, 0);
+    color: #ff6600;
+  }
+  .emphasis-1.root {
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #ff6600;
+  }
+  .emphasis-2.root {
+    border-color: #ff6600;
+    color: white;
+    background: #ff6600;
+  }
+  svg {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 18px;
+    display: inline-block;
+  }
+  .emphasis-0 svg * {
+    fill: #ff6600;
+  }
+  .emphasis-1 svg * {
+    fill: #ff6600;
+  }
+  .emphasis-2 svg * {
+    fill: white;
+  }
+  span {
+    display: inline-block;
+  }
+</style>

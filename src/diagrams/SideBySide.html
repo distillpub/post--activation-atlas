@@ -1,0 +1,105 @@
+
+<AtlasNav 
+  on:home="refs.detail.home()"
+  on:fullscreen="refs.detail.fullscreen()"
+  on:zoomin="refs.detail.zoomit(2)"
+  on:zoomout="refs.detail.zoomit(0.5)"
+  bind:unit
+  bind:layer_name
+/>
+
+<span style="font-size: 11px; color: #ddd; position: absolute; right: 4px; top: 4px;">gcx: {@html gcx}, gcy: {@html gcy}, scale: {scale}</span>
+
+<div style="display: grid; grid-template-columns:1fr 300px; grid-column-gap: 40px; margin: 0 20px;">
+  <div class="detail" style="height: 500px;">
+    <Atlas 
+      ref:detail 
+      id="inceptionv1_{layer_name}" 
+      bind:scale 
+      bind:gcx 
+      bind:gcy 
+      bind:layer
+      bind:aspectRatio
+      iconCrop={0.2} 
+      gridSize={3} 
+      homeScale={8}
+      bind:homeX
+      bind:homeY
+      scaleCountFactor={50}
+      alphaAttributionFactor={10}
+      showLabels={true}
+      backgroundColor="#eee"
+    />
+    <div class="shadow"></div>
+  </div>
+  <div class="overview" style="width: 100%;">
+    <div style="position: relative; height: 300px;">
+      <Atlas ref:overview id="inceptionv1_{layer_name}" 
+        bind:layer 
+        gridSize={2} 
+        iconCrop={0.3} 
+        scaleCountFactor={50} 
+        alphaAttributionFactor={10}
+      />
+      <AtlasReticle
+        bind:aspectRatio
+        bind:scale
+        bind:gcx
+        bind:gcy
+      />
+    </div>
+
+  </div>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasNav: "../AtlasNav.html",
+    AtlasReticle: "../AtlasReticle.html"
+  },
+  data()  {
+    return {
+      layer_name: "mixed5a",
+      layer: 0,
+      gcx: 0.2,
+      gcy: 0.299,
+      homeX: 0.2,
+      homeY: 0.3
+    }
+  },
+  methods: {
+    goto(x, y, scale) {
+      this.refs.detail.transitionTo(x, y, scale, 1200);
+    }
+  }
+}
+</script>
+
+<style>
+  .overview {
+    position: relative;
+  }
+  .overview > :global(div) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .detail {
+    position: relative;
+    box-sizing: border-box;
+  }
+  .shadow {
+    box-sizing: border-box;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 18px 4px rgba(0, 0, 0, 0.3);
+    border: solid 3px #ff6600
+  }
+</style>

@@ -1,0 +1,63 @@
+
+<div ref:controls style="grid-column: text/screen-end">
+  <label><input type=radio bind:group=gridSize value={0}> 0</label>
+  <label><input type=radio bind:group=gridSize value={1}> 1</label>
+  <label><input type=radio bind:group=gridSize value={2}> 2</label>
+  <label><input type=radio bind:group=gridSize value={3}> 3</label>
+  <label><input type=radio bind:group=gridSize value={4}> 4</label>
+|
+  <label><input type=checkbox bind:checked=showLabels> show labels</label>
+
+</div>
+<div class="container" style="">
+  <div class="stack">
+    <AtlasStack bind:LayerName/>
+  </div>
+  <div class="atlas">
+    <Atlas
+      id="inceptionv1_{layerName}"
+      bind:gridSize
+      alphaAttributionFactor=10
+      bind:showLabels
+      scaleCountFactor=10
+      iconCrop=0.2
+      showHoverImage=1
+    />
+  </div>
+</div>
+
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasStack: "../AtlasStack.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4a",
+      gridSize: 0
+    }
+  }
+}
+</script>
+
+<style>
+
+  ref:controls {
+    font-size: 10px;
+  }
+  .container {
+    height: 600px;
+    grid-column: screen;
+    display: grid;
+    grid-template-columns: 170px 1fr;
+  }
+  .atlas {
+    position: relative;
+  }
+  .column {
+    position: relative;
+    height: 300px;
+  }
+</style>

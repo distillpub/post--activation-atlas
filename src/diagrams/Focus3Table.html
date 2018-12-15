@@ -1,0 +1,243 @@
+<div class="details">
+  <div class="row">
+    <h4 style="width:{loupeSize}px">Fireboat</h4>
+    <h4 style="width:{loupeSize}px">Streetcar</h4>
+  </div>
+  <!-- row -->
+  <div class="row">
+    <Loupe width={loupeSize} height={loupeSize} label={1}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={235}
+        bind:homeX="$focus3Highlights[0].homeX" 
+        bind:homeY="$focus3Highlights[0].homeY" 
+        bind:homeScale="$focus3Highlights[0].homeScale"
+        bind:aspectRatio="$focus3aspectRatio0"
+        bind:scale="$focus3scale0"
+        bind:gcx="$focus3gcx0"
+        bind:gcy="$focus3gcy0"
+      />
+    </Loupe>
+    <Loupe color="#ffaa00" width={loupeSize} height={loupeSize} label={1}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={287}
+        bind:homeX="$focus3Highlights[0].homeX" 
+        bind:homeY="$focus3Highlights[0].homeY" 
+        bind:homeScale="$focus3Highlights[0].homeScale"
+        bind:aspectRatio="$focus3aspectRatio0"
+        bind:scale="$focus3scale0"
+        bind:gcx="$focus3gcx0"
+        bind:gcy="$focus3gcy0"
+      />
+    </Loupe>
+    <div class="figcaption">
+      At {layerName}, Both "streetcar" and "fireboat" contain activations for what look like windows.
+    </div>
+  </div>
+  <!-- row -->
+  <div class="row">
+    <Loupe width={loupeSize} height={loupeSize} label={2}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        classHeatmap={235}
+        bind:homeX="$focus3Highlights[1].homeX" 
+        bind:homeY="$focus3Highlights[1].homeY" 
+        bind:homeScale="$focus3Highlights[1].homeScale"
+        bind:aspectRatio="$focus3aspectRatio1"
+        bind:scale="$focus3scale1"
+        bind:gcx="$focus3gcx1"
+        bind:gcy="$focus3gcy1"
+      />
+    </Loupe>
+    <Loupe color="#ffaa00" width={loupeSize} height={loupeSize} label={2}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={287}
+        bind:homeX="$focus3Highlights[1].homeX" 
+        bind:homeY="$focus3Highlights[1].homeY" 
+        bind:homeScale="$focus3Highlights[1].homeScale"
+        bind:aspectRatio="$focus3aspectRatio1"
+        bind:scale="$focus3scale1"
+        bind:gcx="$focus3gcx1"
+        bind:gcy="$focus3gcy1"
+      />
+    </Loupe>
+    <div class="figcaption">
+      Both classes also contain activations for crane-like apparatuses, though they are less prominent than the window activations.
+    </div>
+  </div>
+  <!-- row -->
+  <div class="row">
+    <Loupe width={loupeSize} height={loupeSize} label={3}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={235}
+        bind:homeX="$focus3Highlights[2].homeX" 
+        bind:homeY="$focus3Highlights[2].homeY" 
+        bind:homeScale="$focus3Highlights[2].homeScale"
+        bind:aspectRatio="$focus3aspectRatio2"
+        bind:scale="$focus3scale2"
+        bind:gcx="$focus3gcx2"
+        bind:gcy="$focus3gcy2"
+      />
+    </Loupe>
+    <Loupe color="#ffaa00" width={loupeSize} height={loupeSize} label={3}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={287}
+        bind:homeX="$focus3Highlights[2].homeX" 
+        bind:homeY="$focus3Highlights[2].homeY" 
+        bind:homeScale="$focus3Highlights[2].homeScale"
+        bind:aspectRatio="$focus3aspectRatio2"
+        bind:scale="$focus3scale2"
+        bind:gcx="$focus3gcx2"
+        bind:gcy="$focus3gcy2"
+      />
+    </Loupe>
+    <div class="figcaption">
+      "Fireboat" activations have much stronger attributions from water than "streetcar", where there is virtually no positive evidence.
+    </div>
+  </div>
+  <!-- row -->
+  <div class="row">
+    <Loupe width={loupeSize} height={loupeSize} label={4}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={235}
+        bind:homeX="$focus3Highlights[3].homeX" 
+        bind:homeY="$focus3Highlights[3].homeY" 
+        bind:homeScale="$focus3Highlights[3].homeScale"
+        bind:aspectRatio="$focus3aspectRatio3"
+        bind:scale="$focus3scale3"
+        bind:gcx="$focus3gcx3"
+        bind:gcy="$focus3gcy3"
+      />
+    </Loupe>
+    <Loupe color="#ffaa00" width={loupeSize} height={loupeSize} label={4}>
+      <Atlas
+        id="inceptionv1_{layerName}"
+        bind:gridSize
+        alphaAttributionFactor=10
+        bind:showLabels
+        scaleCountFactor=10
+        iconCrop=0.2
+        enableHover={false}
+        enableDragToPan={false}
+        enableClickToZoom={false}
+        classHeatmap={287}
+        bind:homeX="$focus3Highlights[3].homeX" 
+        bind:homeY="$focus3Highlights[3].homeY" 
+        bind:homeScale="$focus3Highlights[3].homeScale"
+        bind:aspectRatio="$focus3aspectRatio3"
+        bind:scale="$focus3scale3"
+        bind:gcx="$focus3gcx3"
+        bind:gcy="$focus3gcy3"
+      />
+    </Loupe>
+    <div class="figcaption">
+      The activations for "streetcar" have much stronger attributions from buildings than does "fireboat". 
+    </div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    Loupe: "../components/Loupe.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4d",
+      gridSize: 1,
+      loupeSize: 220
+    }
+  }
+}
+</script>
+
+
+<style>
+ 
+  .details {
+    grid-column: text;
+    margin-top: 10px;
+  }
+  h4 {
+    text-align: center;
+    margin: 0;
+  }
+  .details .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    grid-gap: 30px;
+    margin-bottom: 20px;
+  }
+  .detail {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    border: solid 3px #ffaa00;
+    border-radius: 50%;
+  }
+  .row .detail:first-of-type {
+    border-color: #ff6600;
+  }
+
+</style>

@@ -1,0 +1,49 @@
+<div class="{background ? 'background' : ''} {border ? 'border' : ''}">
+  <Radar bind:ready>
+    <Placeholder {aspectRatio}>
+      {#if ready}
+        <img ref:image src="{src}" alt="{alt}">
+      {:else}
+        <Loading />
+      {/if}
+    </Placeholder>
+  </Radar>
+</div>
+
+<script>
+  export default {
+    components: {
+      Radar: "./Radar.html",
+      Loading: "./Loading.html",
+      Placeholder: "./Placeholder.html"
+    },
+    data() {
+      return {
+        ready: false,
+        src: "",
+        alt: "",
+        display: "block", //"inline", "inline-block", "block"
+        aspectRatio: 1, // width/height
+        border: true,
+        background: true,
+      }
+    }
+  }
+</script>
+
+<style>
+.background {
+  background: rgba(0, 0, 0, 0.05);
+}
+.border {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+ref:image {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -1,0 +1,39 @@
+<!-- 
+  Reports the visibility and position of the element on the screen.
+  Can be used inline for a point sample, or as a block element to wrap another 
+  component.
+ -->
+
+<d-figure
+  ref:element
+  style="display: {display};"
+>
+  <slot></slot>
+</d-figure>
+
+<script>
+  export default {
+    data() {
+      return {
+        display: "block", // "inline", "inline-block", "block"
+        ready: false,
+        onscreen: false,
+        offscreen: true
+      }
+    },
+    oncreate() {
+      this.refs.element.addEventListener("ready", event => {
+        this.set({ready: true});
+      });
+      this.refs.element.addEventListener("onscreen", event => {
+        this.set({onscreen: true});
+        this.fire("onscreen");
+      });
+      this.refs.element.addEventListener("offscreen", event => {
+        this.set({onscreen: false});
+        this.fire("offscreen");
+      });
+    }
+  }
+
+</script>

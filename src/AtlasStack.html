@@ -1,0 +1,64 @@
+<div class="stack">
+{#each layers as layer, i}
+  <label class="layer {layerName == layer ? 'selected' : ''}">
+    <input type=radio bind:group=layerName value={layer}>
+    <span>{layer}</span>
+    <AtlasThumbnail layerName={layer}/>
+  </label>
+{/each}
+</div>
+
+<script>
+  export default {
+    components: {
+      AtlasThumbnail: "./AtlasThumbnail.html"
+    },
+    data() { return {
+      layerName: "mixed4c",
+      layers: [
+        "mixed3b",
+        "mixed4a",
+        "mixed4b",
+        "mixed4c",
+        "mixed4d",
+        "mixed4e",
+        "mixed5a",
+        "mixed5b",
+      ]
+    }; }
+  }
+</script>
+
+<style>
+.stack {
+  border-right: solid 1px #ddd;
+}
+.layer {
+  position: relative;
+  cursor: pointer;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 5px 20px 5px 20px;
+  color: grey;
+  border-right: solid 3px rgba(255, 255, 255, 0);
+}
+.layer input {
+  position: absolute;
+  opacity: 0;
+}
+.layer.selected {
+  border-right-color: rgb(255, 130, 0);
+  color: rgb(255, 130, 0);
+  background-color: rgba(255, 130, 0, 0.08);
+  font-weight: bold;
+}
+.layer :global(canvas) {
+  opacity: 0.3;
+}
+.layer.selected :global(canvas) {
+  opacity: 1;
+}
+</style>

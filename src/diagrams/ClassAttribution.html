@@ -1,0 +1,71 @@
+
+<div>
+{#if labels}
+  {#each $classChoices as c, i}
+    <button on:click="setClass(i)">{labels[c]}</button>
+  {/each}
+{/if}
+</div>
+
+<div style="display: grid; grid-auto-flow: column; grid-column-gap: 1px; grid-auto-columns: 1fr;">
+  <div>
+    <div class="atlas">
+      <Atlas id="grids" gridSize=1 bind:labels bind:config {classFilter} iconCrop={0.2} alphaAttributionFactor={1.0}/>
+    </div>
+    <div class="figcaption"><b>No alpha</b> All concepts are given equal weight.</div>
+  </div>
+  <div>
+    <div class="atlas">
+      <Atlas id="grids" gridSize=1 bind:labels bind:config {classFilter} iconCrop={0.2} alphaAttributionFactor={0.000015}/>
+    </div>
+    <div class="figcaption"><b>Alpha mapped to attribution</b> We can see that the backgrounds are less important to classifciation than the foxes pointy ears.</div>
+  </div>
+  
+</div>
+
+<script>
+export default {
+  components: { Atlas: "../Atlas.html" },
+  data() {
+    return {
+      currentClass: 62
+    }
+  },
+  computed: {
+    classFilter: ({$currentClass, config}) => {
+      if (config) {
+        let id = config.class_filter.indexOf($currentClass)
+        if (id > -1) {
+          return id;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+
+    }
+  },
+  methods: {
+    setClass(i) {
+      const {classChoices} = this.store.get();
+      const classId = classChoices[i];
+      this.store.set({currentClass: classId});
+    }
+  }
+}
+</script>
+
+<style>
+
+figcaption {
+  margin-top: 20px;
+}
+figcaption b {
+  text-transform: uppercase;
+  margin-right: 8px;
+}
+.atlas {
+  height: 300px;
+}
+</style>

@@ -1,0 +1,27 @@
+<d-figure ref:figure>
+  <slot></slot>
+</d-figure>
+
+<script>
+export default {
+  data() {
+    return {
+      ready: false,
+      onscreen: false,
+    }
+  },
+  oncreate() {
+    this.refs.figure.addEventListener("ready", event => {
+      this.set({ready: true});
+    });
+    this.refs.figure.addEventListener("onscreen", event => {
+      this.set({onscreen: true});
+      this.fire("onscreen");
+    });
+    this.refs.figure.addEventListener("offscreen", event => {
+      this.set({onscreen: false});
+      this.fire("offscreen");
+    });
+  }
+}
+</script>

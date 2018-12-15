@@ -1,0 +1,81 @@
+<d-figure ref:figure>
+  <div ref:container>
+    {#if ready}
+      <svelte:component this={component} {...componentData}/>
+    {:else}
+      <div>Loading...</div>
+    {/if}
+  </div>
+</d-figure>
+
+<script>
+  export default {
+    data() {
+      return {
+        component: false,
+        componentURL: false,
+        componentData: false,
+        figureReady: false,
+        onscreen: false,
+        height: 50
+      }
+    },
+    computed: {
+      ready: ({figureReady, component}) => (figureReady && component) ? true : false
+    },
+    oncreate() {
+
+      // Import a remote component if given
+      const {componentURL} = this.get();
+      if (componentURL) {
+        import(componentURL).then(c => {
+          this.set({component: c.default});
+        });
+      }
+      this.refs.figure.addEventListener("ready", event => {
+        this.set({figureReady: true});
+      });
+      this.refs.figure.addEventListener("onscreen", event => {
+        this.set({onscreen: true});
+        this.fire("onscreen");
+      });
+      this.refs.figure.addEventListener("offscreen", event => {
+        this.set({onscreen: false});
+        this.fire("offscreen");
+      });
+    },
+    onupdate({ changed, current, previous }) {
+      if (changed.ready) {
+        if (this.refs.container) {
+          this.set({
+            height: this.refs.container.getBoundingClientRect().height
+          })
+        }
+      }
+    },
+    methods: {
+      initComponent() {
+        const {component, componentData} = this.get
+      },
+      measure() {
+        console.log(this.refs.container)
+      }
+    }
+  }
+</script>
+
+<style>
+d-figure {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+ref:container {
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; */
+}
+</style>

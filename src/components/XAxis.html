@@ -1,0 +1,39 @@
+
+
+<g ref:root transform="translate({x},{y})">
+
+</g>
+
+<script>
+  import {axisBottom} from "d3-axis";
+
+  const axisGenerator = axisBottom();
+
+  export default {
+    namespace: "svg",
+    data() {
+      return {
+        x: 0,
+        y: 0,
+        scale: undefined
+      }
+    },
+    computed: {
+      axis: scale => axisGenerator.scale(scale).ticks(4)
+    },
+    oncreate() {
+      this.observe("axis", (axis) => {
+        if (axis) d3.select(this.refs.root).call(axis);
+      });
+    }
+  }
+</script>
+
+<style>
+.tick line {
+  stroke: hsl(0, 0%, 60%);
+}
+.tick text {
+  fill: hsl(0, 0%, 60%);
+}
+</style>

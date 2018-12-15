@@ -1,0 +1,27 @@
+<div ref:root>
+{#each $layers as layer}
+  <button on:click="$fetchLayer(layer)">{layer}</button>
+{/each}
+<!-- <p>Size</p>
+{#each $sizes as size, i}
+  <button on:click="$set({currentSize: i})">{size}</button>
+{/each}-->
+</div> 
+
+<script>
+export default {
+}
+</script>
+
+<style>
+ref:root {
+  margin: 10px;
+  font-size: 13px;
+}
+  button {
+    display: inline-block;
+    margin: 0;
+    width: 100px;
+    text-align: left;
+  }
+</style>

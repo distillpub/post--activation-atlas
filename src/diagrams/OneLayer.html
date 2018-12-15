@@ -1,0 +1,54 @@
+
+<!-- <div ref:controls style="grid-column: text/screen-end">
+  <label><input type=radio bind:group=layerName value="mixed3b"> mixed3b</label>
+  <label><input type=radio bind:group=layerName value="mixed4a"> mixed4a</label>
+  <label><input type=radio bind:group=layerName value="mixed4b"> mixed4b</label>
+  <label><input type=radio bind:group=layerName value="mixed4c"> mixed4c</label>
+  <label><input type=radio bind:group=layerName value="mixed4d"> mixed4d</label>
+  <label><input type=radio bind:group=layerName value="mixed4e"> mixed4e</label>
+  <label><input type=radio bind:group=layerName value="mixed5a"> mixed5a</label>
+  <label><input type=radio bind:group=layerName value="mixed5b"> mixed5b</label>
+|
+  <label><input type=radio bind:group=gridSize value={0}> 0</label>
+  <label><input type=radio bind:group=gridSize value={1}> 1</label>
+  <label><input type=radio bind:group=gridSize value={2}> 2</label>
+  <label><input type=radio bind:group=gridSize value={3}> 3</label>
+  <label><input type=radio bind:group=gridSize value={4}> 4</label>
+|
+  <label><input type=checkbox bind:checked=showLabels> show labels</label>
+
+</div> -->
+
+
+<div class="atlas" style="grid-column: screen">
+  <Atlas id="inceptionv1_{layerName}" bind:gridSize alphaAttributionFactor=10 bind:showLabels scaleCountFactor=10 iconCrop=0.2/>
+</div>
+
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4c",
+      gridSize: 1
+    }
+  }
+}
+</script>
+
+<style>
+  ref:controls {
+    font-size: 10px;
+  }
+  .atlas {
+    position: relative;
+    height: 100vw;
+    margin: 20px;
+  }
+  .column {
+    position: relative;
+    height: 300px;
+  }
+</style>

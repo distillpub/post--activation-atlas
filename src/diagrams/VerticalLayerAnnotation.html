@@ -1,0 +1,70 @@
+
+
+<div style="">
+  <div class="detail">
+    <Atlas 
+      id="inceptionv1_{layerName}" 
+      bind:gridSize
+      bind:homeX 
+      bind:homeY 
+      bind:homeScale
+      bind:aspectRatio
+      bind:scale
+      bind:gcx
+      bind:gcy
+      bind:showLabels
+      enableDragToPan={true}
+      enableClickToZoom={false}
+    />
+  </div>
+  <div class="atlas">
+    <AtlasThumbnail 
+      {layerName}
+    />
+    <AtlasReticle
+      bind:aspectRatio
+      bind:scale
+      bind:gcx
+      bind:gcy
+    />
+    {#if gcx && gcy}
+    <label>gcx: {@html gcx.toPrecision(4)}, gcy: {@html gcy.toPrecision(4)}</label>
+    {/if}
+  </div>
+</div>
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasThumbnail: "../AtlasThumbnail.html",
+    AtlasReticle: "../AtlasReticle.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4c",
+      gridSize: 3,
+      homeScale: 16 * 3,
+      showLabels: true
+    }
+  }
+}
+</script>
+
+<style>
+  h4 {
+    margin-top: 0;
+  }
+  label {
+    font-size: 11px;
+    color: #ccc;
+  }
+  .atlas {
+    position: relative;
+    margin: 20px auto 0;
+    width: 150px;
+    height: 150px;
+  }
+  .detail {
+    height: 250px;
+  }
+</style>

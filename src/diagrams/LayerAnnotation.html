@@ -1,0 +1,59 @@
+
+
+<div style="display: grid; grid-template-columns: 1fr 200px;">
+  <div class="detail">
+    <Atlas 
+      id="inceptionv1_{layerName}" 
+      bind:gridSize
+      bind:homeX 
+      bind:homeY 
+      bind:homeScale
+      bind:aspectRatio
+      bind:scale
+      bind:gcx
+      bind:gcy
+      bind:showLabels
+    />
+  </div>
+  <div class="atlas">
+    <AtlasThumbnail 
+      {layerName}
+      gridSize={1}
+    />
+    <AtlasReticle
+      bind:aspectRatio
+      bind:scale
+      bind:gcx
+      bind:gcy
+    />
+  </div>
+</div>
+<script>
+export default {
+  components: { 
+    Atlas: "../Atlas.html",
+    AtlasThumbnail: "../AtlasThumbnail.html",
+    AtlasReticle: "../AtlasReticle.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4c",
+      gridSize: 2,
+      homeScale: 14,
+      showLabels: true
+    }
+  }
+}
+</script>
+
+<style>
+  .atlas {
+    position: relative;
+    margin: 20px;
+    width: 120px;
+    height: 120px;
+  }
+  .detail {
+    height: 300px;
+  }
+</style>
