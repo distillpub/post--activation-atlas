@@ -1533,6 +1533,7 @@
 	    scaleCountFactor: 1,
 	    classHeatmap: -1,
 	    classHeatmapMultiplier: 1,
+	    classHeatmapPositive: 1,
 
 	    gridSize: null,
 	    showGrid: false,
@@ -1788,13 +1789,14 @@
 	                    // check that we're still on the right layer/zoom
 	                    const {currentZoomIndex, iconCrop, showLabels,} = this.get();
 	                    if(currentZoomIndex == layerIndex) {
-	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier} = this.get();
+	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
 	                      let a = 1;
 	                      if (classHeatmap > -1) {
 	                        let i = icon.full_class_indices.indexOf(classHeatmap);
 	                        if (i > -1) {
 	                          a = icon.full_class_values[i] / maxAttributionValue;
+	                          a = a * classHeatmapPositive;
 	                          a = Math.max(0, a) * classHeatmapMultiplier;
 	                        } else {
 	                          a = 0.0;
@@ -1847,7 +1849,7 @@
 	}
 	function onupdate$1({ changed, current, previous }) {
 	  this.set({context: this.refs.canvas.getContext('2d')});
-	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
+	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
 	    this.render();
 	  }
 	  if (changed.currentIconInfo) {
@@ -5706,7 +5708,7 @@
 	const file$b = "src/components/App.html";
 
 	function create_main_fragment$c(component, ctx) {
-		var div10, div0, h40, text1, appclassfilter_updating = {}, text2, div1, h41, text4, applayerchooser_updating = {}, text5, div5, div2, appcontrols_updating = {}, text6, div4, div3, atlas_updating = {}, text7, div9, h42, text9, appminimap_updating = {}, text10, label0, text11, text12, text13, input0, text14, br0, text15, label1, text16, text17, text18, input1, text19, br1, text20, label2, text21, text22, text23, input2, text24, div6, text25, text26, text27, div7, text28, text29, text30, div8, text31, text32, text33, slot_content_default = component._slotted.default, slot_content_default_before;
+		var div10, div0, h40, text1, appclassfilter_updating = {}, text2, div1, h41, text4, applayerchooser_updating = {}, text5, div5, div2, appcontrols_updating = {}, text6, div4, div3, atlas_updating = {}, text7, div9, h42, text9, appminimap_updating = {}, text10, label0, text11, text12, text13, input0, text14, br0, text15, label1, text16, text17, text18, input1, text19, br1, text20, text21, div6, text22, text23, text24, div7, text25, text26, text27, div8, text28, text29, text30, slot_content_default = component._slotted.default, slot_content_default_before;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -5833,6 +5835,12 @@
 	          ;
 			atlas_updating.classHeatmapMultiplier = true;
 		}
+		if (ctx.classHeatmapPositive
+	           !== void 0) {
+			atlas_initial_data.classHeatmapPositive = ctx.classHeatmapPositive
+	          ;
+			atlas_updating.classHeatmapPositive = true;
+		}
 		if (ctx.gridSize
 	           !== void 0) {
 			atlas_initial_data.gridSize = ctx.gridSize
@@ -5883,6 +5891,10 @@
 					newState.classHeatmapMultiplier = childState.classHeatmapMultiplier;
 				}
 
+				if (!atlas_updating.classHeatmapPositive && changed.classHeatmapPositive) {
+					newState.classHeatmapPositive = childState.classHeatmapPositive;
+				}
+
 				if (!atlas_updating.gridSize && changed.gridSize) {
 					newState.gridSize = childState.gridSize;
 				}
@@ -5912,7 +5924,7 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			atlas._bind({ iconCrop: 1, classHeatmapMultiplier: 1, gridSize: 1, showLabels: 1, aspectRatio: 1, scale: 1, gcx: 1, gcy: 1 }, atlas.get());
+			atlas._bind({ iconCrop: 1, classHeatmapMultiplier: 1, classHeatmapPositive: 1, gridSize: 1, showLabels: 1, aspectRatio: 1, scale: 1, gcx: 1, gcy: 1 }, atlas.get());
 		});
 
 		component.refs.atlas = atlas;
@@ -5984,9 +5996,7 @@
 			component.set({ iconCrop: toNumber(input1.value) });
 		}
 
-		function input2_change_input_handler() {
-			component.set({ classHeatmapMultiplier: toNumber(input2.value) });
-		}
+		var if_block = (ctx.classHeatmap > -1) && create_if_block$2(component, ctx);
 
 		return {
 			c: function create() {
@@ -6033,24 +6043,20 @@
 				text19 = createText("\n    ");
 				br1 = createElement("br");
 				text20 = createText("\n    ");
-				label2 = createElement("label");
-				text21 = createText("class filter intensity: ");
-				text22 = createText(ctx.classHeatmapMultiplier);
-				text23 = createText("\n    ");
-				input2 = createElement("input");
-				text24 = createText("\n    ");
+				if (if_block) if_block.c();
+				text21 = createText("\n    ");
 				div6 = createElement("div");
-				text25 = createText("gcx: ");
-				text26 = createText(ctx.gcx);
-				text27 = createText("\n    ");
+				text22 = createText("gcx: ");
+				text23 = createText(ctx.gcx);
+				text24 = createText("\n    ");
 				div7 = createElement("div");
-				text28 = createText("gcy: ");
-				text29 = createText(ctx.gcy);
-				text30 = createText("\n    ");
+				text25 = createText("gcy: ");
+				text26 = createText(ctx.gcy);
+				text27 = createText("\n    ");
 				div8 = createElement("div");
-				text31 = createText("scale: ");
-				text32 = createText(ctx.scale);
-				text33 = createText("\n    ");
+				text28 = createText("scale: ");
+				text29 = createText(ctx.scale);
+				text30 = createText("\n    ");
 				h40.className = "svelte-145v9lq";
 				addLoc(h40, file$b, 2, 4, 51);
 				div0.className = "filter svelte-145v9lq";
@@ -6068,38 +6074,30 @@
 				div5.className = "main svelte-145v9lq";
 				addLoc(div5, file$b, 14, 2, 255);
 				h42.className = "svelte-145v9lq";
-				addLoc(h42, file$b, 48, 4, 1099);
-				addLoc(label0, file$b, 58, 4, 1301);
+				addLoc(h42, file$b, 49, 4, 1135);
+				addLoc(label0, file$b, 59, 4, 1337);
 				addListener(input0, "change", input0_change_input_handler);
 				addListener(input0, "input", input0_change_input_handler);
 				setAttribute(input0, "type", "range");
 				input0.min = 0.2;
 				input0.max = 10;
 				input0.step = 0.1;
-				addLoc(input0, file$b, 59, 4, 1352);
-				addLoc(br0, file$b, 60, 4, 1434);
-				addLoc(label1, file$b, 61, 4, 1443);
+				addLoc(input0, file$b, 60, 4, 1388);
+				addLoc(br0, file$b, 61, 4, 1470);
+				addLoc(label1, file$b, 62, 4, 1479);
 				addListener(input1, "change", input1_change_input_handler);
 				addListener(input1, "input", input1_change_input_handler);
 				setAttribute(input1, "type", "range");
 				input1.min = 0;
 				input1.max = 0.5;
 				input1.step = 0.01;
-				addLoc(input1, file$b, 62, 4, 1484);
-				addLoc(br1, file$b, 63, 4, 1559);
-				addLoc(label2, file$b, 64, 4, 1568);
-				addListener(input2, "change", input2_change_input_handler);
-				addListener(input2, "input", input2_change_input_handler);
-				setAttribute(input2, "type", "range");
-				input2.min = "0.5";
-				input2.max = "2";
-				input2.step = "0.1";
-				addLoc(input2, file$b, 65, 4, 1636);
-				addLoc(div6, file$b, 66, 4, 1718);
-				addLoc(div7, file$b, 67, 4, 1744);
-				addLoc(div8, file$b, 68, 4, 1770);
+				addLoc(input1, file$b, 63, 4, 1520);
+				addLoc(br1, file$b, 64, 4, 1595);
+				addLoc(div6, file$b, 74, 4, 2059);
+				addLoc(div7, file$b, 75, 4, 2085);
+				addLoc(div8, file$b, 76, 4, 2111);
 				div9.className = "minimap svelte-145v9lq";
-				addLoc(div9, file$b, 47, 2, 1073);
+				addLoc(div9, file$b, 48, 2, 1109);
 				div10.className = "container svelte-145v9lq";
 				addLoc(div10, file$b, 0, 0, 0);
 			},
@@ -6151,27 +6149,20 @@
 				append(div9, text19);
 				append(div9, br1);
 				append(div9, text20);
-				append(div9, label2);
-				append(label2, text21);
-				append(label2, text22);
-				append(div9, text23);
-				append(div9, input2);
-
-				input2.value = ctx.classHeatmapMultiplier;
-
-				append(div9, text24);
+				if (if_block) if_block.m(div9, null);
+				append(div9, text21);
 				append(div9, div6);
-				append(div6, text25);
-				append(div6, text26);
-				append(div9, text27);
+				append(div6, text22);
+				append(div6, text23);
+				append(div9, text24);
 				append(div9, div7);
-				append(div7, text28);
-				append(div7, text29);
-				append(div9, text30);
+				append(div7, text25);
+				append(div7, text26);
+				append(div9, text27);
 				append(div9, div8);
-				append(div8, text31);
-				append(div8, text32);
-				append(div9, text33);
+				append(div8, text28);
+				append(div8, text29);
+				append(div9, text30);
 
 				if (slot_content_default) {
 					append(div9, slot_content_default_before || (slot_content_default_before = createComment()));
@@ -6238,6 +6229,12 @@
 					atlas_changes.classHeatmapMultiplier = ctx.classHeatmapMultiplier
 	          ;
 					atlas_updating.classHeatmapMultiplier = ctx.classHeatmapMultiplier
+	           !== void 0;
+				}
+				if (!atlas_updating.classHeatmapPositive && changed.classHeatmapPositive) {
+					atlas_changes.classHeatmapPositive = ctx.classHeatmapPositive
+	          ;
+					atlas_updating.classHeatmapPositive = ctx.classHeatmapPositive
 	           !== void 0;
 				}
 				if (!atlas_updating.gridSize && changed.gridSize) {
@@ -6319,21 +6316,30 @@
 				}
 
 				if (changed.iconCrop) input1.value = ctx.iconCrop;
-				if (changed.classHeatmapMultiplier) {
-					setData(text22, ctx.classHeatmapMultiplier);
+
+				if (ctx.classHeatmap > -1) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$2(component, ctx);
+						if_block.c();
+						if_block.m(div9, text21);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
 				}
 
-				if (changed.classHeatmapMultiplier) input2.value = ctx.classHeatmapMultiplier;
 				if (changed.gcx) {
-					setData(text26, ctx.gcx);
+					setData(text23, ctx.gcx);
 				}
 
 				if (changed.gcy) {
-					setData(text29, ctx.gcy);
+					setData(text26, ctx.gcy);
 				}
 
 				if (changed.scale) {
-					setData(text32, ctx.scale);
+					setData(text29, ctx.scale);
 				}
 			},
 
@@ -6352,12 +6358,150 @@
 				removeListener(input0, "input", input0_change_input_handler);
 				removeListener(input1, "change", input1_change_input_handler);
 				removeListener(input1, "input", input1_change_input_handler);
-				removeListener(input2, "change", input2_change_input_handler);
-				removeListener(input2, "input", input2_change_input_handler);
+				if (if_block) if_block.d();
 
 				if (slot_content_default) {
 					reinsertAfter(slot_content_default_before, slot_content_default);
 				}
+			}
+		};
+	}
+
+	// (66:4) {#if classHeatmap > -1}
+	function create_if_block$2(component, ctx) {
+		var label0, text0, text1, text2, input0, text3, label1, text5, br0, text6, label2, input1, text7, text8, br1, text9, label3, input2, text10;
+
+		function input0_change_input_handler() {
+			component.set({ classHeatmapMultiplier: toNumber(input0.value) });
+		}
+
+		function input1_change_handler() {
+			component.set({ classHeatmapPositive: input1.__value });
+		}
+
+		function input2_change_handler() {
+			component.set({ classHeatmapPositive: input2.__value });
+		}
+
+		return {
+			c: function create() {
+				label0 = createElement("label");
+				text0 = createText("class filter intensity: ");
+				text1 = createText(ctx.classHeatmapMultiplier);
+				text2 = createText("\n    ");
+				input0 = createElement("input");
+				text3 = createText("\n    ");
+				label1 = createElement("label");
+				label1.textContent = "class filter positive/negative";
+				text5 = createText("\n    ");
+				br0 = createElement("br");
+				text6 = createText("\n    ");
+				label2 = createElement("label");
+				input1 = createElement("input");
+				text7 = createText(" positive influence");
+				text8 = createText("\n    ");
+				br1 = createElement("br");
+				text9 = createText("\n    ");
+				label3 = createElement("label");
+				input2 = createElement("input");
+				text10 = createText(" negative influence");
+				addLoc(label0, file$b, 66, 4, 1632);
+				addListener(input0, "change", input0_change_input_handler);
+				addListener(input0, "input", input0_change_input_handler);
+				setAttribute(input0, "type", "range");
+				input0.min = "0.5";
+				input0.max = "2";
+				input0.step = "0.1";
+				addLoc(input0, file$b, 67, 4, 1700);
+				addLoc(label1, file$b, 68, 4, 1782);
+				addLoc(br0, file$b, 69, 4, 1832);
+				component._bindingGroups[0].push(input1);
+				addListener(input1, "change", input1_change_handler);
+				setAttribute(input1, "type", "radio");
+				input1.__value = 1;
+				input1.value = input1.__value;
+				addLoc(input1, file$b, 70, 11, 1848);
+				addLoc(label2, file$b, 70, 4, 1841);
+				addLoc(br1, file$b, 71, 4, 1940);
+				component._bindingGroups[0].push(input2);
+				addListener(input2, "change", input2_change_handler);
+				setAttribute(input2, "type", "radio");
+				input2.__value = -1;
+				input2.value = input2.__value;
+				addLoc(input2, file$b, 72, 11, 1956);
+				addLoc(label3, file$b, 72, 4, 1949);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label0, anchor);
+				append(label0, text0);
+				append(label0, text1);
+				insert(target, text2, anchor);
+				insert(target, input0, anchor);
+
+				input0.value = ctx.classHeatmapMultiplier;
+
+				insert(target, text3, anchor);
+				insert(target, label1, anchor);
+				insert(target, text5, anchor);
+				insert(target, br0, anchor);
+				insert(target, text6, anchor);
+				insert(target, label2, anchor);
+				append(label2, input1);
+
+				input1.checked = input1.__value === ctx.classHeatmapPositive;
+
+				append(label2, text7);
+				insert(target, text8, anchor);
+				insert(target, br1, anchor);
+				insert(target, text9, anchor);
+				insert(target, label3, anchor);
+				append(label3, input2);
+
+				input2.checked = input2.__value === ctx.classHeatmapPositive;
+
+				append(label3, text10);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.classHeatmapMultiplier) {
+					setData(text1, ctx.classHeatmapMultiplier);
+				}
+
+				if (changed.classHeatmapMultiplier) input0.value = ctx.classHeatmapMultiplier;
+				if (changed.classHeatmapPositive) input1.checked = input1.__value === ctx.classHeatmapPositive;
+				if (changed.classHeatmapPositive) input2.checked = input2.__value === ctx.classHeatmapPositive;
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(label0);
+					detachNode(text2);
+					detachNode(input0);
+				}
+
+				removeListener(input0, "change", input0_change_input_handler);
+				removeListener(input0, "input", input0_change_input_handler);
+				if (detach) {
+					detachNode(text3);
+					detachNode(label1);
+					detachNode(text5);
+					detachNode(br0);
+					detachNode(text6);
+					detachNode(label2);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input1), 1);
+				removeListener(input1, "change", input1_change_handler);
+				if (detach) {
+					detachNode(text8);
+					detachNode(br1);
+					detachNode(text9);
+					detachNode(label3);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input2), 1);
+				removeListener(input2, "change", input2_change_handler);
 			}
 		};
 	}
@@ -6382,10 +6526,12 @@
 
 		if (!('iconCrop' in this._state)) console.warn("<App> was created without expected data property 'iconCrop'");
 		if (!('classHeatmapMultiplier' in this._state)) console.warn("<App> was created without expected data property 'classHeatmapMultiplier'");
+		if (!('classHeatmapPositive' in this._state)) console.warn("<App> was created without expected data property 'classHeatmapPositive'");
 		if (!('aspectRatio' in this._state)) console.warn("<App> was created without expected data property 'aspectRatio'");
 		if (!('scale' in this._state)) console.warn("<App> was created without expected data property 'scale'");
 		if (!('gcx' in this._state)) console.warn("<App> was created without expected data property 'gcx'");
 		if (!('gcy' in this._state)) console.warn("<App> was created without expected data property 'gcy'");
+		this._bindingGroups = [[]];
 		this._intro = true;
 
 		this._slotted = options.slots || {};

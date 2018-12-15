@@ -3075,6 +3075,7 @@
 	    scaleCountFactor: 1,
 	    classHeatmap: -1,
 	    classHeatmapMultiplier: 1,
+	    classHeatmapPositive: 1,
 
 	    gridSize: null,
 	    showGrid: false,
@@ -3330,13 +3331,14 @@
 	                    // check that we're still on the right layer/zoom
 	                    const {currentZoomIndex, iconCrop, showLabels,} = this.get();
 	                    if(currentZoomIndex == layerIndex) {
-	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier} = this.get();
+	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
 	                      let a = 1;
 	                      if (classHeatmap > -1) {
 	                        let i = icon.full_class_indices.indexOf(classHeatmap);
 	                        if (i > -1) {
 	                          a = icon.full_class_values[i] / maxAttributionValue;
+	                          a = a * classHeatmapPositive;
 	                          a = Math.max(0, a) * classHeatmapMultiplier;
 	                        } else {
 	                          a = 0.0;
@@ -3389,7 +3391,7 @@
 	}
 	function onupdate$1({ changed, current, previous }) {
 	  this.set({context: this.refs.canvas.getContext('2d')});
-	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
+	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
 	    this.render();
 	  }
 	  if (changed.currentIconInfo) {
