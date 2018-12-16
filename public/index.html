@@ -14,6 +14,10 @@
     figure {
       contain: layout paint;
     }
+    .app-container {
+      border-top: solid 1px rgba(0, 0, 0, 0.2);
+      border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+    }
   </style>
 	<link rel='stylesheet' href='_generated/main.css'>
   <script src="assets/template.v2.js"></script>
@@ -275,7 +279,7 @@
 
   <p>Below you can browse many more of the layers of InceptionV1. You can see the vague, generic <a href="#">mammalian creatures of mixed4a</a> evolve into very specific <a href="#">breeds of dogs in mixed5b</a>. Or you can compare the <a>curved edge detectors of mixed4a</a> with the <a>kitchen implements of mixed5b</a>. Mixed4b has some <a>interesting text and pattern detectors</a>, whereas mixed5a appears to use those to differentiate <a>menus from crossword puzzles from keyboards</a>. In early layers, like mixed4b, you'll see things that have similar textures near each other, like <a>drums, water bottle and spotlights.</a>. In later layers, you'll see that those things are <a>much more isolated</a>.
 
-  <figure id="all-layer-comparison" style="grid-column: screen;"></figure>
+  <figure id="all-layer-comparison" class="app-container" style="grid-column: screen;"></figure>
 
   <!-- <p>Center of mixed5b has low attribution, which is mostly backgrounds, possibly because it is shared by many classes thus umap puts it in the center? -->
 
@@ -326,7 +330,7 @@
 
   <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns of any class in ImageNet through several layers of InceptionV1. You can also create your own: <span data-notebook-url=’’></span>
 
-  <figure id="focus-playground" style="grid-column: screen;"></figure>
+  <figure id="focus-playground" class="app-container" style="grid-column: screen;"></figure>
 
 </section>
 <section class="base-grid">

@@ -1,17 +1,19 @@
 <div class="container">
-  <div class="filter">
-    <h4>Class Filter</h4>
-    <AppClassFilter
-      bind:classHeatmap
-    />
-  </div>
-  <div class="stack">
-    <h4>Layer</h4>
-    <AppLayerChooser
-      bind:layerName
-      {classHeatmap}
-    />
-  </div>
+    <div class="filter" style="{showClassFilter ? 'block' : 'none'}">
+      <h4>Class Filter</h4>
+      <div>
+        <AppClassFilter
+          bind:classHeatmap
+        />
+      </div>
+    </div>
+    <div class="stack" style="{showLayerChooser ? 'block' : 'none'}">
+      <h4>Layer</h4>
+      <AppLayerChooser
+        bind:layerName
+        {classHeatmap}
+      />
+    </div>
   <div class="main">
     <div class="controls">
       <AppControls 
@@ -24,7 +26,6 @@
       />
     </div>
     <div class="atlas">
-      <div style="position: relative;">
         <Atlas
           ref:atlas
           id="inceptionv1_{layerName}"
@@ -43,7 +44,6 @@
           bind:gcx
           bind:gcy
         />
-      </div>
     </div>
   </div>
   <div class="minimap">
@@ -57,25 +57,28 @@
       enableDragging={true}
       {classHeatmap}
     />
-    <label>icon density: {iconScaleFactor}</label>
-    <input type="range" min={0.2} max={10} step={0.1} bind:value=iconScaleFactor>
-    <br>
-    <label>icon crop: {iconCrop}</label>
-    <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
-    <br>
-    {#if classHeatmap > -1}
-    <label>class filter intensity: {classHeatmapMultiplier}</label>
-    <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
-    <br>
-    <label>class filter positive/negative</label>
-    <br>
-    <label><input type=radio bind:group=classHeatmapPositive value={1}> positive influence</label>
-    <br>
-    <label><input type=radio bind:group=classHeatmapPositive value={-1}> negative influence</label>
-    {/if}
-    <div>gcx: {gcx}</div>
-    <div>gcy: {gcy}</div>
-    <div>scale: {scale}</div>
+    <div>
+      <div>gcx: {gcx}</div>
+      <div>gcy: {gcy}</div>
+      <div>scale: {scale}</div>
+    </div>
+    <div>
+      <label>icon density: {iconScaleFactor}</label>
+      <input type="range" min={0.2} max={10} step={0.1} bind:value=iconScaleFactor>
+      <br>
+      <label>icon crop: {iconCrop}</label>
+      <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
+    </div>
+    <div style="display: {classHeatmap > -1 ? 'block' : 'none'}">
+      <label>class filter intensity: {classHeatmapMultiplier}</label>
+      <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
+      <br>
+      <label>class filter positive/negative</label>
+      <br>
+      <label><input type=radio bind:group=classHeatmapPositive value={1}> positive influence</label>
+      <br>
+      <label><input type=radio bind:group=classHeatmapPositive value={-1}> negative influence</label>
+    </div>
     <slot></slot>
   </div>
 </div>
@@ -96,7 +99,9 @@ export default {
       iconScaleFactor: 2,
       gridSize: 1,
       classHeatmap: -1,
-      iconCrop: 0.2
+      iconCrop: 0.2,
+      showClassFilter: true,
+      showLayerChooser: true
     }
   },
   computed: {
@@ -156,6 +161,7 @@ export default {
   }
   .atlas {
     height: calc(100% - 70px);
+    position: relative;
   }
 
 </style>

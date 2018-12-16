@@ -4,6 +4,8 @@ import Labels from './Labels.js';
 import LazyComponent from './library/LazyComponent.html';
 import NotebookLink from './library/NotebookLink.html';
 
+import App from './components/App.html';
+
 import Cover from './diagrams/Cover.html';
 import Overview from './diagrams/Overview.html';
 import ModelOverview from './diagrams/ModelOverview.html';
@@ -21,7 +23,7 @@ import OneLayer from './diagrams/OneLayer.html';
 import LayerAnnotation from './diagrams/LayerAnnotation.html';
 import ShowAPath from './diagrams/ShowAPath.html';
 import VerticalLayerAnnotation from './diagrams/VerticalLayerAnnotation.html';
-import AllLayerComparison from './diagrams/AllLayerComparison.html';
+// import AllLayerComparison from './diagrams/AllLayerComparison.html';
 import Focus1 from './diagrams/Focus1.html';
 import Focus2 from './diagrams/Focus2.html';
 import Focus3 from './diagrams/Focus3.html';
@@ -538,8 +540,9 @@ new LazyComponent({
 	store: store,
 	data: {
 		aspectRatio: 2,
-		component: AllLayerComparison,
+		component: App,
 		componentData: {
+			showClassFilter: false,
 		}
 	}
 });
@@ -587,7 +590,10 @@ new LazyComponent({
 	store: store,
 	data: {
 		aspectRatio: 2,
-		component: FocusPlayground,
+		component: App,
+		componentData: {
+			classHeatmap: 235
+		}
 	}
 });
 

@@ -2,8 +2,8 @@
 {#each layers as layer, i}
   <label class="layer {layerName == layer ? 'selected' : ''}">
     <input type=radio bind:group=layerName value={layer}>
-    <span>{layer}</span>
     <AtlasThumbnail layerName={layer} {classHeatmap}/>
+    <span>{layer}</span>
   </label>
 {/each}
 </div>
@@ -46,6 +46,9 @@
 .layer input {
   position: absolute;
   opacity: 0;
+}
+.layer span {
+  margin-left: 8px;
 }
 .layer.selected {
   border-left-color: rgb(255, 130, 0);

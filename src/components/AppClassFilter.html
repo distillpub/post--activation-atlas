@@ -1,7 +1,8 @@
 <div class="chooser">
   {#each labels as l}
     <label class="{classHeatmap === l.i ? 'selected' : ''}">
-      <input type=radio bind:group=classHeatmap value={l.i}>{l.label} ({l.i})
+      <input type=radio bind:group=classHeatmap value={l.i}>
+      <span>{l.label} ({l.i})</span>
     </label>
   {/each}
 </div>
