@@ -684,7 +684,9 @@ new LazyComponent({
 new App({
 	target: document.querySelector("#focus-playground"),
 	store: store,
-	classHeatmap: 235
+	data: {
+		classHeatmap: 235
+	}
 });
 
 

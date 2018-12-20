@@ -6612,14 +6612,14 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.layer;
 				input.value = input.__value;
-				input.className = "svelte-13fs6oh";
+				input.className = "svelte-hzvbih";
 				addLoc(input, file$h, 3, 4, 114);
 				setStyle(div, "width", "50px");
 				setStyle(div, "position", "relative");
 				addLoc(div, file$h, 4, 4, 172);
-				span.className = "svelte-13fs6oh";
+				span.className = "svelte-hzvbih";
 				addLoc(span, file$h, 7, 4, 291);
-				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-13fs6oh";
+				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-hzvbih";
 				addLoc(label, file$h, 2, 2, 49);
 			},
 
@@ -6655,7 +6655,7 @@
 					setData(text2, text2_value);
 				}
 
-				if ((changed.layerName || changed.layers) && label_class_value !== (label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-13fs6oh")) {
+				if ((changed.layerName || changed.layers) && label_class_value !== (label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-hzvbih")) {
 					label.className = label_class_value;
 				}
 			},
@@ -6747,7 +6747,7 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "chooser svelte-16t4ba7";
+				div.className = "chooser svelte-h2ed57";
 				addLoc(div, file$i, 0, 0, 0);
 			},
 
@@ -6813,11 +6813,11 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.l.i;
 				input.value = input.__value;
-				input.className = "svelte-16t4ba7";
+				input.className = "svelte-h2ed57";
 				addLoc(input, file$i, 3, 6, 111);
 				span.title = span_title_value = ctx.l.i;
 				addLoc(span, file$i, 4, 6, 172);
-				label.className = label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-16t4ba7";
+				label.className = label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-h2ed57";
 				addLoc(label, file$i, 2, 4, 48);
 			},
 
@@ -6848,7 +6848,7 @@
 					span.title = span_title_value;
 				}
 
-				if ((changed.classHeatmap || changed.labels) && label_class_value !== (label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-16t4ba7")) {
+				if ((changed.classHeatmap || changed.labels) && label_class_value !== (label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-h2ed57")) {
 					label.className = label_class_value;
 				}
 			},
@@ -19438,7 +19438,9 @@
 	new App({
 		target: document.querySelector("#focus-playground"),
 		store: store,
-		classHeatmap: 235
+		data: {
+			classHeatmap: 235
+		}
 	});
 
 
