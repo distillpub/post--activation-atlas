@@ -16109,13 +16109,13 @@
 				text7 = createText("In ");
 				text8 = createText(ctx.layerName);
 				text9 = createText(" we see we see the attribution toward \"fireboat\" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.");
-				div0.className = "atlas svelte-1luklhy";
+				div0.className = "atlas svelte-1eum147";
 				addLoc(div0, file$G, 1, 2, 22);
-				div1.className = "figcaption svelte-1luklhy";
+				div1.className = "figcaption svelte-1eum147";
 				addLoc(div1, file$G, 106, 4, 2858);
-				div2.className = "details svelte-1luklhy";
+				div2.className = "details svelte-1eum147";
 				addLoc(div2, file$G, 42, 2, 945);
-				div3.className = "focus svelte-1luklhy";
+				div3.className = "focus svelte-1eum147";
 				addLoc(div3, file$G, 0, 0, 0);
 			},
 
@@ -16994,19 +16994,19 @@
 				atlasreticle6._fragment.c();
 				text12 = createText("\n      ");
 				atlasreticle7._fragment.c();
-				h40.className = "svelte-7wmkxl";
+				h40.className = "svelte-1hajugf";
 				addLoc(h40, file$H, 3, 4, 69);
-				div0.className = "atlas svelte-7wmkxl";
+				div0.className = "atlas svelte-1hajugf";
 				addLoc(div0, file$H, 4, 4, 107);
-				div1.className = "column svelte-7wmkxl";
+				div1.className = "column svelte-1hajugf";
 				addLoc(div1, file$H, 1, 2, 22);
-				h41.className = "svelte-7wmkxl";
+				h41.className = "svelte-1hajugf";
 				addLoc(h41, file$H, 57, 4, 1508);
-				div2.className = "atlas svelte-7wmkxl";
+				div2.className = "atlas svelte-1hajugf";
 				addLoc(div2, file$H, 58, 4, 1547);
-				div3.className = "column svelte-7wmkxl";
+				div3.className = "column svelte-1hajugf";
 				addLoc(div3, file$H, 55, 2, 1460);
-				div4.className = "focus svelte-7wmkxl";
+				div4.className = "focus svelte-1hajugf";
 				addLoc(div4, file$H, 0, 0, 0);
 			},
 
