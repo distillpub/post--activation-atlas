@@ -6789,7 +6789,7 @@
 
 	// (2:2) {#each labels as l}
 	function create_each_block$2(component, ctx) {
-		var label, input, input_value_value, text0, span, text1_value = ctx.l.label, text1, text2, text3_value = ctx.l.i, text3, text4, text5, label_class_value;
+		var label, input, input_value_value, text0, span, text1_value = ctx.l.label, text1, span_title_value, text2, label_class_value;
 
 		function input_change_handler() {
 			component.set({ classHeatmap: input.__value });
@@ -6802,10 +6802,7 @@
 				text0 = createText("\n      ");
 				span = createElement("span");
 				text1 = createText(text1_value);
-				text2 = createText(" (");
-				text3 = createText(text3_value);
-				text4 = createText(")");
-				text5 = createText("\n    ");
+				text2 = createText("\n    ");
 				component._bindingGroups[0].push(input);
 				addListener(input, "change", input_change_handler);
 				setAttribute(input, "type", "radio");
@@ -6813,6 +6810,7 @@
 				input.value = input.__value;
 				input.className = "svelte-16t4ba7";
 				addLoc(input, file$i, 3, 6, 111);
+				span.title = span_title_value = ctx.l.i;
 				addLoc(span, file$i, 4, 6, 172);
 				label.className = label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-16t4ba7";
 				addLoc(label, file$i, 2, 4, 48);
@@ -6827,10 +6825,7 @@
 				append(label, text0);
 				append(label, span);
 				append(span, text1);
-				append(span, text2);
-				append(span, text3);
-				append(span, text4);
-				append(label, text5);
+				append(label, text2);
 			},
 
 			p: function update(changed, ctx) {
@@ -6844,8 +6839,8 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.labels) && text3_value !== (text3_value = ctx.l.i)) {
-					setData(text3, text3_value);
+				if ((changed.labels) && span_title_value !== (span_title_value = ctx.l.i)) {
+					span.title = span_title_value;
 				}
 
 				if ((changed.classHeatmap || changed.labels) && label_class_value !== (label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-16t4ba7")) {
