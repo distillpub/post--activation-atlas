@@ -15081,15 +15081,15 @@
 				text2 = createText("\n    ");
 				div2 = createElement("div");
 				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
-				div0.className = "atlas svelte-xuwjkq";
+				div0.className = "atlas svelte-1loof33";
 				addLoc(div0, file$E, 1, 2, 22);
-				div1.className = "detail svelte-xuwjkq";
+				div1.className = "detail svelte-1loof33";
 				addLoc(div1, file$E, 22, 4, 409);
-				div2.className = "figcaption svelte-xuwjkq";
+				div2.className = "figcaption svelte-1loof33";
 				addLoc(div2, file$E, 43, 4, 894);
 				div3.className = "details";
 				addLoc(div3, file$E, 21, 2, 383);
-				div4.className = "focus svelte-xuwjkq";
+				div4.className = "focus svelte-1loof33";
 				addLoc(div4, file$E, 0, 0, 0);
 			},
 
@@ -18210,30 +18210,30 @@
 				div7 = createElement("div");
 				div7.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
 				setStyle(h40, "width", "" + ctx.loupeSize + "px");
-				h40.className = "svelte-1telcb5";
+				h40.className = "svelte-13ehk1x";
 				addLoc(h40, file$I, 2, 4, 46);
 				setStyle(h41, "width", "" + ctx.loupeSize + "px");
-				h41.className = "svelte-1telcb5";
+				h41.className = "svelte-13ehk1x";
 				addLoc(h41, file$I, 3, 4, 96);
-				div0.className = "row svelte-1telcb5";
+				div0.className = "row svelte-13ehk1x";
 				addLoc(div0, file$I, 1, 2, 24);
 				div1.className = "figcaption";
 				addLoc(div1, file$I, 49, 4, 1565);
-				div2.className = "row svelte-1telcb5";
+				div2.className = "row svelte-13ehk1x";
 				addLoc(div2, file$I, 6, 2, 169);
 				div3.className = "figcaption";
 				addLoc(div3, file$I, 95, 4, 3059);
-				div4.className = "row svelte-1telcb5";
+				div4.className = "row svelte-13ehk1x";
 				addLoc(div4, file$I, 54, 2, 1729);
 				div5.className = "figcaption";
 				addLoc(div5, file$I, 143, 4, 4649);
-				div6.className = "row svelte-1telcb5";
+				div6.className = "row svelte-13ehk1x";
 				addLoc(div6, file$I, 100, 2, 3253);
 				div7.className = "figcaption";
 				addLoc(div7, file$I, 191, 4, 6244);
-				div8.className = "row svelte-1telcb5";
+				div8.className = "row svelte-13ehk1x";
 				addLoc(div8, file$I, 148, 2, 4848);
-				div9.className = "details svelte-1telcb5";
+				div9.className = "details svelte-13ehk1x";
 				addLoc(div9, file$I, 0, 0, 0);
 			},
 
