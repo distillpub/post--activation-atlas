@@ -6580,7 +6580,7 @@
 
 	// (2:0) {#each layers as layer, i}
 	function create_each_block$1(component, ctx) {
-		var label, input, input_value_value, text0, text1, span, text2_value = ctx.layer, text2, text3, label_class_value;
+		var label, input, input_value_value, text0, div, text1, span, text2_value = ctx.layer, text2, text3, label_class_value;
 
 		function input_change_handler() {
 			component.set({ layerName: input.__value });
@@ -6601,6 +6601,7 @@
 				label = createElement("label");
 				input = createElement("input");
 				text0 = createText("\n    ");
+				div = createElement("div");
 				atlasthumbnail._fragment.c();
 				text1 = createText("\n    ");
 				span = createElement("span");
@@ -6613,8 +6614,11 @@
 				input.value = input.__value;
 				input.className = "svelte-13fs6oh";
 				addLoc(input, file$h, 3, 4, 114);
+				setStyle(div, "width", "50px");
+				setStyle(div, "position", "relative");
+				addLoc(div, file$h, 4, 4, 172);
 				span.className = "svelte-13fs6oh";
-				addLoc(span, file$h, 5, 4, 227);
+				addLoc(span, file$h, 7, 4, 291);
 				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-13fs6oh";
 				addLoc(label, file$h, 2, 2, 49);
 			},
@@ -6626,7 +6630,8 @@
 				input.checked = input.__value === ctx.layerName;
 
 				append(label, text0);
-				atlasthumbnail._mount(label, null);
+				append(label, div);
+				atlasthumbnail._mount(div, null);
 				append(label, text1);
 				append(label, span);
 				append(span, text2);
@@ -7006,7 +7011,7 @@
 	const file$k = "src/components/App.html";
 
 	function create_main_fragment$l(component, ctx) {
-		var div19, div1, h30, text1, div0, appclassfilter_updating = {}, text2, div3, h31, text4, div2, applayerchooser_updating = {}, text5, div8, div7, atlas_updating = {}, text6, div6, div4, appminimap_updating = {}, text7, div5, text8, text9, text10, div18, h32, text12, div17, div12, div9, text13, raw0_value = format_1(ctx.gcx), raw0_before, text14, div10, text15, raw1_value = format_1(ctx.gcy), raw1_before, text16, div11, text17, raw2_value = format_1(ctx.scale), raw2_before, text18, div13, h40, text20, label0, input0, text21, text22, div14, h41, text24, label1, input1, text25, text26, label2, input2, text27, text28, label3, input3, text29, text30, label4, input4, text31, text32, label5, input5, text33, text34, div15, h42, text35, text36, text37, input6, text38, br0, text39, h43, text40, text41, text42, input7, text43, div16, h44, text44, text45, text46, input8, text47, br1, text48, h45, text50, br2, text51, label6, input9, text52, text53, br3, text54, label7, input10, text55;
+		var div19, div1, h30, text1, div0, appclassfilter_updating = {}, text2, div3, h31, text4, div2, applayerchooser_updating = {}, text5, div8, div7, atlas_updating = {}, text6, div6, div4, appminimap_updating = {}, text7, div5, text8, text9, text10, div18, h32, text12, div17, div12, div9, text13, raw0_value = format_1(ctx.gcx), raw0_before, text14, div10, text15, raw1_value = format_1(ctx.gcy), raw1_before, text16, div11, text17, raw2_value = format_1(ctx.scale), raw2_before, text18, div13, h40, text20, label0, input0, text21, text22, div14, h41, text24, label1, input1, text25, text26, label2, input2, text27, text28, label3, input3, text29, text30, label4, input4, text31, text32, label5, input5, text33, text34, div15, h42, text35, raw3_before, text36, input6, text37, br0, text38, h43, text39, raw4_before, text40, input7, text41, div16, h44, text42, raw5_before, text43, input8, text44, br1, text45, h45, text47, br2, text48, label6, input9, text49, text50, br3, text51, label7, input10, text52;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -7438,41 +7443,41 @@
 				div15 = createElement("div");
 				h42 = createElement("h4");
 				text35 = createText("icon density: ");
-				text36 = createText(ctx.iconScaleFactor);
-				text37 = createText("\n          ");
+				raw3_before = createElement('noscript');
+				text36 = createText("\n          ");
 				input6 = createElement("input");
-				text38 = createText("\n          ");
+				text37 = createText("\n          ");
 				br0 = createElement("br");
-				text39 = createText("\n          ");
+				text38 = createText("\n          ");
 				h43 = createElement("h4");
-				text40 = createText("icon crop: ");
-				text41 = createText(ctx.iconCrop);
-				text42 = createText("\n          ");
+				text39 = createText("icon crop: ");
+				raw4_before = createElement('noscript');
+				text40 = createText("\n          ");
 				input7 = createElement("input");
-				text43 = createText("\n        ");
+				text41 = createText("\n        ");
 				div16 = createElement("div");
 				h44 = createElement("h4");
-				text44 = createText("class filter intensity: ");
-				text45 = createText(ctx.classHeatmapMultiplier);
-				text46 = createText("\n          ");
+				text42 = createText("class filter intensity: ");
+				raw5_before = createElement('noscript');
+				text43 = createText("\n          ");
 				input8 = createElement("input");
-				text47 = createText("\n          ");
+				text44 = createText("\n          ");
 				br1 = createElement("br");
-				text48 = createText("\n          ");
+				text45 = createText("\n          ");
 				h45 = createElement("h4");
 				h45.textContent = "class filter positive/negative";
-				text50 = createText("\n          ");
+				text47 = createText("\n          ");
 				br2 = createElement("br");
-				text51 = createText("\n          ");
+				text48 = createText("\n          ");
 				label6 = createElement("label");
 				input9 = createElement("input");
-				text52 = createText(" positive influence");
-				text53 = createText("\n          ");
+				text49 = createText(" positive influence");
+				text50 = createText("\n          ");
 				br3 = createElement("br");
-				text54 = createText("\n          ");
+				text51 = createText("\n          ");
 				label7 = createElement("label");
 				input10 = createElement("input");
-				text55 = createText(" negative influence");
+				text52 = createText(" negative influence");
 				panel2._fragment.c();
 				setAttribute(h30, "slot", "head");
 				h30.className = "svelte-z55voj";
@@ -7567,48 +7572,48 @@
 				input6.min = 0.2;
 				input6.max = 10;
 				input6.step = 0.1;
-				addLoc(input6, file$k, 90, 10, 2934);
-				addLoc(br0, file$k, 91, 10, 3022);
+				addLoc(input6, file$k, 90, 10, 2940);
+				addLoc(br0, file$k, 91, 10, 3028);
 				h43.className = "svelte-z55voj";
-				addLoc(h43, file$k, 92, 10, 3037);
+				addLoc(h43, file$k, 92, 10, 3043);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
 				setAttribute(input7, "type", "range");
 				input7.min = 0;
 				input7.max = 0.5;
 				input7.step = 0.01;
-				addLoc(input7, file$k, 93, 10, 3078);
+				addLoc(input7, file$k, 93, 10, 3090);
 				addLoc(div15, file$k, 88, 8, 2867);
 				h44.className = "svelte-z55voj";
-				addLoc(h44, file$k, 96, 10, 3244);
+				addLoc(h44, file$k, 96, 10, 3256);
 				addListener(input8, "change", input8_change_input_handler);
 				addListener(input8, "input", input8_change_input_handler);
 				setAttribute(input8, "type", "range");
 				input8.min = "0.5";
 				input8.max = "2";
 				input8.step = "0.1";
-				addLoc(input8, file$k, 97, 10, 3312);
-				addLoc(br1, file$k, 98, 10, 3400);
+				addLoc(input8, file$k, 97, 10, 3330);
+				addLoc(br1, file$k, 98, 10, 3418);
 				h45.className = "svelte-z55voj";
-				addLoc(h45, file$k, 99, 10, 3415);
-				addLoc(br2, file$k, 100, 10, 3465);
+				addLoc(h45, file$k, 99, 10, 3433);
+				addLoc(br2, file$k, 100, 10, 3483);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$k, 101, 17, 3487);
-				addLoc(label6, file$k, 101, 10, 3480);
-				addLoc(br3, file$k, 102, 10, 3585);
+				addLoc(input9, file$k, 101, 17, 3505);
+				addLoc(label6, file$k, 101, 10, 3498);
+				addLoc(br3, file$k, 102, 10, 3603);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$k, 103, 17, 3607);
-				addLoc(label7, file$k, 103, 10, 3600);
+				addLoc(input10, file$k, 103, 17, 3625);
+				addLoc(label7, file$k, 103, 10, 3618);
 				setStyle(div16, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div16, file$k, 95, 8, 3172);
+				addLoc(div16, file$k, 95, 8, 3184);
 				setAttribute(div17, "slot", "body");
 				div17.className = "options-body svelte-z55voj";
 				addLoc(div17, file$k, 69, 6, 2031);
@@ -7724,55 +7729,58 @@
 				append(div17, div15);
 				append(div15, h42);
 				append(h42, text35);
-				append(h42, text36);
-				append(div15, text37);
+				append(h42, raw3_before);
+				raw3_before.insertAdjacentHTML("afterend", ctx.iconScaleFactor);
+				append(div15, text36);
 				append(div15, input6);
 
 				input6.value = ctx.iconScaleFactor;
 
-				append(div15, text38);
+				append(div15, text37);
 				append(div15, br0);
-				append(div15, text39);
+				append(div15, text38);
 				append(div15, h43);
-				append(h43, text40);
-				append(h43, text41);
-				append(div15, text42);
+				append(h43, text39);
+				append(h43, raw4_before);
+				raw4_before.insertAdjacentHTML("afterend", ctx.iconCrop);
+				append(div15, text40);
 				append(div15, input7);
 
 				input7.value = ctx.iconCrop;
 
-				append(div17, text43);
+				append(div17, text41);
 				append(div17, div16);
 				append(div16, h44);
-				append(h44, text44);
-				append(h44, text45);
-				append(div16, text46);
+				append(h44, text42);
+				append(h44, raw5_before);
+				raw5_before.insertAdjacentHTML("afterend", ctx.classHeatmapMultiplier);
+				append(div16, text43);
 				append(div16, input8);
 
 				input8.value = ctx.classHeatmapMultiplier;
 
-				append(div16, text47);
+				append(div16, text44);
 				append(div16, br1);
-				append(div16, text48);
+				append(div16, text45);
 				append(div16, h45);
-				append(div16, text50);
+				append(div16, text47);
 				append(div16, br2);
-				append(div16, text51);
+				append(div16, text48);
 				append(div16, label6);
 				append(label6, input9);
 
 				input9.checked = input9.__value === ctx.classHeatmapPositive;
 
-				append(label6, text52);
-				append(div16, text53);
+				append(label6, text49);
+				append(div16, text50);
 				append(div16, br3);
-				append(div16, text54);
+				append(div16, text51);
 				append(div16, label7);
 				append(label7, input10);
 
 				input10.checked = input10.__value === ctx.classHeatmapPositive;
 
-				append(label7, text55);
+				append(label7, text52);
 				panel2._mount(div18, null);
 			},
 
@@ -7928,17 +7936,20 @@
 				if (changed.gridSize) input4.checked = input4.__value === ctx.gridSize;
 				if (changed.gridSize) input5.checked = input5.__value === ctx.gridSize;
 				if (changed.iconScaleFactor) {
-					setData(text36, ctx.iconScaleFactor);
+					detachAfter(raw3_before);
+					raw3_before.insertAdjacentHTML("afterend", ctx.iconScaleFactor);
 				}
 
 				if (changed.iconScaleFactor) input6.value = ctx.iconScaleFactor;
 				if (changed.iconCrop) {
-					setData(text41, ctx.iconCrop);
+					detachAfter(raw4_before);
+					raw4_before.insertAdjacentHTML("afterend", ctx.iconCrop);
 				}
 
 				if (changed.iconCrop) input7.value = ctx.iconCrop;
 				if (changed.classHeatmapMultiplier) {
-					setData(text45, ctx.classHeatmapMultiplier);
+					detachAfter(raw5_before);
+					raw5_before.insertAdjacentHTML("afterend", ctx.classHeatmapMultiplier);
 				}
 
 				if (changed.classHeatmapMultiplier) input8.value = ctx.classHeatmapMultiplier;

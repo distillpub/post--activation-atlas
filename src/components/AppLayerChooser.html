@@ -2,7 +2,9 @@
 {#each layers as layer, i}
   <label class="layer {layerName == layer ? 'selected' : ''}">
     <input type=radio bind:group=layerName value={layer}>
-    <AtlasThumbnail layerName={layer} {classHeatmap}/>
+    <div style="width: 50px; position: relative;">
+      <AtlasThumbnail layerName={layer} {classHeatmap}/>
+    </div>
     <span>{layer}</span>
   </label>
 {/each}

@@ -87,14 +87,14 @@
           <label><input type=radio bind:group=gridSize value={4}> 320x320</label>
         </div>
         <div>
-          <h4>icon density: {iconScaleFactor}</h4>
+          <h4>icon density: {@html iconScaleFactor}</h4>
           <input type="range" min={0.2} max={10} step={0.1} bind:value=iconScaleFactor>
           <br>
-          <h4>icon crop: {iconCrop}</h4>
+          <h4>icon crop: {@html iconCrop}</h4>
           <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
         </div>
         <div style="display: {classHeatmap > -1 ? 'block' : 'none'}">
-          <h4>class filter intensity: {classHeatmapMultiplier}</h4>
+          <h4>class filter intensity: {@html classHeatmapMultiplier}</h4>
           <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
           <br>
           <h4>class filter positive/negative</h4>
