@@ -6944,11 +6944,11 @@
 				div0 = createElement("div");
 				text = createText("\n  ");
 				div1 = createElement("div");
-				div0.className = "head svelte-m9gyp6";
+				div0.className = "head svelte-l56anp";
 				addLoc(div0, file$i, 1, 2, 21);
-				div1.className = "body svelte-m9gyp6";
+				div1.className = "body svelte-l56anp";
 				addLoc(div1, file$i, 4, 2, 81);
-				div2.className = "root svelte-m9gyp6";
+				div2.className = "root svelte-l56anp";
 				addLoc(div2, file$i, 0, 0, 0);
 			},
 
@@ -7041,7 +7041,7 @@
 	const file$j = "src/components/App.html";
 
 	function create_main_fragment$k(component, ctx) {
-		var div23, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div8, div7, atlas_updating = {}, text6, div6, div4, appminimap_updating = {}, text7, div5, text8, text9, text10, div22, h22, text12, div21, div12, div9, text13, raw0_value = format_1(ctx.gcx), raw0_before, text14, div10, text15, raw1_value = format_1(ctx.gcy), raw1_before, text16, div11, text17, raw2_value = format_1(ctx.scale), raw2_before, text18, div13, h30, text20, label0, input0, text21, text22, div14, h31, text24, label1, input1, text25, text26, label2, input2, text27, text28, label3, input3, text29, text30, label4, input4, text31, text32, label5, input5, text33, text34, div17, h32, text36, div15, text37, raw3_before, text38, input6, text39, br0, text40, div16, text41, raw4_before, text42, input7, text43, div20, h33, text45, div18, text46, raw5_before, text47, input8, text48, br1, text49, div19, text51, br2, text52, label6, input9, text53, text54, br3, text55, label7, input10, text56;
+		var div23, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div8, div7, atlas_updating = {}, text6, div6, div4, appminimap_updating = {}, text7, div5, text8, text9, text10, div22, h22, text12, div21, div12, div9, text13, raw0_value = format_1(ctx.gcx), raw0_before, text14, div10, text15, raw1_value = format_1(ctx.gcy), raw1_before, text16, div11, text17, raw2_value = format_1(ctx.scale), raw2_before, text18, div13, h30, text20, label0, input0, text21, text22, div14, h31, text24, label1, input1, text25, text26, label2, input2, text27, text28, label3, input3, text29, text30, label4, input4, text31, text32, label5, input5, text33, text34, div17, h32, text36, div15, text37, raw3_before, text38, input6, text39, br, text40, div16, text41, raw4_before, text42, input7, text43, div20, h33, text45, div18, text46, raw5_before, text47, input8, text48, div19, text50, label6, input9, text51, text52, label7, input10, text53;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -7480,7 +7480,7 @@
 				text38 = createText("\n          ");
 				input6 = createElement("input");
 				text39 = createText("\n          ");
-				br0 = createElement("br");
+				br = createElement("br");
 				text40 = createText("\n          ");
 				div16 = createElement("div");
 				text41 = createText("crop: ");
@@ -7498,47 +7498,41 @@
 				text47 = createText("\n          ");
 				input8 = createElement("input");
 				text48 = createText("\n          ");
-				br1 = createElement("br");
-				text49 = createText("\n          ");
 				div19 = createElement("div");
 				div19.textContent = "Positive or negative";
-				text51 = createText("\n          ");
-				br2 = createElement("br");
-				text52 = createText("\n          ");
+				text50 = createText("\n          ");
 				label6 = createElement("label");
 				input9 = createElement("input");
-				text53 = createText(" positive influence");
-				text54 = createText("\n          ");
-				br3 = createElement("br");
-				text55 = createText("\n          ");
+				text51 = createText(" positive influence");
+				text52 = createText("\n          ");
 				label7 = createElement("label");
 				input10 = createElement("input");
-				text56 = createText(" negative influence");
+				text53 = createText(" negative influence");
 				panel2._fragment.c();
 				setAttribute(h20, "slot", "head");
 				addLoc(h20, file$j, 3, 8, 126);
 				setAttribute(div0, "slot", "body");
 				addLoc(div0, file$j, 4, 8, 168);
-				div1.className = "filter svelte-ctbvs";
+				div1.className = "filter svelte-1k2bfs8";
 				setStyle(div1, "display", (ctx.showClassFilter ? 'block' : 'none'));
 				addLoc(div1, file$j, 1, 4, 28);
 				setAttribute(h21, "slot", "head");
 				addLoc(h21, file$j, 13, 8, 398);
 				setAttribute(div2, "slot", "body");
 				addLoc(div2, file$j, 14, 8, 433);
-				div3.className = "stack svelte-ctbvs";
+				div3.className = "stack svelte-1k2bfs8";
 				setStyle(div3, "display", (ctx.showLayerChooser ? 'block' : 'none'));
 				addLoc(div3, file$j, 11, 4, 300);
-				div4.className = "map svelte-ctbvs";
+				div4.className = "map svelte-1k2bfs8";
 				setStyle(div4, "display", (ctx.scale > 1.0 ? 'block' : 'none'));
 				addLoc(div4, file$j, 46, 10, 1198);
-				div5.className = "buttons svelte-ctbvs";
+				div5.className = "buttons svelte-1k2bfs8";
 				addLoc(div5, file$j, 58, 10, 1577);
-				div6.className = "svelte-ctbvs svelte-ref-controls";
+				div6.className = "svelte-1k2bfs8 svelte-ref-controls";
 				addLoc(div6, file$j, 45, 8, 1169);
-				div7.className = "atlas svelte-ctbvs";
+				div7.className = "atlas svelte-1k2bfs8";
 				addLoc(div7, file$j, 23, 4, 611);
-				div8.className = "main svelte-ctbvs";
+				div8.className = "main svelte-1k2bfs8";
 				addLoc(div8, file$j, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
 				addLoc(h22, file$j, 68, 6, 1996);
@@ -7550,6 +7544,7 @@
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
 				addLoc(input0, file$j, 78, 17, 2298);
+				label0.className = "svelte-1k2bfs8";
 				addLoc(label0, file$j, 78, 10, 2291);
 				addLoc(div13, file$j, 76, 8, 2246);
 				addLoc(h31, file$j, 81, 10, 2421);
@@ -7559,7 +7554,7 @@
 				input1.__value = 0;
 				input1.value = input1.__value;
 				addLoc(input1, file$j, 82, 17, 2457);
-				label1.className = "svelte-ctbvs";
+				label1.className = "svelte-1k2bfs8";
 				addLoc(label1, file$j, 82, 10, 2450);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
@@ -7567,7 +7562,7 @@
 				input2.__value = 1;
 				input2.value = input2.__value;
 				addLoc(input2, file$j, 83, 17, 2537);
-				label2.className = "svelte-ctbvs";
+				label2.className = "svelte-1k2bfs8";
 				addLoc(label2, file$j, 83, 10, 2530);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
@@ -7575,7 +7570,7 @@
 				input3.__value = 2;
 				input3.value = input3.__value;
 				addLoc(input3, file$j, 84, 17, 2617);
-				label3.className = "svelte-ctbvs";
+				label3.className = "svelte-1k2bfs8";
 				addLoc(label3, file$j, 84, 10, 2610);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
@@ -7583,7 +7578,7 @@
 				input4.__value = 3;
 				input4.value = input4.__value;
 				addLoc(input4, file$j, 85, 17, 2697);
-				label4.className = "svelte-ctbvs";
+				label4.className = "svelte-1k2bfs8";
 				addLoc(label4, file$j, 85, 10, 2690);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
@@ -7591,9 +7586,9 @@
 				input5.__value = 4;
 				input5.value = input5.__value;
 				addLoc(input5, file$j, 86, 17, 2779);
-				label5.className = "svelte-ctbvs";
+				label5.className = "svelte-1k2bfs8";
 				addLoc(label5, file$j, 86, 10, 2772);
-				div14.className = "grid-size svelte-ctbvs";
+				div14.className = "grid-size";
 				addLoc(div14, file$j, 80, 8, 2387);
 				addLoc(h32, file$j, 89, 10, 2883);
 				addLoc(div15, file$j, 90, 10, 2908);
@@ -7604,7 +7599,7 @@
 				input6.max = 10;
 				input6.step = 0.1;
 				addLoc(input6, file$j, 91, 10, 2962);
-				addLoc(br0, file$j, 92, 10, 3050);
+				addLoc(br, file$j, 92, 10, 3050);
 				addLoc(div16, file$j, 93, 10, 3065);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
@@ -7623,32 +7618,31 @@
 				input8.max = "2";
 				input8.step = "0.1";
 				addLoc(input8, file$j, 99, 10, 3370);
-				addLoc(br1, file$j, 100, 10, 3458);
-				addLoc(div19, file$j, 101, 10, 3473);
-				addLoc(br2, file$j, 102, 10, 3515);
+				addLoc(div19, file$j, 100, 10, 3458);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$j, 103, 17, 3537);
-				addLoc(label6, file$j, 103, 10, 3530);
-				addLoc(br3, file$j, 104, 10, 3635);
+				addLoc(input9, file$j, 101, 17, 3507);
+				label6.className = "svelte-1k2bfs8";
+				addLoc(label6, file$j, 101, 10, 3500);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$j, 105, 17, 3657);
-				addLoc(label7, file$j, 105, 10, 3650);
+				addLoc(input10, file$j, 102, 17, 3612);
+				label7.className = "svelte-1k2bfs8";
+				addLoc(label7, file$j, 102, 10, 3605);
 				setStyle(div20, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				addLoc(div20, file$j, 96, 8, 3203);
 				setAttribute(div21, "slot", "body");
-				div21.className = "options-body svelte-ctbvs";
+				div21.className = "options-body svelte-1k2bfs8";
 				addLoc(div21, file$j, 69, 6, 2031);
-				div22.className = "options svelte-ctbvs";
+				div22.className = "options svelte-1k2bfs8";
 				addLoc(div22, file$j, 66, 2, 1956);
-				div23.className = "container svelte-ctbvs";
+				div23.className = "container svelte-1k2bfs8";
 				addLoc(div23, file$j, 0, 0, 0);
 			},
 
@@ -7768,7 +7762,7 @@
 				input6.value = ctx.iconScaleFactor;
 
 				append(div17, text39);
-				append(div17, br0);
+				append(div17, br);
 				append(div17, text40);
 				append(div17, div16);
 				append(div16, text41);
@@ -7793,27 +7787,21 @@
 				input8.value = ctx.classHeatmapMultiplier;
 
 				append(div20, text48);
-				append(div20, br1);
-				append(div20, text49);
 				append(div20, div19);
-				append(div20, text51);
-				append(div20, br2);
-				append(div20, text52);
+				append(div20, text50);
 				append(div20, label6);
 				append(label6, input9);
 
 				input9.checked = input9.__value === ctx.classHeatmapPositive;
 
-				append(label6, text53);
-				append(div20, text54);
-				append(div20, br3);
-				append(div20, text55);
+				append(label6, text51);
+				append(div20, text52);
 				append(div20, label7);
 				append(label7, input10);
 
 				input10.checked = input10.__value === ctx.classHeatmapPositive;
 
-				append(label7, text56);
+				append(label7, text53);
 				panel2._mount(div22, null);
 			},
 

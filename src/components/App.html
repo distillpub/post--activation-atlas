@@ -98,11 +98,8 @@
           <h3>Class filter</h3>
           <div>Intensity: {@html classHeatmapMultiplier}</div>
           <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
-          <br>
           <div>Positive or negative</div>
-          <br>
           <label><input type=radio bind:group=classHeatmapPositive value={1}> positive influence</label>
-          <br>
           <label><input type=radio bind:group=classHeatmapPositive value={-1}> negative influence</label>
         </div>
       </div>
@@ -205,7 +202,7 @@ export default {
     grid-gap: 4px;
 
   }
-  .grid-size label {
+  .options label {
     display: block;
   }
   .atlas {
