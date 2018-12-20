@@ -6,8 +6,9 @@
       {classHeatmap}
       gridSize={1} 
       iconCrop={0.3} 
-      scaleCountFactor={200} 
+      {scaleCountFactor} 
       alphaAttributionFactor={10}
+      backgroundColor="#f0f0f0"
     />
     <AtlasReticle
       bind:aspectRatio
@@ -25,6 +26,11 @@
       Atlas: "../Atlas.html",
       AtlasReticle: "../AtlasReticle.html",
       Placeholder: "../library/Placeholder.html"
+    },
+    data() {
+      return {
+        scaleCountFactor: 200
+      }
     }
   }
 </script>
@@ -33,7 +39,6 @@
 ref:root {
   position: relative;
   overflow: hidden;
-  padding: 10px;
   box-sizing: border-box;
 }
 </style>

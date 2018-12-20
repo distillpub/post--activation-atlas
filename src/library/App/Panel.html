@@ -1,0 +1,30 @@
+<div class="root">
+  <div class="head">
+    <slot name="head"></slot>
+  </div>
+  <div class="body">
+    <slot name="body"></slot>
+  </div>
+</div>
+
+<style>
+  .root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .head {
+    height: 60px;
+    padding: 0 16px;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+    /* box-sizing: border-box; */
+    display: flex;
+    align-items: center;
+    flex: 0 0 60px;
+  }
+  .body {
+    position: relative;
+    flex: 1;
+    overflow-y: scroll;
+  }
+</style>

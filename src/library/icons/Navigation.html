@@ -1,0 +1,27 @@
+<div style="fill: {color};">
+  <svelte:component this={Icon} />
+</div>
+
+<script>
+  import Add from "./svg/baseline-add-24px.svg";
+  import Remove from "./svg/baseline-remove-24px.svg";
+  import Home from "./svg/baseline-home-24px.svg";
+
+  export default {
+    components: {
+      
+    },
+    data() {
+      return {
+        color: "black"
+      }
+    },
+    computed: {
+      Icon: ({name}) => {
+        if (name === "home") return Home;
+        if (name === "add") return Add;
+        if (name === "remove") return Remove;
+      }
+    }
+  }
+</script>

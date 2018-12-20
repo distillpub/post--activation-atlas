@@ -1,24 +1,16 @@
 <div ref:root>
   <div>
-    <button on:click="fire('home')">Home</button> 
-    <button on:click="fire('zoomin')">Zoom In</button> 
-    <button on:click="fire('zoomout')">Zoom Out</button> 
-  </div>
-  <div>
-    <label>grid size: </label>
-    <label><input type=radio bind:group=gridSize value={0}> 20</label>
-    <label><input type=radio bind:group=gridSize value={1}> 40</label>
-    <label><input type=radio bind:group=gridSize value={2}> 80</label>
-    <label><input type=radio bind:group=gridSize value={3}> 160</label>
-    <label><input type=radio bind:group=gridSize value={4}> 320</label>
-  </div>
-  <div>
-    <label><input type=checkbox bind:checked=showLabels> labels</label>
+    <Button on:click="fire('home')">Home</Button> 
+    <Button on:click="fire('zoomin')">Zoom In</Button> 
+    <Button on:click="fire('zoomout')">Zoom Out</Button> 
   </div>
 </div>
 
 <script>
 export default {
+  components: {
+    Button: "../library/Button.html"
+  },
   data() {
     return {
       gridSize: 0,

@@ -13,7 +13,7 @@ export default {
       root: "https://storage.googleapis.com/activation-atlas/build",
       model: "inceptionv1",
       layerName: "mixed4d",
-      grid: 2,
+      grid: 1,
       layout: 0,
       gridSize: 10,
       classHeatmap: -1,
@@ -61,11 +61,11 @@ export default {
         // data[i + 3] = 255;
       // }
       for (const icon of icons) {
-        let heatmapMultiplier = 1;
+        let heatmapMultiplier = 0.5;
         if (classHeatmap > -1) {
           let ci = classesToKeep.indexOf(classHeatmap);
           let value = Math.max(0, icon.f[ci]);
-          heatmapMultiplier = Math.max(0.1, value * 20);
+          heatmapMultiplier = Math.max(0.05, value * 5);
           // console.log(ci, value)
         }
         const y = icon.x; //x,y switched on purpose 
@@ -73,7 +73,7 @@ export default {
         // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
         // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
         // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-        data[y * gridSize * 4 + x * 4 + 3] = (icon.n + 30) * heatmapMultiplier;
+        data[y * gridSize * 4 + x * 4 + 3] = icon.n * heatmapMultiplier;
       }
       
       context.putImageData(imageData, 0, 0);

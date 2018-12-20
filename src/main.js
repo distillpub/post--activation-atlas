@@ -6,7 +6,7 @@ import NotebookLink from './library/NotebookLink.html';
 
 import App from './components/App.html';
 
-import Cover from './diagrams/Cover.html';
+// import Cover from './diagrams/Cover.html';
 import Overview from './diagrams/Overview.html';
 import ModelOverview from './diagrams/ModelOverview.html';
 import GridDetail from './diagrams/GridDetail.html';
@@ -88,20 +88,96 @@ const store = new MyStore({
 			homeY: 0.333,
 			homeScale: 10
 		},
-	]
+	],
+	pois: {
+		mammals: {
+			layerName: "mixed4a",
+			gridSize: 2,
+			gcx: 0.3705,
+			gcy: 0.9475,
+			scale: 8
+		},
+		dogs: {
+			layerName: "mixed5b",
+			gridSize: 3,
+			gcx: 0.678,
+			gcy: 0.931,
+			scale: 8
+
+		},
+		curves: {
+			layerName: "mixed4b",
+			gridSize: 3,
+			gcx: 0.5947,
+			gcy: 0.3351,
+			scale: 14
+		},
+		cups: {
+			layerName: "mixed5b",
+			gridSize: 3,
+			gcx: 0.35073,
+			gcy: 0.1380,
+			scale: 10
+		},
+		patterns: {
+			layerName: "mixed4b",
+			gridSize: 3,
+			gcx: 0.91579,
+			gcy: 0.32406,
+			scale: 8
+		},
+		text: {
+			layerName: "mixed5a",
+			gridSize: 3,
+			gcx: 0.5281,
+			gcy: 0.0234,
+			scale: 19
+		},
+		fabric: {
+			layerName: "mixed4b",
+			gridSize: 3,
+			gcx: 0.4890,
+			gcy: 0.2043,
+			scale: 12
+		},
+		clothing: {
+			layerName: "mixed5a",
+			gridSize: 3,
+			gcx: 0.74955,
+			gcy: 0.5058,
+			scale: 13
+		}
+	}
 });
 
 window.store = store;
 
+// new LazyComponent({
+// 	target: document.querySelector("#cover"),
+// 	store: store,
+// 	data: {
+// 		height: 556,
+// 		component: Cover,
+// 	}
+// });
 
-new LazyComponent({
-	target: document.querySelector("#cover"),
-	store: store,
-	data: {
-		height: 556,
-		component: Cover,
-	}
+
+const cover = document.querySelector("#cover");
+cover.addEventListener("ready", e => {
+	new App({
+		target: cover,
+		store,
+		data: {
+			// showClassFilter: false,
+			layerName: "mixed4c",
+			// homeX: 0.6124999999999993,
+			// homeY: 0.2721153846153844,
+			// homeScale: 4,
+			// gridSize: 2
+		}
+	});
 });
+
 
 
 const notebookLinks = document.querySelectorAll("[data-notebook-url]");
@@ -435,14 +511,13 @@ new LazyComponent({
 		component: VerticalLayerAnnotation,
 		componentData: {
 			layerName: "mixed5b",
-			homeX: 0.8118,
-			homeY: 0.2039,
+			homeX: 0.8183,
+			homeY: 0.2047,
 			gridSize: 4,
 			homeScale: 16 * 6,
 		}
 	}
 });
-
 
 new LazyComponent({
 	target: document.querySelector("#plant-0"),
@@ -535,17 +610,38 @@ new LazyComponent({
 	}
 });
 
-new LazyComponent({
+
+let layerComparison = new App({
 	target: document.querySelector("#all-layer-comparison"),
 	store: store,
 	data: {
-		aspectRatio: 2,
-		component: App,
-		componentData: {
-			showClassFilter: false,
-		}
+		showClassFilter: false
 	}
 });
+
+// new LazyComponent({
+// 	target: document.querySelector("#all-layer-comparison"),
+// 	store: store,
+// 	data: {
+// 		aspectRatio: 2,
+// 		component: App,
+// 		componentData: {
+// 			showClassFilter: false,
+// 		}
+// 	}
+// });
+
+
+const poiLinks = document.querySelectorAll("[data-poi]");
+for (const link of poiLinks) {
+	const id = link.getAttribute("data-poi");
+	const { pois } = store.get();
+	link.addEventListener("click", e => {
+		e.preventDefault();
+		layerComparison.set({layerName: pois[id].layerName});
+		layerComparison.set(pois[id]);
+	});
+}
 
 // Focusing on a Single Classification
 
@@ -596,6 +692,7 @@ new LazyComponent({
 		}
 	}
 });
+
 
 // Further Isolating Classes
 

@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel='stylesheet' href='_generated/main.css'>
+  <script src="assets/template.v2.js"></script>
   <style>
     d-article section {
       contain: layout paint;
@@ -17,10 +19,29 @@
     .app-container {
       border-top: solid 1px rgba(0, 0, 0, 0.2);
       border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+      grid-column: screen;
+      height: 80vh; 
+      max-height: 800px;
+      position: relative;
+    }
+    .app-container > d-figure {
+      display: block;
+      max-width: 1500px;
+      margin: 0 auto;
+      height: 100%;
+      border-left: solid 1px rgba(0, 0, 0, 0.1);
+      border-right: solid 1px rgba(0, 0, 0, 0.1);
+    }
+    d-title .app-container {
+      border-bottom: none;
+    }
+    d-title {
+      padding-bottom: 0;
+    }
+    d-title figure {
+      margin-bottom: 0;
     }
   </style>
-	<link rel='stylesheet' href='_generated/main.css'>
-  <script src="assets/template.v2.js"></script>
 	<title>Activation Atlas</title>
 </head>
 
@@ -77,7 +98,9 @@
 <d-title>
   <h1 style="grid-column-end: page;">Exploring Neural Networks with Activation Atlases</h1>
   <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of the features the network has learned and what concepts it typically represents.</p>
-  <figure id="cover" style="grid-column: screen;margin: 0;"></figure>
+  <figure class="app-container">
+    <d-figure id="cover"></d-figure>
+  </figure>
 </d-title>
 
 <d-article>
@@ -221,7 +244,7 @@
   </figure>
 
 
-  <p>To start, let's compare three layers from different areas of the network to try to get a sense for the different personalities of each -- one very early layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), one layer from the middle (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), and the final layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>) before the logits. We'll focus on the areas of each layer that most contribute to the classification of "abacus".
+  <p>To start, let's compare three layers from different areas of the network to try to get a sense for the different personalities of each -- one very early layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), one layer from the middle (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), and the final layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>) before the logits. We'll focus on areas of each layer that most contribute to the classification of "library".
 
   <figure style="display: grid; grid-column: page; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
     <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed3b</h4>
@@ -277,9 +300,19 @@
 
   </figure>
 
-  <p>Below you can browse many more of the layers of InceptionV1. You can see the vague, generic <a href="#">mammalian creatures of mixed4a</a> evolve into very specific <a href="#">breeds of dogs in mixed5b</a>. Or you can compare the <a>curved edge detectors of mixed4a</a> with the <a>kitchen implements of mixed5b</a>. Mixed4b has some <a>interesting text and pattern detectors</a>, whereas mixed5a appears to use those to differentiate <a>menus from crossword puzzles from keyboards</a>. In early layers, like mixed4b, you'll see things that have similar textures near each other, like <a>drums, water bottle and spotlights.</a>. In later layers, you'll see that those things are <a>much more isolated</a>.
+  <p>Below you can browse many more of the layers of InceptionV1. You can see the vague, generic 
+  <a href="#" data-poi="mammals">mammalian creatures of mixed4a</a> evolve into very specific 
+  <a href="#" data-poi="dogs">breeds of dogs in mixed5b</a>. Or you can compare the 
+  <a href="#" data-poi="curves">curved edge detectors of mixed4a</a> with the 
+  <a href="#" data-poi="cups">bowls and cups of mixed5b</a>. Mixed4b has some 
+  <a href="#" data-poi="patterns">interesting text and pattern detectors</a>, whereas mixed5a appears to use those to differentiate 
+  <a href="#" data-poi="text">menus from crossword puzzles from rulers</a>. In early layers, like mixed4b, you'll see things that have similar textures near each other, like 
+  <a href="#" data-poi="fabric">fabrics</a>. In later layers, you'll see that those things are 
+  <a href="#" data-poi="clothing">much more differentiated</a>.
 
-  <figure id="all-layer-comparison" class="app-container" style="grid-column: screen;"></figure>
+  <figure class="app-container">
+    <d-figure id="all-layer-comparison"></d-figure>
+  </figure>
 
   <!-- <p>Center of mixed5b has low attribution, which is mostly backgrounds, possibly because it is shared by many classes thus umap puts it in the center? -->
 
@@ -328,9 +361,11 @@
     <figcaption>Images from ImageNet</figcaption>
   </figure>
 
-  <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns of any class in ImageNet through several layers of InceptionV1. You can also create your own: <span data-notebook-url=’’></span>
+  <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns many classes in ImageNet through several layers of InceptionV1. You can also create your own: <span data-notebook-url=’’></span>
 
-  <figure id="focus-playground" class="app-container" style="grid-column: screen;"></figure>
+  <figure class="app-container">
+    <d-figure id="focus-playground"></d-figure>
+  </figure>
 
 </section>
 <section class="base-grid">
@@ -471,7 +506,7 @@
 
 <!-- END DOC -->
 
-<script src="./_generated/main.js"></script>
+<script src="./_generated/main.min.js"></script>
 <!-- for modern browsers -->
 <!-- <script>
   import('./_generated/module/main.js');

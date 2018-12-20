@@ -23,9 +23,11 @@ export default [
 			format: 'iife',
 			sourcemap: true,
 		},
+		context: "window",
 		plugins: [
 			svelte({
 				dev: !production,
+				extensions: [".html", ".svelte", ".svg"],
 				css: css => {
 					css.write('public/_generated/main.css');
 				}
@@ -42,9 +44,11 @@ export default [
 			format: 'iife',
 			sourcemap: true,
 		},
+		context: "window",
 		plugins: [
 			svelte({
 				dev: !production,
+				extensions: [".html", ".svelte", ".svg"],
 				css: css => {
 					css.write('public/_generated/detail.css');
 				}

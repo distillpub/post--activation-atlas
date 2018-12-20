@@ -433,6 +433,8 @@ export default {
       const {minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
       this.clear();
+      context.imageSmoothingQuality = "low";
+      context.imageSmoothingEnabled = false;
 
       if (config && layers) {
         layers.forEach((icons, layerIndex) => {

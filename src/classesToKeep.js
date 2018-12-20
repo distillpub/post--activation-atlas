@@ -40,3 +40,9 @@ export default [
   411, //"lorikeet"
   405, //"peacock"
 ]
+
+// To add
+// 547, //abacus
+// 671, //frying pan
+// 672, //wok
+// 6, //grey whale

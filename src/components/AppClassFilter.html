@@ -25,13 +25,16 @@ export default {
         let l = inceptionLabels.inception[k];
         return {label: l, i: k};
       });
-      return [{label: "All", i: -1}].concat(out);
+      return [{label: "show all", i: -1}].concat(out);
     }
   }
 }
 </script>
 
 <style>
+  .chooser {
+    height: auto;
+  }
   .chooser label {
     position: relative;
     font-size: 10px;
