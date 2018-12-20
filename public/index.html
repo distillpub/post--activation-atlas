@@ -119,9 +119,9 @@
 
   <p>In this article we introduce <em>activation atlases</em> to this quiver of techniques. (An example is shown at the top of this article.) Broadly speaking, we use a technique similar to the one in CNN codes, but instead of showing input data, we show feature visualizations of averaged activations. By combining these two techniques, we can get the best of both worlds. We can see the forest through the eyes of the network.
 
-  <figure id="overview" style="grid-column: page;"></figure>
-
   <p>In theory, showing the feature visualizations of the <a href="https://distill.pub/2017/feature-visualization/appendix/">basis neurons</a> would give us the global view of a network that we are seeking. In practice, however, neurons are rarely used by the network in isolation, and it may be difficult to understand them that way. As an analogy, while the 26 letters in the alphabet provide a basis for English, seeing how letters are commonly combined to make words gives far more insight into the concepts that can be expressed than the letters alone. Similarly, activation atlases give us a bigger picture view by showing common combinations of neurons.
+
+  <figure id="overview" style="grid-column: page;"></figure>
 
   <p>Of course, this approach does have limitations. In particular, it’s dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, it will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations -- we’ll discuss them in much more depth later! -- Activation Atlases still give us an unprecedented overview of what neural networks can represent.
 

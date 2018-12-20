@@ -57,5 +57,21 @@ export default [
 			commonjs(),
 			production && compiler()
 		]
+	},
+	{
+		input: "src/renders.js",
+		output: {
+			file: 'public/_generated/renders.js',
+			format: 'iife',
+			sourcemap: true,
+		},
+		plugins: [
+			svelte({
+				dev: !production,
+				extensions: [".html", ".svelte", ".svg"]
+			}),
+			resolve(),
+			commonjs()
+		]
 	}
 ];

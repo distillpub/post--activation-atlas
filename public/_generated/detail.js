@@ -1128,6 +1128,7 @@
 	    let img = new Image();
 	    img.onload = event => resolve(img);
 	    img.onerror = event => reject(event);
+	    // img.crossOrigin = "anonymous";
 	    img.src = url;
 	  })
 	}
@@ -1926,7 +1927,7 @@
 
 	function data$4() {
 	  return {
-	    id: "inceptionv1",
+	    id: "inceptionv1_mixed4c",
 	    
 	    config: null,
 	    layers: null,
@@ -1940,6 +1941,7 @@
 	    minActivations: 1,
 
 	    showLabels: false,
+	    textShadow: false,
 	    showHoverImage: false,
 
 	    context: null,
@@ -1971,6 +1973,7 @@
 
 	    backgroundColor: 'white',
 	    strokeColor: 'rgb(220, 220, 220)',
+	    imageSmoothing: false,
 
 	    // for positioning the hover icon
 	    lastRecordedCanvasPos: {x: -100, y: -100},
@@ -2170,11 +2173,11 @@
 	  },
 	  render() {
 
-	    const {minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
-	    context.imageSmoothingQuality = "low";
-	    context.imageSmoothingEnabled = false;
+	    // context.imageSmoothingQuality = "low";
+	    context.imageSmoothingEnabled = imageSmoothing;
 
 	    if (config && layers) {
 	      layers.forEach((icons, layerIndex) => {
@@ -2204,7 +2207,7 @@
 
 	                  load(icon.url).then(response => {
 	                    // check that we're still on the right layer/zoom
-	                    const {currentZoomIndex, iconCrop, showLabels,} = this.get();
+	                    const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
 	                    if(currentZoomIndex == layerIndex) {
 	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
@@ -2241,9 +2244,11 @@
 	                      if (showLabels && labels) {
 	                        context.globalAlpha = 1;
 	                        context.font="10px Helvetica";
-	                        // context.lineWidth = 2;
-	                        // context.strokeStyle = "rgba(0, 0, 0, 0.8)";
-	                        // context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+	                        if (textShadow) {
+	                          context.lineWidth = 2;
+	                          context.strokeStyle = "rgba(0, 0, 0, 0.8)";
+	                          context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+	                        }
 	                        context.fillStyle = "rgba(255, 255, 255, 1)";
 	                        context.fillText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
 	                      }

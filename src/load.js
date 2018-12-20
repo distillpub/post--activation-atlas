@@ -61,6 +61,7 @@ function image(url) {
     let img = new Image();
     img.onload = event => resolve(img);
     img.onerror = event => reject(event);
+    // img.crossOrigin = "anonymous";
     img.src = url;
   })
 }
