@@ -18871,12 +18871,13 @@
 			target: cover,
 			store,
 			data: {
-				// showClassFilter: false,
-				layerName: "mixed4c",
-				// homeX: 0.6124999999999993,
-				// homeY: 0.2721153846153844,
-				// homeScale: 4,
-				// gridSize: 2
+				showClassFilter: false,
+				layerName: "mixed4d",
+				showLabels: true,
+				homeX: 0.617,
+				homeY: 0.724,
+				homeScale: 4,
+				gridSize: 2
 			}
 		});
 	});
