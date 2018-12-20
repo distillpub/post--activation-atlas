@@ -1,7 +1,7 @@
 <div class="container">
     <div class="filter" style="display: {showClassFilter ? 'block' : 'none'};">
       <Panel>
-        <h3 slot="head">Class Filter</h3>
+        <h2 slot="head">Class Filter</h2>
         <div slot="body">
           <AppClassFilter
             bind:classHeatmap
@@ -11,7 +11,7 @@
     </div>
     <div class="stack" style="display: {showLayerChooser ? 'block' : 'none'};">
       <Panel>
-        <h3 slot="head">Layer</h3>
+        <h2 slot="head">Layer</h2>
         <div slot="body">
           <AppLayerChooser
             bind:layerName
@@ -66,7 +66,7 @@
   </div>
   <div class="options">
     <Panel>
-      <h3 slot="head">Options</h3>
+      <h2 slot="head">Options</h2>
       <div slot="body" class="options-body">
 
         <div>
@@ -75,11 +75,11 @@
           <div>scale: {@html format(scale)}</div>
         </div>
         <div>
-        <h4>Attribution</h4>
+        <h3>Attribution</h3>
           <label><input type=checkbox bind:checked=showLabels> show labels</label>
         </div>
         <div class="grid-size">
-          <h4>grid size</h4>
+          <h3>Grid size</h3>
           <label><input type=radio bind:group=gridSize value={0}> 20x20</label>
           <label><input type=radio bind:group=gridSize value={1}> 40x40</label>
           <label><input type=radio bind:group=gridSize value={2}> 80x80</label>
@@ -87,17 +87,19 @@
           <label><input type=radio bind:group=gridSize value={4}> 320x320</label>
         </div>
         <div>
-          <h4>icon density: {@html iconScaleFactor}</h4>
+          <h3>Icons</h3>
+          <div>density: {@html iconScaleFactor}</div>
           <input type="range" min={0.2} max={10} step={0.1} bind:value=iconScaleFactor>
           <br>
-          <h4>icon crop: {@html iconCrop}</h4>
+          <div>crop: {@html iconCrop}</div>
           <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
         </div>
         <div style="display: {classHeatmap > -1 ? 'block' : 'none'}">
-          <h4>class filter intensity: {@html classHeatmapMultiplier}</h4>
+          <h3>Class filter</h3>
+          <div>Intensity: {@html classHeatmapMultiplier}</div>
           <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
           <br>
-          <h4>class filter positive/negative</h4>
+          <div>Positive or negative</div>
           <br>
           <label><input type=radio bind:group=classHeatmapPositive value={1}> positive influence</label>
           <br>
@@ -157,16 +159,7 @@ export default {
     font-size: 12px;
     position: relative;
   }
-  h3 {
-    font-size: 13px;
-    margin: 0;
-    height: 50px;
-    line-height: 50px;
-    text-transform: uppercase;
-  }
-  h4 {
-    margin: 0;
-  }
+
   /*  */
   .filter {
     width: 170px;
