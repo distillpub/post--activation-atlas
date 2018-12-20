@@ -28,8 +28,8 @@ import Focus1 from './diagrams/Focus1.html';
 import Focus2 from './diagrams/Focus2.html';
 import Focus3 from './diagrams/Focus3.html';
 import Focus3Table from './diagrams/Focus3Table.html';
-import FocusPlayground from './diagrams/FocusPlayground.html';
-import ClassComparisonSingle from './diagrams/ClassComparisonSingle.html';
+// import FocusPlayground from './diagrams/FocusPlayground.html';
+// import ClassComparisonSingle from './diagrams/ClassComparisonSingle.html';
 
 class MyStore extends Store { }
 
@@ -681,16 +681,10 @@ new LazyComponent({
 	}
 });
 
-new LazyComponent({
+new App({
 	target: document.querySelector("#focus-playground"),
 	store: store,
-	data: {
-		aspectRatio: 2,
-		component: App,
-		componentData: {
-			classHeatmap: 235
-		}
-	}
+	classHeatmap: 235
 });
 
 
