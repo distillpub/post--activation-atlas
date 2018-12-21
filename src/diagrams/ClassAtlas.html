@@ -25,16 +25,20 @@
     },
     data() {
       return {
-        root: `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/render/`,
+        filterType: "top",
         classFilter: 62,
         gridSize: 8
       }
     },
     computed: {
+      root: ({filterType}) => `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/render/`,
       ticks: ({gridSize}) => range(1, gridSize),
-      src: ({root, classFilter, gridSize}) => `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1024--icon_size=80--grid_size=${gridSize}--layout=20_0.01_cosine--class_filter=${classFilter}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`
+      src: ({root, classFilter, gridSize, filterType}) => `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=${gridSize}--layout=20_0.01_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`
     }
   }
+  // https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_combined/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_combined--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+  // https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_winner/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=1_winner--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+  // https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_top--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
  </script>
 
  <style>

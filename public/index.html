@@ -20,15 +20,19 @@
       border-top: solid 1px rgba(0, 0, 0, 0.2);
       border-bottom: solid 1px rgba(0, 0, 0, 0.2);
       grid-column: screen;
-      height: 85vh; 
+      height: 80vh; 
       max-height: 1200px;
-      min-height: 500px;
+      min-height: 550px;
       position: relative;
       box-shadow: 0 0 16px 4px rgba(0, 0, 0, 0.15);
       margin-top: 3em;
       margin-bottom: 3em;
       display: flex;
 
+    }
+    d-title .app-container {
+      max-height: 800px;
+      margin-top: 1.5em;
     }
     .app-container > d-figure {
       display: block;
@@ -102,6 +106,20 @@
   <figure class="app-container">
     <d-figure id="cover"></d-figure>
   </figure>
+  <div class="figcaption" style="grid-column: text;margin-top: 2em;">
+    Above, an <b>activation atlas</b> of the InceptionV1 vision classification network reveals many fully realized features, such as  
+    <span class="link" on:click="goto(.55, .08, 8)">electronics</span>, 
+    <span class="link" on:click="goto(.90, .26, 8)">vehicles</span>, 
+    <span class="link" on:click="goto(.13, .26, 8)">food</span>, 
+    <span class="link" on:click="goto(.23, .76, 8)">birds</span>, 
+    <span class="link" on:click="goto(.54, .93, 8)">dogs</span>, and
+    <span class="link" on:click="goto(.46, .52, 8)">backgrounds</span>.
+    Each grid cell is labeled with the classification it most supports.
+    <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote>
+    <div style="margin-top: 16px;">
+      <NotebookLink url=""/>
+    </div>
+  </div>
 </d-title>
 
 <d-article>

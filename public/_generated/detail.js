@@ -6227,7 +6227,7 @@
 	    gridSize: 1,
 	    classHeatmap: -1,
 	    iconScaleFactor: 0.8,
-	    iconCrop: 0.3,
+	    iconCrop: 0.35,
 	    showClassFilter: true,
 	    showLayerChooser: true,
 	    homeX: .5,

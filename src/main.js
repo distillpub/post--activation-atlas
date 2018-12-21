@@ -49,9 +49,9 @@ cover.addEventListener("ready", e => {
 		data: {
 			showClassFilter: false,
 			layerName: "mixed4d",
-			showLabels: true,
+			showLabels: false,
 			homeX: 0.617,
-			homeY: 0.724,
+			homeY: 0.737,
 			homeScale: 4,
 			gridSize: 2
 		}
