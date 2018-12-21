@@ -1935,6 +1935,7 @@
 
 	function data$4() {
 	  return {
+	    ready: true,
 	    id: "inceptionv1_mixed4c",
 	    
 	    config: null,
@@ -2297,30 +2298,7 @@
 	}
 
 	function create_main_fragment$8(component, ctx) {
-		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, text4, div1_resize_listener;
-
-		var radar_initial_data = {};
-		if (ctx.ready  !== void 0) {
-			radar_initial_data.ready = ctx.ready ;
-			radar_updating.ready = true;
-		}
-		var radar = new Radar({
-			root: component.root,
-			store: component.store,
-			data: radar_initial_data,
-			_bind(changed, childState) {
-				var newState = {};
-				if (!radar_updating.ready && changed.ready) {
-					newState.ready = childState.ready;
-				}
-				component._set(newState);
-				radar_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(() => {
-			radar._bind({ ready: 1 }, radar.get());
-		});
+		var text0, div1, div0, zoom_updating = {}, text1, canvas, canvas_width_value, canvas_height_value, text2, div0_class_value, text3, div1_resize_listener;
 
 		var if_block0 = (ctx.ready) && create_if_block_4(component, ctx);
 
@@ -2407,51 +2385,47 @@
 
 		return {
 			c: function create() {
-				radar._fragment.c();
-				text0 = createText("\n\n");
 				if (if_block0) if_block0.c();
-				text1 = createText("\n\n  ");
+				text0 = createText("\n\n  ");
 				div1 = createElement("div");
 				div0 = createElement("div");
 				zoom._fragment.c();
-				text2 = createText("\n      ");
+				text1 = createText("\n      ");
 				canvas = createElement("canvas");
-				text3 = createText("\n      ");
+				text2 = createText("\n      ");
 				if (if_block1) if_block1.c();
-				text4 = createText("\n\n    ");
+				text3 = createText("\n\n    ");
 				if (if_block2) if_block2.c();
 				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
 				setStyle(canvas, "width", "" + ctx.viewWidth + "px");
 				setStyle(canvas, "height", "" + ctx.viewHeight + "px");
 				canvas.className = "svelte-ptap6b svelte-ref-canvas";
-				addLoc(canvas, file$8, 35, 6, 688);
+				addLoc(canvas, file$8, 35, 6, 697);
 				addListener(div0, "mousedown", mousedown_handler);
 				addListener(div0, "mousemove", mousemove_handler);
 				addListener(div0, "mouseenter", mouseenter_handler);
 				addListener(div0, "mouseout", mouseout_handler);
 				div0.className = div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage";
-				addLoc(div0, file$8, 20, 4, 275);
+				addLoc(div0, file$8, 20, 4, 284);
 				component.root._beforecreate.push(div1_resize_handler);
 				div1.className = "svelte-ptap6b svelte-ref-root";
-				addLoc(div1, file$8, 15, 2, 185);
+				addLoc(div1, file$8, 15, 2, 194);
 			},
 
 			m: function mount(target, anchor) {
-				radar._mount(target, anchor);
-				insert(target, text0, anchor);
 				if (if_block0) if_block0.m(target, anchor);
-				insert(target, text1, anchor);
+				insert(target, text0, anchor);
 				insert(target, div1, anchor);
 				append(div1, div0);
 				zoom._mount(div0, null);
-				append(div0, text2);
+				append(div0, text1);
 				append(div0, canvas);
 				component.refs.canvas = canvas;
-				append(div0, text3);
+				append(div0, text2);
 				if (if_block1) if_block1.m(div0, null);
 				component.refs.stage = div0;
-				append(div1, text4);
+				append(div1, text3);
 				if (if_block2) if_block2.m(div1, null);
 				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
 				component.refs.root = div1;
@@ -2459,21 +2433,13 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				var radar_changes = {};
-				if (!radar_updating.ready && changed.ready) {
-					radar_changes.ready = ctx.ready ;
-					radar_updating.ready = ctx.ready  !== void 0;
-				}
-				radar._set(radar_changes);
-				radar_updating = {};
-
 				if (ctx.ready) {
 					if (if_block0) {
 						if_block0.p(changed, ctx);
 					} else {
 						if_block0 = create_if_block_4(component, ctx);
 						if_block0.c();
-						if_block0.m(text1.parentNode, text1);
+						if_block0.m(text0.parentNode, text0);
 					}
 				} else if (if_block0) {
 					if_block0.d(1);
@@ -2558,14 +2524,9 @@
 			},
 
 			d: function destroy$$1(detach) {
-				radar.destroy(detach);
-				if (detach) {
-					detachNode(text0);
-				}
-
 				if (if_block0) if_block0.d(detach);
 				if (detach) {
-					detachNode(text1);
+					detachNode(text0);
 					detachNode(div1);
 				}
 
@@ -2697,7 +2658,7 @@
 				setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
 				setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
 				setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
-				addLoc(div, file$8, 42, 8, 920);
+				addLoc(div, file$8, 42, 8, 929);
 			},
 
 			m: function mount(target, anchor) {
@@ -2751,16 +2712,16 @@
 				text3 = createText(text3_value);
 				text4 = createText(" activations");
 				table.className = "svelte-ptap6b";
-				addLoc(table, file$8, 48, 8, 1378);
+				addLoc(table, file$8, 48, 8, 1387);
 				setStyle(div0, "font-size", "10px");
 				setStyle(div0, "margin-top", "4px");
 				setStyle(div0, "color", "#999");
 				setStyle(div0, "text-align", "right");
-				addLoc(div0, file$8, 71, 8, 2413);
+				addLoc(div0, file$8, 71, 8, 2422);
 				div1.className = "hover svelte-ptap6b";
 				setStyle(div1, "top", ((ctx.topLeftCornerHover.y + ctx.iconSizeInPixels + 10) + 'px'));
 				setStyle(div1, "left", ((ctx.topLeftCornerHover.x + ctx.iconSizeInPixels + 10) + 'px'));
-				addLoc(div1, file$8, 47, 6, 1218);
+				addLoc(div1, file$8, 47, 6, 1227);
 			},
 
 			m: function mount(target, anchor) {
@@ -2895,13 +2856,13 @@
 				text3 = createText("\n            ");
 				td1 = createElement("td");
 				text4 = createText(text4_value);
-				addLoc(tr0, file$8, 50, 10, 1428);
+				addLoc(tr0, file$8, 50, 10, 1437);
 				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$8, 55, 12, 1697);
+				addLoc(td0, file$8, 55, 12, 1706);
 				setStyle(td1, "text-align", "right");
 				td1.className = "svelte-ptap6b";
-				addLoc(td1, file$8, 56, 12, 1776);
-				addLoc(tr1, file$8, 54, 10, 1680);
+				addLoc(td1, file$8, 56, 12, 1785);
+				addLoc(tr1, file$8, 54, 10, 1689);
 			},
 
 			m: function mount(target, anchor) {
@@ -2956,13 +2917,13 @@
 				setStyle(td0, "text-align", "right");
 				setStyle(td0, "padding-right", "4px");
 				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$8, 61, 14, 2003);
+				addLoc(td0, file$8, 61, 14, 2012);
 				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-ptap6b";
-				addLoc(td1, file$8, 62, 14, 2095);
+				addLoc(td1, file$8, 62, 14, 2104);
 				setStyle(td2, "text-align", "right");
 				td2.className = "svelte-ptap6b";
-				addLoc(td2, file$8, 63, 14, 2163);
-				addLoc(tr, file$8, 60, 12, 1984);
+				addLoc(td2, file$8, 63, 14, 2172);
+				addLoc(tr, file$8, 60, 12, 1993);
 			},
 
 			m: function mount(target, anchor) {
@@ -3003,7 +2964,7 @@
 		return {
 			c: function create() {
 				canvas = createElement("canvas");
-				addLoc(canvas, file$8, 69, 10, 2358);
+				addLoc(canvas, file$8, 69, 10, 2367);
 			},
 
 			m: function mount(target, anchor) {
@@ -6230,6 +6191,7 @@
 	    iconCrop: 0.35,
 	    showClassFilter: true,
 	    showLayerChooser: true,
+	    showOptions: true,
 	    homeX: .5,
 	    homeY: .5,
 	    homeScale: 1,
@@ -6731,111 +6693,112 @@
 				div8.className = "main svelte-1rc1tnm";
 				addLoc(div8, file$g, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$g, 68, 6, 1996);
-				addLoc(div9, file$g, 72, 10, 2095);
-				addLoc(div10, file$g, 73, 10, 2139);
-				addLoc(div11, file$g, 74, 10, 2183);
-				addLoc(div12, file$g, 71, 8, 2079);
-				addLoc(h30, file$g, 77, 8, 2260);
+				addLoc(h22, file$g, 68, 6, 2047);
+				addLoc(div9, file$g, 72, 10, 2146);
+				addLoc(div10, file$g, 73, 10, 2190);
+				addLoc(div11, file$g, 74, 10, 2234);
+				addLoc(div12, file$g, 71, 8, 2130);
+				addLoc(h30, file$g, 77, 8, 2311);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$g, 78, 17, 2298);
+				addLoc(input0, file$g, 78, 17, 2349);
 				label0.className = "svelte-1rc1tnm";
-				addLoc(label0, file$g, 78, 10, 2291);
-				addLoc(div13, file$g, 76, 8, 2246);
-				addLoc(h31, file$g, 81, 10, 2421);
+				addLoc(label0, file$g, 78, 10, 2342);
+				addLoc(div13, file$g, 76, 8, 2297);
+				addLoc(h31, file$g, 81, 10, 2472);
 				component._bindingGroups[0].push(input1);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "radio");
 				input1.__value = 0;
 				input1.value = input1.__value;
-				addLoc(input1, file$g, 82, 17, 2457);
+				addLoc(input1, file$g, 82, 17, 2508);
 				label1.className = "svelte-1rc1tnm";
-				addLoc(label1, file$g, 82, 10, 2450);
+				addLoc(label1, file$g, 82, 10, 2501);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "radio");
 				input2.__value = 1;
 				input2.value = input2.__value;
-				addLoc(input2, file$g, 83, 17, 2537);
+				addLoc(input2, file$g, 83, 17, 2588);
 				label2.className = "svelte-1rc1tnm";
-				addLoc(label2, file$g, 83, 10, 2530);
+				addLoc(label2, file$g, 83, 10, 2581);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 2;
 				input3.value = input3.__value;
-				addLoc(input3, file$g, 84, 17, 2617);
+				addLoc(input3, file$g, 84, 17, 2668);
 				label3.className = "svelte-1rc1tnm";
-				addLoc(label3, file$g, 84, 10, 2610);
+				addLoc(label3, file$g, 84, 10, 2661);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 3;
 				input4.value = input4.__value;
-				addLoc(input4, file$g, 85, 17, 2697);
+				addLoc(input4, file$g, 85, 17, 2748);
 				label4.className = "svelte-1rc1tnm";
-				addLoc(label4, file$g, 85, 10, 2690);
+				addLoc(label4, file$g, 85, 10, 2741);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 4;
 				input5.value = input5.__value;
-				addLoc(input5, file$g, 86, 17, 2779);
+				addLoc(input5, file$g, 86, 17, 2830);
 				label5.className = "svelte-1rc1tnm";
-				addLoc(label5, file$g, 86, 10, 2772);
+				addLoc(label5, file$g, 86, 10, 2823);
 				div14.className = "grid-size";
-				addLoc(div14, file$g, 80, 8, 2387);
-				addLoc(h32, file$g, 89, 10, 2883);
-				addLoc(div15, file$g, 90, 10, 2908);
+				addLoc(div14, file$g, 80, 8, 2438);
+				addLoc(h32, file$g, 89, 10, 2934);
+				addLoc(div15, file$g, 90, 10, 2959);
 				addListener(input6, "change", input6_change_input_handler);
 				addListener(input6, "input", input6_change_input_handler);
 				setAttribute(input6, "type", "range");
 				input6.min = 0.2;
 				input6.max = 10;
 				input6.step = 0.1;
-				addLoc(input6, file$g, 91, 10, 2962);
-				addLoc(br, file$g, 92, 10, 3050);
-				addLoc(div16, file$g, 93, 10, 3065);
+				addLoc(input6, file$g, 91, 10, 3013);
+				addLoc(br, file$g, 92, 10, 3101);
+				addLoc(div16, file$g, 93, 10, 3116);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
 				setAttribute(input7, "type", "range");
 				input7.min = 0;
 				input7.max = 0.5;
 				input7.step = 0.01;
-				addLoc(input7, file$g, 94, 10, 3109);
-				addLoc(div17, file$g, 88, 8, 2867);
-				addLoc(h33, file$g, 97, 10, 3275);
-				addLoc(div18, file$g, 98, 10, 3307);
+				addLoc(input7, file$g, 94, 10, 3160);
+				addLoc(div17, file$g, 88, 8, 2918);
+				addLoc(h33, file$g, 97, 10, 3326);
+				addLoc(div18, file$g, 98, 10, 3358);
 				addListener(input8, "change", input8_change_input_handler);
 				addListener(input8, "input", input8_change_input_handler);
 				setAttribute(input8, "type", "range");
 				input8.min = "0.5";
 				input8.max = "2";
 				input8.step = "0.1";
-				addLoc(input8, file$g, 99, 10, 3370);
+				addLoc(input8, file$g, 99, 10, 3421);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$g, 100, 17, 3465);
+				addLoc(input9, file$g, 100, 17, 3516);
 				label6.className = "svelte-1rc1tnm";
-				addLoc(label6, file$g, 100, 10, 3458);
+				addLoc(label6, file$g, 100, 10, 3509);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$g, 101, 17, 3570);
+				addLoc(input10, file$g, 101, 17, 3621);
 				label7.className = "svelte-1rc1tnm";
-				addLoc(label7, file$g, 101, 10, 3563);
+				addLoc(label7, file$g, 101, 10, 3614);
 				setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div19, file$g, 96, 8, 3203);
+				addLoc(div19, file$g, 96, 8, 3254);
 				setAttribute(div20, "slot", "body");
 				div20.className = "options-body svelte-1rc1tnm";
-				addLoc(div20, file$g, 69, 6, 2031);
+				addLoc(div20, file$g, 69, 6, 2082);
 				div21.className = "options svelte-1rc1tnm";
+				setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
 				addLoc(div21, file$g, 66, 2, 1956);
 				div22.className = "container svelte-1rc1tnm";
 				addLoc(div22, file$g, 0, 0, 0);
@@ -7172,6 +7135,10 @@
 				if (changed.classHeatmap) {
 					setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				}
+
+				if (changed.showOptions) {
+					setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
+				}
 			},
 
 			d: function destroy$$1(detach) {
@@ -7249,6 +7216,7 @@
 		if (!('homeX' in this._state)) console.warn("<App> was created without expected data property 'homeX'");
 		if (!('homeY' in this._state)) console.warn("<App> was created without expected data property 'homeY'");
 		if (!('homeScale' in this._state)) console.warn("<App> was created without expected data property 'homeScale'");
+		if (!('showOptions' in this._state)) console.warn("<App> was created without expected data property 'showOptions'");
 		this._bindingGroups = [[], []];
 		this._intro = true;
 

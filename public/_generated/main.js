@@ -3742,6 +3742,7 @@
 
 	function data$6() {
 	  return {
+	    ready: true,
 	    id: "inceptionv1_mixed4c",
 	    
 	    config: null,
@@ -4104,30 +4105,7 @@
 	}
 
 	function create_main_fragment$b(component, ctx) {
-		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, text4, div1_resize_listener;
-
-		var radar_initial_data = {};
-		if (ctx.ready  !== void 0) {
-			radar_initial_data.ready = ctx.ready ;
-			radar_updating.ready = true;
-		}
-		var radar = new Radar({
-			root: component.root,
-			store: component.store,
-			data: radar_initial_data,
-			_bind(changed, childState) {
-				var newState = {};
-				if (!radar_updating.ready && changed.ready) {
-					newState.ready = childState.ready;
-				}
-				component._set(newState);
-				radar_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(() => {
-			radar._bind({ ready: 1 }, radar.get());
-		});
+		var text0, div1, div0, zoom_updating = {}, text1, canvas, canvas_width_value, canvas_height_value, text2, div0_class_value, text3, div1_resize_listener;
 
 		var if_block0 = (ctx.ready) && create_if_block_4(component, ctx);
 
@@ -4214,51 +4192,47 @@
 
 		return {
 			c: function create() {
-				radar._fragment.c();
-				text0 = createText("\n\n");
 				if (if_block0) if_block0.c();
-				text1 = createText("\n\n  ");
+				text0 = createText("\n\n  ");
 				div1 = createElement("div");
 				div0 = createElement("div");
 				zoom._fragment.c();
-				text2 = createText("\n      ");
+				text1 = createText("\n      ");
 				canvas = createElement("canvas");
-				text3 = createText("\n      ");
+				text2 = createText("\n      ");
 				if (if_block1) if_block1.c();
-				text4 = createText("\n\n    ");
+				text3 = createText("\n\n    ");
 				if (if_block2) if_block2.c();
 				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
 				setStyle(canvas, "width", "" + ctx.viewWidth + "px");
 				setStyle(canvas, "height", "" + ctx.viewHeight + "px");
 				canvas.className = "svelte-ptap6b svelte-ref-canvas";
-				addLoc(canvas, file$b, 35, 6, 688);
+				addLoc(canvas, file$b, 35, 6, 697);
 				addListener(div0, "mousedown", mousedown_handler);
 				addListener(div0, "mousemove", mousemove_handler);
 				addListener(div0, "mouseenter", mouseenter_handler);
 				addListener(div0, "mouseout", mouseout_handler);
 				div0.className = div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage";
-				addLoc(div0, file$b, 20, 4, 275);
+				addLoc(div0, file$b, 20, 4, 284);
 				component.root._beforecreate.push(div1_resize_handler);
 				div1.className = "svelte-ptap6b svelte-ref-root";
-				addLoc(div1, file$b, 15, 2, 185);
+				addLoc(div1, file$b, 15, 2, 194);
 			},
 
 			m: function mount(target, anchor) {
-				radar._mount(target, anchor);
-				insert(target, text0, anchor);
 				if (if_block0) if_block0.m(target, anchor);
-				insert(target, text1, anchor);
+				insert(target, text0, anchor);
 				insert(target, div1, anchor);
 				append(div1, div0);
 				zoom._mount(div0, null);
-				append(div0, text2);
+				append(div0, text1);
 				append(div0, canvas);
 				component.refs.canvas = canvas;
-				append(div0, text3);
+				append(div0, text2);
 				if (if_block1) if_block1.m(div0, null);
 				component.refs.stage = div0;
-				append(div1, text4);
+				append(div1, text3);
 				if (if_block2) if_block2.m(div1, null);
 				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
 				component.refs.root = div1;
@@ -4266,21 +4240,13 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				var radar_changes = {};
-				if (!radar_updating.ready && changed.ready) {
-					radar_changes.ready = ctx.ready ;
-					radar_updating.ready = ctx.ready  !== void 0;
-				}
-				radar._set(radar_changes);
-				radar_updating = {};
-
 				if (ctx.ready) {
 					if (if_block0) {
 						if_block0.p(changed, ctx);
 					} else {
 						if_block0 = create_if_block_4(component, ctx);
 						if_block0.c();
-						if_block0.m(text1.parentNode, text1);
+						if_block0.m(text0.parentNode, text0);
 					}
 				} else if (if_block0) {
 					if_block0.d(1);
@@ -4365,14 +4331,9 @@
 			},
 
 			d: function destroy$$1(detach) {
-				radar.destroy(detach);
-				if (detach) {
-					detachNode(text0);
-				}
-
 				if (if_block0) if_block0.d(detach);
 				if (detach) {
-					detachNode(text1);
+					detachNode(text0);
 					detachNode(div1);
 				}
 
@@ -4504,7 +4465,7 @@
 				setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
 				setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
 				setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
-				addLoc(div, file$b, 42, 8, 920);
+				addLoc(div, file$b, 42, 8, 929);
 			},
 
 			m: function mount(target, anchor) {
@@ -4558,16 +4519,16 @@
 				text3 = createText(text3_value);
 				text4 = createText(" activations");
 				table.className = "svelte-ptap6b";
-				addLoc(table, file$b, 48, 8, 1378);
+				addLoc(table, file$b, 48, 8, 1387);
 				setStyle(div0, "font-size", "10px");
 				setStyle(div0, "margin-top", "4px");
 				setStyle(div0, "color", "#999");
 				setStyle(div0, "text-align", "right");
-				addLoc(div0, file$b, 71, 8, 2413);
+				addLoc(div0, file$b, 71, 8, 2422);
 				div1.className = "hover svelte-ptap6b";
 				setStyle(div1, "top", ((ctx.topLeftCornerHover.y + ctx.iconSizeInPixels + 10) + 'px'));
 				setStyle(div1, "left", ((ctx.topLeftCornerHover.x + ctx.iconSizeInPixels + 10) + 'px'));
-				addLoc(div1, file$b, 47, 6, 1218);
+				addLoc(div1, file$b, 47, 6, 1227);
 			},
 
 			m: function mount(target, anchor) {
@@ -4702,13 +4663,13 @@
 				text3 = createText("\n            ");
 				td1 = createElement("td");
 				text4 = createText(text4_value);
-				addLoc(tr0, file$b, 50, 10, 1428);
+				addLoc(tr0, file$b, 50, 10, 1437);
 				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$b, 55, 12, 1697);
+				addLoc(td0, file$b, 55, 12, 1706);
 				setStyle(td1, "text-align", "right");
 				td1.className = "svelte-ptap6b";
-				addLoc(td1, file$b, 56, 12, 1776);
-				addLoc(tr1, file$b, 54, 10, 1680);
+				addLoc(td1, file$b, 56, 12, 1785);
+				addLoc(tr1, file$b, 54, 10, 1689);
 			},
 
 			m: function mount(target, anchor) {
@@ -4763,13 +4724,13 @@
 				setStyle(td0, "text-align", "right");
 				setStyle(td0, "padding-right", "4px");
 				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$b, 61, 14, 2003);
+				addLoc(td0, file$b, 61, 14, 2012);
 				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-ptap6b";
-				addLoc(td1, file$b, 62, 14, 2095);
+				addLoc(td1, file$b, 62, 14, 2104);
 				setStyle(td2, "text-align", "right");
 				td2.className = "svelte-ptap6b";
-				addLoc(td2, file$b, 63, 14, 2163);
-				addLoc(tr, file$b, 60, 12, 1984);
+				addLoc(td2, file$b, 63, 14, 2172);
+				addLoc(tr, file$b, 60, 12, 1993);
 			},
 
 			m: function mount(target, anchor) {
@@ -4810,7 +4771,7 @@
 		return {
 			c: function create() {
 				canvas = createElement("canvas");
-				addLoc(canvas, file$b, 69, 10, 2358);
+				addLoc(canvas, file$b, 69, 10, 2367);
 			},
 
 			m: function mount(target, anchor) {
@@ -7031,6 +6992,7 @@
 	    iconCrop: 0.35,
 	    showClassFilter: true,
 	    showLayerChooser: true,
+	    showOptions: true,
 	    homeX: .5,
 	    homeY: .5,
 	    homeScale: 1,
@@ -7532,111 +7494,112 @@
 				div8.className = "main svelte-1rc1tnm";
 				addLoc(div8, file$j, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$j, 68, 6, 1996);
-				addLoc(div9, file$j, 72, 10, 2095);
-				addLoc(div10, file$j, 73, 10, 2139);
-				addLoc(div11, file$j, 74, 10, 2183);
-				addLoc(div12, file$j, 71, 8, 2079);
-				addLoc(h30, file$j, 77, 8, 2260);
+				addLoc(h22, file$j, 68, 6, 2047);
+				addLoc(div9, file$j, 72, 10, 2146);
+				addLoc(div10, file$j, 73, 10, 2190);
+				addLoc(div11, file$j, 74, 10, 2234);
+				addLoc(div12, file$j, 71, 8, 2130);
+				addLoc(h30, file$j, 77, 8, 2311);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$j, 78, 17, 2298);
+				addLoc(input0, file$j, 78, 17, 2349);
 				label0.className = "svelte-1rc1tnm";
-				addLoc(label0, file$j, 78, 10, 2291);
-				addLoc(div13, file$j, 76, 8, 2246);
-				addLoc(h31, file$j, 81, 10, 2421);
+				addLoc(label0, file$j, 78, 10, 2342);
+				addLoc(div13, file$j, 76, 8, 2297);
+				addLoc(h31, file$j, 81, 10, 2472);
 				component._bindingGroups[0].push(input1);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "radio");
 				input1.__value = 0;
 				input1.value = input1.__value;
-				addLoc(input1, file$j, 82, 17, 2457);
+				addLoc(input1, file$j, 82, 17, 2508);
 				label1.className = "svelte-1rc1tnm";
-				addLoc(label1, file$j, 82, 10, 2450);
+				addLoc(label1, file$j, 82, 10, 2501);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "radio");
 				input2.__value = 1;
 				input2.value = input2.__value;
-				addLoc(input2, file$j, 83, 17, 2537);
+				addLoc(input2, file$j, 83, 17, 2588);
 				label2.className = "svelte-1rc1tnm";
-				addLoc(label2, file$j, 83, 10, 2530);
+				addLoc(label2, file$j, 83, 10, 2581);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 2;
 				input3.value = input3.__value;
-				addLoc(input3, file$j, 84, 17, 2617);
+				addLoc(input3, file$j, 84, 17, 2668);
 				label3.className = "svelte-1rc1tnm";
-				addLoc(label3, file$j, 84, 10, 2610);
+				addLoc(label3, file$j, 84, 10, 2661);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 3;
 				input4.value = input4.__value;
-				addLoc(input4, file$j, 85, 17, 2697);
+				addLoc(input4, file$j, 85, 17, 2748);
 				label4.className = "svelte-1rc1tnm";
-				addLoc(label4, file$j, 85, 10, 2690);
+				addLoc(label4, file$j, 85, 10, 2741);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 4;
 				input5.value = input5.__value;
-				addLoc(input5, file$j, 86, 17, 2779);
+				addLoc(input5, file$j, 86, 17, 2830);
 				label5.className = "svelte-1rc1tnm";
-				addLoc(label5, file$j, 86, 10, 2772);
+				addLoc(label5, file$j, 86, 10, 2823);
 				div14.className = "grid-size";
-				addLoc(div14, file$j, 80, 8, 2387);
-				addLoc(h32, file$j, 89, 10, 2883);
-				addLoc(div15, file$j, 90, 10, 2908);
+				addLoc(div14, file$j, 80, 8, 2438);
+				addLoc(h32, file$j, 89, 10, 2934);
+				addLoc(div15, file$j, 90, 10, 2959);
 				addListener(input6, "change", input6_change_input_handler);
 				addListener(input6, "input", input6_change_input_handler);
 				setAttribute(input6, "type", "range");
 				input6.min = 0.2;
 				input6.max = 10;
 				input6.step = 0.1;
-				addLoc(input6, file$j, 91, 10, 2962);
-				addLoc(br, file$j, 92, 10, 3050);
-				addLoc(div16, file$j, 93, 10, 3065);
+				addLoc(input6, file$j, 91, 10, 3013);
+				addLoc(br, file$j, 92, 10, 3101);
+				addLoc(div16, file$j, 93, 10, 3116);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
 				setAttribute(input7, "type", "range");
 				input7.min = 0;
 				input7.max = 0.5;
 				input7.step = 0.01;
-				addLoc(input7, file$j, 94, 10, 3109);
-				addLoc(div17, file$j, 88, 8, 2867);
-				addLoc(h33, file$j, 97, 10, 3275);
-				addLoc(div18, file$j, 98, 10, 3307);
+				addLoc(input7, file$j, 94, 10, 3160);
+				addLoc(div17, file$j, 88, 8, 2918);
+				addLoc(h33, file$j, 97, 10, 3326);
+				addLoc(div18, file$j, 98, 10, 3358);
 				addListener(input8, "change", input8_change_input_handler);
 				addListener(input8, "input", input8_change_input_handler);
 				setAttribute(input8, "type", "range");
 				input8.min = "0.5";
 				input8.max = "2";
 				input8.step = "0.1";
-				addLoc(input8, file$j, 99, 10, 3370);
+				addLoc(input8, file$j, 99, 10, 3421);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$j, 100, 17, 3465);
+				addLoc(input9, file$j, 100, 17, 3516);
 				label6.className = "svelte-1rc1tnm";
-				addLoc(label6, file$j, 100, 10, 3458);
+				addLoc(label6, file$j, 100, 10, 3509);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$j, 101, 17, 3570);
+				addLoc(input10, file$j, 101, 17, 3621);
 				label7.className = "svelte-1rc1tnm";
-				addLoc(label7, file$j, 101, 10, 3563);
+				addLoc(label7, file$j, 101, 10, 3614);
 				setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div19, file$j, 96, 8, 3203);
+				addLoc(div19, file$j, 96, 8, 3254);
 				setAttribute(div20, "slot", "body");
 				div20.className = "options-body svelte-1rc1tnm";
-				addLoc(div20, file$j, 69, 6, 2031);
+				addLoc(div20, file$j, 69, 6, 2082);
 				div21.className = "options svelte-1rc1tnm";
+				setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
 				addLoc(div21, file$j, 66, 2, 1956);
 				div22.className = "container svelte-1rc1tnm";
 				addLoc(div22, file$j, 0, 0, 0);
@@ -7973,6 +7936,10 @@
 				if (changed.classHeatmap) {
 					setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				}
+
+				if (changed.showOptions) {
+					setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
+				}
 			},
 
 			d: function destroy$$1(detach) {
@@ -8050,6 +8017,7 @@
 		if (!('homeX' in this._state)) console.warn("<App> was created without expected data property 'homeX'");
 		if (!('homeY' in this._state)) console.warn("<App> was created without expected data property 'homeY'");
 		if (!('homeScale' in this._state)) console.warn("<App> was created without expected data property 'homeScale'");
+		if (!('showOptions' in this._state)) console.warn("<App> was created without expected data property 'showOptions'");
 		this._bindingGroups = [[], []];
 		this._intro = true;
 
@@ -13206,7 +13174,8 @@
 	function data$o() {
 	  return {
 	    layerName: "mixed4c",
-	    gridSize: 1
+	    gridSize: 1,
+	    iconCrop: 0.4,
 	  }
 	}
 	const file$y = "src/diagrams/OneLayer.html";
@@ -18878,737 +18847,744 @@
 	// 	}
 	// });
 
-	const cover = document.querySelector("#cover");
-	cover.addEventListener("ready", e => {
+	document.addEventListener("DOMContentLoaded", (e) => {
+
+		const cover = document.querySelector("#cover");
+		cover.addEventListener("ready", e => {
+			new App({
+				target: cover,
+				store,
+				data: {
+					showClassFilter: false,
+					layerName: "mixed4d",
+					showLabels: false,
+					showOptions: false,
+					homeX: 0.55,
+					homeY: 0.7,
+					homeScale: 4,
+					gridSize: 2
+				}
+			});
+		});
+
+		const notebookLinks = document.querySelectorAll("[data-notebook-url]");
+		for (const link of notebookLinks) {
+			const url = link.getAttribute("data-notebook-url");
+			new NotebookLink({
+				target: link,
+				data: {
+					url: url
+				}
+			});
+		}
+
+		new Overview({ target: document.querySelector("#overview") });
+
+		new ModelOverview({ target: document.querySelector("#model-overview") });
+
+		new GridDetail({ target: document.querySelector("#grid-detail") });
+
+		new LazyComponent({
+			target: document.querySelector("#activation-grid"),
+			data: {
+				aspectRatio: 3.5,
+				component: ActivationGrid
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#process"),
+			data: {
+				aspectRatio: 2.1,
+				component: Process
+			}
+		});
+
+		new LazyComponent({
+			store: store,
+			target: document.querySelector("#one-layer"),
+			data: {
+				aspectRatio: 1,
+				component: OneLayer
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-1"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.306,
+					homeY: 0.035
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-2"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.309,
+					homeY: 0.173,
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-3"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.335,
+					homeY: 0.353,
+					gridSize: 3,
+					homeScale: 32
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-4"),
+			store: store,
+			data: {
+				component: LayerAnnotation,
+				aspectRatio: 3,
+				componentData: {
+					homeX: 0.330,
+					homeY: 0.666,
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-5"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.281,
+					homeY: 0.761,
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-6"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.944,
+					homeY: 0.510
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-7"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.837,
+					homeY: 0.239
+				},
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#layer-annotation-8"),
+			store: store,
+			data: {
+				aspectRatio: 3,
+				component: LayerAnnotation,
+				componentData: {
+					homeX: 0.594,
+					homeY: 0.223
+				},
+			}
+		});
+
+
+		// bokeh
+		new LazyComponent({
+			target: document.querySelector("#show-a-path-0"),
+			store: store,
+			data: {
+				aspectRatio: 5.6,
+				component: ShowAPath,
+				componentData: {
+					layerName: "mixed4c",
+					pointList: [
+						[0.161, 0.38610000610351564],
+						[0.161, 0.39373501368931363],
+						[0.161, 0.4013700212751116],
+						[0.161, 0.40900500161307196],
+						[0.161, 0.41664000919886995],
+						[0.161, 0.42427498953683035],
+						[0.161, 0.43190999712262834],
+						[0.161, 0.43954500470842633],
+						[0.161, 0.4471800122942243],
+						[0.161, 0.4548149926321847],
+						[0.161, 0.46244997297014506],
+						[0.161, 0.47008498055594305],
+						[0.161, 0.47771998814174105],
+						[0.161, 0.48535499572753904],
+						[0.161, 0.49299000331333703],
+						[0.161, 0.500625010899135],
+						[0.161, 0.5082600184849331],
+						[0.161, 0.5158949715750558],
+						[0.161, 0.5235299791608538],
+						[0.161, 0.5311649867466518]
+					],
+				}
+			}
+		});
+
+		// crowd -> single person
+		new LazyComponent({
+			target: document.querySelector("#show-a-path-1"),
+			store: store,
+			data: {
+				aspectRatio: 5.6,
+				component: ShowAPath,
+				componentData: {
+					layerName: "mixed4c",
+					pointList: [
+						[0.877770015171596, 0.35276998792375835],
+						[0.8758255004882812, 0.3431870596749442],
+						[0.8738809858049665, 0.3336041041782924],
+						[0.871936525617327, 0.3240211486816406],
+						[0.8699920109340122, 0.31443819318498883],
+						[0.8680474962506975, 0.30485523768833706],
+						[0.8661029815673829, 0.2952722821916853],
+						[0.8641585213797432, 0.2856893266950335],
+						[0.8622140066964286, 0.2761063711983817],
+						[0.8602694920131139, 0.26652344294956754],
+						[0.8583249773297991, 0.25694048745291576],
+						[0.8563805171421596, 0.24735755920410157],
+						[0.8544360024588449, 0.23777460370744977],
+						[0.8524914877755302, 0.228191648210798],
+						[0.8505469730922154, 0.2186086927141462],
+						[0.8486025129045759, 0.20902573721749443],
+						[0.8466579982212612, 0.19944279534476145],
+						[0.8447134835379464, 0.18985985347202847],
+						[0.8427689688546317, 0.1802768979753767],
+						[0.8408245086669922, 0.17069394247872488],
+					],
+				}
+			}
+		});
+
+		// water -> ground
+		new LazyComponent({
+			target: document.querySelector("#show-a-path-2"),
+			store: store,
+			data: {
+				aspectRatio: 5.6,
+				component: ShowAPath,
+				componentData: {
+					layerName: "mixed4c",
+					pointList: [
+						[0.275, 0.775],
+						[0.2794630323137556, 0.7651796068464006],
+						[0.2839260646275112, 0.7553592136928013],
+						[0.28838912418910434, 0.7455388205392021],
+						[0.29285215650285995, 0.7357184273856027],
+						[0.2973151888166155, 0.7258980342320034],
+						[0.3017782483782087, 0.716077641078404],
+						[0.3040830067225865, 0.7056094578334263],
+						[0.30576556069510324, 0.6949544634137835],
+						[0.30744808741978236, 0.6842995234898158],
+						[0.3091306413922991, 0.6736445835658482],
+						[0.31081319536481583, 0.6629896436418806],
+						[0.31111000605991906, 0.6522259303501674],
+						[0.31111000605991906, 0.641438947405134],
+						[0.31111000605991906, 0.6306520189557757],
+						[0.31111000605991906, 0.6198650360107422],
+						[0.31111000605991906, 0.6090780530657087],
+						[0.3058485576084682, 0.5997803279331753],
+						[0.3001950400216239, 0.5905935559953962],
+						[0.2945415224347796, 0.5814067840576171]
+					],
+				}
+			}
+		});
+
+
+		// fruit
+		new LazyComponent({
+			target: document.querySelector("#show-a-path-3"),
+			store: store,
+			data: {
+				aspectRatio: 5.6,
+				component: ShowAPath,
+				componentData: {
+					layerName: "mixed4c",
+					pointList: [
+						[0.610, 0.130],
+						[0.609, 0.132],
+						[0.607, 0.139],
+						[0.606, 0.141],
+						[0.605, 0.145],
+						[0.603, 0.151],
+						[0.600, 0.158],
+						[0.597, 0.164],
+						[0.596, 0.169],
+						[0.594, 0.175],
+						[0.593, 0.177],
+						[0.592, 0.183],
+						[0.589, 0.188],
+						[0.587, 0.191],
+						[0.585, 0.195],
+						[0.582, 0.200],
+						[0.581, 0.204],
+						[0.579, 0.208],
+						[0.578, 0.213],
+						[0.577, 0.219]
+					],
+				}
+			}
+		});
+
+		// Looking at Multiple Layers
+
+
+		new LazyComponent({
+			target: document.querySelector("#abacus-0"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed3b",
+					homeX: 0.8086,
+					homeY: 0.4295,
+					gridSize: 3,
+					homeScale: 16 * 1.5 * 2,
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#abacus-1"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed4c",
+					homeX: 0.8593,
+					homeY: 0.5814
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#abacus-2"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed5b",
+					homeX: 0.8183,
+					homeY: 0.2047,
+					gridSize: 4,
+					homeScale: 16 * 6,
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#plant-0"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed3b",
+					homeX: 0.3222, 
+					homeY: 0.6352,
+					gridSize: 3,
+					homeScale: 16 * 1.5 * 2,
+				}
+			}
+		});
+
+
+		new LazyComponent({
+			target: document.querySelector("#plant-1"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed4c",
+					homeX: 0.146,
+					homeY: 0.392,
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#plant-2"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed5b",
+					homeX: 0.1668,
+					homeY: 0.2833,
+					gridSize: 4,
+					homeScale: 16 * 3 * 2,
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#water-0"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed4c",
+					homeX: 0.365,
+					homeY: 0.673,
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#water-1"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed4c",
+					homeX: 0.318,
+					homeY: 0.764,
+				}
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#water-2"),
+			store: store,
+			data: {
+				aspectRatio: 0.75,
+				component: VerticalLayerAnnotation,
+				componentData: {
+					layerName: "mixed5b",
+					homeX: 0.740,
+					homeY: 0.534,
+					gridSize: 4,
+					homeScale: 16 * 6,
+				}
+			}
+		});
+
+
+		let layerComparison = new App({
+			target: document.querySelector("#all-layer-comparison"),
+			store: store,
+			data: {
+				showClassFilter: false
+			}
+		});
+
+		// new LazyComponent({
+		// 	target: document.querySelector("#all-layer-comparison"),
+		// 	store: store,
+		// 	data: {
+		// 		aspectRatio: 2,
+		// 		component: App,
+		// 		componentData: {
+		// 			showClassFilter: false,
+		// 		}
+		// 	}
+		// });
+
+
+		const poiLinks = document.querySelectorAll("[data-poi]");
+		for (const link of poiLinks) {
+			const id = link.getAttribute("data-poi");
+			const { pois } = store.get();
+			link.addEventListener("click", e => {
+				e.preventDefault();
+				layerComparison.set({layerName: pois[id].layerName});
+				layerComparison.set(pois[id]);
+			});
+		}
+
+		// Focusing on a Single Classification
+
+		new LazyComponent({
+			target: document.querySelector("#focus-1"),
+			store: store,
+			data: {
+				aspectRatio: 2,
+				component: Focus1,
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#focus-2"),
+			store: store,
+			data: {
+				aspectRatio: 2,
+				component: Focus2,
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#focus-3"),
+			store: store,
+			data: {
+				aspectRatio: 2,
+				component: Focus3,
+			}
+		});
+
+		new LazyComponent({
+			target: document.querySelector("#focus-3-table"),
+			store: store,
+			data: {
+				aspectRatio: 1,
+				component: Focus3Table,
+			}
+		});
+
 		new App({
-			target: cover,
-			store,
+			target: document.querySelector("#focus-playground"),
+			store: store,
 			data: {
-				showClassFilter: false,
-				layerName: "mixed4d",
-				showLabels: false,
-				homeX: 0.617,
-				homeY: 0.737,
-				homeScale: 4,
-				gridSize: 2
+				classHeatmap: 235,
+				layerName: "mixed4d"
 			}
 		});
-	});
 
-	const notebookLinks = document.querySelectorAll("[data-notebook-url]");
-	for (const link of notebookLinks) {
-		const url = link.getAttribute("data-notebook-url");
-		new NotebookLink({
-			target: link,
+
+		// Further Isolating Classes
+
+		new ClassSubset({
+			target: document.querySelector("#class-subset"),
+			store: store,
+		});
+
+		new ClassComparison({
+			target: document.querySelector("#class-comparison-1"),
+			store: store,
 			data: {
-				url: url
+				showControls: false,
+				classComparisonIndex: 6
 			}
 		});
-	}
 
-	new Overview({ target: document.querySelector("#overview") });
-
-	new ModelOverview({ target: document.querySelector("#model-overview") });
-
-	new GridDetail({ target: document.querySelector("#grid-detail") });
-
-	new LazyComponent({
-		target: document.querySelector("#activation-grid"),
-		data: {
-			aspectRatio: 3.5,
-			component: ActivationGrid
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#process"),
-		data: {
-			aspectRatio: 2.1,
-			component: Process
-		}
-	});
-
-	new LazyComponent({
-		store: store,
-		target: document.querySelector("#one-layer"),
-		data: {
-			aspectRatio: 1,
-			component: OneLayer
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-1"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.306,
-				homeY: 0.035
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-2"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.309,
-				homeY: 0.173,
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-3"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.335,
-				homeY: 0.353,
-				gridSize: 3,
-				homeScale: 32
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-4"),
-		store: store,
-		data: {
-			component: LayerAnnotation,
-			aspectRatio: 3,
-			componentData: {
-				homeX: 0.330,
-				homeY: 0.666,
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-5"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.281,
-				homeY: 0.761,
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-6"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.944,
-				homeY: 0.510
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-7"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.837,
-				homeY: 0.239
-			},
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#layer-annotation-8"),
-		store: store,
-		data: {
-			aspectRatio: 3,
-			component: LayerAnnotation,
-			componentData: {
-				homeX: 0.594,
-				homeY: 0.223
-			},
-		}
-	});
-
-
-	// bokeh
-	new LazyComponent({
-		target: document.querySelector("#show-a-path-0"),
-		store: store,
-		data: {
-			aspectRatio: 5.6,
-			component: ShowAPath,
-			componentData: {
-				layerName: "mixed4c",
-				pointList: [
-					[0.161, 0.38610000610351564],
-					[0.161, 0.39373501368931363],
-					[0.161, 0.4013700212751116],
-					[0.161, 0.40900500161307196],
-					[0.161, 0.41664000919886995],
-					[0.161, 0.42427498953683035],
-					[0.161, 0.43190999712262834],
-					[0.161, 0.43954500470842633],
-					[0.161, 0.4471800122942243],
-					[0.161, 0.4548149926321847],
-					[0.161, 0.46244997297014506],
-					[0.161, 0.47008498055594305],
-					[0.161, 0.47771998814174105],
-					[0.161, 0.48535499572753904],
-					[0.161, 0.49299000331333703],
-					[0.161, 0.500625010899135],
-					[0.161, 0.5082600184849331],
-					[0.161, 0.5158949715750558],
-					[0.161, 0.5235299791608538],
-					[0.161, 0.5311649867466518]
-				],
+		new ClassComparison({
+			target: document.querySelector("#class-comparison-2"),
+			store: store,
+			data: {
+				showControls: false,
+				classComparisonIndex: 0
 			}
-		}
-	});
-
-	// crowd -> single person
-	new LazyComponent({
-		target: document.querySelector("#show-a-path-1"),
-		store: store,
-		data: {
-			aspectRatio: 5.6,
-			component: ShowAPath,
-			componentData: {
-				layerName: "mixed4c",
-				pointList: [
-					[0.877770015171596, 0.35276998792375835],
-					[0.8758255004882812, 0.3431870596749442],
-					[0.8738809858049665, 0.3336041041782924],
-					[0.871936525617327, 0.3240211486816406],
-					[0.8699920109340122, 0.31443819318498883],
-					[0.8680474962506975, 0.30485523768833706],
-					[0.8661029815673829, 0.2952722821916853],
-					[0.8641585213797432, 0.2856893266950335],
-					[0.8622140066964286, 0.2761063711983817],
-					[0.8602694920131139, 0.26652344294956754],
-					[0.8583249773297991, 0.25694048745291576],
-					[0.8563805171421596, 0.24735755920410157],
-					[0.8544360024588449, 0.23777460370744977],
-					[0.8524914877755302, 0.228191648210798],
-					[0.8505469730922154, 0.2186086927141462],
-					[0.8486025129045759, 0.20902573721749443],
-					[0.8466579982212612, 0.19944279534476145],
-					[0.8447134835379464, 0.18985985347202847],
-					[0.8427689688546317, 0.1802768979753767],
-					[0.8408245086669922, 0.17069394247872488],
-				],
-			}
-		}
-	});
-
-	// water -> ground
-	new LazyComponent({
-		target: document.querySelector("#show-a-path-2"),
-		store: store,
-		data: {
-			aspectRatio: 5.6,
-			component: ShowAPath,
-			componentData: {
-				layerName: "mixed4c",
-				pointList: [
-					[0.275, 0.775],
-					[0.2794630323137556, 0.7651796068464006],
-					[0.2839260646275112, 0.7553592136928013],
-					[0.28838912418910434, 0.7455388205392021],
-					[0.29285215650285995, 0.7357184273856027],
-					[0.2973151888166155, 0.7258980342320034],
-					[0.3017782483782087, 0.716077641078404],
-					[0.3040830067225865, 0.7056094578334263],
-					[0.30576556069510324, 0.6949544634137835],
-					[0.30744808741978236, 0.6842995234898158],
-					[0.3091306413922991, 0.6736445835658482],
-					[0.31081319536481583, 0.6629896436418806],
-					[0.31111000605991906, 0.6522259303501674],
-					[0.31111000605991906, 0.641438947405134],
-					[0.31111000605991906, 0.6306520189557757],
-					[0.31111000605991906, 0.6198650360107422],
-					[0.31111000605991906, 0.6090780530657087],
-					[0.3058485576084682, 0.5997803279331753],
-					[0.3001950400216239, 0.5905935559953962],
-					[0.2945415224347796, 0.5814067840576171]
-				],
-			}
-		}
-	});
-
-
-	// fruit
-	new LazyComponent({
-		target: document.querySelector("#show-a-path-3"),
-		store: store,
-		data: {
-			aspectRatio: 5.6,
-			component: ShowAPath,
-			componentData: {
-				layerName: "mixed4c",
-				pointList: [
-					[0.610, 0.130],
-					[0.609, 0.132],
-					[0.607, 0.139],
-					[0.606, 0.141],
-					[0.605, 0.145],
-					[0.603, 0.151],
-					[0.600, 0.158],
-					[0.597, 0.164],
-					[0.596, 0.169],
-					[0.594, 0.175],
-					[0.593, 0.177],
-					[0.592, 0.183],
-					[0.589, 0.188],
-					[0.587, 0.191],
-					[0.585, 0.195],
-					[0.582, 0.200],
-					[0.581, 0.204],
-					[0.579, 0.208],
-					[0.578, 0.213],
-					[0.577, 0.219]
-				],
-			}
-		}
-	});
-
-	// Looking at Multiple Layers
-
-
-	new LazyComponent({
-		target: document.querySelector("#abacus-0"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed3b",
-				homeX: 0.8086,
-				homeY: 0.4295,
-				gridSize: 3,
-				homeScale: 16 * 1.5 * 2,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#abacus-1"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.8593,
-				homeY: 0.5814
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#abacus-2"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed5b",
-				homeX: 0.8183,
-				homeY: 0.2047,
-				gridSize: 4,
-				homeScale: 16 * 6,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#plant-0"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed3b",
-				homeX: 0.3222, 
-				homeY: 0.6352,
-				gridSize: 3,
-				homeScale: 16 * 1.5 * 2,
-			}
-		}
-	});
-
-
-	new LazyComponent({
-		target: document.querySelector("#plant-1"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.146,
-				homeY: 0.392,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#plant-2"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed5b",
-				homeX: 0.1668,
-				homeY: 0.2833,
-				gridSize: 4,
-				homeScale: 16 * 3 * 2,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#water-0"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.365,
-				homeY: 0.673,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#water-1"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.318,
-				homeY: 0.764,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#water-2"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed5b",
-				homeX: 0.740,
-				homeY: 0.534,
-				gridSize: 4,
-				homeScale: 16 * 6,
-			}
-		}
-	});
-
-
-	let layerComparison = new App({
-		target: document.querySelector("#all-layer-comparison"),
-		store: store,
-		data: {
-			showClassFilter: false
-		}
-	});
-
-	// new LazyComponent({
-	// 	target: document.querySelector("#all-layer-comparison"),
-	// 	store: store,
-	// 	data: {
-	// 		aspectRatio: 2,
-	// 		component: App,
-	// 		componentData: {
-	// 			showClassFilter: false,
-	// 		}
-	// 	}
-	// });
-
-
-	const poiLinks = document.querySelectorAll("[data-poi]");
-	for (const link of poiLinks) {
-		const id = link.getAttribute("data-poi");
-		const { pois } = store.get();
-		link.addEventListener("click", e => {
-			e.preventDefault();
-			layerComparison.set({layerName: pois[id].layerName});
-			layerComparison.set(pois[id]);
 		});
-	}
 
-	// Focusing on a Single Classification
-
-	new LazyComponent({
-		target: document.querySelector("#focus-1"),
-		store: store,
-		data: {
-			aspectRatio: 2,
-			component: Focus1,
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#focus-2"),
-		store: store,
-		data: {
-			aspectRatio: 2,
-			component: Focus2,
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#focus-3"),
-		store: store,
-		data: {
-			aspectRatio: 2,
-			component: Focus3,
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#focus-3-table"),
-		store: store,
-		data: {
-			aspectRatio: 1,
-			component: Focus3Table,
-		}
-	});
-
-	new App({
-		target: document.querySelector("#focus-playground"),
-		store: store,
-		data: {
-			classHeatmap: 235
-		}
-	});
-
-
-	// Further Isolating Classes
-
-	new ClassSubset({
-		target: document.querySelector("#class-subset"),
-		store: store,
-	});
-
-	new ClassComparison({
-		target: document.querySelector("#class-comparison-1"),
-		store: store,
-		data: {
-			showControls: false,
-			classComparisonIndex: 6
-		}
-	});
-
-	new ClassComparison({
-		target: document.querySelector("#class-comparison-2"),
-		store: store,
-		data: {
-			showControls: false,
-			classComparisonIndex: 0
-		}
-	});
-
-	new ClassGradient({
-		target: document.querySelector("#class-gradient-snorkel"),
-		store: store,
-		data: {
-			currentClassComparisonIndex: 0
-		}
-	});
-
-	new ClassGradient({
-		target: document.querySelector("#class-gradient-frying-pan"),
-		store: store,
-		data: {
-			currentClassComparisonIndex: 2
-		}
-	});
-
-	new ClassGradient({
-		target: document.querySelector("#class-gradient-shark"),
-		store: store,
-		data: {
-			currentClassComparisonIndex: 8
-		}
-	});
-
-	new Adversarial({
-		target: document.querySelector("#snorkel-scuba-diver"),
-		store: store,
-		data: {
-				aspectRatio: 480 / 360,
-				left: "snorkel",
-				right: "scuba diver",
-				classifications: [
-					{
-						image: "assets/images/snorkel-06.png",
-						caption: "Image from ImageNet labeled as “snorkel” with the classification confidences from Inceptionv1 for the top six classes.",
-						rows: [
-							["snorkel", 34.33],
-							["scuba diver", 28.16],
-							["coral reef", 12.43],
-							["loggerhead", 11.11],
-							["lionfish", 3.84],
-							["sea snake", 2.19]
-						]
-					},
-					{
-						image: "assets/images/teethshark-07.png",
-						caption: "By adding a picture of one of the concepts seen in the visualization above we can change the classification. With an added picture of a “shark” (also from ImageNet) the confidence of “scuba diver” classification rises and “snorkel” drops significantly.",
-						rows: [
-							["scuba diver", 50.30],
-							["coral reef", 22.44],
-							["tiger shark", 9.08],
-							["snorkel", 3.92],
-							["lionfish", 2.38],
-							["loggerhead", 2.12]
-						]
-					},
-					{
-						image: "assets/images/teethshark-05.png",
-						caption: "As the picture of the shark gets bigger, the classification for “great white shark” increases, but the relative changes in confidence of “snorkel” and “scuba diver” remain.",
-						rows: [
-							["great white shark", 81.73],
-							["tiger shark", 15.30],
-							["scuba diver", 1.62],
-							["loggerhead", 0.30],
-							["coho", 0.29],
-							["snorkel", 0.15]
-						]
-					}
-				]
+		new ClassGradient({
+			target: document.querySelector("#class-gradient-snorkel"),
+			store: store,
+			data: {
+				currentClassComparisonIndex: 0
 			}
-	});
+		});
 
-
-	new Adversarial({
-		target: document.querySelector("#frying-pan-wok"),
-		store: store,
-		data: {
-				left: "frying pan",
-				right: "wok",
-				aspectRatio: 806 / 608,
-				classifications: [
-					{
-						image: "assets/images/fry-06.png",
-						caption: "Image from ImageNet labeled as “frying pan” with the classification confidences from Inceptionv1 for the top six classes.",
-						rows: [
-							["frying pan", 34.62],
-							["stove", 16.33],
-							["strainer", 11.04],
-							["wok", 9.72],
-							["caldron", 8.79],
-							["Dutch oven", 6.02],
-						]
-					},
-					{
-						image: "assets/images/fry-noodles-14.png",
-						caption: "By adding a picture of some noodles, also from ImageNet, we can see the top classification change from “frying pan” to “wok.”",
-						rows: [
-							["wok", 48.30],
-							["frying pan", 18.64],
-							["strainer", 14.03],
-							["ladle", 4.40],
-							["stove", 2.77],
-							["caldron", 2.60],
-						]
-					},
-					{
-						image: "assets/images/fry-10.png",
-						caption: "As we make the picture of noodles larger, its influence overpowers the other classifications, but “wok” remains ranked above “frying pan”.",
-						rows: [
-							["carbonara", 87.79],
-							["strainer", 8.16],
-							["wok", 1.67],
-							["ladle", 0.45],
-							["frying pan", 0.37],
-							["French horn", 0.27],
-						]
-					}
-				]
+		new ClassGradient({
+			target: document.querySelector("#class-gradient-frying-pan"),
+			store: store,
+			data: {
+				currentClassComparisonIndex: 2
 			}
-	});
+		});
 
-	new Adversarial({
-		target: document.querySelector("#shark-grey-whale"),
-		store: store,
-		data: {
-				left: "great white shark",
-				right: "grey whale",
-				aspectRatio: 996 / 656,
-				classifications: [
-					{
-						image: "assets/images/whale-03.jpg",
-						caption: "",
-						rows: [
-							["grey whale", 78.39],
-							["killer whale", 20.97],
-							["great white shark", 0.34],
-							["gar", 0.13],
-							["sea lion", 0.09],
-							["tiger shark", 0.02],
-						]
-					},
-					{
-						image: "assets/images/whale-06.jpg",
-						caption: "",
-						rows: [
-							["great white shark", 34.35],
-							["rugby ball", 23.55],
-							["grey whale", 12.91],
-							["baseball", 10.89],
-							["killer whale", 7.70],
-							["ping - pong ball", 3.42],
-						]
-					},
-					{
-						image: "assets/images/whale-05.jpg",
-						caption: "",
-						rows: [
-							["baseball", 31.13],
-							["ping-pong ball", 22.93],
-							["great white shark", 14.01],
-							["grey whale", 8.11],
-							["rugby ball", 7.34],
-							["killer whale", 6.06],
-						]
-					},
-				]
+		new ClassGradient({
+			target: document.querySelector("#class-gradient-shark"),
+			store: store,
+			data: {
+				currentClassComparisonIndex: 8
 			}
-	});
+		});
+
+		new Adversarial({
+			target: document.querySelector("#snorkel-scuba-diver"),
+			store: store,
+			data: {
+					aspectRatio: 480 / 360,
+					left: "snorkel",
+					right: "scuba diver",
+					classifications: [
+						{
+							image: "assets/images/snorkel-06.png",
+							caption: "Image from ImageNet labeled as “snorkel” with the classification confidences from Inceptionv1 for the top six classes.",
+							rows: [
+								["snorkel", 34.33],
+								["scuba diver", 28.16],
+								["coral reef", 12.43],
+								["loggerhead", 11.11],
+								["lionfish", 3.84],
+								["sea snake", 2.19]
+							]
+						},
+						{
+							image: "assets/images/teethshark-07.png",
+							caption: "By adding a picture of one of the concepts seen in the visualization above we can change the classification. With an added picture of a “shark” (also from ImageNet) the confidence of “scuba diver” classification rises and “snorkel” drops significantly.",
+							rows: [
+								["scuba diver", 50.30],
+								["coral reef", 22.44],
+								["tiger shark", 9.08],
+								["snorkel", 3.92],
+								["lionfish", 2.38],
+								["loggerhead", 2.12]
+							]
+						},
+						{
+							image: "assets/images/teethshark-05.png",
+							caption: "As the picture of the shark gets bigger, the classification for “great white shark” increases, but the relative changes in confidence of “snorkel” and “scuba diver” remain.",
+							rows: [
+								["great white shark", 81.73],
+								["tiger shark", 15.30],
+								["scuba diver", 1.62],
+								["loggerhead", 0.30],
+								["coho", 0.29],
+								["snorkel", 0.15]
+							]
+						}
+					]
+				}
+		});
 
 
-	// Technical Notes and Limitations
+		new Adversarial({
+			target: document.querySelector("#frying-pan-wok"),
+			store: store,
+			data: {
+					left: "frying pan",
+					right: "wok",
+					aspectRatio: 806 / 608,
+					classifications: [
+						{
+							image: "assets/images/fry-06.png",
+							caption: "Image from ImageNet labeled as “frying pan” with the classification confidences from Inceptionv1 for the top six classes.",
+							rows: [
+								["frying pan", 34.62],
+								["stove", 16.33],
+								["strainer", 11.04],
+								["wok", 9.72],
+								["caldron", 8.79],
+								["Dutch oven", 6.02],
+							]
+						},
+						{
+							image: "assets/images/fry-noodles-14.png",
+							caption: "By adding a picture of some noodles, also from ImageNet, we can see the top classification change from “frying pan” to “wok.”",
+							rows: [
+								["wok", 48.30],
+								["frying pan", 18.64],
+								["strainer", 14.03],
+								["ladle", 4.40],
+								["stove", 2.77],
+								["caldron", 2.60],
+							]
+						},
+						{
+							image: "assets/images/fry-10.png",
+							caption: "As we make the picture of noodles larger, its influence overpowers the other classifications, but “wok” remains ranked above “frying pan”.",
+							rows: [
+								["carbonara", 87.79],
+								["strainer", 8.16],
+								["wok", 1.67],
+								["ladle", 0.45],
+								["frying pan", 0.37],
+								["French horn", 0.27],
+							]
+						}
+					]
+				}
+		});
+
+		new Adversarial({
+			target: document.querySelector("#shark-grey-whale"),
+			store: store,
+			data: {
+					left: "great white shark",
+					right: "grey whale",
+					aspectRatio: 996 / 656,
+					classifications: [
+						{
+							image: "assets/images/whale-03.jpg",
+							caption: "",
+							rows: [
+								["grey whale", 78.39],
+								["killer whale", 20.97],
+								["great white shark", 0.34],
+								["gar", 0.13],
+								["sea lion", 0.09],
+								["tiger shark", 0.02],
+							]
+						},
+						{
+							image: "assets/images/whale-06.jpg",
+							caption: "",
+							rows: [
+								["great white shark", 34.35],
+								["rugby ball", 23.55],
+								["grey whale", 12.91],
+								["baseball", 10.89],
+								["killer whale", 7.70],
+								["ping - pong ball", 3.42],
+							]
+						},
+						{
+							image: "assets/images/whale-05.jpg",
+							caption: "",
+							rows: [
+								["baseball", 31.13],
+								["ping-pong ball", 22.93],
+								["great white shark", 14.01],
+								["grey whale", 8.11],
+								["rugby ball", 7.34],
+								["killer whale", 6.06],
+							]
+						},
+					]
+				}
+		});
 
 
-	new Samples({
-		target: document.querySelector("#samples")
-	});
+		// Technical Notes and Limitations
 
-	new ClassGrids({
-		target: document.querySelector("#class-grids")
+
+		new Samples({
+			target: document.querySelector("#samples")
+		});
+
+		new ClassGrids({
+			target: document.querySelector("#class-grids")
+		});
+
+
 	});
 
 }());

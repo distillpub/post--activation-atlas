@@ -64,7 +64,7 @@
         </div>
     </div>
   </div>
-  <div class="options">
+  <div class="options" style="display: {showOptions ? 'block' : 'none'};">
     <Panel>
       <h2 slot="head">Options</h2>
       <div slot="body" class="options-body">
@@ -129,6 +129,7 @@ export default {
       iconCrop: 0.35,
       showClassFilter: true,
       showLayerChooser: true,
+      showOptions: true,
       homeX: .5,
       homeY: .5,
       homeScale: 1,
