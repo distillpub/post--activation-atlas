@@ -3206,7 +3206,7 @@
 				div = createElement("div");
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
-				div.className = "root svelte-ctiyrz";
+				div.className = "root svelte-1ejkfbm";
 				addLoc(div, file$9, 0, 0, 0);
 			},
 
@@ -3277,17 +3277,17 @@
 				if (if_block) if_block.c();
 				addListener(path, "mousemove", mousemove_handler);
 				addListener(path, "mouseup", mouseup_handler);
-				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-ctiyrz");
+				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1ejkfbm");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.width + ",0 L" + ctx.width + "," + ctx.height + " L0," + ctx.height + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z");
 				addLoc(path, file$9, 3, 4, 114);
 				setAttribute(svg, "width", ctx.width);
 				setAttribute(svg, "height", ctx.height);
-				setAttribute(svg, "class", "svelte-ctiyrz");
+				setAttribute(svg, "class", "svelte-1ejkfbm");
 				addLoc(svg, file$9, 2, 2, 87);
 				addListener(div, "mousemove", mousemove_handler_1);
 				addListener(div, "mousedown", mousedown_handler);
 				addListener(div, "mouseup", mouseup_handler_1);
-				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-ctiyrz";
+				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1ejkfbm";
 				setStyle(div, "box-sizing", "content-box");
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top-2.5) + "px");
@@ -3307,7 +3307,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-ctiyrz")) {
+				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1ejkfbm")) {
 					setAttribute(path, "class", path_class_value);
 				}
 
@@ -3336,7 +3336,7 @@
 					if_block = null;
 				}
 
-				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-ctiyrz")) {
+				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1ejkfbm")) {
 					div.className = div_class_value;
 				}
 
@@ -3395,12 +3395,12 @@
 				div0 = createElement("div");
 				p = createElement("p");
 				text = createText(ctx.annotationValue);
-				p.className = "annotation svelte-ctiyrz";
+				p.className = "annotation svelte-1ejkfbm";
 				addLoc(p, file$9, 27, 10, 951);
-				div0.className = "annotationTab svelte-ctiyrz";
+				div0.className = "annotationTab svelte-1ejkfbm";
 				setStyle(div0, "background", ctx.color);
 				addLoc(div0, file$9, 26, 8, 885);
-				div1.className = "annotationTabParent svelte-ctiyrz";
+				div1.className = "annotationTabParent svelte-1ejkfbm";
 				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
 				addLoc(div1, file$9, 25, 6, 810);
 			},
@@ -3673,9 +3673,8 @@
 		 	id: ctx.id,
 		 	classHeatmap: ctx.classHeatmap,
 		 	gridSize: 1,
-		 	iconCrop: 0.3,
+		 	iconCrop: 0.6,
 		 	scaleCountFactor: ctx.scaleCountFactor,
-		 	alphaAttributionFactor: 10,
 		 	backgroundColor: "#f0f0f0"
 		 };
 		var atlas = new Atlas({
@@ -3751,7 +3750,7 @@
 			c: function create() {
 				div = createElement("div");
 				atlas._fragment.c();
-				text = createText("\n    ");
+				text = createText("\n    \n    ");
 				atlasreticle._fragment.c();
 				placeholder._fragment.c();
 				div.className = "svelte-kiaj48 svelte-ref-root";
@@ -6269,7 +6268,7 @@
 		var atlas_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
 		 	strokeColor: "#666",
-		 	backgroundColor: "#f0f0f0",
+		 	backgroundColor: "#dfdfdf",
 		 	showHoverImage: false,
 		 	scaleCountFactor: ctx.scaleCountFactor,
 		 	classHeatmap: ctx.classHeatmap,
@@ -6385,6 +6384,7 @@
 
 		var appminimap_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
+		 	layerName: ctx.layerName,
 		 	enableDragging: true,
 		 	classHeatmap: ctx.classHeatmap,
 		 	scaleCountFactor: ctx.scaleCountFactor
@@ -6685,7 +6685,7 @@
 				setStyle(div4, "display", (ctx.scale > 1.0 ? 'block' : 'none'));
 				addLoc(div4, file$g, 46, 10, 1198);
 				div5.className = "buttons svelte-1rc1tnm";
-				addLoc(div5, file$g, 58, 10, 1577);
+				addLoc(div5, file$g, 59, 10, 1603);
 				div6.className = "svelte-1rc1tnm svelte-ref-controls";
 				addLoc(div6, file$g, 45, 8, 1169);
 				div7.className = "atlas svelte-1rc1tnm";
@@ -6693,113 +6693,113 @@
 				div8.className = "main svelte-1rc1tnm";
 				addLoc(div8, file$g, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$g, 68, 6, 2047);
-				addLoc(div9, file$g, 72, 10, 2146);
-				addLoc(div10, file$g, 73, 10, 2190);
-				addLoc(div11, file$g, 74, 10, 2234);
-				addLoc(div12, file$g, 71, 8, 2130);
-				addLoc(h30, file$g, 77, 8, 2311);
+				addLoc(h22, file$g, 69, 6, 2073);
+				addLoc(div9, file$g, 73, 10, 2172);
+				addLoc(div10, file$g, 74, 10, 2216);
+				addLoc(div11, file$g, 75, 10, 2260);
+				addLoc(div12, file$g, 72, 8, 2156);
+				addLoc(h30, file$g, 78, 8, 2337);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$g, 78, 17, 2349);
+				addLoc(input0, file$g, 79, 17, 2375);
 				label0.className = "svelte-1rc1tnm";
-				addLoc(label0, file$g, 78, 10, 2342);
-				addLoc(div13, file$g, 76, 8, 2297);
-				addLoc(h31, file$g, 81, 10, 2472);
+				addLoc(label0, file$g, 79, 10, 2368);
+				addLoc(div13, file$g, 77, 8, 2323);
+				addLoc(h31, file$g, 82, 10, 2498);
 				component._bindingGroups[0].push(input1);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "radio");
 				input1.__value = 0;
 				input1.value = input1.__value;
-				addLoc(input1, file$g, 82, 17, 2508);
+				addLoc(input1, file$g, 83, 17, 2534);
 				label1.className = "svelte-1rc1tnm";
-				addLoc(label1, file$g, 82, 10, 2501);
+				addLoc(label1, file$g, 83, 10, 2527);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "radio");
 				input2.__value = 1;
 				input2.value = input2.__value;
-				addLoc(input2, file$g, 83, 17, 2588);
+				addLoc(input2, file$g, 84, 17, 2614);
 				label2.className = "svelte-1rc1tnm";
-				addLoc(label2, file$g, 83, 10, 2581);
+				addLoc(label2, file$g, 84, 10, 2607);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 2;
 				input3.value = input3.__value;
-				addLoc(input3, file$g, 84, 17, 2668);
+				addLoc(input3, file$g, 85, 17, 2694);
 				label3.className = "svelte-1rc1tnm";
-				addLoc(label3, file$g, 84, 10, 2661);
+				addLoc(label3, file$g, 85, 10, 2687);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 3;
 				input4.value = input4.__value;
-				addLoc(input4, file$g, 85, 17, 2748);
+				addLoc(input4, file$g, 86, 17, 2774);
 				label4.className = "svelte-1rc1tnm";
-				addLoc(label4, file$g, 85, 10, 2741);
+				addLoc(label4, file$g, 86, 10, 2767);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 4;
 				input5.value = input5.__value;
-				addLoc(input5, file$g, 86, 17, 2830);
+				addLoc(input5, file$g, 87, 17, 2856);
 				label5.className = "svelte-1rc1tnm";
-				addLoc(label5, file$g, 86, 10, 2823);
+				addLoc(label5, file$g, 87, 10, 2849);
 				div14.className = "grid-size";
-				addLoc(div14, file$g, 80, 8, 2438);
-				addLoc(h32, file$g, 89, 10, 2934);
-				addLoc(div15, file$g, 90, 10, 2959);
+				addLoc(div14, file$g, 81, 8, 2464);
+				addLoc(h32, file$g, 90, 10, 2960);
+				addLoc(div15, file$g, 91, 10, 2985);
 				addListener(input6, "change", input6_change_input_handler);
 				addListener(input6, "input", input6_change_input_handler);
 				setAttribute(input6, "type", "range");
 				input6.min = 0.2;
 				input6.max = 10;
 				input6.step = 0.1;
-				addLoc(input6, file$g, 91, 10, 3013);
-				addLoc(br, file$g, 92, 10, 3101);
-				addLoc(div16, file$g, 93, 10, 3116);
+				addLoc(input6, file$g, 92, 10, 3039);
+				addLoc(br, file$g, 93, 10, 3127);
+				addLoc(div16, file$g, 94, 10, 3142);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
 				setAttribute(input7, "type", "range");
 				input7.min = 0;
 				input7.max = 0.5;
 				input7.step = 0.01;
-				addLoc(input7, file$g, 94, 10, 3160);
-				addLoc(div17, file$g, 88, 8, 2918);
-				addLoc(h33, file$g, 97, 10, 3326);
-				addLoc(div18, file$g, 98, 10, 3358);
+				addLoc(input7, file$g, 95, 10, 3186);
+				addLoc(div17, file$g, 89, 8, 2944);
+				addLoc(h33, file$g, 98, 10, 3352);
+				addLoc(div18, file$g, 99, 10, 3384);
 				addListener(input8, "change", input8_change_input_handler);
 				addListener(input8, "input", input8_change_input_handler);
 				setAttribute(input8, "type", "range");
 				input8.min = "0.5";
 				input8.max = "2";
 				input8.step = "0.1";
-				addLoc(input8, file$g, 99, 10, 3421);
+				addLoc(input8, file$g, 100, 10, 3447);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$g, 100, 17, 3516);
+				addLoc(input9, file$g, 101, 17, 3542);
 				label6.className = "svelte-1rc1tnm";
-				addLoc(label6, file$g, 100, 10, 3509);
+				addLoc(label6, file$g, 101, 10, 3535);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$g, 101, 17, 3621);
+				addLoc(input10, file$g, 102, 17, 3647);
 				label7.className = "svelte-1rc1tnm";
-				addLoc(label7, file$g, 101, 10, 3614);
+				addLoc(label7, file$g, 102, 10, 3640);
 				setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div19, file$g, 96, 8, 3254);
+				addLoc(div19, file$g, 97, 8, 3280);
 				setAttribute(div20, "slot", "body");
 				div20.className = "options-body svelte-1rc1tnm";
-				addLoc(div20, file$g, 69, 6, 2082);
+				addLoc(div20, file$g, 70, 6, 2108);
 				div21.className = "options svelte-1rc1tnm";
 				setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
-				addLoc(div21, file$g, 66, 2, 1956);
+				addLoc(div21, file$g, 67, 2, 1982);
 				div22.className = "container svelte-1rc1tnm";
 				addLoc(div22, file$g, 0, 0, 0);
 			},
@@ -7058,6 +7058,7 @@
 
 				var appminimap_changes = {};
 				if (changed.layerName) appminimap_changes.id = "inceptionv1_" + ctx.layerName;
+				if (changed.layerName) appminimap_changes.layerName = ctx.layerName;
 				if (changed.classHeatmap) appminimap_changes.classHeatmap = ctx.classHeatmap;
 				if (changed.scaleCountFactor) appminimap_changes.scaleCountFactor = ctx.scaleCountFactor;
 				if (!appminimap_updating.aspectRatio && changed.aspectRatio) {

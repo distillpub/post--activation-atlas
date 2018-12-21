@@ -26,7 +26,7 @@
           ref:atlas
           id="inceptionv1_{layerName}"
           strokeColor="#666"
-          backgroundColor="#f0f0f0"
+          backgroundColor="#dfdfdf"
           showHoverImage={false}
           {scaleCountFactor}
           {classHeatmap}
@@ -47,6 +47,7 @@
           <div class="map" style="display: {scale > 1.0 ? 'block' : 'none'};">
             <AppMiniMap 
               id="inceptionv1_{layerName}"
+              {layerName}
               bind:aspectRatio
               bind:scale
               bind:gcx
