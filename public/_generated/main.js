@@ -1499,7 +1499,7 @@
 	const store = new MyStore({
 	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
-	  classChoices: [9, 622, 780, 665, 652, 322, 288, 233, 225, 188, 169, 80, 76, 62, 61, 7, 355, 990, 897, 746, 791],
+	  classChoices: [9, 622, 665, 652, 288, 233, 188, 169, 80, 76, 62, 61, 7, 355, 990, 746, 791],
 	  // For class gradients and class comparisons
 	  currentClassComparisonIndex: 0,
 	  classComparisons: [
@@ -7494,113 +7494,113 @@
 				div8.className = "main svelte-1rc1tnm";
 				addLoc(div8, file$j, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$j, 69, 6, 2073);
-				addLoc(div9, file$j, 73, 10, 2172);
-				addLoc(div10, file$j, 74, 10, 2216);
-				addLoc(div11, file$j, 75, 10, 2260);
-				addLoc(div12, file$j, 72, 8, 2156);
-				addLoc(h30, file$j, 78, 8, 2337);
+				addLoc(h22, file$j, 70, 6, 2165);
+				addLoc(div9, file$j, 74, 10, 2264);
+				addLoc(div10, file$j, 75, 10, 2308);
+				addLoc(div11, file$j, 76, 10, 2352);
+				addLoc(div12, file$j, 73, 8, 2248);
+				addLoc(h30, file$j, 79, 8, 2429);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$j, 79, 17, 2375);
+				addLoc(input0, file$j, 80, 17, 2467);
 				label0.className = "svelte-1rc1tnm";
-				addLoc(label0, file$j, 79, 10, 2368);
-				addLoc(div13, file$j, 77, 8, 2323);
-				addLoc(h31, file$j, 82, 10, 2498);
+				addLoc(label0, file$j, 80, 10, 2460);
+				addLoc(div13, file$j, 78, 8, 2415);
+				addLoc(h31, file$j, 83, 10, 2590);
 				component._bindingGroups[0].push(input1);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "radio");
 				input1.__value = 0;
 				input1.value = input1.__value;
-				addLoc(input1, file$j, 83, 17, 2534);
+				addLoc(input1, file$j, 84, 17, 2626);
 				label1.className = "svelte-1rc1tnm";
-				addLoc(label1, file$j, 83, 10, 2527);
+				addLoc(label1, file$j, 84, 10, 2619);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "radio");
 				input2.__value = 1;
 				input2.value = input2.__value;
-				addLoc(input2, file$j, 84, 17, 2614);
+				addLoc(input2, file$j, 85, 17, 2706);
 				label2.className = "svelte-1rc1tnm";
-				addLoc(label2, file$j, 84, 10, 2607);
+				addLoc(label2, file$j, 85, 10, 2699);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 2;
 				input3.value = input3.__value;
-				addLoc(input3, file$j, 85, 17, 2694);
+				addLoc(input3, file$j, 86, 17, 2786);
 				label3.className = "svelte-1rc1tnm";
-				addLoc(label3, file$j, 85, 10, 2687);
+				addLoc(label3, file$j, 86, 10, 2779);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 3;
 				input4.value = input4.__value;
-				addLoc(input4, file$j, 86, 17, 2774);
+				addLoc(input4, file$j, 87, 17, 2866);
 				label4.className = "svelte-1rc1tnm";
-				addLoc(label4, file$j, 86, 10, 2767);
+				addLoc(label4, file$j, 87, 10, 2859);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 4;
 				input5.value = input5.__value;
-				addLoc(input5, file$j, 87, 17, 2856);
+				addLoc(input5, file$j, 88, 17, 2948);
 				label5.className = "svelte-1rc1tnm";
-				addLoc(label5, file$j, 87, 10, 2849);
+				addLoc(label5, file$j, 88, 10, 2941);
 				div14.className = "grid-size";
-				addLoc(div14, file$j, 81, 8, 2464);
-				addLoc(h32, file$j, 90, 10, 2960);
-				addLoc(div15, file$j, 91, 10, 2985);
+				addLoc(div14, file$j, 82, 8, 2556);
+				addLoc(h32, file$j, 91, 10, 3052);
+				addLoc(div15, file$j, 92, 10, 3077);
 				addListener(input6, "change", input6_change_input_handler);
 				addListener(input6, "input", input6_change_input_handler);
 				setAttribute(input6, "type", "range");
 				input6.min = 0.2;
 				input6.max = 10;
 				input6.step = 0.1;
-				addLoc(input6, file$j, 92, 10, 3039);
-				addLoc(br, file$j, 93, 10, 3127);
-				addLoc(div16, file$j, 94, 10, 3142);
+				addLoc(input6, file$j, 93, 10, 3131);
+				addLoc(br, file$j, 94, 10, 3219);
+				addLoc(div16, file$j, 95, 10, 3234);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
 				setAttribute(input7, "type", "range");
 				input7.min = 0;
 				input7.max = 0.5;
 				input7.step = 0.01;
-				addLoc(input7, file$j, 95, 10, 3186);
-				addLoc(div17, file$j, 89, 8, 2944);
-				addLoc(h33, file$j, 98, 10, 3352);
-				addLoc(div18, file$j, 99, 10, 3384);
+				addLoc(input7, file$j, 96, 10, 3278);
+				addLoc(div17, file$j, 90, 8, 3036);
+				addLoc(h33, file$j, 99, 10, 3444);
+				addLoc(div18, file$j, 100, 10, 3476);
 				addListener(input8, "change", input8_change_input_handler);
 				addListener(input8, "input", input8_change_input_handler);
 				setAttribute(input8, "type", "range");
 				input8.min = "0.5";
 				input8.max = "2";
 				input8.step = "0.1";
-				addLoc(input8, file$j, 100, 10, 3447);
+				addLoc(input8, file$j, 101, 10, 3539);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$j, 101, 17, 3542);
+				addLoc(input9, file$j, 102, 17, 3634);
 				label6.className = "svelte-1rc1tnm";
-				addLoc(label6, file$j, 101, 10, 3535);
+				addLoc(label6, file$j, 102, 10, 3627);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$j, 102, 17, 3647);
+				addLoc(input10, file$j, 103, 17, 3739);
 				label7.className = "svelte-1rc1tnm";
-				addLoc(label7, file$j, 102, 10, 3640);
+				addLoc(label7, file$j, 103, 10, 3732);
 				setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div19, file$j, 97, 8, 3280);
+				addLoc(div19, file$j, 98, 8, 3372);
 				setAttribute(div20, "slot", "body");
 				div20.className = "options-body svelte-1rc1tnm";
-				addLoc(div20, file$j, 70, 6, 2108);
+				addLoc(div20, file$j, 71, 6, 2200);
 				div21.className = "options svelte-1rc1tnm";
 				setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
-				addLoc(div21, file$j, 67, 2, 1982);
+				addLoc(div21, file$j, 68, 2, 2074);
 				div22.className = "container svelte-1rc1tnm";
 				addLoc(div22, file$j, 0, 0, 0);
 			},
@@ -8627,7 +8627,7 @@
 	/* src/diagrams/ClassAtlas.html generated by Svelte v2.15.3 */
 
 	function root({filterType}) {
-		return `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/render/`;
+		return `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/render/`;
 	}
 
 	function ticks$1({gridSize}) {
@@ -8635,16 +8635,17 @@
 	}
 
 	function src({root, classFilter, gridSize, filterType}) {
-		return `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1024--icon_size=80--grid_size=${gridSize}--layout=20_0.01_cosine--class_filter=${classFilter}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`;
+		return `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`;
 	}
 
 	function data$g() {
 	  return {
-	    filterType: "top",
+	    filterType: "winner",
 	    classFilter: 62,
 	    gridSize: 8
 	  }
-	}// https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_combined/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_combined--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+	}//https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_winner/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=8--layout=20_0.02_cosine--class_filter=112_winner--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+	// https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_combined/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_combined--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 	// https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_winner/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=1_winner--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 	// https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_top--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 
@@ -8930,7 +8931,96 @@
 	    layout: 0,
 	    currentClass: 62,
 	    // classes: [7,9,1,2,12,13,14,24,61,62,76,80,81,169,188,225,226,233,249,288,309,312,322,323,378,652,665,780,804,901,946,992,274,279,286,543,544,55,76,622,631,645,643,671,672,507,982,897,701,777,831,990,677,822,947,348,355,746,827, 721,582,827,359,361,367,359,367,364,543,544,737,738,737,738,736,744,176,67,28,205,102,62,791,287,235],
-	    classes: [62,7,2,12,80,225,652,233,322,323,378,665,780,804,901,946,992,622,631,643,671,672,507,982,990,677,822,947,348,355,721,582,361,364,737,738,736,744,791,287,235],
+	    // classes: [62,7,2,80,652,233,323,378,665,780,804,901,946,992,622,631,643,671,672,507,982,990,677,822,947,348,355,721,582,361,364,737,738,736,744,791,287,235],
+	    // classes: $classChoices
+	    // 62, 235, 982, 507, 41, 176, 3, 2, 112, 442, 450, 930, 600, 605, 736, 358, 744, 756, 936, 943, 483, 488, 489, 405, 411, 387, 
+	    classes: [
+	      235,
+	      287,
+	      982,
+	      507,
+	      41,
+	      176,
+	      3,
+	      2,
+	      112,
+	      158,
+	      442,
+	      450,
+	      454,
+	      513,
+	      529,
+	      930,
+	      600,
+	      605,
+	      736,
+	      744,
+	      358,
+	      756,
+	      936,
+	      942,
+	      943,
+	      366,
+	      365,
+	      367,
+	      484,
+	      483,
+	      488,
+	      489,
+	      387,
+	      388,
+	      399,
+	      411,
+	      405,
+	      547,
+	      671,
+	      672,
+	      6,
+	      9,
+	      622,
+	      665,
+	      652,
+	      288,
+	      233,
+	      188,
+	      169,
+	      80,
+	      76,
+	      62,
+	      61,
+	      7,
+	      355,
+	      990,
+	      746,
+	      791,
+	      62,
+	      7,
+	      2,
+	      80,
+	      652,
+	      233,
+	      323,
+	      378,
+	      665,
+	      780,
+	      804,
+	      901,
+	      946,
+	      992,
+	      622,
+	      631,
+	      643,
+	      677,
+	      822,
+	      947,
+	      348,
+	      721,
+	      582,
+	      361,
+	      364,
+	      737,
+	      738,
+	    ]
 	  }
 	}
 	const file$p = "src/diagrams/ClassSubset.html";
@@ -10524,7 +10614,7 @@
 	const file$t = "src/diagrams/Samples.html";
 
 	function create_main_fragment$u(component, ctx) {
-		var div3, div0, h40, text1, text2, div1, h41, text4, text5, div2, h42, text7;
+		var div6, div1, text0, div0, text2, div3, text3, div2, text5, div5, text6, div4;
 
 		var lazyimage0_initial_data = {
 		 	src: "assets/images/render--x%3D0--y%3D0--tries%3D4--alpha%3DFalse--tile_size%3D20--whiten%3Dtrue--steps%3D1024--icon_size%3D80--grid_size%3D20--layout%3D50_0.05_cosine--class_filter%3DNone--filter%3D10000--layer%3Dmixed4c--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.jpg",
@@ -10558,64 +10648,67 @@
 
 		return {
 			c: function create() {
-				div3 = createElement("div");
-				div0 = createElement("div");
-				h40 = createElement("h4");
-				h40.textContent = "10,000 activations";
-				text1 = createText("\n    ");
-				lazyimage0._fragment.c();
-				text2 = createText("\n  ");
+				div6 = createElement("div");
 				div1 = createElement("div");
-				h41 = createElement("h4");
-				h41.textContent = "100,000 activations";
-				text4 = createText("\n    ");
+				lazyimage0._fragment.c();
+				text0 = createText("\n    ");
+				div0 = createElement("div");
+				div0.textContent = "10,000 activations";
+				text2 = createText("\n  ");
+				div3 = createElement("div");
 				lazyimage1._fragment.c();
-				text5 = createText("\n  ");
+				text3 = createText("\n    ");
 				div2 = createElement("div");
-				h42 = createElement("h4");
-				h42.textContent = "1,000,000 activations";
-				text7 = createText("\n    ");
+				div2.textContent = "100,000 activations";
+				text5 = createText("\n  ");
+				div5 = createElement("div");
 				lazyimage2._fragment.c();
-				addLoc(h40, file$t, 2, 4, 27);
-				addLoc(div0, file$t, 1, 2, 17);
-				addLoc(h41, file$t, 9, 4, 430);
-				addLoc(div1, file$t, 8, 2, 420);
-				addLoc(h42, file$t, 16, 4, 836);
-				addLoc(div2, file$t, 15, 2, 826);
-				div3.className = "svelte-fa3qj3 svelte-ref-root";
-				addLoc(div3, file$t, 0, 0, 0);
+				text6 = createText("\n    ");
+				div4 = createElement("div");
+				div4.textContent = "1,000,000 activations";
+				setStyle(div0, "margin-top", "4px");
+				addLoc(div0, file$t, 6, 4, 381);
+				addLoc(div1, file$t, 1, 2, 17);
+				setStyle(div2, "margin-top", "4px");
+				addLoc(div2, file$t, 13, 4, 813);
+				addLoc(div3, file$t, 8, 2, 447);
+				setStyle(div4, "margin-top", "4px");
+				addLoc(div4, file$t, 20, 4, 1249);
+				addLoc(div5, file$t, 15, 2, 880);
+				div6.className = "svelte-1ppku9e svelte-ref-root";
+				addLoc(div6, file$t, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div3, anchor);
-				append(div3, div0);
-				append(div0, h40);
-				append(div0, text1);
-				lazyimage0._mount(div0, null);
-				append(div3, text2);
-				append(div3, div1);
-				append(div1, h41);
-				append(div1, text4);
-				lazyimage1._mount(div1, null);
-				append(div3, text5);
+				insert(target, div6, anchor);
+				append(div6, div1);
+				lazyimage0._mount(div1, null);
+				append(div1, text0);
+				append(div1, div0);
+				append(div6, text2);
+				append(div6, div3);
+				lazyimage1._mount(div3, null);
+				append(div3, text3);
 				append(div3, div2);
-				append(div2, h42);
-				append(div2, text7);
-				lazyimage2._mount(div2, null);
-				component.refs.root = div3;
+				append(div6, text5);
+				append(div6, div5);
+				lazyimage2._mount(div5, null);
+				append(div5, text6);
+				append(div5, div4);
+				component.refs.root = div6;
 			},
 
 			p: noop,
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div3);
+					detachNode(div6);
 				}
 
 				lazyimage0.destroy();
 				lazyimage1.destroy();
 				lazyimage2.destroy();
-				if (component.refs.root === div3) component.refs.root = null;
+				if (component.refs.root === div6) component.refs.root = null;
 			}
 		};
 	}

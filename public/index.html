@@ -37,7 +37,7 @@
     }
     .app-container > d-figure {
       display: block;
-      margin: 0 8px;
+      margin: 0 0 0 8px;
       height: 100%;
       border-left: solid 1px rgba(0, 0, 0, 0.1);
       border-right: solid 1px rgba(0, 0, 0, 0.1);
@@ -481,15 +481,23 @@
 </section>
 
 <section class="base-grid">
-  <h2>Technical Notes and Limitations</h2>
+  
+</section>
+</d-article>
 
-  <h3>Sampling based</h3>
+<!-- END DOC -->
+
+<d-appendix>
+<h3>Technical Notes and Limitations</h3>
+  <p>In this section we note some of the limits and pitfalls that we've noticed while developing and working with activation atlases.</p>
+
+  <h4>Sampling based</h4>
 
   <p>Activation Atlases are a sample-based method which can only show a manifold of sampled activations. First, the dataset from which those activations are sampled from needs to come from the same distribution as the one that we are interested in. In this article we sample from the training set because we are interested in what the model has learned to recognize. Second, we need to provide enough samples to span the full manifold we want to observe. In this article we generally used one million activations but we found that 100,000 activations was often sufficient. 
 
-  <figure id="samples" style="grid-column: screen;"></figure>
+  <figure id="samples" style="grid-column: text/page-end;"></figure>
 
-  <h3>Doesn’t Surface Compositionality</h3>
+  <h4>Doesn’t Surface Compositionality</h4>
 
   <p>Neural network activations have an underlying compositional, combinatorial structure. We can mix together a couple hundred basis neurons to get any activation vector. Unfortunately, this has the problem of being an exponentially large space and hard to find the interesting activations. Activation Atlases solve this problem by sampling the interesting activation vectors, but completely lose the original compositional structure.
 
@@ -498,56 +506,33 @@
   <p>Surfacing compositionality is deeply connected to the high-dimensional nature of the original space. As a result, it’s naturally hard to do in 2D. That said, it may be possible to partially surface compositionality, like the <a href="https://distill.pub/2017/feature-visualization/#linear-combinations">neuron addition diagram</a> in Feature Visualization <d-cite key="olah2017feature"></d-cite> did. Another early prototype is a <a href="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/misc/neuron_interaction_grids.ipynb">neuron activation grid</a>. We vaguely suspect that there may be a way to thread the needle with clever use of matrix factorization, but we do not yet know how.
 
 
-
-  <h3>No alignment between layers</h3>
+  <h4>No alignment between layers</h4>
 
   <p>There's no way to link two views together. For instance, when looking at two layers side-by-side, similar features appear in random locations. (=currently doesn’t show attribution between hidden layers) (could use the example of mixed 4c-4d here, how they are very similar but vertically transposed)
 
   <!--<p>Interpreting the feature visualizations can be subjective and sometimes feel a bit like reading tea leaves. (Maybe just keep this in mind when rewriting text. Instead of “icon is a bird” “icon shows structures that appear in pictures of birds” -->
 
-  <h3>Computationally expensive</h3>
+  <h4>Computationally expensive</h4>
 
   <p>It's computationally expensive. While it depends on many factors, activation atlases generally take somewhere between several minutes and several hours, end to end. 
 
-  <h3>Dependency on hyperparameters</h3>
+  <h4>Dependency on hyperparameters</h4>
 
   <p>Because it is based on dimensionality reduction, the final output can be very sensitive to the hyperparameters chosen for the reduction step. UMAP and t-SNE are both reasonable choices and each could also produce different results.
 
   <p>Because the choice of a grid size is somewhat arbitrary, much like choosing a histogram bin size <d-cite key="aranm2017exploring"></d-cite>, your choice of grid size will determine the effectiveness of the final output. Choosing the wrong bin size can sometimes *hide* important features in the averages. In some of the later examples we bind this value to the zoom level so the detail of the visualizations dynamic changes as you zoom in. A more principled clustering method might be better.
 
-  <figure id="class-grids" style="grid-column: page;"></figure>
+  <figure id="class-grids" style="grid-column: text/page-end;"></figure>
 
-  <h3>Dimensionality reduction vs clustering</h3>
+  <h4>Dimensionality reduction vs clustering</h4>
 
   <p>One might think that a true clustering algorithm, like k-means, might produce a more robust decomposition of the activation manifold. After all, centroids produced by such an algorithm are by definition close to clusters of activations the network produces, a property that discretizing the dimensionality-reduced activations doesn’t guarantee. We experimented with different clustering techniques such as k-means, spherical k-means, and DBSCAN. However, the images produced by visualizing the resulting centroids were subjectively worse and less interpretable than the technique described in this article. Also, dimensionality reduction followed by 2D binning allows for multiple levels of detail while preserving spatial consistency, which is necessary for making atlasses zoomable. Thus, we preferred that method over clustering in this article -- but finding tradeoffs between these techniques remains an open question.</p>
 
-</section>
-</d-article>
-
-<!-- END DOC -->
-
-<!-- for modern browsers -->
-<!-- <script>
-  import('./_generated/module/main.js');
-  window.supportsDynamicImport = true;
-</script> -->
-
-<!-- for older browsers -->
-<!-- <script>
-if (!window.supportsDynamicImport) {
-  const systemJsLoaderTag = document.createElement('script');
-  systemJsLoaderTag.src = 's.min.js';
-  systemJsLoaderTag.addEventListener('load', function () {
-    System.import('./_generated/nomodule/main.js');
-  });
-  document.head.appendChild(systemJsLoaderTag);
-}
-</script> -->
-
-<d-appendix>
-	<!-- <h3 id="additional-resources">Additional Resources</h3>
-	<h3 id="acknowledgements">Acknowledgments</h3>
-	<h3 id="author-contributions">Author Contributions</h3> -->
+<h3 id="author-contributions">Author Contributions</h3>
+<p>Shan Carter wrote the majority of the article and performed all the experiments. Zan Armstrong helped helped with the interactive diagrams and the writing. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
+<h3 id="acknowledgements">Acknowledgments</h3>
+<p>Thanks to Ludwig Schubert for extensive technical advice and general feedback. Thanks to Sam Greydanus and Kevin Quealy for substantial help editing the text. Thanks to Nick Cammarata and Arvind Satyanarayan for additional feedback during development. </p>
+	<!-- <h3 id="additional-resources">Additional Resources</h3>-->
 	<d-footnote-list></d-footnote-list>
   <d-citation-list></d-citation-list>
 </d-appendix>

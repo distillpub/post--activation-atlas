@@ -4,6 +4,8 @@
 
 Add pinch to zoom support
 
+activation atlas button gets cut off
+
 Fix zoom.html
 
 Colab notebooks
