@@ -1,13 +1,13 @@
-<h4>Class Activation Atlas for “{$inceptionLabels[currentClass]}”</h4>
+<h4>Class Activation Atlas for “{$inceptionLabels[$currentClassAtlasIndex]}”</h4>
 <div ref:root>
   <div style="position: relative;">
-    <ClassAtlas classFilter={currentClass}/>
+    <ClassAtlas classFilter={$currentClassAtlasIndex}/>
   </div>
   <div class="chooser-container">
     <div class="chooser">
-      {#each classes as c}
-        <label class="{currentClass === c ? 'selected' : ''}">
-          <input type=radio bind:group=currentClass value={c}>
+      {#each $classAtlasIndices as c}
+        <label class="{$currentClassAtlasIndex === c ? 'selected' : ''}">
+          <input type=radio bind:group=$currentClassAtlasIndex value={c}>
           {$inceptionLabels[c]} ({c})
         </label>
       {/each}
@@ -28,98 +28,7 @@ export default {
   data() {
     return {
       layout: 0,
-      currentClass: 62,
-      // classes: [7,9,1,2,12,13,14,24,61,62,76,80,81,169,188,225,226,233,249,288,309,312,322,323,378,652,665,780,804,901,946,992,274,279,286,543,544,55,76,622,631,645,643,671,672,507,982,897,701,777,831,990,677,822,947,348,355,746,827, 721,582,827,359,361,367,359,367,364,543,544,737,738,737,738,736,744,176,67,28,205,102,62,791,287,235],
-      // classes: [62,7,2,80,652,233,323,378,665,780,804,901,946,992,622,631,643,671,672,507,982,990,677,822,947,348,355,721,582,361,364,737,738,736,744,791,287,235],
-      // classes: $classChoices
-      // 62, 235, 982, 507, 41, 176, 3, 2, 112, 442, 450, 930, 600, 605, 736, 358, 744, 756, 936, 943, 483, 488, 489, 405, 411, 387, 
-      classes: [
-        235,
-        287,
-        982,
-        507,
-        41,
-        176,
-        3,
-        2,
-        112,
-        158,
-        442,
-        450,
-        454,
-        513,
-        529,
-        930,
-        600,
-        605,
-        736,
-        744,
-        358,
-        756,
-        936,
-        942,
-        943,
-        366,
-        365,
-        367,
-        484,
-        483,
-        488,
-        489,
-        387,
-        388,
-        399,
-        411,
-        405,
-        547,
-        671,
-        672,
-        6,
-        9,
-        622,
-        665,
-        652,
-        288,
-        233,
-        188,
-        169,
-        80,
-        76,
-        62,
-        61,
-        7,
-        355,
-        990,
-        746,
-        791,
-        62,
-        7,
-        2,
-        80,
-        652,
-        233,
-        323,
-        378,
-        665,
-        780,
-        804,
-        901,
-        946,
-        992,
-        622,
-        631,
-        643,
-        677,
-        822,
-        947,
-        348,
-        721,
-        582,
-        361,
-        364,
-        737,
-        738,
-      ]
+      $currentClassAtlasIndex: 62,
     }
   },
   computed: {

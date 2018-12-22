@@ -398,21 +398,17 @@
 
   <p>A class activation atlas gives us a much clearer view of which detectors the network is using to rank a specific class. In the "red fox" example we can clearly see red pointy ears, brown paws, green forest and snowy backgrounds.
 
-  <!--<p>TODO: maybe show a different filtering criteria, top n when sorted by attribution value versus all that have specified class as the top attribution.-->
+  <p>We can also choose different filtering criteria. Rank versus magnitude. By taking the activations where our class of interest is the top ranked attribution, we show activations that contribute mostly to our class, regardless of magnitude. This tends to show low attribution items like backgrounds. If we also show the top activations by magnitude toward the class of interest, we see only activations that contribute strongly toward our class, but we miss things like backgrounds and we get activations that could actually contribute more to another class, thus showing us correlated objects, like showing a coffee cup when looking at crossword puzzle.</p>
 
-  <p>Now we can much more easily compare two different classes and see what distinguishes them. For instance, let's look at two related classes side-by-side.
+  <figure id="class-filter-comparison" style="grid-column: page;"></figure>
 
-  <div id="" style="grid-column: page;">
-    <figure id="class-comparison-1" style="grid-column: page;"></figure>
-  </div>
+  <p>Now, using the magnitude filtering method, let's try to compare two different classes and see if we can more easily see what distinguishes them. (We could have instead used rank, or a combination of the two, but magnitude will suffice to show us a good variety of concepts).
 
-  <p>With these two it's obvious what the differences are, but this is not always the case. Let's look at a more subtle example: "snorkel" versus "scuba diver".
-
-  <div id="" style="grid-column: page;">
+  <div style="grid-column: page;">
     <figure id="class-comparison-2" style="grid-column: page;"></figure>
   </div>
 
-  <p>Here it's a little harder to immediately understand all the differences between the classes. Some areas seem very similar, others very different. To help make the comparison easier, we can combine the two views into one. We'll plot the difference between the attributions of the two classes on the x-axis, and use t-SNE <d-cite key="maaten2008visualizing"></d-cite> to cluster similar activations vertically.
+  <p>It can be a little hard to immediately understand all the differences between classes. In some cases, some areas seem very similar, others very different. To help make the comparison easier, we can combine the two views into one. We'll plot the difference between the attributions of the "snorkel" and "scuba diver" on the x-axis, and use t-SNE <d-cite key="maaten2008visualizing"></d-cite> to cluster similar activations vertically.
     
   <figure id="class-gradient-snorkel" style="grid-column: text;"></figure>
 

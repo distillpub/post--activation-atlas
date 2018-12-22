@@ -40,6 +40,7 @@ Colab notebooks
 add different filtering strategies in article
 
 add different filtering strategies in playground
+by rank, by magnitude
 
 autochoose gridsize
 

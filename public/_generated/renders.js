@@ -1430,7 +1430,9 @@
 	const store = new MyStore({
 	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
+	  currentClassAtlasIndex: 62,
 	  classChoices: [9, 622, 665, 652, 288, 233, 188, 169, 80, 76, 62, 61, 7, 355, 990, 746, 791],
+	  classAtlasIndices: [62,235,982,507,41,2,176,442,450,454,529,930,600,605,736,744,936,367,488,489,387,388,399,671,672,6,9,665,652,288,233,169,80,76,7,355,990,791,323,378,780,804,901,946,631,643,677,947,348,721,582,737,738],
 	  // For class gradients and class comparisons
 	  currentClassComparisonIndex: 0,
 	  classComparisons: [

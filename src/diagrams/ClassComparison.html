@@ -8,13 +8,13 @@
   <div>
     <h4>“{$inceptionLabels[leftIndex]}”</h4>
     <div class="atlas">
-      <ClassAtlas classFilter={leftIndex} />
+      <ClassAtlas classFilter={leftIndex} {filterType} />
     </div>
   </div>
   <div>
     <h4>“{$inceptionLabels[rightIndex]}”</h4>
     <div class="atlas">
-      <ClassAtlas classFilter={rightIndex} />
+      <ClassAtlas classFilter={rightIndex} {filterType} />
     </div>
   </div>
 </div>
@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       classComparisonIndex: 0,
-      showControls: true
+      showControls: true,
+      filterType: "top"
     };
   },
   computed: {

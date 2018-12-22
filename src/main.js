@@ -10,6 +10,7 @@ import Overview from './diagrams/Overview.html';
 import ModelOverview from './diagrams/ModelOverview.html';
 import GridDetail from './diagrams/GridDetail.html';
 import ClassSubset from './diagrams/ClassSubset.html';
+import ClassFilterComparison from './diagrams/ClassFilterComparison.html';
 import ClassComparison from './diagrams/ClassComparison.html';
 import ClassGradient from './diagrams/ClassGradient.html';
 import Adversarial from './diagrams/Adversarial.html';
@@ -579,21 +580,27 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		store: store,
 	});
 
-	new ClassComparison({
-		target: document.querySelector("#class-comparison-1"),
-		store: store,
-		data: {
-			showControls: false,
-			classComparisonIndex: 1
-		}
+	new ClassFilterComparison({
+		target: document.querySelector("#class-filter-comparison"),
+		store: store
 	});
+
+	// new ClassComparison({
+	// 	target: document.querySelector("#class-comparison-1"),
+	// 	store: store,
+	// 	data: {
+	// 		showControls: false,
+	// 		classComparisonIndex: 1
+	// 	}
+	// });
 
 	new ClassComparison({
 		target: document.querySelector("#class-comparison-2"),
 		store: store,
 		data: {
 			showControls: false,
-			classComparisonIndex: 0
+			classComparisonIndex: 0,
+			filterType: "top"
 		}
 	});
 

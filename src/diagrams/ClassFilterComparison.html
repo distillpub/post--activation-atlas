@@ -1,0 +1,89 @@
+
+
+<div style="display: grid;grid-column-gap: 20px; grid-template-columns: 1fr 1fr 200px;">
+  
+  <div>
+    <h4>“{$inceptionLabels[$currentClassAtlasIndex]}” filtered by rank</h4>
+    <div class="atlas">
+      <ClassAtlas classFilter={$currentClassAtlasIndex} filterType="winner" />
+    </div>
+  </div>
+  <div>
+    <h4>“{$inceptionLabels[$currentClassAtlasIndex]}” filtered by magnitude</h4>
+    <div class="atlas">
+      <ClassAtlas classFilter={$currentClassAtlasIndex} filterType="top" />
+    </div>
+  </div>
+  <div class="chooser-container">
+    <div class="chooser">
+      {#each $classAtlasIndices as c}
+        <label class="{$currentClassAtlasIndex === c ? 'selected' : ''}">
+          <input type=radio bind:group=$currentClassAtlasIndex value={c}>
+          {$inceptionLabels[c]} ({c})
+        </label>
+      {/each}
+    </div>
+  </div>
+</div>
+
+<script>
+export default {
+  components: {
+    ClassAtlas: "./ClassAtlas.html"
+  },
+  data() {
+    return {
+    };
+  },
+  computed: {
+  }
+}
+</script>
+
+<style>
+button {
+  display: block;
+}
+.figcaption {
+  margin-top: 20px;
+}
+.figcaption b {
+  text-transform: uppercase;
+  margin-right: 8px;
+}
+h4 {
+  margin-top: 0;
+}
+
+.chooser-container {
+  overflow-y: scroll;
+  height: 100%;
+  position: relative;
+}
+
+.chooser {
+  position: absolute;
+  border-left: solid 1px #ddd;
+}
+.chooser label {
+  position: relative;
+  font-size: 10px;
+  line-height: 1em;
+  display: block;
+  border-left: solid 3px white;
+  padding: 5px 20px 5px 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-y: hidden;
+}
+.chooser label input {
+  position: absolute;
+  opacity: 0;
+}
+.chooser label.selected {
+  border-left-color: rgb(255, 130, 0);
+  color: rgb(255, 130, 0);
+  background-color: rgba(255, 130, 0, 0.08);
+  font-weight: bold;
+}
+</style>

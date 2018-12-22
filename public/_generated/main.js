@@ -1499,7 +1499,9 @@
 	const store = new MyStore({
 	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
+	  currentClassAtlasIndex: 62,
 	  classChoices: [9, 622, 665, 652, 288, 233, 188, 169, 80, 76, 62, 61, 7, 355, 990, 746, 791],
+	  classAtlasIndices: [62,235,982,507,41,2,176,442,450,454,529,930,600,605,736,744,936,367,488,489,387,388,399,671,672,6,9,665,652,288,233,169,80,76,7,355,990,791,323,378,780,804,901,946,631,643,677,947,348,721,582,737,738],
 	  // For class gradients and class comparisons
 	  currentClassComparisonIndex: 0,
 	  classComparisons: [
@@ -8929,98 +8931,7 @@
 	function data$h() {
 	  return {
 	    layout: 0,
-	    currentClass: 62,
-	    // classes: [7,9,1,2,12,13,14,24,61,62,76,80,81,169,188,225,226,233,249,288,309,312,322,323,378,652,665,780,804,901,946,992,274,279,286,543,544,55,76,622,631,645,643,671,672,507,982,897,701,777,831,990,677,822,947,348,355,746,827, 721,582,827,359,361,367,359,367,364,543,544,737,738,737,738,736,744,176,67,28,205,102,62,791,287,235],
-	    // classes: [62,7,2,80,652,233,323,378,665,780,804,901,946,992,622,631,643,671,672,507,982,990,677,822,947,348,355,721,582,361,364,737,738,736,744,791,287,235],
-	    // classes: $classChoices
-	    // 62, 235, 982, 507, 41, 176, 3, 2, 112, 442, 450, 930, 600, 605, 736, 358, 744, 756, 936, 943, 483, 488, 489, 405, 411, 387, 
-	    classes: [
-	      235,
-	      287,
-	      982,
-	      507,
-	      41,
-	      176,
-	      3,
-	      2,
-	      112,
-	      158,
-	      442,
-	      450,
-	      454,
-	      513,
-	      529,
-	      930,
-	      600,
-	      605,
-	      736,
-	      744,
-	      358,
-	      756,
-	      936,
-	      942,
-	      943,
-	      366,
-	      365,
-	      367,
-	      484,
-	      483,
-	      488,
-	      489,
-	      387,
-	      388,
-	      399,
-	      411,
-	      405,
-	      547,
-	      671,
-	      672,
-	      6,
-	      9,
-	      622,
-	      665,
-	      652,
-	      288,
-	      233,
-	      188,
-	      169,
-	      80,
-	      76,
-	      62,
-	      61,
-	      7,
-	      355,
-	      990,
-	      746,
-	      791,
-	      62,
-	      7,
-	      2,
-	      80,
-	      652,
-	      233,
-	      323,
-	      378,
-	      665,
-	      780,
-	      804,
-	      901,
-	      946,
-	      992,
-	      622,
-	      631,
-	      643,
-	      677,
-	      822,
-	      947,
-	      348,
-	      721,
-	      582,
-	      361,
-	      364,
-	      737,
-	      738,
-	    ]
+	    $currentClassAtlasIndex: 62,
 	  }
 	}
 	const file$p = "src/diagrams/ClassSubset.html";
@@ -9032,16 +8943,16 @@
 	}
 
 	function create_main_fragment$q(component, ctx) {
-		var h4, text0, text1_value = ctx.$inceptionLabels[ctx.currentClass], text1, text2, text3, div3, div0, text4, div2, div1, text5, div4;
+		var h4, text0, text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text1, text2, text3, div3, div0, text4, div2, div1, text5, div4;
 
-		var classatlas_initial_data = { classFilter: ctx.currentClass };
+		var classatlas_initial_data = { classFilter: ctx.$currentClassAtlasIndex };
 		var classatlas = new ClassAtlas({
 			root: component.root,
 			store: component.store,
 			data: classatlas_initial_data
 		});
 
-		var each_value = ctx.classes;
+		var each_value = ctx.$classAtlasIndices;
 
 		var each_blocks = [];
 
@@ -9080,15 +8991,15 @@
 				h4.className = "svelte-15rolwy";
 				addLoc(h4, file$p, 0, 0, 0);
 				setStyle(div0, "position", "relative");
-				addLoc(div0, file$p, 2, 2, 88);
+				addLoc(div0, file$p, 2, 2, 99);
 				div1.className = "chooser svelte-15rolwy";
-				addLoc(div1, file$p, 6, 4, 214);
+				addLoc(div1, file$p, 6, 4, 236);
 				div2.className = "chooser-container svelte-15rolwy";
-				addLoc(div2, file$p, 5, 2, 178);
+				addLoc(div2, file$p, 5, 2, 200);
 				div3.className = "svelte-15rolwy svelte-ref-root";
-				addLoc(div3, file$p, 1, 0, 71);
+				addLoc(div3, file$p, 1, 0, 82);
 				setStyle(div4, "margin-top", "16px");
-				addLoc(div4, file$p, 16, 0, 485);
+				addLoc(div4, file$p, 16, 0, 540);
 			},
 
 			m: function mount(target, anchor) {
@@ -9115,16 +9026,16 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.$inceptionLabels || changed.currentClass) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.currentClass])) {
+				if ((changed.$inceptionLabels || changed.$currentClassAtlasIndex) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex])) {
 					setData(text1, text1_value);
 				}
 
 				var classatlas_changes = {};
-				if (changed.currentClass) classatlas_changes.classFilter = ctx.currentClass;
+				if (changed.$currentClassAtlasIndex) classatlas_changes.classFilter = ctx.$currentClassAtlasIndex;
 				classatlas._set(classatlas_changes);
 
-				if (changed.currentClass || changed.classes || changed.$inceptionLabels) {
-					each_value = ctx.classes;
+				if (changed.$currentClassAtlasIndex || changed.$classAtlasIndices || changed.$inceptionLabels) {
+					each_value = ctx.$classAtlasIndices;
 
 					for (var i = 0; i < each_value.length; i += 1) {
 						const child_ctx = get_each_context$3(ctx, each_value, i);
@@ -9167,12 +9078,12 @@
 		};
 	}
 
-	// (8:6) {#each classes as c}
+	// (8:6) {#each $classAtlasIndices as c}
 	function create_each_block$4(component, ctx) {
 		var label, input, input_value_value, text0, text1_value = ctx.$inceptionLabels[ctx.c], text1, text2, text3_value = ctx.c, text3, text4, label_class_value;
 
 		function input_change_handler() {
-			component.set({ currentClass: input.__value });
+			component.store.set({ currentClassAtlasIndex: input.__value });
 		}
 
 		return {
@@ -9190,16 +9101,16 @@
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
 				input.className = "svelte-15rolwy";
-				addLoc(input, file$p, 9, 10, 336);
-				label.className = label_class_value = "" + (ctx.currentClass === ctx.c ? 'selected' : '') + " svelte-15rolwy";
-				addLoc(label, file$p, 8, 8, 271);
+				addLoc(input, file$p, 9, 10, 380);
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-15rolwy";
+				addLoc(label, file$p, 8, 8, 304);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, label, anchor);
 				append(label, input);
 
-				input.checked = input.__value === ctx.currentClass;
+				input.checked = input.__value === ctx.$currentClassAtlasIndex;
 
 				append(label, text0);
 				append(label, text1);
@@ -9209,21 +9120,21 @@
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.currentClass) input.checked = input.__value === ctx.currentClass;
-				if ((changed.classes) && input_value_value !== (input_value_value = ctx.c)) {
+				if (changed.$currentClassAtlasIndex) input.checked = input.__value === ctx.$currentClassAtlasIndex;
+				if ((changed.$classAtlasIndices) && input_value_value !== (input_value_value = ctx.c)) {
 					input.__value = input_value_value;
 				}
 
 				input.value = input.__value;
-				if ((changed.$inceptionLabels || changed.classes) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.c])) {
+				if ((changed.$inceptionLabels || changed.$classAtlasIndices) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.c])) {
 					setData(text1, text1_value);
 				}
 
-				if ((changed.classes) && text3_value !== (text3_value = ctx.c)) {
+				if ((changed.$classAtlasIndices) && text3_value !== (text3_value = ctx.c)) {
 					setData(text3, text3_value);
 				}
 
-				if ((changed.currentClass || changed.classes) && label_class_value !== (label_class_value = "" + (ctx.currentClass === ctx.c ? 'selected' : '') + " svelte-15rolwy")) {
+				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-15rolwy")) {
 					label.className = label_class_value;
 				}
 			},
@@ -9250,11 +9161,11 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(assign(this.store._init(["inceptionLabels"]), data$h()), options.data);
-		this.store._add(this, ["inceptionLabels"]);
+		this._state = assign(assign(this.store._init(["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]), data$h()), options.data);
+		this.store._add(this, ["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]);
 		if (!('$inceptionLabels' in this._state)) console.warn("<ClassSubset> was created without expected data property '$inceptionLabels'");
-		if (!('currentClass' in this._state)) console.warn("<ClassSubset> was created without expected data property 'currentClass'");
-		if (!('classes' in this._state)) console.warn("<ClassSubset> was created without expected data property 'classes'");
+		if (!('$currentClassAtlasIndex' in this._state)) console.warn("<ClassSubset> was created without expected data property '$currentClassAtlasIndex'");
+		if (!('$classAtlasIndices' in this._state)) console.warn("<ClassSubset> was created without expected data property '$classAtlasIndices'");
 		this._bindingGroups = [[]];
 		this._intro = true;
 
@@ -9276,6 +9187,286 @@
 	ClassSubset.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
+	/* src/diagrams/ClassFilterComparison.html generated by Svelte v2.15.3 */
+
+	function data$i() {
+	  return {
+	  };
+	}
+	const file$q = "src/diagrams/ClassFilterComparison.html";
+
+	function get_each_context$4(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.c = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$r(component, ctx) {
+		var div6, div1, h40, text0, text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text1, text2, text3, div0, text4, div3, h41, text5, text6_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text6, text7, text8, div2, text9, div5, div4;
+
+		var classatlas0_initial_data = {
+		 	classFilter: ctx.$currentClassAtlasIndex,
+		 	filterType: "winner"
+		 };
+		var classatlas0 = new ClassAtlas({
+			root: component.root,
+			store: component.store,
+			data: classatlas0_initial_data
+		});
+
+		var classatlas1_initial_data = {
+		 	classFilter: ctx.$currentClassAtlasIndex,
+		 	filterType: "top"
+		 };
+		var classatlas1 = new ClassAtlas({
+			root: component.root,
+			store: component.store,
+			data: classatlas1_initial_data
+		});
+
+		var each_value = ctx.$classAtlasIndices;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$5(component, get_each_context$4(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				div6 = createElement("div");
+				div1 = createElement("div");
+				h40 = createElement("h4");
+				text0 = createText("“");
+				text1 = createText(text1_value);
+				text2 = createText("” filtered by rank");
+				text3 = createText("\n    ");
+				div0 = createElement("div");
+				classatlas0._fragment.c();
+				text4 = createText("\n  ");
+				div3 = createElement("div");
+				h41 = createElement("h4");
+				text5 = createText("“");
+				text6 = createText(text6_value);
+				text7 = createText("” filtered by magnitude");
+				text8 = createText("\n    ");
+				div2 = createElement("div");
+				classatlas1._fragment.c();
+				text9 = createText("\n  ");
+				div5 = createElement("div");
+				div4 = createElement("div");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				h40.className = "svelte-1kmawds";
+				addLoc(h40, file$q, 5, 4, 106);
+				div0.className = "atlas";
+				addLoc(div0, file$q, 6, 4, 182);
+				addLoc(div1, file$q, 4, 2, 96);
+				h41.className = "svelte-1kmawds";
+				addLoc(h41, file$q, 11, 4, 313);
+				div2.className = "atlas";
+				addLoc(div2, file$q, 12, 4, 394);
+				addLoc(div3, file$q, 10, 2, 303);
+				div4.className = "chooser svelte-1kmawds";
+				addLoc(div4, file$q, 17, 4, 548);
+				div5.className = "chooser-container svelte-1kmawds";
+				addLoc(div5, file$q, 16, 2, 512);
+				setStyle(div6, "display", "grid");
+				setStyle(div6, "grid-column-gap", "20px");
+				setStyle(div6, "grid-template-columns", "1fr 1fr 200px");
+				addLoc(div6, file$q, 2, 0, 2);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div6, anchor);
+				append(div6, div1);
+				append(div1, h40);
+				append(h40, text0);
+				append(h40, text1);
+				append(h40, text2);
+				append(div1, text3);
+				append(div1, div0);
+				classatlas0._mount(div0, null);
+				append(div6, text4);
+				append(div6, div3);
+				append(div3, h41);
+				append(h41, text5);
+				append(h41, text6);
+				append(h41, text7);
+				append(div3, text8);
+				append(div3, div2);
+				classatlas1._mount(div2, null);
+				append(div6, text9);
+				append(div6, div5);
+				append(div5, div4);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div4, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.$inceptionLabels || changed.$currentClassAtlasIndex) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex])) {
+					setData(text1, text1_value);
+				}
+
+				var classatlas0_changes = {};
+				if (changed.$currentClassAtlasIndex) classatlas0_changes.classFilter = ctx.$currentClassAtlasIndex;
+				classatlas0._set(classatlas0_changes);
+
+				if ((changed.$inceptionLabels || changed.$currentClassAtlasIndex) && text6_value !== (text6_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex])) {
+					setData(text6, text6_value);
+				}
+
+				var classatlas1_changes = {};
+				if (changed.$currentClassAtlasIndex) classatlas1_changes.classFilter = ctx.$currentClassAtlasIndex;
+				classatlas1._set(classatlas1_changes);
+
+				if (changed.$currentClassAtlasIndex || changed.$classAtlasIndices || changed.$inceptionLabels) {
+					each_value = ctx.$classAtlasIndices;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context$4(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$5(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(div4, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(div6);
+				}
+
+				classatlas0.destroy();
+				classatlas1.destroy();
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (19:6) {#each $classAtlasIndices as c}
+	function create_each_block$5(component, ctx) {
+		var label, input, input_value_value, text0, text1_value = ctx.$inceptionLabels[ctx.c], text1, text2, text3_value = ctx.c, text3, text4, label_class_value;
+
+		function input_change_handler() {
+			component.store.set({ currentClassAtlasIndex: input.__value });
+		}
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				input = createElement("input");
+				text0 = createText("\n          ");
+				text1 = createText(text1_value);
+				text2 = createText(" (");
+				text3 = createText(text3_value);
+				text4 = createText(")\n        ");
+				component._bindingGroups[0].push(input);
+				addListener(input, "change", input_change_handler);
+				setAttribute(input, "type", "radio");
+				input.__value = input_value_value = ctx.c;
+				input.value = input.__value;
+				input.className = "svelte-1kmawds";
+				addLoc(input, file$q, 20, 10, 692);
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1kmawds";
+				addLoc(label, file$q, 19, 8, 616);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, input);
+
+				input.checked = input.__value === ctx.$currentClassAtlasIndex;
+
+				append(label, text0);
+				append(label, text1);
+				append(label, text2);
+				append(label, text3);
+				append(label, text4);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.$currentClassAtlasIndex) input.checked = input.__value === ctx.$currentClassAtlasIndex;
+				if ((changed.$classAtlasIndices) && input_value_value !== (input_value_value = ctx.c)) {
+					input.__value = input_value_value;
+				}
+
+				input.value = input.__value;
+				if ((changed.$inceptionLabels || changed.$classAtlasIndices) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.c])) {
+					setData(text1, text1_value);
+				}
+
+				if ((changed.$classAtlasIndices) && text3_value !== (text3_value = ctx.c)) {
+					setData(text3, text3_value);
+				}
+
+				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1kmawds")) {
+					label.className = label_class_value;
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+			}
+		};
+	}
+
+	function ClassFilterComparison(options) {
+		this._debugName = '<ClassFilterComparison>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+		if (!options.store) {
+			throw new Error("<ClassFilterComparison> references store properties, but no store was provided");
+		}
+
+		init(this, options);
+		this._state = assign(assign(this.store._init(["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]), data$i()), options.data);
+		this.store._add(this, ["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]);
+		if (!('$inceptionLabels' in this._state)) console.warn("<ClassFilterComparison> was created without expected data property '$inceptionLabels'");
+		if (!('$currentClassAtlasIndex' in this._state)) console.warn("<ClassFilterComparison> was created without expected data property '$currentClassAtlasIndex'");
+		if (!('$classAtlasIndices' in this._state)) console.warn("<ClassFilterComparison> was created without expected data property '$classAtlasIndices'");
+		this._bindingGroups = [[]];
+		this._intro = true;
+
+		this._handlers.destroy = [removeFromStore];
+
+		this._fragment = create_main_fragment$r(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(ClassFilterComparison.prototype, protoDev);
+
+	ClassFilterComparison.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
 	/* src/diagrams/ClassComparison.html generated by Svelte v2.15.3 */
 
 	function leftIndex({$classComparisons, classComparisonIndex}) {
@@ -9286,13 +9477,14 @@
 		return $classComparisons[classComparisonIndex].right;
 	}
 
-	function data$i() {
+	function data$j() {
 	  return {
 	    classComparisonIndex: 0,
-	    showControls: true
+	    showControls: true,
+	    filterType: "top"
 	  };
 	}
-	const file$q = "src/diagrams/ClassComparison.html";
+	const file$r = "src/diagrams/ClassComparison.html";
 
 	function click_handler(event) {
 		const { component, ctx } = this._svelte;
@@ -9300,26 +9492,32 @@
 		component.set({classComparisonIndex: ctx.i});
 	}
 
-	function get_each_context$4(ctx, list, i) {
+	function get_each_context$5(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.comparison = list[i];
 		child_ctx.i = i;
 		return child_ctx;
 	}
 
-	function create_main_fragment$r(component, ctx) {
+	function create_main_fragment$s(component, ctx) {
 		var text0, div4, div1, h40, text1, text2_value = ctx.$inceptionLabels[ctx.leftIndex], text2, text3, text4, div0, text5, div3, h41, text6, text7_value = ctx.$inceptionLabels[ctx.rightIndex], text7, text8, text9, div2;
 
 		var if_block = (ctx.showControls) && create_if_block$4(component, ctx);
 
-		var classatlas0_initial_data = { classFilter: ctx.leftIndex };
+		var classatlas0_initial_data = {
+		 	classFilter: ctx.leftIndex,
+		 	filterType: ctx.filterType
+		 };
 		var classatlas0 = new ClassAtlas({
 			root: component.root,
 			store: component.store,
 			data: classatlas0_initial_data
 		});
 
-		var classatlas1_initial_data = { classFilter: ctx.rightIndex };
+		var classatlas1_initial_data = {
+		 	classFilter: ctx.rightIndex,
+		 	filterType: ctx.filterType
+		 };
 		var classatlas1 = new ClassAtlas({
 			root: component.root,
 			store: component.store,
@@ -9349,20 +9547,20 @@
 				div2 = createElement("div");
 				classatlas1._fragment.c();
 				h40.className = "svelte-a1781g";
-				addLoc(h40, file$q, 8, 4, 307);
+				addLoc(h40, file$r, 8, 4, 307);
 				div0.className = "atlas";
-				addLoc(div0, file$q, 9, 4, 352);
-				addLoc(div1, file$q, 7, 2, 297);
+				addLoc(div0, file$r, 9, 4, 352);
+				addLoc(div1, file$r, 7, 2, 297);
 				h41.className = "svelte-a1781g";
-				addLoc(h41, file$q, 14, 4, 449);
+				addLoc(h41, file$r, 14, 4, 462);
 				div2.className = "atlas";
-				addLoc(div2, file$q, 15, 4, 495);
-				addLoc(div3, file$q, 13, 2, 439);
+				addLoc(div2, file$r, 15, 4, 508);
+				addLoc(div3, file$r, 13, 2, 452);
 				setStyle(div4, "display", "grid");
 				setStyle(div4, "grid-auto-flow", "column");
 				setStyle(div4, "grid-column-gap", "20px");
 				setStyle(div4, "grid-auto-columns", "1fr");
-				addLoc(div4, file$q, 6, 0, 195);
+				addLoc(div4, file$r, 6, 0, 195);
 			},
 
 			m: function mount(target, anchor) {
@@ -9408,6 +9606,7 @@
 
 				var classatlas0_changes = {};
 				if (changed.leftIndex) classatlas0_changes.classFilter = ctx.leftIndex;
+				if (changed.filterType) classatlas0_changes.filterType = ctx.filterType;
 				classatlas0._set(classatlas0_changes);
 
 				if ((changed.$inceptionLabels || changed.rightIndex) && text7_value !== (text7_value = ctx.$inceptionLabels[ctx.rightIndex])) {
@@ -9416,6 +9615,7 @@
 
 				var classatlas1_changes = {};
 				if (changed.rightIndex) classatlas1_changes.classFilter = ctx.rightIndex;
+				if (changed.filterType) classatlas1_changes.filterType = ctx.filterType;
 				classatlas1._set(classatlas1_changes);
 			},
 
@@ -9441,7 +9641,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$5(component, get_each_context$4(ctx, each_value, i));
+			each_blocks[i] = create_each_block$6(component, get_each_context$5(ctx, each_value, i));
 		}
 
 		return {
@@ -9466,12 +9666,12 @@
 					each_value = ctx.$classComparisons;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$4(ctx, each_value, i);
+						const child_ctx = get_each_context$5(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$5(component, child_ctx);
+							each_blocks[i] = create_each_block$6(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(each_anchor.parentNode, each_anchor);
 						}
@@ -9495,7 +9695,7 @@
 	}
 
 	// (2:2) {#each $classComparisons as comparison, i}
-	function create_each_block$5(component, ctx) {
+	function create_each_block$6(component, ctx) {
 		var button, text0_value = ctx.comparison.leftLabel, text0, text1, text2_value = ctx.comparison.rightLabel, text2;
 
 		return {
@@ -9507,7 +9707,7 @@
 				button._svelte = { component, ctx };
 
 				addListener(button, "click", click_handler);
-				addLoc(button, file$q, 2, 4, 68);
+				addLoc(button, file$r, 2, 4, 68);
 			},
 
 			m: function mount(target, anchor) {
@@ -9550,7 +9750,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(this.store._init(["classComparisons","inceptionLabels"]), data$i()), options.data);
+		this._state = assign(assign(this.store._init(["classComparisons","inceptionLabels"]), data$j()), options.data);
 		this.store._add(this, ["classComparisons","inceptionLabels"]);
 
 		this._recompute({ $classComparisons: 1, classComparisonIndex: 1 }, this._state);
@@ -9558,11 +9758,13 @@
 		if (!('classComparisonIndex' in this._state)) console.warn("<ClassComparison> was created without expected data property 'classComparisonIndex'");
 		if (!('showControls' in this._state)) console.warn("<ClassComparison> was created without expected data property 'showControls'");
 		if (!('$inceptionLabels' in this._state)) console.warn("<ClassComparison> was created without expected data property '$inceptionLabels'");
+
+		if (!('filterType' in this._state)) console.warn("<ClassComparison> was created without expected data property 'filterType'");
 		this._intro = true;
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$r(this, this._state);
+		this._fragment = create_main_fragment$s(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9609,7 +9811,7 @@
 		return $classComparisons[currentClassComparisonIndex];
 	}
 
-	function data$j() {
+	function data$k() {
 	  return {
 	    width: 504,
 	    selected: 0,
@@ -9623,9 +9825,9 @@
 	    currentClassComparisonIndex: 0
 	  }
 	}
-	const file$r = "src/diagrams/ClassGradient.html";
+	const file$s = "src/diagrams/ClassGradient.html";
 
-	function get_each_context$5(ctx, list, i) {
+	function get_each_context$6(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.annotation = list[i];
 		child_ctx.iter = i;
@@ -9644,7 +9846,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$s(component, ctx) {
+	function create_main_fragment$t(component, ctx) {
 		var div, svg, defs, marker, path, g5, image, image_xlink_href_value, image_alt_value, g1, text2, tspan0, text0, tspan1, text1_value = ctx.comparison.leftLabel, text1, text5, tspan2, text3, tspan3, text4_value = ctx.comparison.rightLabel, text4, g0, line0, line1, g1_transform_value, g3, g2, line2, line3, text10, tspan4, text6, tspan5, text7, tspan6, text8, tspan7, text9, g3_transform_value, g4, line4, line4_y__value, line4_y__value_1, line5, line5_y__value, line5_y__value_1, g4_transform_value, each0_anchor, each1_anchor, g5_transform_value, svg_viewBox_value;
 
 		var each0_value = range(11);
@@ -9719,7 +9921,7 @@
 				if (if_block) if_block.c();
 				setAttribute(path, "d", "M0,0 L0,10 L10,5 z");
 				setAttribute(path, "fill", ctx.color);
-				addLoc(path, file$r, 11, 10, 462);
+				addLoc(path, file$s, 11, 10, 462);
 				setAttribute(marker, "id", 'arrow');
 				setAttribute(marker, "markerWidth", "7");
 				setAttribute(marker, "markerHeight", "7");
@@ -9728,97 +9930,97 @@
 				setAttribute(marker, "orient", "auto");
 				setAttribute(marker, "markerUnits", "strokeWidth");
 				setAttribute(marker, "viewBox", "0 0 10 10");
-				addLoc(marker, file$r, 10, 7, 316);
-				addLoc(defs, file$r, 9, 3, 302);
+				addLoc(marker, file$s, 10, 7, 316);
+				addLoc(defs, file$s, 9, 3, 302);
 				setAttribute(image, "id", "comparisonImg");
 				setAttribute(image, "width", ctx.width);
 				setAttribute(image, "height", ctx.height);
 				setXlinkAttribute(image, "xlink:href", image_xlink_href_value = "https://storage.googleapis.com/activation-atlas/build/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg");
 				setAttribute(image, "alt", image_alt_value = ctx.comparison.label);
-				addLoc(image, file$r, 19, 6, 625);
+				addLoc(image, file$s, 19, 6, 625);
 				setAttribute(tspan0, "x", "-10");
 				setAttribute(tspan0, "dy", "1.3em");
-				addLoc(tspan0, file$r, 31, 10, 1167);
+				addLoc(tspan0, file$s, 31, 10, 1167);
 				setAttribute(tspan1, "x", "-10");
 				setAttribute(tspan1, "dy", "1.3em");
 				setAttribute(tspan1, "font-weight", "bold");
-				addLoc(tspan1, file$r, 32, 10, 1231);
+				addLoc(tspan1, file$s, 32, 10, 1231);
 				setAttribute(text2, "y", "-50");
 				setAttribute(text2, "text-anchor", "end");
 				setAttribute(text2, "class", "svelte-1jr0ob8");
-				addLoc(text2, file$r, 30, 8, 1124);
+				addLoc(text2, file$s, 30, 8, 1124);
 				setAttribute(tspan2, "x", "10");
 				setAttribute(tspan2, "dy", "1.3em");
-				addLoc(tspan2, file$r, 35, 10, 1356);
+				addLoc(tspan2, file$s, 35, 10, 1356);
 				setAttribute(tspan3, "x", "10");
 				setAttribute(tspan3, "dy", "1.3em");
 				setAttribute(tspan3, "font-weight", "bold");
-				addLoc(tspan3, file$r, 36, 10, 1419);
+				addLoc(tspan3, file$s, 36, 10, 1419);
 				setAttribute(text5, "y", "-50");
 				setAttribute(text5, "class", "svelte-1jr0ob8");
-				addLoc(text5, file$r, 34, 8, 1331);
+				addLoc(text5, file$s, 34, 8, 1331);
 				setAttribute(line0, "x2", "-50");
 				setAttribute(line0, "transform", "translate(-120,0)");
 				setAttribute(line0, "stroke", ctx.color);
 				setAttribute(line0, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line0, file$r, 40, 10, 1564);
+				addLoc(line0, file$s, 40, 10, 1564);
 				setAttribute(line1, "x2", "50");
 				setAttribute(line1, "transform", "translate(120,0)");
 				setAttribute(line1, "stroke", ctx.color);
 				setAttribute(line1, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line1, file$r, 41, 10, 1671);
+				addLoc(line1, file$s, 41, 10, 1671);
 				setAttribute(g0, "transform", "translate(0, -28)");
-				addLoc(g0, file$r, 39, 8, 1520);
+				addLoc(g0, file$s, 39, 8, 1520);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + ctx.width / 2 + ", 0)");
-				addLoc(g1, file$r, 29, 6, 1074);
+				addLoc(g1, file$s, 29, 6, 1074);
 				setAttribute(line2, "y2", "-50");
 				setAttribute(line2, "transform", "translate(0,-38)");
 				setAttribute(line2, "stroke", ctx.color);
 				setAttribute(line2, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line2, file$r, 49, 10, 1936);
+				addLoc(line2, file$s, 49, 10, 1936);
 				setAttribute(line3, "y2", "50");
 				setAttribute(line3, "transform", "translate(0,30)");
 				setAttribute(line3, "stroke", ctx.color);
 				setAttribute(line3, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line3, file$r, 50, 10, 2042);
+				addLoc(line3, file$s, 50, 10, 2042);
 				setAttribute(g2, "transform", "translate(10, 0)");
-				addLoc(g2, file$r, 48, 8, 1893);
+				addLoc(g2, file$s, 48, 8, 1893);
 				setAttribute(tspan4, "x", "0");
 				setAttribute(tspan4, "y", "-1.8em");
-				addLoc(tspan4, file$r, 53, 10, 2202);
+				addLoc(tspan4, file$s, 53, 10, 2202);
 				setAttribute(tspan5, "x", "0");
 				setAttribute(tspan5, "y", "-0.6em");
-				addLoc(tspan5, file$r, 54, 10, 2255);
+				addLoc(tspan5, file$s, 54, 10, 2255);
 				setAttribute(tspan6, "x", "0");
 				setAttribute(tspan6, "y", "0.6em");
-				addLoc(tspan6, file$r, 55, 10, 2311);
+				addLoc(tspan6, file$s, 55, 10, 2311);
 				setAttribute(tspan7, "x", "0");
 				setAttribute(tspan7, "y", "1.8em");
-				addLoc(tspan7, file$r, 56, 10, 2369);
+				addLoc(tspan7, file$s, 56, 10, 2369);
 				setAttribute(text10, "alignment-baseline", "middle");
 				setAttribute(text10, "class", "svelte-1jr0ob8");
-				addLoc(text10, file$r, 52, 8, 2157);
+				addLoc(text10, file$s, 52, 8, 2157);
 				setAttribute(g3, "transform", g3_transform_value = "translate(" + (- ctx.margin.left + 8) + "," + ctx.height/2 + ")");
-				addLoc(g3, file$r, 47, 6, 1827);
+				addLoc(g3, file$s, 47, 6, 1827);
 				setAttribute(line4, "y1", line4_y__value = -ctx.margin.top + 4);
 				setAttribute(line4, "y2", line4_y__value_1 = ctx.height + 8);
 				setAttribute(line4, "stroke", "white");
 				setAttribute(line4, "stroke-width", "5");
 				setAttribute(line4, "stroke-opacity", "0.6");
-				addLoc(line4, file$r, 63, 8, 2513);
+				addLoc(line4, file$s, 63, 8, 2513);
 				setAttribute(line5, "y1", line5_y__value = -ctx.margin.top + 4);
 				setAttribute(line5, "y2", line5_y__value_1 = ctx.height + 8);
 				setAttribute(line5, "stroke", "black");
-				addLoc(line5, file$r, 64, 8, 2627);
+				addLoc(line5, file$s, 64, 8, 2627);
 				setAttribute(g4, "transform", g4_transform_value = "translate(" + ctx.width / 2 + ", 0)");
-				addLoc(g4, file$r, 62, 6, 2463);
+				addLoc(g4, file$s, 62, 6, 2463);
 				setAttribute(g5, "transform", g5_transform_value = "translate(" + ctx.margin.left + "," + ctx.margin.top + ")");
-				addLoc(g5, file$r, 15, 4, 542);
+				addLoc(g5, file$s, 15, 4, 542);
 				setAttribute(svg, "class", "overlay svelte-1jr0ob8");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.outerWidth + " " + ctx.outerHeight);
-				addLoc(svg, file$r, 5, 2, 210);
+				addLoc(svg, file$s, 5, 2, 210);
 				div.className = "overlay-wrap svelte-1jr0ob8";
-				addLoc(div, file$r, 4, 0, 180);
+				addLoc(div, file$s, 4, 0, 180);
 			},
 
 			m: function mount(target, anchor) {
@@ -10031,7 +10233,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$r, 68, 8, 2747);
+				addLoc(line, file$s, 68, 8, 2747);
 			},
 
 			m: function mount(target, anchor) {
@@ -10068,7 +10270,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$r, 72, 8, 2930);
+				addLoc(line, file$s, 72, 8, 2930);
 			},
 
 			m: function mount(target, anchor) {
@@ -10102,7 +10304,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$6(component, get_each_context$5(ctx, each_value, i));
+			each_blocks[i] = create_each_block$7(component, get_each_context$6(ctx, each_value, i));
 		}
 
 		return {
@@ -10127,12 +10329,12 @@
 					each_value = ctx.comparison.annotation;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$5(ctx, each_value, i);
+						const child_ctx = get_each_context$6(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$6(component, child_ctx);
+							each_blocks[i] = create_each_block$7(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(each_anchor.parentNode, each_anchor);
 						}
@@ -10156,7 +10358,7 @@
 	}
 
 	// (79:8) {#each comparison.annotation as annotation,iter}
-	function create_each_block$6(component, ctx) {
+	function create_each_block$7(component, ctx) {
 		var g0, line, line_x__value, line_x__value_1, text1, text0_value = ctx.annotation.desc, text0, text1_x_value, g0_transform_value, g1, circle0, circle0_r_value, circle1, circle1_r_value, g1_transform_value;
 
 		return {
@@ -10172,26 +10374,26 @@
 				setAttribute(line, "x2", line_x__value_1 = ctx.width + 10);
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.4");
-				addLoc(line, file$r, 80, 12, 3283);
+				addLoc(line, file$s, 80, 12, 3283);
 				setAttribute(text1, "x", text1_x_value = ctx.width + 20);
 				setAttribute(text1, "alignment-baseline", "middle");
 				setAttribute(text1, "class", "svelte-1jr0ob8");
-				addLoc(text1, file$r, 81, 12, 3428);
+				addLoc(text1, file$s, 81, 12, 3428);
 				setAttribute(g0, "transform", g0_transform_value = "translate(0, " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g0, file$r, 79, 10, 3202);
+				addLoc(g0, file$s, 79, 10, 3202);
 				setAttribute(circle0, "r", circle0_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle0, "fill", "none");
 				setAttribute(circle0, "stroke", "white");
 				setAttribute(circle0, "stroke-opacity", "0.5");
 				setAttribute(circle0, "stroke-width", "5");
-				addLoc(circle0, file$r, 84, 12, 3645);
+				addLoc(circle0, file$s, 84, 12, 3645);
 				setAttribute(circle1, "r", circle1_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle1, "fill", "none");
 				setAttribute(circle1, "stroke", "black");
 				setAttribute(circle1, "stroke-opacity", "1");
-				addLoc(circle1, file$r, 85, 12, 3765);
+				addLoc(circle1, file$s, 85, 12, 3765);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.annotation.pos.y + 0.5) * ctx.cellWidth + ", " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g1, file$r, 83, 10, 3527);
+				addLoc(g1, file$s, 83, 10, 3527);
 			},
 
 			m: function mount(target, anchor) {
@@ -10257,7 +10459,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(assign({ Math : Math }, this.store._init(["classComparisons"])), data$j()), options.data);
+		this._state = assign(assign(assign({ Math : Math }, this.store._init(["classComparisons"])), data$k()), options.data);
 		this.store._add(this, ["classComparisons"]);
 
 		this._recompute({ width: 1, margin: 1, height: 1, currentClassComparisonIndex: 1, $classComparisons: 1 }, this._state);
@@ -10273,7 +10475,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$s(this, this._state);
+		this._fragment = create_main_fragment$t(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10316,7 +10518,7 @@
 
 	/* src/diagrams/Adversarial.html generated by Svelte v2.15.3 */
 
-	function data$k() {
+	function data$l() {
 	  return {
 	    image: "",
 	    left: "", 
@@ -10327,7 +10529,7 @@
 	}
 	var f = format(".1f");
 
-	const file$s = "src/diagrams/Adversarial.html";
+	const file$t = "src/diagrams/Adversarial.html";
 
 	function get_each_context_1(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -10336,13 +10538,13 @@
 		return child_ctx;
 	}
 
-	function get_each_context$6(ctx, list, i) {
+	function get_each_context$7(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.c = list[i];
 		return child_ctx;
 	}
 
-	function create_main_fragment$t(component, ctx) {
+	function create_main_fragment$u(component, ctx) {
 		var div;
 
 		var each_value = ctx.classifications;
@@ -10350,7 +10552,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$7(component, get_each_context$6(ctx, each_value, i));
+			each_blocks[i] = create_each_block$8(component, get_each_context$7(ctx, each_value, i));
 		}
 
 		return {
@@ -10362,7 +10564,7 @@
 				}
 				div.className = "adversarial svelte-1ghs2gk";
 				setStyle(div, "grid-template-columns", "repeat(" + ctx.classifications.length + ", 1fr)");
-				addLoc(div, file$s, 0, 0, 0);
+				addLoc(div, file$t, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -10378,12 +10580,12 @@
 					each_value = ctx.classifications;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$6(ctx, each_value, i);
+						const child_ctx = get_each_context$7(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$7(component, child_ctx);
+							each_blocks[i] = create_each_block$8(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div, null);
 						}
@@ -10428,13 +10630,13 @@
 				text5 = createText(text5_value);
 				text6 = createText("%");
 				td0.className = "svelte-1ghs2gk";
-				addLoc(td0, file$s, 11, 10, 385);
+				addLoc(td0, file$t, 11, 10, 385);
 				td1.className = "svelte-1ghs2gk";
-				addLoc(td1, file$s, 12, 10, 414);
+				addLoc(td1, file$t, 12, 10, 414);
 				td2.className = "svelte-1ghs2gk";
-				addLoc(td2, file$s, 13, 10, 442);
+				addLoc(td2, file$t, 13, 10, 442);
 				tr.className = tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1ghs2gk";
-				addLoc(tr, file$s, 10, 8, 296);
+				addLoc(tr, file$t, 10, 8, 296);
 			},
 
 			m: function mount(target, anchor) {
@@ -10474,7 +10676,7 @@
 	}
 
 	// (2:2) {#each classifications as c}
-	function create_each_block$7(component, ctx) {
+	function create_each_block$8(component, ctx) {
 		var div1, text0, table, text1, div0, text2_value = ctx.c.caption, text2, text3;
 
 		var lazyimage_initial_data = {
@@ -10512,10 +10714,10 @@
 				text2 = createText(text2_value);
 				text3 = createText("\n    ");
 				table.className = "svelte-1ghs2gk";
-				addLoc(table, file$s, 8, 6, 247);
+				addLoc(table, file$t, 8, 6, 247);
 				div0.className = "figcaption";
-				addLoc(div0, file$s, 17, 6, 515);
-				addLoc(div1, file$s, 2, 4, 131);
+				addLoc(div0, file$t, 17, 6, 515);
+				addLoc(div1, file$t, 2, 4, 131);
 			},
 
 			m: function mount(target, anchor) {
@@ -10586,14 +10788,14 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$k(), options.data);
+		this._state = assign(data$l(), options.data);
 		if (!('classifications' in this._state)) console.warn("<Adversarial> was created without expected data property 'classifications'");
 		if (!('left' in this._state)) console.warn("<Adversarial> was created without expected data property 'left'");
 		if (!('right' in this._state)) console.warn("<Adversarial> was created without expected data property 'right'");
 		if (!('aspectRatio' in this._state)) console.warn("<Adversarial> was created without expected data property 'aspectRatio'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$t(this, this._state);
+		this._fragment = create_main_fragment$u(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10611,9 +10813,9 @@
 
 	/* src/diagrams/Samples.html generated by Svelte v2.15.3 */
 
-	const file$t = "src/diagrams/Samples.html";
+	const file$u = "src/diagrams/Samples.html";
 
-	function create_main_fragment$u(component, ctx) {
+	function create_main_fragment$v(component, ctx) {
 		var div6, div1, text0, div0, text2, div3, text3, div2, text5, div5, text6, div4;
 
 		var lazyimage0_initial_data = {
@@ -10667,16 +10869,16 @@
 				div4 = createElement("div");
 				div4.textContent = "1,000,000 activations";
 				setStyle(div0, "margin-top", "4px");
-				addLoc(div0, file$t, 6, 4, 381);
-				addLoc(div1, file$t, 1, 2, 17);
+				addLoc(div0, file$u, 6, 4, 381);
+				addLoc(div1, file$u, 1, 2, 17);
 				setStyle(div2, "margin-top", "4px");
-				addLoc(div2, file$t, 13, 4, 813);
-				addLoc(div3, file$t, 8, 2, 447);
+				addLoc(div2, file$u, 13, 4, 813);
+				addLoc(div3, file$u, 8, 2, 447);
 				setStyle(div4, "margin-top", "4px");
-				addLoc(div4, file$t, 20, 4, 1249);
-				addLoc(div5, file$t, 15, 2, 880);
+				addLoc(div4, file$u, 20, 4, 1249);
+				addLoc(div5, file$u, 15, 2, 880);
 				div6.className = "svelte-1ppku9e svelte-ref-root";
-				addLoc(div6, file$t, 0, 0, 0);
+				addLoc(div6, file$u, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -10724,7 +10926,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$u(this, this._state);
+		this._fragment = create_main_fragment$v(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10742,9 +10944,9 @@
 
 	/* src/diagrams/ClassGrids.html generated by Svelte v2.15.3 */
 
-	const file$u = "src/diagrams/ClassGrids.html";
+	const file$v = "src/diagrams/ClassGrids.html";
 
-	function create_main_fragment$v(component, ctx) {
+	function create_main_fragment$w(component, ctx) {
 		var div9, div2, div0, text0, div1, b0, text2, text3, div5, div3, text4, div4, b1, text6, text7, div8, div6, text8, div7, b2, text10;
 
 		var lazyimage0_initial_data = {
@@ -10807,28 +11009,28 @@
 				b2.textContent = "2 x 2";
 				text10 = createText(" When the grid is too big, concepts are lost in the averages. One sees less diversity within related concepts.");
 				div0.className = "atlas";
-				addLoc(div0, file$u, 2, 6, 114);
-				addLoc(b0, file$u, 5, 30, 252);
+				addLoc(div0, file$v, 2, 6, 114);
+				addLoc(b0, file$v, 5, 30, 252);
 				div1.className = "figcaption svelte-dmx176";
-				addLoc(div1, file$u, 5, 6, 228);
-				addLoc(div2, file$u, 1, 2, 102);
+				addLoc(div1, file$v, 5, 6, 228);
+				addLoc(div2, file$v, 1, 2, 102);
 				div3.className = "atlas";
-				addLoc(div3, file$u, 8, 6, 373);
-				addLoc(b1, file$u, 11, 30, 507);
+				addLoc(div3, file$v, 8, 6, 373);
+				addLoc(b1, file$v, 11, 30, 507);
 				div4.className = "figcaption svelte-dmx176";
-				addLoc(div4, file$u, 11, 6, 483);
-				addLoc(div5, file$u, 7, 2, 361);
+				addLoc(div4, file$v, 11, 6, 483);
+				addLoc(div5, file$v, 7, 2, 361);
 				div6.className = "atlas";
-				addLoc(div6, file$u, 14, 6, 666);
-				addLoc(b2, file$u, 17, 30, 800);
+				addLoc(div6, file$v, 14, 6, 666);
+				addLoc(b2, file$v, 17, 30, 800);
 				div7.className = "figcaption svelte-dmx176";
-				addLoc(div7, file$u, 17, 6, 776);
-				addLoc(div8, file$u, 13, 2, 654);
+				addLoc(div7, file$v, 17, 6, 776);
+				addLoc(div8, file$v, 13, 2, 654);
 				setStyle(div9, "display", "grid");
 				setStyle(div9, "grid-auto-flow", "column");
 				setStyle(div9, "grid-column-gap", "20px");
 				setStyle(div9, "grid-auto-columns", "1fr");
-				addLoc(div9, file$u, 0, 0, 0);
+				addLoc(div9, file$v, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -10882,7 +11084,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$v(this, this._state);
+		this._fragment = create_main_fragment$w(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10900,7 +11102,7 @@
 
 	/* src/components/Figure.html generated by Svelte v2.15.3 */
 
-	function data$l() {
+	function data$m() {
 	  return {
 	    ready: false,
 	    onscreen: false,
@@ -10919,15 +11121,15 @@
 	    this.fire("offscreen");
 	  });
 	}
-	const file$v = "src/components/Figure.html";
+	const file$w = "src/components/Figure.html";
 
-	function create_main_fragment$w(component, ctx) {
+	function create_main_fragment$x(component, ctx) {
 		var d_figure, slot_content_default = component._slotted.default;
 
 		return {
 			c: function create() {
 				d_figure = createElement("d-figure");
-				addLoc(d_figure, file$v, 0, 0, 0);
+				addLoc(d_figure, file$w, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -10964,12 +11166,12 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$l(), options.data);
+		this._state = assign(data$m(), options.data);
 		this._intro = true;
 
 		this._slotted = options.slots || {};
 
-		this._fragment = create_main_fragment$w(this, this._state);
+		this._fragment = create_main_fragment$x(this, this._state);
 
 		this.root._oncreate.push(() => {
 			oncreate$6.call(this);
@@ -11030,7 +11232,7 @@
 		return range(numCells).map(i => range(numCells).map( i => range(6).map(i => Math.random() - 0.5)));
 	}
 
-	function data$m() {
+	function data$n() {
 	  return {
 	    paused: true,
 	    inputWidth: 250,
@@ -11051,7 +11253,7 @@
 	}
 	var format_1$1 = format(" .5f");
 
-	const file$w = "src/diagrams/ActivationGrid.html";
+	const file$x = "src/diagrams/ActivationGrid.html";
 
 	function mouseover_handler_1(event) {
 		const { component, ctx } = this._svelte;
@@ -11084,7 +11286,7 @@
 		component.set({timerCount: ctx.Math.min(ctx.numCells - 1, ctx.Math.max(0, ctx.y - ctx.windowSize + 2)) * ctx.numCells + ctx.Math.min(ctx.numCells - 1, ctx.Math.max(0, ctx.x - ctx.windowSize + 2))});
 	}
 
-	function get_each_context$7(ctx, list, i) {
+	function get_each_context$8(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.x = list[i];
 		return child_ctx;
@@ -11096,7 +11298,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$x(component, ctx) {
+	function create_main_fragment$y(component, ctx) {
 		var div, figure_updating = {}, text0, svg, clipPath0, rect0, rect0_x_value, rect0_y_value, clipPath1, rect1, rect1_x_value, rect1_y_value, rect1_width_value, rect1_height_value, g7, g0, text2, text1, image0, rect2, rect2_x_value, rect2_y_value, rect2_width_value, rect2_height_value, g2, path0, path0_transform_value, path0_d_value, text4, text3, g1, image1, g1_transform_value, rect3, text8, tspan0, text5, tspan1, text6, tspan2, text7, text8_transform_value, g2_transform_value, g3, path1, path1_transform_value, path1_d_value, text10, text9, text15, tspan3, text11, tspan4, text12, tspan5, text13, tspan6, text14, text15_transform_value, g3_transform_value, g5, path2, path2_transform_value, path2_d_value, text17, text16, g4, image2, g4_transform_value, rect4, text21, tspan7, text18, tspan8, text19, tspan9, text20, text21_transform_value, g5_transform_value, g6, path3, path3_transform_value, path3_d_value, text23, text22, image3, rect5, rect5_x_value, rect5_y_value, g6_transform_value, svg_viewBox_value, text24;
 
 		var figure_initial_data = {};
@@ -11147,7 +11349,7 @@
 		var each2_blocks = [];
 
 		for (var i = 0; i < each2_value.length; i += 1) {
-			each2_blocks[i] = create_each_block$8(component, get_each2_context(ctx, each2_value, i));
+			each2_blocks[i] = create_each_block$9(component, get_each2_context(ctx, each2_value, i));
 		}
 
 		var notebooklink_initial_data = {
@@ -11247,23 +11449,23 @@
 				setAttribute(rect0, "y", rect0_y_value = ctx.windowY * ctx.cellWidth);
 				setAttribute(rect0, "width", ctx.cellWidth);
 				setAttribute(rect0, "height", ctx.cellWidth);
-				addLoc(rect0, file$w, 5, 6, 280);
+				addLoc(rect0, file$x, 5, 6, 280);
 				setAttribute(clipPath0, "id", "activationGridClipRect");
-				addLoc(clipPath0, file$w, 4, 4, 235);
+				addLoc(clipPath0, file$x, 4, 4, 235);
 				setAttribute(rect1, "x", rect1_x_value = ctx.windowX * ctx.inputCellWidth);
 				setAttribute(rect1, "y", rect1_y_value = ctx.windowY * ctx.inputCellWidth);
 				setAttribute(rect1, "width", rect1_width_value = ctx.inputCellWidth * ctx.windowSize);
 				setAttribute(rect1, "height", rect1_height_value = ctx.inputCellWidth * ctx.windowSize);
-				addLoc(rect1, file$w, 9, 6, 444);
+				addLoc(rect1, file$x, 9, 6, 444);
 				setAttribute(clipPath1, "id", "activationGridClipRectInput");
-				addLoc(clipPath1, file$w, 8, 4, 394);
+				addLoc(clipPath1, file$x, 8, 4, 394);
 				setAttribute(text2, "class", "head svelte-qwhwb1");
 				setAttribute(text2, "dy", "-13");
-				addLoc(text2, file$w, 15, 8, 700);
+				addLoc(text2, file$x, 15, 8, 700);
 				setXlinkAttribute(image0, "xlink:href", "assets/images/dogcat.jpg");
 				setAttribute(image0, "width", ctx.inputWidth);
 				setAttribute(image0, "height", ctx.inputWidth);
-				addLoc(image0, file$w, 16, 8, 755);
+				addLoc(image0, file$x, 16, 8, 755);
 				setAttribute(rect2, "stroke", "rgb(255, 170, 0)");
 				setAttribute(rect2, "pointer-events", "none");
 				setAttribute(rect2, "stroke-width", "2");
@@ -11272,114 +11474,114 @@
 				setAttribute(rect2, "y", rect2_y_value = ctx.windowY * ctx.inputCellWidth);
 				setAttribute(rect2, "width", rect2_width_value = ctx.inputCellWidth * ctx.windowSize);
 				setAttribute(rect2, "height", rect2_height_value = ctx.inputCellWidth * ctx.windowSize);
-				addLoc(rect2, file$w, 29, 8, 1552);
+				addLoc(rect2, file$x, 29, 8, 1552);
 				setAttribute(g0, "transform", "translate(0, 0)");
-				addLoc(g0, file$w, 14, 6, 660);
+				addLoc(g0, file$x, 14, 6, 660);
 				setAttribute(path0, "class", "arrow svelte-qwhwb1");
 				setAttribute(path0, "transform", path0_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path0, "d", path0_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path0, file$w, 33, 8, 1869);
+				addLoc(path0, file$x, 33, 8, 1869);
 				setAttribute(text4, "class", "head svelte-qwhwb1");
 				setAttribute(text4, "dy", "-13");
-				addLoc(text4, file$w, 34, 8, 2014);
+				addLoc(text4, file$x, 34, 8, 2014);
 				setAttribute(image1, "image-rendering", "pixelated");
 				setXlinkAttribute(image1, "xlink:href", "assets/images/dogcat.jpg");
 				setAttribute(image1, "width", ctx.inputWidth);
 				setAttribute(image1, "height", ctx.inputWidth);
 				setAttribute(image1, "clip-path", "url(#activationGridClipRectInput)");
-				addLoc(image1, file$w, 36, 10, 2215);
+				addLoc(image1, file$x, 36, 10, 2215);
 				setAttribute(g1, "transform", g1_transform_value = "scale(" + ctx.columnWidth / (ctx.inputCellWidth * ctx.windowSize) + ")translate(-" + ctx.windowX * ctx.inputCellWidth + ", -" + ctx.windowY * ctx.inputCellWidth + ")");
-				addLoc(g1, file$w, 35, 8, 2069);
+				addLoc(g1, file$x, 35, 8, 2069);
 				setAttribute(rect3, "stroke", "rgb(255, 170, 0)");
 				setAttribute(rect3, "stroke-width", "4");
 				setAttribute(rect3, "fill-opacity", "0");
 				setAttribute(rect3, "width", ctx.columnWidth);
 				setAttribute(rect3, "height", ctx.columnWidth);
-				addLoc(rect3, file$w, 42, 8, 2443);
+				addLoc(rect3, file$x, 42, 8, 2443);
 				setAttribute(tspan0, "x", "0");
 				setAttribute(tspan0, "dy", "1.4em");
-				addLoc(tspan0, file$w, 44, 10, 2637);
+				addLoc(tspan0, file$x, 44, 10, 2637);
 				setAttribute(tspan1, "x", "0");
 				setAttribute(tspan1, "dy", "1.4em");
-				addLoc(tspan1, file$w, 45, 10, 2697);
+				addLoc(tspan1, file$x, 45, 10, 2697);
 				setAttribute(tspan2, "x", "0");
 				setAttribute(tspan2, "dy", "1.4em");
-				addLoc(tspan2, file$w, 46, 10, 2760);
+				addLoc(tspan2, file$x, 46, 10, 2760);
 				setAttribute(text8, "class", "figcaption svelte-qwhwb1");
 				setAttribute(text8, "transform", text8_transform_value = "translate(0, " + (ctx.columnWidth + 10) + ")");
-				addLoc(text8, file$w, 43, 8, 2556);
+				addLoc(text8, file$x, 43, 8, 2556);
 				setAttribute(g2, "transform", g2_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin) + ", 0)");
-				addLoc(g2, file$w, 32, 6, 1803);
+				addLoc(g2, file$x, 32, 6, 1803);
 				setAttribute(path1, "class", "arrow svelte-qwhwb1");
 				setAttribute(path1, "transform", path1_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path1, "d", path1_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path1, file$w, 51, 8, 2957);
+				addLoc(path1, file$x, 51, 8, 2957);
 				setAttribute(text10, "class", "head svelte-qwhwb1");
 				setAttribute(text10, "dy", "-13");
-				addLoc(text10, file$w, 52, 8, 3102);
+				addLoc(text10, file$x, 52, 8, 3102);
 				setAttribute(tspan3, "x", "0");
 				setAttribute(tspan3, "dy", "1.4em");
-				addLoc(tspan3, file$w, 68, 10, 4048);
+				addLoc(tspan3, file$x, 68, 10, 4048);
 				setAttribute(tspan4, "x", "0");
 				setAttribute(tspan4, "dy", "1.4em");
-				addLoc(tspan4, file$w, 69, 10, 4108);
+				addLoc(tspan4, file$x, 69, 10, 4108);
 				setAttribute(tspan5, "x", "0");
 				setAttribute(tspan5, "dy", "1.4em");
-				addLoc(tspan5, file$w, 70, 10, 4175);
+				addLoc(tspan5, file$x, 70, 10, 4175);
 				setAttribute(tspan6, "x", "0");
 				setAttribute(tspan6, "dy", "1.4em");
-				addLoc(tspan6, file$w, 71, 10, 4235);
+				addLoc(tspan6, file$x, 71, 10, 4235);
 				setAttribute(text15, "class", "figcaption svelte-qwhwb1");
 				setAttribute(text15, "transform", text15_transform_value = "translate(0, " + (ctx.columnWidth + 10) + ")");
-				addLoc(text15, file$w, 67, 6, 3967);
+				addLoc(text15, file$x, 67, 6, 3967);
 				setAttribute(g3, "transform", g3_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin + ctx.columnWidth + ctx.columnMargin) + ", 0)");
-				addLoc(g3, file$w, 50, 6, 2862);
+				addLoc(g3, file$x, 50, 6, 2862);
 				setAttribute(path2, "class", "arrow svelte-qwhwb1");
 				setAttribute(path2, "transform", path2_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path2, "d", path2_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path2, file$w, 77, 8, 4451);
+				addLoc(path2, file$x, 77, 8, 4451);
 				setAttribute(text17, "class", "head svelte-qwhwb1");
 				setAttribute(text17, "dy", "-13");
-				addLoc(text17, file$w, 78, 8, 4596);
+				addLoc(text17, file$x, 78, 8, 4596);
 				setAttribute(image2, "image-rendering", "pixelated");
 				setXlinkAttribute(image2, "xlink:href", "assets/images/dogcat-grid.jpg");
 				setAttribute(image2, "width", ctx.inputWidth);
 				setAttribute(image2, "height", ctx.inputWidth);
 				setAttribute(image2, "clip-path", "url(#activationGridClipRect)");
-				addLoc(image2, file$w, 80, 10, 4777);
+				addLoc(image2, file$x, 80, 10, 4777);
 				setAttribute(g4, "transform", g4_transform_value = "scale(" + ctx.columnWidth / ctx.cellWidth + ")translate(-" + ctx.windowX * ctx.cellWidth + ", -" + ctx.windowY * ctx.cellWidth + ")");
-				addLoc(g4, file$w, 79, 8, 4661);
+				addLoc(g4, file$x, 79, 8, 4661);
 				setAttribute(rect4, "stroke", "#ff6600");
 				setAttribute(rect4, "stroke-width", "4");
 				setAttribute(rect4, "fill-opacity", "0");
 				setAttribute(rect4, "width", ctx.columnWidth);
 				setAttribute(rect4, "height", ctx.columnWidth);
-				addLoc(rect4, file$w, 86, 8, 5006);
+				addLoc(rect4, file$x, 86, 8, 5006);
 				setAttribute(tspan7, "x", "0");
 				setAttribute(tspan7, "dy", "1.4em");
-				addLoc(tspan7, file$w, 89, 10, 5192);
+				addLoc(tspan7, file$x, 89, 10, 5192);
 				setAttribute(tspan8, "x", "0");
 				setAttribute(tspan8, "dy", "1.4em");
-				addLoc(tspan8, file$w, 90, 10, 5252);
+				addLoc(tspan8, file$x, 90, 10, 5252);
 				setAttribute(tspan9, "x", "0");
 				setAttribute(tspan9, "dy", "1.4em");
-				addLoc(tspan9, file$w, 91, 10, 5314);
+				addLoc(tspan9, file$x, 91, 10, 5314);
 				setAttribute(text21, "class", "figcaption svelte-qwhwb1");
 				setAttribute(text21, "transform", text21_transform_value = "translate(0, " + (ctx.columnWidth + 10) + ")");
-				addLoc(text21, file$w, 88, 8, 5111);
+				addLoc(text21, file$x, 88, 8, 5111);
 				setAttribute(g5, "transform", g5_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin + 2 * (ctx.columnWidth + ctx.columnMargin)) + ", 0)");
-				addLoc(g5, file$w, 76, 6, 4350);
+				addLoc(g5, file$x, 76, 6, 4350);
 				setAttribute(path3, "class", "arrow svelte-qwhwb1");
 				setAttribute(path3, "transform", path3_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path3, "d", path3_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path3, file$w, 96, 8, 5521);
+				addLoc(path3, file$x, 96, 8, 5521);
 				setAttribute(text23, "class", "head svelte-qwhwb1");
 				setAttribute(text23, "dy", "-13");
-				addLoc(text23, file$w, 97, 8, 5666);
+				addLoc(text23, file$x, 97, 8, 5666);
 				setXlinkAttribute(image3, "xlink:href", "assets/images/dogcat-grid.jpg");
 				setAttribute(image3, "width", ctx.inputWidth);
 				setAttribute(image3, "height", ctx.inputWidth);
-				addLoc(image3, file$w, 98, 8, 5725);
+				addLoc(image3, file$x, 98, 8, 5725);
 				setAttribute(rect5, "stroke", "#ff6600");
 				setAttribute(rect5, "pointer-events", "none");
 				setAttribute(rect5, "stroke-width", "2");
@@ -11388,19 +11590,19 @@
 				setAttribute(rect5, "y", rect5_y_value = ctx.windowY * ctx.cellWidth);
 				setAttribute(rect5, "width", ctx.cellWidth);
 				setAttribute(rect5, "height", ctx.cellWidth);
-				addLoc(rect5, file$w, 110, 8, 6298);
+				addLoc(rect5, file$x, 110, 8, 6298);
 				setAttribute(g6, "transform", g6_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin + 3 * (ctx.columnWidth + ctx.columnMargin)) + ", 0)");
-				addLoc(g6, file$w, 95, 6, 5420);
+				addLoc(g6, file$x, 95, 6, 5420);
 				setAttribute(g7, "transform", "translate(0, 30)");
-				addLoc(g7, file$w, 12, 4, 604);
+				addLoc(g7, file$x, 12, 4, 604);
 				setStyle(svg, "width", "100%");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height);
-				addLoc(svg, file$w, 3, 2, 173);
+				addLoc(svg, file$x, 3, 2, 173);
 				addListener(div, "mouseout", mouseout_handler);
 				setStyle(div, "position", "relative");
 				setStyle(div, "background", "white");
 				setStyle(div, "text-align", "right");
-				addLoc(div, file$w, 0, 0, 0);
+				addLoc(div, file$x, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -11684,7 +11886,7 @@
 						if (each2_blocks[i]) {
 							each2_blocks[i].p(changed, child_ctx);
 						} else {
-							each2_blocks[i] = create_each_block$8(component, child_ctx);
+							each2_blocks[i] = create_each_block$9(component, child_ctx);
 							each2_blocks[i].c();
 							each2_blocks[i].m(g6, rect5);
 						}
@@ -11756,7 +11958,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * (ctx.inputCellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.inputCellWidth);
 				setAttribute(rect, "height", ctx.inputCellWidth);
-				addLoc(rect, file$w, 19, 12, 939);
+				addLoc(rect, file$x, 19, 12, 939);
 			},
 
 			m: function mount(target, anchor) {
@@ -11803,7 +12005,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block_4(component, get_each_context$7(ctx, each_value, i));
+			each_blocks[i] = create_each_block_4(component, get_each_context$8(ctx, each_value, i));
 		}
 
 		return {
@@ -11828,7 +12030,7 @@
 					each_value = range(ctx.numInputCells);
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$7(ctx, each_value, i);
+						const child_ctx = get_each_context$8(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
@@ -11868,14 +12070,14 @@
 				line = createSvgElement("line");
 				setAttribute(text_1, "transform", "rotate(90)translate(-7, -25)");
 				setAttribute(text_1, "font-size", "11");
-				addLoc(text_1, file$w, 56, 10, 3361);
+				addLoc(text_1, file$x, 56, 10, 3361);
 				setAttribute(line, "y1", "7");
 				setAttribute(line, "y2", "7");
 				setAttribute(line, "stroke", "#eee");
 				setAttribute(line, "x2", line_x__value = ctx.inputWidth * 2 / 3 - 20);
-				addLoc(line, file$w, 57, 10, 3440);
+				addLoc(line, file$x, 57, 10, 3440);
 				setAttribute(g, "transform", g_transform_value = "translate(0," + (20 + 20 * (ctx.activations[0][0].length - 1)) + ")");
-				addLoc(g, file$w, 55, 8, 3279);
+				addLoc(g, file$x, 55, 8, 3279);
 			},
 
 			m: function mount(target, anchor) {
@@ -11923,19 +12125,19 @@
 				setAttribute(text3, "font-size", "11");
 				setAttribute(text3, "fill", "#999");
 				setAttribute(text3, "dy", "");
-				addLoc(text3, file$w, 61, 10, 3648);
+				addLoc(text3, file$x, 61, 10, 3648);
 				setAttribute(text5, "text-anchor", "end");
 				setAttribute(text5, "font-size", "11");
 				setAttribute(text5, "font-family", "monospace");
 				setAttribute(text5, "dx", text5_dx_value = ctx.inputWidth * 2 / 3 - 20);
-				addLoc(text5, file$w, 62, 10, 3755);
+				addLoc(text5, file$x, 62, 10, 3755);
 				setAttribute(line, "y1", "7");
 				setAttribute(line, "y2", "7");
 				setAttribute(line, "stroke", "#eee");
 				setAttribute(line, "x2", ctx.columnWidth);
-				addLoc(line, file$w, 63, 10, 3883);
+				addLoc(line, file$x, 63, 10, 3883);
 				setAttribute(g, "transform", g_transform_value = "translate(0," + (ctx.i === ctx.activations[0][0].length - 1 ? 20 + 20 * (ctx.i + 1) : 20 + 20 * ctx.i) + ")");
-				addLoc(g, file$w, 60, 8, 3537);
+				addLoc(g, file$x, 60, 8, 3537);
 			},
 
 			m: function mount(target, anchor) {
@@ -12012,7 +12214,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * (ctx.cellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.cellWidth);
 				setAttribute(rect, "height", ctx.cellWidth);
-				addLoc(rect, file$w, 101, 12, 5904);
+				addLoc(rect, file$x, 101, 12, 5904);
 			},
 
 			m: function mount(target, anchor) {
@@ -12051,7 +12253,7 @@
 	}
 
 	// (100:8) {#each range(numCells) as y}
-	function create_each_block$8(component, ctx) {
+	function create_each_block$9(component, ctx) {
 		var each_anchor;
 
 		var each_value_1 = range(ctx.numCells);
@@ -12119,7 +12321,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign({ Math : Math }, data$m()), options.data);
+		this._state = assign(assign({ Math : Math }, data$n()), options.data);
 
 		this._recompute({ inputWidth: 1, columnWidth: 1, columnMargin: 1, timerCount: 1, numCells: 1, clippedCount: 1, cellPadding: 1, windowSize: 1, numInputCells: 1 }, this._state);
 		if (!('inputWidth' in this._state)) console.warn("<ActivationGrid> was created without expected data property 'inputWidth'");
@@ -12134,7 +12336,7 @@
 		if (!('onscreen' in this._state)) console.warn("<ActivationGrid> was created without expected data property 'onscreen'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$x(this, this._state);
+		this._fragment = create_main_fragment$y(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -12214,7 +12416,7 @@
 		return columnWidth / numIcons;
 	}
 
-	function data$n() {
+	function data$o() {
 	  return {
 	    width: 1000,
 	    height: 380,
@@ -12250,7 +12452,7 @@
 	    });
 	  });
 	}
-	const file$x = "src/diagrams/Process.html";
+	const file$y = "src/diagrams/Process.html";
 
 	function get_each_context_2(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -12276,7 +12478,7 @@
 		return child_ctx;
 	}
 
-	function get_each_context$8(ctx, list, i) {
+	function get_each_context$9(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.y = list[i];
 		return child_ctx;
@@ -12295,7 +12497,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$y(component, ctx) {
+	function create_main_fragment$z(component, ctx) {
 		var svg, g2, g0, g0_transform_value, g1, image, image_opacity_value, each2_anchor, g1_transform_value, rect0, rect0_x_value, rect0_y_value, path, path_d_value, rect1, rect1_x_value, rect1_y_value, svg_viewBox_value, text0, div4, div0, text2, div1, text4, div3, text5, div2;
 
 		var each0_value = ctx.layoutData;
@@ -12327,7 +12529,7 @@
 		var each3_blocks = [];
 
 		for (var i = 0; i < each3_value.length; i += 1) {
-			each3_blocks[i] = create_each_block$9(component, get_each3_context(ctx, each3_value, i));
+			each3_blocks[i] = create_each_block$a(component, get_each3_context(ctx, each3_value, i));
 		}
 
 		var notebooklink_initial_data = { url: "" };
@@ -12380,14 +12582,14 @@
 				div2 = createElement("div");
 				notebooklink._fragment.c();
 				setAttribute(g0, "transform", g0_transform_value = "translate(" + (ctx.columnWidth + ctx.columnPadding) * 1 + ", 0)");
-				addLoc(g0, file$x, 4, 4, 120);
+				addLoc(g0, file$y, 4, 4, 120);
 				setAttribute(image, "opacity", image_opacity_value = ctx.webData.length > 0 ? 1 : 0);
 				setXlinkAttribute(image, "xlink:href", ctx.renderURL);
 				setAttribute(image, "width", ctx.columnWidth);
 				setAttribute(image, "height", ctx.columnWidth);
-				addLoc(image, file$x, 61, 6, 2890);
+				addLoc(image, file$y, 61, 6, 2890);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.columnWidth + ctx.columnPadding) * 2 + ", 0)");
-				addLoc(g1, file$x, 60, 4, 2818);
+				addLoc(g1, file$y, 60, 4, 2818);
 				setAttribute(rect0, "fill", "none");
 				setAttribute(rect0, "stroke", "black");
 				setAttribute(rect0, "stroke-width", "2");
@@ -12395,11 +12597,11 @@
 				setAttribute(rect0, "y", rect0_y_value = ctx.iconHighlight.y * ctx.iconWidth);
 				setAttribute(rect0, "width", ctx.iconWidth);
 				setAttribute(rect0, "height", ctx.iconWidth);
-				addLoc(rect0, file$x, 73, 4, 3501);
+				addLoc(rect0, file$y, 73, 4, 3501);
 				setAttribute(path, "fill", "none");
 				setAttribute(path, "stroke", "black");
 				setAttribute(path, "d", path_d_value = "M" + ((ctx.columnWidth + ctx.columnPadding) * 1 + ctx.iconHighlight.x * ctx.iconWidth + ctx.iconWidth / 2) + "," + ctx.iconHighlight.y * ctx.iconWidth + "l0,-30 l" + (ctx.columnWidth + ctx.columnPadding) + ",0 l0,25 m-5,-5 l5,5 l5,-5");
-				addLoc(path, file$x, 74, 4, 3692);
+				addLoc(path, file$y, 74, 4, 3692);
 				setAttribute(rect1, "fill", "none");
 				setAttribute(rect1, "stroke", "black");
 				setAttribute(rect1, "stroke-width", "2");
@@ -12407,25 +12609,25 @@
 				setAttribute(rect1, "y", rect1_y_value = ctx.iconHighlight.y * ctx.iconWidth);
 				setAttribute(rect1, "width", ctx.iconWidth);
 				setAttribute(rect1, "height", ctx.iconWidth);
-				addLoc(rect1, file$x, 75, 4, 3912);
+				addLoc(rect1, file$y, 75, 4, 3912);
 				setAttribute(g2, "transform", "translate(0, 40)");
-				addLoc(g2, file$x, 1, 2, 60);
+				addLoc(g2, file$y, 1, 2, 60);
 				setStyle(svg, "width", "100%");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height);
-				addLoc(svg, file$x, 0, 0, 0);
+				addLoc(svg, file$y, 0, 0, 0);
 				div0.className = "figcaption";
-				addLoc(div0, file$x, 82, 2, 4232);
+				addLoc(div0, file$y, 82, 2, 4232);
 				div1.className = "figcaption";
-				addLoc(div1, file$x, 83, 2, 4383);
+				addLoc(div1, file$y, 83, 2, 4383);
 				setStyle(div2, "margin-top", "8px");
 				setStyle(div2, "text-align", "right");
-				addLoc(div2, file$x, 85, 4, 4712);
+				addLoc(div2, file$y, 85, 4, 4712);
 				div3.className = "figcaption";
-				addLoc(div3, file$x, 84, 2, 4558);
+				addLoc(div3, file$y, 84, 2, 4558);
 				setStyle(div4, "display", "grid");
 				setStyle(div4, "grid-column-gap", "" + ctx.columnPadding / ctx.width * 100 + "%");
 				setStyle(div4, "grid-template-columns", "1fr 1fr 1fr");
-				addLoc(div4, file$x, 81, 0, 4116);
+				addLoc(div4, file$y, 81, 0, 4116);
 			},
 
 			m: function mount(target, anchor) {
@@ -12559,7 +12761,7 @@
 						if (each3_blocks[i]) {
 							each3_blocks[i].p(changed, child_ctx);
 						} else {
-							each3_blocks[i] = create_each_block$9(component, child_ctx);
+							each3_blocks[i] = create_each_block$a(component, child_ctx);
 							each3_blocks[i].c();
 							each3_blocks[i].m(g1, null);
 						}
@@ -12649,9 +12851,9 @@
 				setAttribute(rect, "fill-opacity", "0.5");
 				setAttribute(rect, "width", "2");
 				setAttribute(rect, "height", "2");
-				addLoc(rect, file$x, 7, 10, 316);
+				addLoc(rect, file$y, 7, 10, 316);
 				setAttribute(g, "transform", g_transform_value = "translate(" + ctx.point[1] * ctx.columnWidth + ", " + ctx.point[0] * ctx.columnWidth + ")");
-				addLoc(g, file$x, 6, 8, 228);
+				addLoc(g, file$y, 6, 8, 228);
 			},
 
 			m: function mount(target, anchor) {
@@ -12688,7 +12890,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * (ctx.cellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.cellWidth);
 				setAttribute(rect, "height", ctx.cellWidth);
-				addLoc(rect, file$x, 25, 14, 1104);
+				addLoc(rect, file$y, 25, 14, 1104);
 			},
 
 			m: function mount(target, anchor) {
@@ -12792,7 +12994,7 @@
 				setAttribute(line, "y2", line_y__value_1 = ctx.inputWidth + 10);
 				setAttribute(line, "x2", line_x__value = (ctx.inputWidth + ctx.inputPadding) * 3 - ctx.inputPadding);
 				setAttribute(line, "stroke", "#ddd");
-				addLoc(line, file$x, 46, 10, 2354);
+				addLoc(line, file$y, 46, 10, 2354);
 			},
 
 			m: function mount(target, anchor) {
@@ -12830,7 +13032,7 @@
 		var each_blocks = [];
 
 		for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
-			each_blocks[i_1] = create_each_block_4$1(component, get_each_context$8(ctx, each_value, i_1));
+			each_blocks[i_1] = create_each_block_4$1(component, get_each_context$9(ctx, each_value, i_1));
 		}
 
 		var if_block = (ctx.i !== ctx.inputs.length - 1) && create_if_block$7(component, ctx);
@@ -12860,13 +13062,13 @@
 				setXlinkAttribute(image0, "xlink:href", image0_xlink_href_value = "assets/images/" + ctx.input.id + ".jpg");
 				setAttribute(image0, "width", ctx.inputWidth);
 				setAttribute(image0, "height", ctx.inputWidth);
-				addLoc(image0, file$x, 19, 8, 732);
+				addLoc(image0, file$y, 19, 8, 732);
 				setXlinkAttribute(image1, "xlink:href", image1_xlink_href_value = "assets/images/" + ctx.input.id + ".jpg");
 				setAttribute(image1, "width", ctx.inputWidth);
 				setAttribute(image1, "height", ctx.inputWidth);
-				addLoc(image1, file$x, 22, 10, 920);
+				addLoc(image1, file$y, 22, 10, 920);
 				setAttribute(g0, "transform", g0_transform_value = "translate(" + (ctx.inputWidth + ctx.inputPadding) + ", 0)");
-				addLoc(g0, file$x, 21, 8, 852);
+				addLoc(g0, file$y, 21, 8, 852);
 				setAttribute(rect, "fill", "none");
 				setAttribute(rect, "stroke", "black");
 				setAttribute(rect, "stroke-width", "2");
@@ -12874,23 +13076,23 @@
 				setAttribute(rect, "y", rect_y_value = ctx.input.y * (ctx.cellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.cellWidth);
 				setAttribute(rect, "height", ctx.cellWidth);
-				addLoc(rect, file$x, 32, 8, 1373);
+				addLoc(rect, file$y, 32, 8, 1373);
 				setAttribute(path0, "fill", "none");
 				setAttribute(path0, "stroke", "black");
 				setAttribute(path0, "d", path0_d_value = "M" + ((ctx.inputWidth + ctx.inputPadding) * 1 + ctx.input.x * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth) + "," + (ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2) + " L" + ((ctx.inputWidth + ctx.inputPadding) * 2 - 10) + "," + (ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2) + " m-5,-5 l5,5 l-5,5");
-				addLoc(path0, file$x, 33, 8, 1582);
+				addLoc(path0, file$y, 33, 8, 1582);
 				setAttribute(text5, "font-size", "9");
 				setAttribute(text5, "dy", text5_dy_value = ctx.cellWidth / 1.5);
 				setAttribute(text5, "transform", text5_transform_value = "translate(" + ctx.x * (ctx.cellWidth + ctx.cellPadding) + ", " + ctx.y * (ctx.cellWidth + ctx.cellPadding) + ")");
-				addLoc(text5, file$x, 39, 10, 2030);
+				addLoc(text5, file$y, 39, 10, 2030);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.inputWidth + ctx.inputPadding) * 2 + ", " + ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ")");
-				addLoc(g1, file$x, 38, 8, 1920);
+				addLoc(g1, file$y, 38, 8, 1920);
 				setAttribute(g2, "transform", g2_transform_value = "translate(0, " + (ctx.inputWidth + 20) * ctx.i + ")");
-				addLoc(g2, file$x, 17, 6, 647);
+				addLoc(g2, file$y, 17, 6, 647);
 				setAttribute(path1, "fill", "none");
 				setAttribute(path1, "stroke", "black");
 				setAttribute(path1, "d", path1_d_value = pointerPath(ctx.columnWidth, ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2 + (ctx.inputWidth + 20) * ctx.i, (ctx.columnWidth + ctx.columnPadding) + ctx.columnWidth * ctx.input.px, ctx.columnWidth * ctx.input.py));
-				addLoc(path1, file$x, 50, 6, 2525);
+				addLoc(path1, file$y, 50, 6, 2525);
 			},
 
 			m: function mount(target, anchor) {
@@ -12939,7 +13141,7 @@
 					each_value = range(ctx.numCells);
 
 					for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
-						const child_ctx = get_each_context$8(ctx, each_value, i_1);
+						const child_ctx = get_each_context$9(ctx, each_value, i_1);
 
 						if (each_blocks[i_1]) {
 							each_blocks[i_1].p(changed, child_ctx);
@@ -13048,7 +13250,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.icon.x * ctx.iconWidth);
 				setAttribute(rect, "width", ctx.iconWidth);
 				setAttribute(rect, "height", ctx.iconWidth);
-				addLoc(rect, file$x, 63, 10, 3040);
+				addLoc(rect, file$y, 63, 10, 3040);
 			},
 
 			m: function mount(target, anchor) {
@@ -13097,7 +13299,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * ctx.iconWidth);
 				setAttribute(rect, "width", ctx.iconWidth);
 				setAttribute(rect, "height", ctx.iconWidth);
-				addLoc(rect, file$x, 67, 10, 3292);
+				addLoc(rect, file$y, 67, 10, 3292);
 			},
 
 			m: function mount(target, anchor) {
@@ -13128,7 +13330,7 @@
 	}
 
 	// (66:6) {#each range(numIcons) as y}
-	function create_each_block$9(component, ctx) {
+	function create_each_block$a(component, ctx) {
 		var each_anchor;
 
 		var each_value_2 = range(ctx.numIcons);
@@ -13196,7 +13398,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign({ Math : Math }, data$n()), options.data);
+		this._state = assign(assign({ Math : Math }, data$o()), options.data);
 
 		this._recompute({ width: 1, columnPadding: 1, columnWidth: 1, inputPadding: 1, inputWidth: 1, numCells: 1, cellPadding: 1, numIcons: 1 }, this._state);
 		if (!('width' in this._state)) console.warn("<Process> was created without expected data property 'width'");
@@ -13220,7 +13422,7 @@
 		if (!('iconHighlight' in this._state)) console.warn("<Process> was created without expected data property 'iconHighlight'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$y(this, this._state);
+		this._fragment = create_main_fragment$z(this, this._state);
 
 		this.root._oncreate.push(() => {
 			oncreate$7.call(this);
@@ -13265,16 +13467,16 @@
 
 	/* src/diagrams/OneLayer.html generated by Svelte v2.15.3 */
 
-	function data$o() {
+	function data$p() {
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 1,
 	    iconCrop: 0.4,
 	  }
 	}
-	const file$y = "src/diagrams/OneLayer.html";
+	const file$z = "src/diagrams/OneLayer.html";
 
-	function create_main_fragment$z(component, ctx) {
+	function create_main_fragment$A(component, ctx) {
 		var div, atlas_updating = {};
 
 		var atlas_initial_data = {
@@ -13318,7 +13520,7 @@
 				atlas._fragment.c();
 				div.className = "atlas svelte-1wfbhjw";
 				setStyle(div, "grid-column", "screen");
-				addLoc(div, file$y, 22, 0, 1143);
+				addLoc(div, file$z, 22, 0, 1143);
 			},
 
 			m: function mount(target, anchor) {
@@ -13359,13 +13561,13 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$o(), options.data);
+		this._state = assign(data$p(), options.data);
 		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<OneLayer> was created without expected data property 'gridSize'");
 		if (!('showLabels' in this._state)) console.warn("<OneLayer> was created without expected data property 'showLabels'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$z(this, this._state);
+		this._fragment = create_main_fragment$A(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -13383,7 +13585,7 @@
 
 	/* src/diagrams/LayerAnnotation.html generated by Svelte v2.15.3 */
 
-	function data$p() {
+	function data$q() {
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 2,
@@ -13391,9 +13593,9 @@
 	    showLabels: true
 	  }
 	}
-	const file$z = "src/diagrams/LayerAnnotation.html";
+	const file$A = "src/diagrams/LayerAnnotation.html";
 
-	function create_main_fragment$A(component, ctx) {
+	function create_main_fragment$B(component, ctx) {
 		var div2, div0, atlas_updating = {}, text0, div1, text1, atlasreticle_updating = {};
 
 		var atlas_initial_data = { id: "inceptionv1_" + ctx.layerName };
@@ -13577,12 +13779,12 @@
 				text1 = createText("\n    ");
 				atlasreticle._fragment.c();
 				div0.className = "detail svelte-tlu8r4";
-				addLoc(div0, file$z, 3, 2, 67);
+				addLoc(div0, file$A, 3, 2, 67);
 				div1.className = "atlas svelte-tlu8r4";
-				addLoc(div1, file$z, 17, 2, 323);
+				addLoc(div1, file$A, 17, 2, 323);
 				setStyle(div2, "display", "grid");
 				setStyle(div2, "grid-template-columns", "1fr 200px");
-				addLoc(div2, file$z, 2, 0, 2);
+				addLoc(div2, file$A, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
@@ -13709,7 +13911,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$p(), options.data);
+		this._state = assign(data$q(), options.data);
 		if (!('layerName' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'gridSize'");
 		if (!('homeX' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'homeX'");
@@ -13722,7 +13924,7 @@
 		if (!('showLabels' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'showLabels'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$A(this, this._state);
+		this._fragment = create_main_fragment$B(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -13744,7 +13946,7 @@
 		return width;
 	}
 
-	function data$q() {
+	function data$r() {
 	  return {
 	    iconCrop: 0.02,
 	    width: null,
@@ -13785,9 +13987,9 @@
 	function oncreate$8() {
 	  this.render();
 	}
-	const file$A = "src/ClippedIcon.html";
+	const file$B = "src/ClippedIcon.html";
 
-	function create_main_fragment$B(component, ctx) {
+	function create_main_fragment$C(component, ctx) {
 		var div, canvas;
 
 		return {
@@ -13800,12 +14002,12 @@
 				canvas.className = "singleIcon";
 				canvas.width = ctx.width;
 				canvas.height = ctx.height;
-				addLoc(canvas, file$A, 1, 2, 121);
+				addLoc(canvas, file$B, 1, 2, 121);
 				setStyle(div, "position", "relative");
 				setStyle(div, "overflow", "hidden");
 				setStyle(div, "height", "" + ctx.width + "px");
 				setStyle(div, "border-right", "solid 1px rgba(255, 255, 255, 0.2)");
-				addLoc(div, file$A, 0, 0, 0);
+				addLoc(div, file$B, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -13847,13 +14049,13 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$q(), options.data);
+		this._state = assign(data$r(), options.data);
 
 		this._recompute({ width: 1 }, this._state);
 		if (!('width' in this._state)) console.warn("<ClippedIcon> was created without expected data property 'width'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$B(this, this._state);
+		this._fragment = create_main_fragment$C(this, this._state);
 
 		this.root._oncreate.push(() => {
 			oncreate$8.call(this);
@@ -13891,7 +14093,7 @@
 	  return 1
 	}
 
-	function data$r() {
+	function data$s() {
 	  return {
 	    container: null,
 	    arrow: null,
@@ -13974,16 +14176,16 @@
 	    this.drawArrow();
 	  }
 	}
-	const file$B = "src/SetOfIcons.html";
+	const file$C = "src/SetOfIcons.html";
 
-	function get_each_context$9(ctx, list, i) {
+	function get_each_context$a(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.icon = list[i];
 		child_ctx.i = i;
 		return child_ctx;
 	}
 
-	function create_main_fragment$C(component, ctx) {
+	function create_main_fragment$D(component, ctx) {
 		var div1, canvas, text, div0, div1_resize_listener;
 
 		var each_value = ctx.imgList;
@@ -13991,7 +14193,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$a(component, get_each_context$9(ctx, each_value, i));
+			each_blocks[i] = create_each_block$b(component, get_each_context$a(ctx, each_value, i));
 		}
 
 		function div1_resize_handler() {
@@ -14010,11 +14212,11 @@
 				}
 				canvas.width = ctx.width;
 				canvas.height = ctx.arrowHeight;
-				addLoc(canvas, file$B, 1, 2, 71);
+				addLoc(canvas, file$C, 1, 2, 71);
 				div0.className = "icons svelte-106o8is";
-				addLoc(div0, file$B, 2, 2, 136);
+				addLoc(div0, file$C, 2, 2, 136);
 				component.root._beforecreate.push(div1_resize_handler);
-				addLoc(div1, file$B, 0, 0, 0);
+				addLoc(div1, file$C, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -14046,12 +14248,12 @@
 					each_value = ctx.imgList;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$9(ctx, each_value, i);
+						const child_ctx = get_each_context$a(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$a(component, child_ctx);
+							each_blocks[i] = create_each_block$b(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div0, null);
 						}
@@ -14081,7 +14283,7 @@
 	}
 
 	// (4:4) {#each imgList as icon, i}
-	function create_each_block$a(component, ctx) {
+	function create_each_block$b(component, ctx) {
 
 		var clippedicon_initial_data = {
 		 	icon: ctx.icon,
@@ -14124,7 +14326,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$r(), options.data);
+		this._state = assign(data$s(), options.data);
 
 		this._recompute({ layers: 1 }, this._state);
 		if (!('layers' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'layers'");
@@ -14136,7 +14338,7 @@
 		this._intro = true;
 		this._handlers.update = [onupdate$3];
 
-		this._fragment = create_main_fragment$C(this, this._state);
+		this._fragment = create_main_fragment$D(this, this._state);
 
 		this.root._oncreate.push(() => {
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
@@ -14198,7 +14400,7 @@
 	  return path_d
 	}
 
-	function data$s() {
+	function data$t() {
 	  return {
 	    gridSize: 1,
 	    height: 160,
@@ -14207,9 +14409,9 @@
 	    atlasMargin: 20,
 	  }
 	}
-	const file$C = "src/diagrams/ShowAPath.html";
+	const file$D = "src/diagrams/ShowAPath.html";
 
-	function create_main_fragment$D(component, ctx) {
+	function create_main_fragment$E(component, ctx) {
 		var div3, div0, text0, div2, div1, atlasthumbnail_updating = {}, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, text2, atlasdataloader_updating = {};
 
 		var setoficons_initial_data = {
@@ -14328,13 +14530,13 @@
 				path1 = createSvgElement("path");
 				text2 = createText("\n  ");
 				atlasdataloader._fragment.c();
-				addLoc(div0, file$C, 1, 2, 91);
+				addLoc(div0, file$D, 1, 2, 91);
 				div1.className = "thumbnail svelte-19vqpwh";
-				addLoc(div1, file$C, 10, 4, 313);
+				addLoc(div1, file$D, 10, 4, 313);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$C, 36, 10, 954);
+				addLoc(circle, file$D, 36, 10, 954);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -14343,9 +14545,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$C, 26, 8, 705);
+				addLoc(marker0, file$D, 26, 8, 705);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$C, 47, 10, 1233);
+				addLoc(path0, file$D, 47, 10, 1233);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -14354,30 +14556,30 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$C, 38, 8, 1010);
-				addLoc(defs, file$C, 25, 6, 690);
+				addLoc(marker1, file$D, 38, 8, 1010);
+				addLoc(defs, file$D, 25, 6, 690);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$C, 50, 6, 1306);
+				addLoc(path1, file$D, 50, 6, 1306);
 				setAttribute(svg, "class", "pathArrow svelte-19vqpwh");
 				setStyle(svg, "width", ctx.edgeLength);
 				setStyle(svg, "height", ctx.edgeLength);
 				setStyle(svg, "left", (ctx.viewWidth - ctx.edgeLength) / 2);
 				setStyle(svg, "top", (ctx.viewHeight - ctx.edgeLength) / 2);
-				addLoc(svg, file$C, 18, 4, 490);
+				addLoc(svg, file$D, 18, 4, 490);
 				div2.className = "atlas svelte-19vqpwh";
 				setStyle(div2, "width", "" + (ctx.height-ctx.atlasMargin*2) + "px");
 				setStyle(div2, "height", "" + (ctx.height-ctx.atlasMargin*2) + "px");
 				setStyle(div2, "margin", "" + ctx.atlasMargin + "px");
-				addLoc(div2, file$C, 9, 2, 193);
+				addLoc(div2, file$D, 9, 2, 193);
 				div3.className = "showapath";
 				setStyle(div3, "display", "grid");
 				setStyle(div3, "grid-template-columns", "1fr " + ctx.height + "px");
-				addLoc(div3, file$C, 0, 0, 0);
+				addLoc(div3, file$D, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -14526,7 +14728,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$s(), options.data);
+		this._state = assign(data$t(), options.data);
 
 		this._recompute({ pointList: 1, viewWidth: 1, viewHeight: 1, edgeLength: 1, topLeft: 1 }, this._state);
 		if (!('pointList' in this._state)) console.warn("<ShowAPath> was created without expected data property 'pointList'");
@@ -14545,7 +14747,7 @@
 		if (!('labels' in this._state)) console.warn("<ShowAPath> was created without expected data property 'labels'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$D(this, this._state);
+		this._fragment = create_main_fragment$E(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -14585,7 +14787,7 @@
 
 	/* src/diagrams/VerticalLayerAnnotation.html generated by Svelte v2.15.3 */
 
-	function data$t() {
+	function data$u() {
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 3,
@@ -14593,9 +14795,9 @@
 	    showLabels: true
 	  }
 	}
-	const file$D = "src/diagrams/VerticalLayerAnnotation.html";
+	const file$E = "src/diagrams/VerticalLayerAnnotation.html";
 
-	function create_main_fragment$E(component, ctx) {
+	function create_main_fragment$F(component, ctx) {
 		var div2, div0, atlas_updating = {}, text0, div1, text1, atlasreticle_updating = {}, text2;
 
 		var atlas_initial_data = {
@@ -14784,10 +14986,10 @@
 				text2 = createText("\n    ");
 				if (if_block) if_block.c();
 				div0.className = "detail svelte-1dvwfeg";
-				addLoc(div0, file$D, 3, 2, 19);
+				addLoc(div0, file$E, 3, 2, 19);
 				div1.className = "atlas svelte-1dvwfeg";
-				addLoc(div1, file$D, 19, 2, 336);
-				addLoc(div2, file$D, 2, 0, 2);
+				addLoc(div1, file$E, 19, 2, 336);
+				addLoc(div2, file$E, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
@@ -14940,7 +15142,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$t(), options.data);
+		this._state = assign(data$u(), options.data);
 		if (!('layerName' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'gridSize'");
 		if (!('homeX' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'homeX'");
@@ -14953,7 +15155,7 @@
 		if (!('showLabels' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'showLabels'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$E(this, this._state);
+		this._fragment = create_main_fragment$F(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -14971,7 +15173,7 @@
 
 	/* src/diagrams/Focus1.html generated by Svelte v2.15.3 */
 
-	function data$u() {
+	function data$v() {
 	  return {
 	    layerName: "mixed5b",
 	    gridSize: 1,
@@ -14981,9 +15183,9 @@
 	    homeScale: 6
 	  }
 	}
-	const file$E = "src/diagrams/Focus1.html";
+	const file$F = "src/diagrams/Focus1.html";
 
-	function create_main_fragment$F(component, ctx) {
+	function create_main_fragment$G(component, ctx) {
 		var div4, div0, atlas0_updating = {}, text0, atlasreticle_updating = {}, text1, div3, div1, atlas1_updating = {}, text2, div2;
 
 		var atlas0_initial_data = {
@@ -15234,15 +15436,15 @@
 				div2 = createElement("div");
 				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
 				div0.className = "atlas svelte-1loof33";
-				addLoc(div0, file$E, 1, 2, 22);
+				addLoc(div0, file$F, 1, 2, 22);
 				div1.className = "detail svelte-1loof33";
-				addLoc(div1, file$E, 23, 4, 436);
+				addLoc(div1, file$F, 23, 4, 436);
 				div2.className = "figcaption svelte-1loof33";
-				addLoc(div2, file$E, 44, 4, 921);
+				addLoc(div2, file$F, 44, 4, 921);
 				div3.className = "details";
-				addLoc(div3, file$E, 22, 2, 410);
+				addLoc(div3, file$F, 22, 2, 410);
 				div4.className = "focus svelte-1loof33";
-				addLoc(div4, file$E, 0, 0, 0);
+				addLoc(div4, file$F, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -15397,7 +15599,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$u(), options.data);
+		this._state = assign(data$v(), options.data);
 		if (!('layerName' in this._state)) console.warn("<Focus1> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<Focus1> was created without expected data property 'gridSize'");
 		if (!('showLabels' in this._state)) console.warn("<Focus1> was created without expected data property 'showLabels'");
@@ -15411,7 +15613,7 @@
 		if (!('homeScale' in this._state)) console.warn("<Focus1> was created without expected data property 'homeScale'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$F(this, this._state);
+		this._fragment = create_main_fragment$G(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15429,7 +15631,7 @@
 
 	/* src/components/Loupe.html generated by Svelte v2.15.3 */
 
-	function data$v() {
+	function data$w() {
 	  return {
 	    label: "",
 	    width: 0,
@@ -15437,9 +15639,9 @@
 	    color: "#ff6600"
 	  }
 	}
-	const file$F = "src/components/Loupe.html";
+	const file$G = "src/components/Loupe.html";
 
-	function create_main_fragment$G(component, ctx) {
+	function create_main_fragment$H(component, ctx) {
 		var div2, div0, slot_content_default = component._slotted.default, text0, div1, text1;
 
 		return {
@@ -15451,14 +15653,14 @@
 				text1 = createText(ctx.label);
 				div0.className = "loupe svelte-1hgfn8v";
 				setStyle(div0, "border-color", ctx.color);
-				addLoc(div0, file$F, 1, 2, 67);
+				addLoc(div0, file$G, 1, 2, 67);
 				div1.className = "label svelte-1hgfn8v";
 				setStyle(div1, "background-color", ctx.color);
-				addLoc(div1, file$F, 4, 2, 146);
+				addLoc(div1, file$G, 4, 2, 146);
 				div2.className = "root svelte-1hgfn8v";
 				setStyle(div2, "width", "" + ctx.width + "px");
 				setStyle(div2, "height", "" + ctx.height + "px");
-				addLoc(div2, file$F, 0, 0, 0);
+				addLoc(div2, file$G, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -15515,7 +15717,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$v(), options.data);
+		this._state = assign(data$w(), options.data);
 		if (!('width' in this._state)) console.warn("<Loupe> was created without expected data property 'width'");
 		if (!('height' in this._state)) console.warn("<Loupe> was created without expected data property 'height'");
 		if (!('color' in this._state)) console.warn("<Loupe> was created without expected data property 'color'");
@@ -15524,7 +15726,7 @@
 
 		this._slotted = options.slots || {};
 
-		this._fragment = create_main_fragment$G(this, this._state);
+		this._fragment = create_main_fragment$H(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15540,7 +15742,7 @@
 
 	/* src/diagrams/Focus2.html generated by Svelte v2.15.3 */
 
-	function data$w() {
+	function data$x() {
 	  return {
 	    loupeSize: 245,
 	    layerName: "mixed4d",
@@ -15571,9 +15773,9 @@
 
 	  }
 	}
-	const file$G = "src/diagrams/Focus2.html";
+	const file$H = "src/diagrams/Focus2.html";
 
-	function create_main_fragment$H(component, ctx) {
+	function create_main_fragment$I(component, ctx) {
 		var div3, div0, atlas0_updating = {}, text0, atlasreticle0_updating = {}, text1, atlasreticle1_updating = {}, text2, atlasreticle2_updating = {}, text3, div2, atlas1_updating = {}, text4, atlas2_updating = {}, text5, atlas3_updating = {}, text6, div1, text7, text8, text9;
 
 		var atlas0_initial_data = {
@@ -16181,13 +16383,13 @@
 				text8 = createText(ctx.layerName);
 				text9 = createText(" we see we see the attribution toward \"fireboat\" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.");
 				div0.className = "atlas svelte-1eum147";
-				addLoc(div0, file$G, 1, 2, 22);
+				addLoc(div0, file$H, 1, 2, 22);
 				div1.className = "figcaption svelte-1eum147";
-				addLoc(div1, file$G, 106, 4, 2858);
+				addLoc(div1, file$H, 106, 4, 2858);
 				div2.className = "details svelte-1eum147";
-				addLoc(div2, file$G, 42, 2, 945);
+				addLoc(div2, file$H, 42, 2, 945);
 				div3.className = "focus svelte-1eum147";
-				addLoc(div3, file$G, 0, 0, 0);
+				addLoc(div3, file$H, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -16501,7 +16703,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$w(), options.data);
+		this._state = assign(data$x(), options.data);
 		if (!('layerName' in this._state)) console.warn("<Focus2> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<Focus2> was created without expected data property 'gridSize'");
 		if (!('showLabels' in this._state)) console.warn("<Focus2> was created without expected data property 'showLabels'");
@@ -16522,7 +16724,7 @@
 		if (!('highlights' in this._state)) console.warn("<Focus2> was created without expected data property 'highlights'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$H(this, this._state);
+		this._fragment = create_main_fragment$I(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16540,15 +16742,15 @@
 
 	/* src/diagrams/Focus3.html generated by Svelte v2.15.3 */
 
-	function data$x() {
+	function data$y() {
 	  return {
 	    layerName: "mixed4d",
 	    gridSize: 1
 	  }
 	}
-	const file$H = "src/diagrams/Focus3.html";
+	const file$I = "src/diagrams/Focus3.html";
 
-	function create_main_fragment$I(component, ctx) {
+	function create_main_fragment$J(component, ctx) {
 		var div4, div1, h40, text1, div0, atlas0_updating = {}, text2, atlasreticle0_updating = {}, text3, atlasreticle1_updating = {}, text4, atlasreticle2_updating = {}, text5, atlasreticle3_updating = {}, text6, div3, h41, text8, div2, atlas1_updating = {}, text9, atlasreticle4_updating = {}, text10, atlasreticle5_updating = {}, text11, atlasreticle6_updating = {}, text12, atlasreticle7_updating = {};
 
 		var atlas0_initial_data = {
@@ -17066,19 +17268,19 @@
 				text12 = createText("\n      ");
 				atlasreticle7._fragment.c();
 				h40.className = "svelte-1hajugf";
-				addLoc(h40, file$H, 3, 4, 69);
+				addLoc(h40, file$I, 3, 4, 69);
 				div0.className = "atlas svelte-1hajugf";
-				addLoc(div0, file$H, 4, 4, 107);
+				addLoc(div0, file$I, 4, 4, 107);
 				div1.className = "column svelte-1hajugf";
-				addLoc(div1, file$H, 1, 2, 22);
+				addLoc(div1, file$I, 1, 2, 22);
 				h41.className = "svelte-1hajugf";
-				addLoc(h41, file$H, 57, 4, 1508);
+				addLoc(h41, file$I, 57, 4, 1508);
 				div2.className = "atlas svelte-1hajugf";
-				addLoc(div2, file$H, 58, 4, 1547);
+				addLoc(div2, file$I, 58, 4, 1547);
 				div3.className = "column svelte-1hajugf";
-				addLoc(div3, file$H, 55, 2, 1460);
+				addLoc(div3, file$I, 55, 2, 1460);
 				div4.className = "focus svelte-1hajugf";
-				addLoc(div4, file$H, 0, 0, 0);
+				addLoc(div4, file$I, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -17326,7 +17528,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(this.store._init(["focus3aspectRatio0","focus3scale0","focus3gcx0","focus3gcy0","focus3aspectRatio1","focus3scale1","focus3gcx1","focus3gcy1","focus3aspectRatio2","focus3scale2","focus3gcx2","focus3gcy2","focus3aspectRatio3","focus3scale3","focus3gcx3","focus3gcy3"]), data$x()), options.data);
+		this._state = assign(assign(this.store._init(["focus3aspectRatio0","focus3scale0","focus3gcx0","focus3gcy0","focus3aspectRatio1","focus3scale1","focus3gcx1","focus3gcy1","focus3aspectRatio2","focus3scale2","focus3gcx2","focus3gcy2","focus3aspectRatio3","focus3scale3","focus3gcx3","focus3gcy3"]), data$y()), options.data);
 		this.store._add(this, ["focus3aspectRatio0","focus3scale0","focus3gcx0","focus3gcy0","focus3aspectRatio1","focus3scale1","focus3gcx1","focus3gcy1","focus3aspectRatio2","focus3scale2","focus3gcx2","focus3gcy2","focus3aspectRatio3","focus3scale3","focus3gcx3","focus3gcy3"]);
 		if (!('layerName' in this._state)) console.warn("<Focus3> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<Focus3> was created without expected data property 'gridSize'");
@@ -17350,7 +17552,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$I(this, this._state);
+		this._fragment = create_main_fragment$J(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -17368,16 +17570,16 @@
 
 	/* src/diagrams/Focus3Table.html generated by Svelte v2.15.3 */
 
-	function data$y() {
+	function data$z() {
 	  return {
 	    layerName: "mixed4d",
 	    gridSize: 1,
 	    loupeSize: 220
 	  }
 	}
-	const file$I = "src/diagrams/Focus3Table.html";
+	const file$J = "src/diagrams/Focus3Table.html";
 
-	function create_main_fragment$J(component, ctx) {
+	function create_main_fragment$K(component, ctx) {
 		var div9, div0, h40, text0, text1, h41, text2, text3, div2, atlas0_updating = {}, text4, atlas1_updating = {}, text5, div1, text6, text7, text8, text9, div4, atlas2_updating = {}, text10, atlas3_updating = {}, text11, div3, text13, div6, atlas4_updating = {}, text14, atlas5_updating = {}, text15, div5, text17, div8, atlas6_updating = {}, text18, atlas7_updating = {}, text19, div7;
 
 		var atlas0_initial_data = {
@@ -18363,30 +18565,30 @@
 				div7.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
 				setStyle(h40, "width", "" + ctx.loupeSize + "px");
 				h40.className = "svelte-13ehk1x";
-				addLoc(h40, file$I, 2, 4, 46);
+				addLoc(h40, file$J, 2, 4, 46);
 				setStyle(h41, "width", "" + ctx.loupeSize + "px");
 				h41.className = "svelte-13ehk1x";
-				addLoc(h41, file$I, 3, 4, 96);
+				addLoc(h41, file$J, 3, 4, 96);
 				div0.className = "row svelte-13ehk1x";
-				addLoc(div0, file$I, 1, 2, 24);
+				addLoc(div0, file$J, 1, 2, 24);
 				div1.className = "figcaption";
-				addLoc(div1, file$I, 49, 4, 1565);
+				addLoc(div1, file$J, 49, 4, 1565);
 				div2.className = "row svelte-13ehk1x";
-				addLoc(div2, file$I, 6, 2, 169);
+				addLoc(div2, file$J, 6, 2, 169);
 				div3.className = "figcaption";
-				addLoc(div3, file$I, 95, 4, 3059);
+				addLoc(div3, file$J, 95, 4, 3059);
 				div4.className = "row svelte-13ehk1x";
-				addLoc(div4, file$I, 54, 2, 1729);
+				addLoc(div4, file$J, 54, 2, 1729);
 				div5.className = "figcaption";
-				addLoc(div5, file$I, 143, 4, 4649);
+				addLoc(div5, file$J, 143, 4, 4649);
 				div6.className = "row svelte-13ehk1x";
-				addLoc(div6, file$I, 100, 2, 3253);
+				addLoc(div6, file$J, 100, 2, 3253);
 				div7.className = "figcaption";
-				addLoc(div7, file$I, 191, 4, 6244);
+				addLoc(div7, file$J, 191, 4, 6244);
 				div8.className = "row svelte-13ehk1x";
-				addLoc(div8, file$I, 148, 2, 4848);
+				addLoc(div8, file$J, 148, 2, 4848);
 				div9.className = "details svelte-13ehk1x";
-				addLoc(div9, file$I, 0, 0, 0);
+				addLoc(div9, file$J, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -18885,7 +19087,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(this.store._init(["focus3Highlights","focus3aspectRatio0","focus3scale0","focus3gcx0","focus3gcy0","focus3aspectRatio1","focus3scale1","focus3gcx1","focus3gcy1","focus3aspectRatio2","focus3scale2","focus3gcx2","focus3gcy2","focus3aspectRatio3","focus3scale3","focus3gcx3","focus3gcy3"]), data$y()), options.data);
+		this._state = assign(assign(this.store._init(["focus3Highlights","focus3aspectRatio0","focus3scale0","focus3gcx0","focus3gcy0","focus3aspectRatio1","focus3scale1","focus3gcx1","focus3gcy1","focus3aspectRatio2","focus3scale2","focus3gcx2","focus3gcy2","focus3aspectRatio3","focus3scale3","focus3gcx3","focus3gcy3"]), data$z()), options.data);
 		this.store._add(this, ["focus3Highlights","focus3aspectRatio0","focus3scale0","focus3gcx0","focus3gcy0","focus3aspectRatio1","focus3scale1","focus3gcx1","focus3gcy1","focus3aspectRatio2","focus3scale2","focus3gcx2","focus3gcy2","focus3aspectRatio3","focus3scale3","focus3gcx3","focus3gcy3"]);
 		if (!('loupeSize' in this._state)) console.warn("<Focus3Table> was created without expected data property 'loupeSize'");
 		if (!('layerName' in this._state)) console.warn("<Focus3Table> was created without expected data property 'layerName'");
@@ -18912,7 +19114,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$J(this, this._state);
+		this._fragment = create_main_fragment$K(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -19480,21 +19682,27 @@
 			store: store,
 		});
 
-		new ClassComparison({
-			target: document.querySelector("#class-comparison-1"),
-			store: store,
-			data: {
-				showControls: false,
-				classComparisonIndex: 1
-			}
+		new ClassFilterComparison({
+			target: document.querySelector("#class-filter-comparison"),
+			store: store
 		});
+
+		// new ClassComparison({
+		// 	target: document.querySelector("#class-comparison-1"),
+		// 	store: store,
+		// 	data: {
+		// 		showControls: false,
+		// 		classComparisonIndex: 1
+		// 	}
+		// });
 
 		new ClassComparison({
 			target: document.querySelector("#class-comparison-2"),
 			store: store,
 			data: {
 				showControls: false,
-				classComparisonIndex: 0
+				classComparisonIndex: 0,
+				filterType: "top"
 			}
 		});
 
