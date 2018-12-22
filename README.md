@@ -1,14 +1,22 @@
 # post--activation-atlas
 
-## Todos
+## Bugs
 
-Add pinch to zoom support
+first image of paths is still missing.
+
+in options restrict gridsize to relevant levels.
+
+move hovercard to root so can get around the css contain problem.
+
+too many atlases sometimes causing loading problems?
+
+# Tweaks
+
+tighten up verticallayerannotations.html
 
 activation atlas button gets cut off
 
-Fix zoom.html
-
-Colab notebooks
+mousewheel and touch zoom support
 
 detal.html and link to it somewhere
 
@@ -16,20 +24,27 @@ pre-render thumbnails
 
 pre-render static atlases
 
+smooth zoom between gridsizes
+
+no label shadow (or labels) when zooming or panning.
+
+Add support for css resizing lazycomponent.
+Add width variable to lazyComponent.
+
+## Todos
+
+Fix zoom.html
+
+Colab notebooks
+
 add different filtering strategies in article
 
 add different filtering strategies in playground
 
-move hovercard to root so can get around the css contain problem.
-
 autochoose gridsize
-
-smooth zoom between gridsizes
-
-mousewheel and touch support
 
 label only every nth cell if cells are too small
 
-no label shadow (or labels) when zooming or panning.
+add 3d slides for intro
 
-in options restrict gridsize to relevant levels.
+## Done

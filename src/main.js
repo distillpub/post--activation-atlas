@@ -584,7 +584,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		store: store,
 		data: {
 			showControls: false,
-			classComparisonIndex: 6
+			classComparisonIndex: 1
 		}
 	});
 

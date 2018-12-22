@@ -117,6 +117,7 @@
     <span class="link" on:click="goto(.46, .52, 8)">backgrounds</span>.
     Each grid cell is labeled with the classification it most supports.
     <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote>
+    <div style="margin-top: 8px;"><span data-notebook-url=’’></span></div>
     <div style="margin-top: 16px;">
       <NotebookLink url=""/>
     </div>
@@ -381,7 +382,7 @@
     <figcaption>Images from ImageNet</figcaption>
   </figure>
 
-  <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns many classes in ImageNet through several layers of InceptionV1. You can also create your own: <span data-notebook-url=’’></span>
+  <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns many classes in ImageNet through several layers of InceptionV1.
 
   <figure class="app-container">
     <d-figure id="focus-playground"></d-figure>
@@ -405,7 +406,7 @@
     <figure id="class-comparison-1" style="grid-column: page;"></figure>
   </div>
 
-  <p>With these two it's obvious what the differences are (fur color). But this is not always the case. Let's look at a more subtle example: "snorkel" versus "scuba diver".
+  <p>With these two it's obvious what the differences are, but this is not always the case. Let's look at a more subtle example: "snorkel" versus "scuba diver".
 
   <div id="" style="grid-column: page;">
     <figure id="class-comparison-2" style="grid-column: page;"></figure>
