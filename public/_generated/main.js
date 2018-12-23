@@ -9201,7 +9201,7 @@
 	}
 
 	function create_main_fragment$r(component, ctx) {
-		var div6, div1, h40, text0, text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text1, text2, text3, div0, text4, div3, h41, text5, text6_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text6, text7, text8, div2, text9, div5, div4;
+		var div8, div2, h40, text0, text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text1, text2, text3, div0, text4, div1, text6, div5, h41, text7, text8_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text8, text9, text10, div3, text11, div4, text13, div7, div6;
 
 		var classatlas0_initial_data = {
 		 	classFilter: ctx.$currentClassAtlasIndex,
@@ -9233,27 +9233,33 @@
 
 		return {
 			c: function create() {
-				div6 = createElement("div");
-				div1 = createElement("div");
+				div8 = createElement("div");
+				div2 = createElement("div");
 				h40 = createElement("h4");
 				text0 = createText("“");
 				text1 = createText(text1_value);
-				text2 = createText("” filtered by rank");
+				text2 = createText("” filtered by top rank");
 				text3 = createText("\n    ");
 				div0 = createElement("div");
 				classatlas0._fragment.c();
-				text4 = createText("\n  ");
-				div3 = createElement("div");
-				h41 = createElement("h4");
-				text5 = createText("“");
-				text6 = createText(text6_value);
-				text7 = createText("” filtered by magnitude");
-				text8 = createText("\n    ");
-				div2 = createElement("div");
-				classatlas1._fragment.c();
-				text9 = createText("\n  ");
+				text4 = createText("\n    ");
+				div1 = createElement("div");
+				div1.textContent = "We pluck only those activations whose top attribution is toward the class in question. The results are often much more focused and isolated, exclusive to the class. Some are low magnitude, like backgrounds, and we miss correlations or concepts that are shared among many classes.";
+				text6 = createText("\n  ");
 				div5 = createElement("div");
+				h41 = createElement("h4");
+				text7 = createText("“");
+				text8 = createText(text8_value);
+				text9 = createText("” filtered by overall magnitude");
+				text10 = createText("\n    ");
+				div3 = createElement("div");
+				classatlas1._fragment.c();
+				text11 = createText("\n    ");
 				div4 = createElement("div");
+				div4.textContent = "Here we sort all the activations by the magnitude toward the class in question (independent of other classes) and take the top 2,000 activations. We see more correlated activations that could, on their own, contribute to another classification. Some of them are spurious, however.";
+				text13 = createText("\n  ");
+				div7 = createElement("div");
+				div6 = createElement("div");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
@@ -9261,48 +9267,56 @@
 				h40.className = "svelte-1kmawds";
 				addLoc(h40, file$q, 5, 4, 106);
 				div0.className = "atlas";
-				addLoc(div0, file$q, 6, 4, 182);
-				addLoc(div1, file$q, 4, 2, 96);
+				addLoc(div0, file$q, 6, 4, 186);
+				div1.className = "figcaption svelte-1kmawds";
+				addLoc(div1, file$q, 9, 4, 300);
+				addLoc(div2, file$q, 4, 2, 96);
 				h41.className = "svelte-1kmawds";
-				addLoc(h41, file$q, 11, 4, 313);
-				div2.className = "atlas";
-				addLoc(div2, file$q, 12, 4, 394);
-				addLoc(div3, file$q, 10, 2, 303);
-				div4.className = "chooser svelte-1kmawds";
-				addLoc(div4, file$q, 17, 4, 548);
-				div5.className = "chooser-container svelte-1kmawds";
-				addLoc(div5, file$q, 16, 2, 512);
-				setStyle(div6, "display", "grid");
-				setStyle(div6, "grid-column-gap", "20px");
-				setStyle(div6, "grid-template-columns", "1fr 1fr 200px");
-				addLoc(div6, file$q, 2, 0, 2);
+				addLoc(h41, file$q, 12, 4, 632);
+				div3.className = "atlas";
+				addLoc(div3, file$q, 13, 4, 721);
+				div4.className = "figcaption svelte-1kmawds";
+				addLoc(div4, file$q, 16, 4, 832);
+				addLoc(div5, file$q, 11, 2, 622);
+				div6.className = "chooser svelte-1kmawds";
+				addLoc(div6, file$q, 19, 4, 1191);
+				div7.className = "chooser-container svelte-1kmawds";
+				addLoc(div7, file$q, 18, 2, 1155);
+				setStyle(div8, "display", "grid");
+				setStyle(div8, "grid-column-gap", "20px");
+				setStyle(div8, "grid-template-columns", "1fr 1fr 200px");
+				addLoc(div8, file$q, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div6, anchor);
-				append(div6, div1);
-				append(div1, h40);
+				insert(target, div8, anchor);
+				append(div8, div2);
+				append(div2, h40);
 				append(h40, text0);
 				append(h40, text1);
 				append(h40, text2);
-				append(div1, text3);
-				append(div1, div0);
+				append(div2, text3);
+				append(div2, div0);
 				classatlas0._mount(div0, null);
-				append(div6, text4);
-				append(div6, div3);
-				append(div3, h41);
-				append(h41, text5);
-				append(h41, text6);
+				append(div2, text4);
+				append(div2, div1);
+				append(div8, text6);
+				append(div8, div5);
+				append(div5, h41);
 				append(h41, text7);
-				append(div3, text8);
-				append(div3, div2);
-				classatlas1._mount(div2, null);
-				append(div6, text9);
-				append(div6, div5);
+				append(h41, text8);
+				append(h41, text9);
+				append(div5, text10);
+				append(div5, div3);
+				classatlas1._mount(div3, null);
+				append(div5, text11);
 				append(div5, div4);
+				append(div8, text13);
+				append(div8, div7);
+				append(div7, div6);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(div4, null);
+					each_blocks[i].m(div6, null);
 				}
 			},
 
@@ -9315,8 +9329,8 @@
 				if (changed.$currentClassAtlasIndex) classatlas0_changes.classFilter = ctx.$currentClassAtlasIndex;
 				classatlas0._set(classatlas0_changes);
 
-				if ((changed.$inceptionLabels || changed.$currentClassAtlasIndex) && text6_value !== (text6_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex])) {
-					setData(text6, text6_value);
+				if ((changed.$inceptionLabels || changed.$currentClassAtlasIndex) && text8_value !== (text8_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex])) {
+					setData(text8, text8_value);
 				}
 
 				var classatlas1_changes = {};
@@ -9334,7 +9348,7 @@
 						} else {
 							each_blocks[i] = create_each_block$5(component, child_ctx);
 							each_blocks[i].c();
-							each_blocks[i].m(div4, null);
+							each_blocks[i].m(div6, null);
 						}
 					}
 
@@ -9347,7 +9361,7 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div6);
+					detachNode(div8);
 				}
 
 				classatlas0.destroy();
@@ -9358,7 +9372,7 @@
 		};
 	}
 
-	// (19:6) {#each $classAtlasIndices as c}
+	// (21:6) {#each $classAtlasIndices as c}
 	function create_each_block$5(component, ctx) {
 		var label, input, input_value_value, text0, text1_value = ctx.$inceptionLabels[ctx.c], text1, text2, text3_value = ctx.c, text3, text4, label_class_value;
 
@@ -9381,9 +9395,9 @@
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
 				input.className = "svelte-1kmawds";
-				addLoc(input, file$q, 20, 10, 692);
+				addLoc(input, file$q, 22, 10, 1335);
 				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1kmawds";
-				addLoc(label, file$q, 19, 8, 616);
+				addLoc(label, file$q, 21, 8, 1259);
 			},
 
 			m: function mount(target, anchor) {

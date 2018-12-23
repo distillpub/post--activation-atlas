@@ -3,16 +3,18 @@
 <div style="display: grid;grid-column-gap: 20px; grid-template-columns: 1fr 1fr 200px;">
   
   <div>
-    <h4>“{$inceptionLabels[$currentClassAtlasIndex]}” filtered by rank</h4>
+    <h4>“{$inceptionLabels[$currentClassAtlasIndex]}” filtered by top rank</h4>
     <div class="atlas">
       <ClassAtlas classFilter={$currentClassAtlasIndex} filterType="winner" />
     </div>
+    <div class="figcaption">We pluck only those activations whose top attribution is toward the class in question. The results are often much more focused and isolated, exclusive to the class. Some are low magnitude, like backgrounds, and we miss correlations or concepts that are shared among many classes. </div>
   </div>
   <div>
-    <h4>“{$inceptionLabels[$currentClassAtlasIndex]}” filtered by magnitude</h4>
+    <h4>“{$inceptionLabels[$currentClassAtlasIndex]}” filtered by overall magnitude</h4>
     <div class="atlas">
       <ClassAtlas classFilter={$currentClassAtlasIndex} filterType="top" />
     </div>
+    <div class="figcaption">Here we sort all the activations by the magnitude toward the class in question (independent of other classes) and take the top 2,000 activations. We see more correlated activations that could, on their own, contribute to another classification. Some of them are spurious, however. </div>
   </div>
   <div class="chooser-container">
     <div class="chooser">
