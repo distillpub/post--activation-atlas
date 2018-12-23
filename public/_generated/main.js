@@ -15205,8 +15205,7 @@
 		 	id: "inceptionv1_" + ctx.layerName,
 		 	alphaAttributionFactor: "10",
 		 	scaleCountFactor: "10",
-		 	iconCrop: "0.2",
-		 	backgroundColor: "#ddd"
+		 	iconCrop: "0.2"
 		 };
 		if (ctx.gridSize
 	     !== void 0) {
@@ -15221,9 +15220,9 @@
 			atlas0_updating.showLabels = true;
 		}
 		if (ctx.classHeatmap
-	     !== void 0) {
+	   !== void 0) {
 			atlas0_initial_data.classHeatmap = ctx.classHeatmap
-	    ;
+	  ;
 			atlas0_updating.classHeatmap = true;
 		}
 		var atlas0 = new Atlas({
@@ -15451,11 +15450,11 @@
 				div0.className = "atlas svelte-1loof33";
 				addLoc(div0, file$F, 1, 2, 22);
 				div1.className = "detail svelte-1loof33";
-				addLoc(div1, file$F, 23, 4, 436);
+				addLoc(div1, file$F, 22, 4, 409);
 				div2.className = "figcaption svelte-1loof33";
-				addLoc(div2, file$F, 44, 4, 921);
+				addLoc(div2, file$F, 43, 4, 894);
 				div3.className = "details";
-				addLoc(div3, file$F, 22, 2, 410);
+				addLoc(div3, file$F, 21, 2, 383);
 				div4.className = "focus svelte-1loof33";
 				addLoc(div4, file$F, 0, 0, 0);
 			},
@@ -15492,9 +15491,9 @@
 				}
 				if (!atlas0_updating.classHeatmap && changed.classHeatmap) {
 					atlas0_changes.classHeatmap = ctx.classHeatmap
-	    ;
+	  ;
 					atlas0_updating.classHeatmap = ctx.classHeatmap
-	     !== void 0;
+	   !== void 0;
 				}
 				atlas0._set(atlas0_changes);
 				atlas0_updating = {};
