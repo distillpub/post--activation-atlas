@@ -396,9 +396,9 @@
 
   <figure id="class-subset" style="grid-column: text;"></figure>
 
-  <p>A class activation atlas gives us a much clearer view of which detectors the network is using to rank a specific class. In the "red fox" example we can clearly see red pointy ears, brown paws, green forest and snowy backgrounds.
+  <p>A class activation atlas gives us a much clearer view of which detectors the network is using to rank a specific class. In the "snorkel" example we can clearly see ocean, underwater, and colorful masks.
 
-  <p>We can also choose different filtering criteria. Rank versus magnitude. By taking the activations where our class of interest is the top ranked attribution, we show activations that contribute mostly to our class, regardless of magnitude. This tends to show low attribution items like backgrounds. If we also show the top activations by magnitude toward the class of interest, we see only activations that contribute strongly toward our class, but we miss things like backgrounds and we get activations that could actually contribute more to another class, thus showing us correlated objects, like showing a coffee cup when looking at crossword puzzle.</p>
+  <p>In the previous example, we are only showing those activations whose strongest attribution is toward the class in question. This will show us activations that contribute mostly to our class in question, even if their overall strength is low (like in background detectors). In some cases, though, there are strong correlations that we'd like to see (like fish with snorkelers. These  activations on their own might contribute more strongly to a different class than the one we're interested in, but their existence can also contribute strongly to our class of interest. For these we need to choose a different filtering method.</p>
 
   <figure id="class-filter-comparison" style="grid-column: page;"></figure>
 
