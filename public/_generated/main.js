@@ -15674,7 +15674,7 @@
 		var lazyimage1_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-2.png"
+		 	src: "assets/images/renders/focus-2-4.png"
 		 };
 		var lazyimage1 = new LazyImage({
 			root: component.root,
@@ -15712,7 +15712,7 @@
 		var lazyimage3_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-4.png"
+		 	src: "assets/images/renders/focus-2-2.png"
 		 };
 		var lazyimage3 = new LazyImage({
 			root: component.root,
@@ -16217,13 +16217,13 @@
 				div0 = createElement("div");
 				text6 = createText("\n    ");
 				div1 = createElement("div");
-				div1.textContent = "\"Fireboat\" activations have much stronger attributions from water than \"streetcar\", where there is virtually no positive evidence.";
+				div1.textContent = "At mixed4d, Both \"streetcar\" and \"fireboat\" contain activations for what look like windows.";
 				text8 = createText("\n    ");
 				div2 = createElement("div");
 				div2.textContent = "Both classes contain activations for crane-like apparatuses, though they are less prominent than the window activations.";
 				text10 = createText("\n    ");
 				div3 = createElement("div");
-				div3.textContent = "At mixed4d, Both \"streetcar\" and \"fireboat\" contain activations for what look like windows.";
+				div3.textContent = "\"Fireboat\" activations have much stronger attributions from water than \"streetcar\", where there is virtually no positive evidence.";
 				text12 = createText("\n    ");
 				div4 = createElement("div");
 				div4.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
@@ -16235,9 +16235,9 @@
 				div1.className = "figcaption svelte-19pyj07";
 				addLoc(div1, file$J, 27, 4, 601);
 				div2.className = "figcaption svelte-19pyj07";
-				addLoc(div2, file$J, 30, 4, 778);
+				addLoc(div2, file$J, 30, 4, 739);
 				div3.className = "figcaption svelte-19pyj07";
-				addLoc(div3, file$J, 33, 4, 945);
+				addLoc(div3, file$J, 33, 4, 906);
 				div4.className = "figcaption svelte-19pyj07";
 				addLoc(div4, file$J, 36, 4, 1083);
 				div5.className = "root svelte-19pyj07";
