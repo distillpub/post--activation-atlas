@@ -1564,14 +1564,14 @@
 	    {
 	      id: "507_982", leftLabel: "snorkel", rightLabel: "scuba diver", left: 507, right: 982,
 	      annotation: [
-	        { pos: { x: 2, y: 7 }, desc: "shark-like" },
+	        { pos: { x: 2, y: 7 }, desc: "shark?" },
 	      ]
 	    },
 	    { id: "736_744", leftLabel: "head cabbage", rightLabel: "artichoke", left: 736, right: 744, annotation: [] },
 	    {
 	      id: "671_672", leftLabel: "frying pan", rightLabel: "wok", left: 671, right: 672,
 	      annotation: [
-	        { pos: { x: 1, y: 7 }, desc: "noodles" }
+	        { pos: { x: 1, y: 7 }, desc: "noodles?" }
 	      ]
 	    },
 	    { id: "777_831", leftLabel: "beer bottle", rightLabel: "wine bottle", left: 777, right: 831, annotation: [] },
@@ -9959,7 +9959,7 @@
 	    margin: {
 	      top: 60,
 	      right: 80,
-	      bottom: 40,
+	      bottom: 5,
 	      left: 80
 	    },
 	    color: '#9a9cad',
@@ -11440,7 +11440,7 @@
 	}
 
 	function create_main_fragment$y(component, ctx) {
-		var div, figure_updating = {}, text0, svg, clipPath0, rect0, rect0_x_value, rect0_y_value, clipPath1, rect1, rect1_x_value, rect1_y_value, rect1_width_value, rect1_height_value, g7, g0, text2, text1, image0, rect2, rect2_x_value, rect2_y_value, rect2_width_value, rect2_height_value, g2, path0, path0_transform_value, path0_d_value, text4, text3, g1, image1, g1_transform_value, rect3, text8, tspan0, text5, tspan1, text6, tspan2, text7, text8_transform_value, g2_transform_value, g3, path1, path1_transform_value, path1_d_value, text10, text9, text15, tspan3, text11, tspan4, text12, tspan5, text13, tspan6, text14, text15_transform_value, g3_transform_value, g5, path2, path2_transform_value, path2_d_value, text17, text16, g4, image2, g4_transform_value, rect4, text21, tspan7, text18, tspan8, text19, tspan9, text20, text21_transform_value, g5_transform_value, g6, path3, path3_transform_value, path3_d_value, text23, text22, image3, rect5, rect5_x_value, rect5_y_value, g6_transform_value, svg_viewBox_value, text24;
+		var div, figure_updating = {}, text0, svg, clipPath0, rect0, rect0_x_value, rect0_y_value, clipPath1, rect1, rect1_x_value, rect1_y_value, rect1_width_value, rect1_height_value, g7, g0, text2, text1, image0, rect2, rect2_x_value, rect2_y_value, rect2_width_value, rect2_height_value, g2, path0, path0_transform_value, path0_d_value, text4, text3, g1, image1, g1_transform_value, rect3, text8, tspan0, text5, tspan1, text6, tspan2, text7, text8_transform_value, g2_transform_value, g3, path1, path1_transform_value, path1_d_value, text10, text9, text15, tspan3, text11, tspan4, text12, tspan5, text13, tspan6, text14, text15_transform_value, g3_transform_value, g5, path2, path2_transform_value, path2_d_value, text17, text16, g4, image2, g4_transform_value, rect4, text21, tspan7, text18, tspan8, text19, tspan9, text20, text21_transform_value, g5_transform_value, g6, path3, path3_transform_value, path3_d_value, text23, text22, image3, rect5, rect5_x_value, rect5_y_value, g6_transform_value, svg_viewBox_value;
 
 		var figure_initial_data = {};
 		if (ctx.onscreen  !== void 0) {
@@ -11492,15 +11492,6 @@
 		for (var i = 0; i < each2_value.length; i += 1) {
 			each2_blocks[i] = create_each_block$9(component, get_each2_context(ctx, each2_value, i));
 		}
-
-		var notebooklink_initial_data = {
-		 	url: "https://colab.sandbox.google.com/github/tensorflow/lucid/blob/master/notebooks/building-blocks/ActivationGrid.ipynb"
-		 };
-		var notebooklink = new NotebookLink({
-			root: component.root,
-			store: component.store,
-			data: notebooklink_initial_data
-		});
 
 		function mouseout_handler(event) {
 			component.set({timerCount: 47});
@@ -11584,8 +11575,6 @@
 				}
 
 				rect5 = createSvgElement("rect");
-				text24 = createText("\n  ");
-				notebooklink._fragment.c();
 				setAttribute(rect0, "x", rect0_x_value = ctx.windowX * ctx.cellWidth);
 				setAttribute(rect0, "y", rect0_y_value = ctx.windowY * ctx.cellWidth);
 				setAttribute(rect0, "width", ctx.cellWidth);
@@ -11823,8 +11812,6 @@
 				}
 
 				append(g6, rect5);
-				append(div, text24);
-				notebooklink._mount(div, null);
 			},
 
 			p: function update(changed, _ctx) {
@@ -12074,7 +12061,6 @@
 
 				destroyEach(each2_blocks, detach);
 
-				notebooklink.destroy();
 				removeListener(div, "mouseout", mouseout_handler);
 			}
 		};
@@ -13739,7 +13725,11 @@
 	function create_main_fragment$B(component, ctx) {
 		var div2, div0, atlas_updating = {}, text0, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {};
 
-		var atlas_initial_data = { id: "inceptionv1_" + ctx.layerName };
+		var atlas_initial_data = {
+		 	id: "inceptionv1_" + ctx.layerName,
+		 	textShadow: true,
+		 	backgroundColor: "#dfdfdf"
+		 };
 		if (ctx.gridSize
 	       !== void 0) {
 			atlas_initial_data.gridSize = ctx.gridSize
@@ -13789,9 +13779,9 @@
 			atlas_updating.gcy = true;
 		}
 		if (ctx.showLabels
-	     !== void 0) {
+	       !== void 0) {
 			atlas_initial_data.showLabels = ctx.showLabels
-	    ;
+	      ;
 			atlas_updating.showLabels = true;
 		}
 		var atlas = new Atlas({
@@ -13914,9 +13904,9 @@
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
 				img.className = "svelte-1gwxm60";
-				addLoc(img, file$A, 18, 4, 347);
+				addLoc(img, file$A, 20, 4, 403);
 				div1.className = "atlas svelte-1gwxm60";
-				addLoc(div1, file$A, 17, 2, 323);
+				addLoc(div1, file$A, 19, 2, 379);
 				setStyle(div2, "display", "grid");
 				setStyle(div2, "grid-template-columns", "1fr 200px");
 				addLoc(div2, file$A, 2, 0, 2);
@@ -13987,9 +13977,9 @@
 				}
 				if (!atlas_updating.showLabels && changed.showLabels) {
 					atlas_changes.showLabels = ctx.showLabels
-	    ;
+	      ;
 					atlas_updating.showLabels = ctx.showLabels
-	     !== void 0;
+	       !== void 0;
 				}
 				atlas._set(atlas_changes);
 				atlas_updating = {};
@@ -14140,11 +14130,10 @@
 				canvas.className = "singleIcon";
 				canvas.width = ctx.width;
 				canvas.height = ctx.height;
-				addLoc(canvas, file$B, 1, 2, 121);
+				addLoc(canvas, file$B, 1, 2, 72);
 				setStyle(div, "position", "relative");
 				setStyle(div, "overflow", "hidden");
 				setStyle(div, "height", "" + ctx.width + "px");
-				setStyle(div, "border-right", "solid 1px rgba(255, 255, 255, 0.2)");
 				addLoc(div, file$B, 0, 0, 0);
 			},
 
@@ -14327,7 +14316,7 @@
 				setStyle(div2, "position", "relative");
 				setStyle(div2, "height", "10px");
 				addLoc(div2, file$C, 1, 2, 71);
-				div3.className = "icons svelte-14pk18w";
+				div3.className = "icons svelte-w4igyz";
 				addLoc(div3, file$C, 8, 2, 530);
 				component.root._beforecreate.push(div4_resize_handler);
 				addLoc(div4, file$C, 0, 0, 0);
@@ -14509,8 +14498,6 @@
 	  pointList.forEach(function(point){
 	      d = d + (point[0]) * edgeLength  + 
 	        " " + (point[1]) * edgeLength + " L";
-
-	    
 	  });
 	  path_d.push(d.substring(0, d.length - 2));
 	  return path_d
@@ -14524,7 +14511,6 @@
 	    height: 160,
 	    color: '#ff6600',
 	    uniqueId: Math.random(),
-	    atlasMargin: 20,
 	    pointList: []
 	  }
 	}
@@ -14599,18 +14585,18 @@
 				path1 = createSvgElement("path");
 				text2 = createText("\n  ");
 				atlasdataloader._fragment.c();
-				addLoc(div0, file$D, 1, 2, 91);
+				addLoc(div0, file$D, 1, 2, 28);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
 				setStyle(img, "width", "100%");
 				setStyle(img, "display", "block");
-				addLoc(img, file$D, 12, 6, 344);
-				div1.className = "thumbnail svelte-1jegnqk";
-				addLoc(div1, file$D, 10, 4, 313);
+				addLoc(img, file$D, 11, 6, 184);
+				div1.className = "thumbnail svelte-1wb5xrc";
+				addLoc(div1, file$D, 10, 4, 154);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$D, 35, 10, 987);
+				addLoc(circle, file$D, 28, 10, 678);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -14619,9 +14605,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$D, 25, 8, 738);
+				addLoc(marker0, file$D, 18, 8, 431);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$D, 46, 10, 1266);
+				addLoc(path0, file$D, 39, 10, 971);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -14630,26 +14616,21 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$D, 37, 8, 1043);
-				addLoc(defs, file$D, 24, 6, 723);
+				addLoc(marker1, file$D, 30, 8, 734);
+				addLoc(defs, file$D, 17, 6, 416);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$D, 49, 6, 1339);
+				addLoc(path1, file$D, 42, 6, 1044);
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
-				setAttribute(svg, "class", "pathArrow svelte-1jegnqk");
-				addLoc(svg, file$D, 20, 4, 634);
-				div2.className = "atlas svelte-1jegnqk";
-				setStyle(div2, "width", "" + (ctx.height-ctx.atlasMargin*2) + "px");
-				setStyle(div2, "height", "" + (ctx.height-ctx.atlasMargin*2) + "px");
-				setStyle(div2, "margin", "" + ctx.atlasMargin + "px");
-				addLoc(div2, file$D, 9, 2, 193);
-				div3.className = "showapath";
-				setStyle(div3, "display", "grid");
-				setStyle(div3, "grid-template-columns", "1fr " + ctx.height + "px");
+				setAttribute(svg, "class", "pathArrow svelte-1wb5xrc");
+				addLoc(svg, file$D, 13, 4, 327);
+				div2.className = "atlas svelte-1wb5xrc";
+				addLoc(div2, file$D, 9, 2, 130);
+				div3.className = "showapath svelte-1wb5xrc";
 				addLoc(div3, file$D, 0, 0, 0);
 			},
 
@@ -14727,15 +14708,6 @@
 					setAttribute(svg, "viewBox", svg_viewBox_value);
 				}
 
-				if (changed.height || changed.atlasMargin) {
-					setStyle(div2, "width", "" + (ctx.height-ctx.atlasMargin*2) + "px");
-					setStyle(div2, "height", "" + (ctx.height-ctx.atlasMargin*2) + "px");
-				}
-
-				if (changed.atlasMargin) {
-					setStyle(div2, "margin", "" + ctx.atlasMargin + "px");
-				}
-
 				var atlasdataloader_changes = {};
 				if (changed.layerName) atlasdataloader_changes.id = "inceptionv1_" + ctx.layerName;
 				if (!atlasdataloader_updating.config && changed.config) {
@@ -14752,10 +14724,6 @@
 				}
 				atlasdataloader._set(atlasdataloader_changes);
 				atlasdataloader_updating = {};
-
-				if (changed.height) {
-					setStyle(div3, "grid-template-columns", "1fr " + ctx.height + "px");
-				}
 			},
 
 			d: function destroy$$1(detach) {
@@ -14786,11 +14754,9 @@
 		if (!('viewHeight' in this._state)) console.warn("<ShowAPath> was created without expected data property 'viewHeight'");
 
 
-		if (!('height' in this._state)) console.warn("<ShowAPath> was created without expected data property 'height'");
 		if (!('layers' in this._state)) console.warn("<ShowAPath> was created without expected data property 'layers'");
 		if (!('config' in this._state)) console.warn("<ShowAPath> was created without expected data property 'config'");
 		if (!('color' in this._state)) console.warn("<ShowAPath> was created without expected data property 'color'");
-		if (!('atlasMargin' in this._state)) console.warn("<ShowAPath> was created without expected data property 'atlasMargin'");
 		if (!('layerName' in this._state)) console.warn("<ShowAPath> was created without expected data property 'layerName'");
 		if (!('uniqueId' in this._state)) console.warn("<ShowAPath> was created without expected data property 'uniqueId'");
 		this._intro = true;
@@ -16435,7 +16401,7 @@
 		new LazyComponent({
 			target: document.querySelector("#activation-grid"),
 			data: {
-				aspectRatio: 3.5,
+				aspectRatio: 1150 / 290,
 				component: ActivationGrid
 			}
 		});
@@ -16461,7 +16427,7 @@
 			target: document.querySelector("#layer-annotation-1"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.306,
@@ -16474,7 +16440,7 @@
 			target: document.querySelector("#layer-annotation-2"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.309,
@@ -16487,7 +16453,7 @@
 			target: document.querySelector("#layer-annotation-3"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.335,
@@ -16503,7 +16469,7 @@
 			store: store,
 			data: {
 				component: LayerAnnotation,
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				componentData: {
 					homeX: 0.330,
 					homeY: 0.666,
@@ -16515,7 +16481,7 @@
 			target: document.querySelector("#layer-annotation-5"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.281,
@@ -16528,7 +16494,7 @@
 			target: document.querySelector("#layer-annotation-6"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.944,
@@ -16541,7 +16507,7 @@
 			target: document.querySelector("#layer-annotation-7"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.837,
@@ -16554,7 +16520,7 @@
 			target: document.querySelector("#layer-annotation-8"),
 			store: store,
 			data: {
-				aspectRatio: 3,
+				aspectRatio: 2.9,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.594,
@@ -16569,7 +16535,7 @@
 			target: document.querySelector("#show-a-path-0"),
 			store: store,
 			data: {
-				aspectRatio: 5.6,
+				height: 120,
 				component: ShowAPath,
 				componentData: {
 					layerName: "mixed4c",
@@ -16604,7 +16570,7 @@
 			target: document.querySelector("#show-a-path-1"),
 			store: store,
 			data: {
-				aspectRatio: 5.6,
+				height: 120,
 				component: ShowAPath,
 				componentData: {
 					layerName: "mixed4c",
@@ -16639,7 +16605,7 @@
 			target: document.querySelector("#show-a-path-2"),
 			store: store,
 			data: {
-				aspectRatio: 5.6,
+				height: 120,
 				component: ShowAPath,
 				componentData: {
 					layerName: "mixed4c",
@@ -16675,7 +16641,7 @@
 			target: document.querySelector("#show-a-path-3"),
 			store: store,
 			data: {
-				aspectRatio: 5.6,
+				height: 120,
 				component: ShowAPath,
 				componentData: {
 					layerName: "mixed4c",

@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	new LazyComponent({
 		target: document.querySelector("#activation-grid"),
 		data: {
-			aspectRatio: 3.5,
+			aspectRatio: 1150 / 290,
 			component: ActivationGrid
 		}
 	})
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-1"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.306,
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-2"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.309,
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-3"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.335,
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		store: store,
 		data: {
 			component: LayerAnnotation,
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			componentData: {
 				homeX: 0.330,
 				homeY: 0.666,
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-5"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.281,
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-6"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.944,
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-7"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.837,
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-8"),
 		store: store,
 		data: {
-			aspectRatio: 3,
+			aspectRatio: 2.9,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.594,
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#show-a-path-0"),
 		store: store,
 		data: {
-			aspectRatio: 5.6,
+			height: 120,
 			component: ShowAPath,
 			componentData: {
 				layerName: "mixed4c",
@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#show-a-path-1"),
 		store: store,
 		data: {
-			aspectRatio: 5.6,
+			height: 120,
 			component: ShowAPath,
 			componentData: {
 				layerName: "mixed4c",
@@ -313,7 +313,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#show-a-path-2"),
 		store: store,
 		data: {
-			aspectRatio: 5.6,
+			height: 120,
 			component: ShowAPath,
 			componentData: {
 				layerName: "mixed4c",
@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#show-a-path-3"),
 		store: store,
 		data: {
-			aspectRatio: 5.6,
+			height: 120,
 			component: ShowAPath,
 			componentData: {
 				layerName: "mixed4c",

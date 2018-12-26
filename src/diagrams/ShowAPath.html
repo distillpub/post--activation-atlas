@@ -1,4 +1,4 @@
-<div class="showapath" style="display: grid; grid-template-columns: 1fr {height}px; ">  
+<div class="showapath">  
   <div>
     <SetOfIcons
       {pointList}
@@ -7,16 +7,9 @@
       {color}
     />
   </div>
-  <div class="atlas" style="width:{height-atlasMargin*2}px; height:{height-atlasMargin*2}px; margin:{atlasMargin}px">
+  <div class="atlas">
     <div class="thumbnail">
-
       <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" style="width: 100%;display: block;">
-      <!-- <AtlasThumbnail
-        {layerName}
-        gridSize={1}
-        bind:clientWidth=viewWidth
-        bind:height=viewHeight
-      /> -->
     </div>
     <svg 
       viewBox="0 0 {viewWidth} {viewHeight}"
@@ -32,17 +25,17 @@
           markerWidth="5" 
           markerHeight="5"
           orient="auto-start-reverse"
-          >
+        >
           <circle cx="5" cy="5" r="3"/>
         </marker>
         <marker id={'arrow' + uniqueId}
-        fill={color} 
-        viewBox="0 0 10 10" 
-        refX="5" 
-        refY="5"
-        markerWidth="3"
-        markerHeight="3"
-        orient="auto-start-reverse"
+          fill={color} 
+          viewBox="0 0 10 10" 
+          refX="5" 
+          refY="5"
+          markerWidth="3"
+          markerHeight="3"
+          orient="auto-start-reverse"
         >
           <path d="M 0 0 L 10 5 L 0 10 z" />
         </marker>
@@ -55,7 +48,7 @@
         fill="transparent"
         marker-end="url(#{'arrow' + uniqueId})"
         marker-start="url(#{'head' + uniqueId})"
-        />
+      />
     </svg>
   </div>
   <AtlasDataLoader 
@@ -79,7 +72,6 @@ export default {
       height: 160,
       color: '#ff6600',
       uniqueId: Math.random(),
-      atlasMargin: 20,
       pointList: []
     }
   },
@@ -104,9 +96,7 @@ export default {
       pointList.forEach(function(point){
           d = d + (point[0]) * edgeLength  + 
             " " + (point[1]) * edgeLength + " L"
-
-        
-      })
+      });
       path_d.push(d.substring(0, d.length - 2))
       return path_d
     },
@@ -115,6 +105,10 @@ export default {
 </script>
 
 <style>
+.showapath {
+  display: grid; grid-template-columns: 1fr 120px; 
+  grid-gap: 20px;
+}
   svg {
     position: absolute;
     pointer-events: none;

@@ -71,14 +71,14 @@ const store = new MyStore({
     {
       id: "507_982", leftLabel: "snorkel", rightLabel: "scuba diver", left: 507, right: 982,
       annotation: [
-        { pos: { x: 2, y: 7 }, desc: "shark-like" },
+        { pos: { x: 2, y: 7 }, desc: "shark?" },
       ]
     },
     { id: "736_744", leftLabel: "head cabbage", rightLabel: "artichoke", left: 736, right: 744, annotation: [] },
     {
       id: "671_672", leftLabel: "frying pan", rightLabel: "wok", left: 671, right: 672,
       annotation: [
-        { pos: { x: 1, y: 7 }, desc: "noodles" }
+        { pos: { x: 1, y: 7 }, desc: "noodles?" }
       ]
     },
     { id: "777_831", leftLabel: "beer bottle", rightLabel: "wine bottle", left: 777, right: 831, annotation: [] },
