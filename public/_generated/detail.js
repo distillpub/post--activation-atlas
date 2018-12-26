@@ -4568,7 +4568,7 @@
 	      if (classHeatmap > -1) {
 	        let ci = classesToKeep.indexOf(classHeatmap);
 	        let value = Math.max(0, icon.f[ci]);
-	        heatmapMultiplier = Math.max(0.05, value * 5);
+	        heatmapMultiplier = Math.max(0.05, value * 5 * 4);
 	        // console.log(ci, value)
 	      }
 	      const y = icon.x; //x,y switched on purpose 

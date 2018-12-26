@@ -1,5 +1,6 @@
 import store from "./Store.js";
 import Atlas from "./Atlas.html";
+import AtlasThumbnail from "./AtlasThumbnail.html";
 
 
 function download(filename, url) {
@@ -13,40 +14,47 @@ function download(filename, url) {
 
 let app = document.querySelector("#app")
 
-// Test
-{
+// 
+// Atlas Thumbnails
+// 
+
+//   < AtlasThumbnail
+// { layerName }
+// />
+
+let layers = ["mixed3b", "mixed4a", "mixed4b", "mixed4c", "mixed4d", "mixed4e", "mixed5a", "mixed5b"]
+layers.forEach(layer => {
+
+  let h = document.createElement("h2");
+  h.textContent = "thumbnail-" + layer;
+  app.appendChild(h);
   let e = document.createElement("div");
-  e.style.width = "2000px";
-  e.style.height = "2000px";
+  e.style.width = "80px";
+  e.style.height = "80px";
   e.style.position = "relative";
   app.appendChild(e);
 
-  let atlas = new Atlas({
+  let atlas = new AtlasThumbnail({
     target: e,
     store,
     data: {
-      id: "inceptionv1_mixed4c",
-      iconCrop: 0.3,
-      scaleCountFactor: 500,
-      showLabels: true,
-      gridSize: 2,
-      textShadow: true,
-      enableDragToPan: false,
-      enableClickToZoom: false,
-      enableHover: false
+      layerName: layer,
+      grid: 2,
     }
   });
 
   let b = document.createElement("button");
-  let name = "test"
-  b.textContent = `download '${name}'`
+  let name = `thumbnail-${layer}`
+  b.textContent = `download '${layer}'`
   b.addEventListener("click", () => {
     const canvas = atlas.refs.canvas;
     let image = canvas.toDataURL("image/jpg");
     download(name, image);
   });
   app.appendChild(b);
-}
+})
+
+
 // 
 // focus-1-1
 // 

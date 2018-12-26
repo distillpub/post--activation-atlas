@@ -9,19 +9,18 @@
   </div>
   <div class="atlas" style="width:{height-atlasMargin*2}px; height:{height-atlasMargin*2}px; margin:{atlasMargin}px">
     <div class="thumbnail">
-      <AtlasThumbnail
+
+      <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" style="width: 100%;display: block;">
+      <!-- <AtlasThumbnail
         {layerName}
         gridSize={1}
         bind:clientWidth=viewWidth
         bind:height=viewHeight
-      />
+      /> -->
     </div>
     <svg 
+      viewBox="0 0 {viewWidth} {viewHeight}"
       class="pathArrow"
-      style="width: {edgeLength};
-        height: {edgeLength};
-        left: {(viewWidth - edgeLength) / 2};
-        top: {(viewHeight - edgeLength) / 2}"
       >
       <defs>
         <marker 
@@ -74,13 +73,14 @@
 <script>
 export default {
   components: { 
-    AtlasThumbnail: "../AtlasThumbnail.html",
     SetOfIcons: "../SetOfIcons.html",
     AtlasDataLoader: '../AtlasDataLoader.html', 
   },
   data() {
     return {
       gridSize: 1,
+      viewWidth: 160,
+      viewHeight: 160,
       height: 160,
       color: '#ff6600',
       uniqueId: Math.random(),
@@ -122,9 +122,14 @@ export default {
   svg {
     position: absolute;
     pointer-events: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
   }
   .thumbnail {
     opacity: .2;
+    position: relative;
   }
   .atlas {
     position: relative;

@@ -6673,7 +6673,7 @@
 	      if (classHeatmap > -1) {
 	        let ci = classesToKeep.indexOf(classHeatmap);
 	        let value = Math.max(0, icon.f[ci]);
-	        heatmapMultiplier = Math.max(0.05, value * 5);
+	        heatmapMultiplier = Math.max(0.05, value * 5 * 4);
 	        // console.log(ci, value)
 	      }
 	      const y = icon.x; //x,y switched on purpose 
@@ -13737,7 +13737,7 @@
 	const file$A = "src/diagrams/LayerAnnotation.html";
 
 	function create_main_fragment$B(component, ctx) {
-		var div2, div0, atlas_updating = {}, text0, div1, text1, atlasreticle_updating = {};
+		var div2, div0, atlas_updating = {}, text0, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {};
 
 		var atlas_initial_data = { id: "inceptionv1_" + ctx.layerName };
 		if (ctx.gridSize
@@ -13844,16 +13844,6 @@
 			atlas._bind({ gridSize: 1, homeX: 1, homeY: 1, homeScale: 1, aspectRatio: 1, scale: 1, gcx: 1, gcy: 1, showLabels: 1 }, atlas.get());
 		});
 
-		var atlasthumbnail_initial_data = {
-		 	layerName: ctx.layerName,
-		 	gridSize: 1
-		 };
-		var atlasthumbnail = new AtlasThumbnail({
-			root: component.root,
-			store: component.store,
-			data: atlasthumbnail_initial_data
-		});
-
 		var atlasreticle_initial_data = {};
 		if (ctx.aspectRatio
 	       !== void 0) {
@@ -13916,12 +13906,16 @@
 				atlas._fragment.c();
 				text0 = createText("\n  ");
 				div1 = createElement("div");
-				atlasthumbnail._fragment.c();
+				img = createElement("img");
 				text1 = createText("\n    ");
 				atlasreticle._fragment.c();
-				div0.className = "detail svelte-tlu8r4";
+				div0.className = "detail svelte-1gwxm60";
 				addLoc(div0, file$A, 3, 2, 67);
-				div1.className = "atlas svelte-tlu8r4";
+				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
+				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
+				img.className = "svelte-1gwxm60";
+				addLoc(img, file$A, 18, 4, 347);
+				div1.className = "atlas svelte-1gwxm60";
 				addLoc(div1, file$A, 17, 2, 323);
 				setStyle(div2, "display", "grid");
 				setStyle(div2, "grid-template-columns", "1fr 200px");
@@ -13934,7 +13928,7 @@
 				atlas._mount(div0, null);
 				append(div2, text0);
 				append(div2, div1);
-				atlasthumbnail._mount(div1, null);
+				append(div1, img);
 				append(div1, text1);
 				atlasreticle._mount(div1, null);
 			},
@@ -14000,9 +13994,13 @@
 				atlas._set(atlas_changes);
 				atlas_updating = {};
 
-				var atlasthumbnail_changes = {};
-				if (changed.layerName) atlasthumbnail_changes.layerName = ctx.layerName;
-				atlasthumbnail._set(atlasthumbnail_changes);
+				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
+					img.src = img_src_value;
+				}
+
+				if ((changed.layerName) && img_alt_value !== (img_alt_value = "thumbnail for " + ctx.layerName)) {
+					img.alt = img_alt_value;
+				}
 
 				var atlasreticle_changes = {};
 				if (!atlasreticle_updating.aspectRatio && changed.aspectRatio) {
@@ -14039,7 +14037,6 @@
 				}
 
 				atlas.destroy();
-				atlasthumbnail.destroy();
 				atlasreticle.destroy();
 			}
 		};
@@ -14544,6 +14541,8 @@
 	function data$t() {
 	  return {
 	    gridSize: 1,
+	    viewWidth: 160,
+	    viewHeight: 160,
 	    height: 160,
 	    color: '#ff6600',
 	    uniqueId: Math.random(),
@@ -14553,7 +14552,7 @@
 	const file$D = "src/diagrams/ShowAPath.html";
 
 	function create_main_fragment$E(component, ctx) {
-		var div3, div0, text0, div2, div1, atlasthumbnail_updating = {}, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, text2, atlasdataloader_updating = {};
+		var div3, div0, text0, div2, div1, img, img_src_value, img_alt_value, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, text2, atlasdataloader_updating = {};
 
 		var setoficons_initial_data = {
 		 	pointList: ctx.pointList,
@@ -14565,40 +14564,6 @@
 			root: component.root,
 			store: component.store,
 			data: setoficons_initial_data
-		});
-
-		var atlasthumbnail_initial_data = {
-		 	layerName: ctx.layerName,
-		 	gridSize: 1
-		 };
-		if (ctx.viewWidth !== void 0) {
-			atlasthumbnail_initial_data.clientWidth = ctx.viewWidth;
-			atlasthumbnail_updating.clientWidth = true;
-		}
-		if (ctx.viewHeight !== void 0) {
-			atlasthumbnail_initial_data.height = ctx.viewHeight;
-			atlasthumbnail_updating.height = true;
-		}
-		var atlasthumbnail = new AtlasThumbnail({
-			root: component.root,
-			store: component.store,
-			data: atlasthumbnail_initial_data,
-			_bind(changed, childState) {
-				var newState = {};
-				if (!atlasthumbnail_updating.clientWidth && changed.clientWidth) {
-					newState.viewWidth = childState.clientWidth;
-				}
-
-				if (!atlasthumbnail_updating.height && changed.height) {
-					newState.viewHeight = childState.height;
-				}
-				component._set(newState);
-				atlasthumbnail_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(() => {
-			atlasthumbnail._bind({ clientWidth: 1, height: 1 }, atlasthumbnail.get());
 		});
 
 		var atlasdataloader_initial_data = {
@@ -14660,7 +14625,7 @@
 				text0 = createText("\n  ");
 				div2 = createElement("div");
 				div1 = createElement("div");
-				atlasthumbnail._fragment.c();
+				img = createElement("img");
 				text1 = createText("\n    ");
 				svg = createSvgElement("svg");
 				defs = createSvgElement("defs");
@@ -14672,12 +14637,17 @@
 				text2 = createText("\n  ");
 				atlasdataloader._fragment.c();
 				addLoc(div0, file$D, 1, 2, 91);
-				div1.className = "thumbnail svelte-19vqpwh";
+				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
+				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
+				setStyle(img, "width", "100%");
+				setStyle(img, "display", "block");
+				addLoc(img, file$D, 12, 6, 344);
+				div1.className = "thumbnail svelte-1jegnqk";
 				addLoc(div1, file$D, 10, 4, 313);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$D, 36, 10, 954);
+				addLoc(circle, file$D, 35, 10, 987);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -14686,9 +14656,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$D, 26, 8, 705);
+				addLoc(marker0, file$D, 25, 8, 738);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$D, 47, 10, 1233);
+				addLoc(path0, file$D, 46, 10, 1266);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -14697,22 +14667,19 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$D, 38, 8, 1010);
-				addLoc(defs, file$D, 25, 6, 690);
+				addLoc(marker1, file$D, 37, 8, 1043);
+				addLoc(defs, file$D, 24, 6, 723);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$D, 50, 6, 1306);
-				setAttribute(svg, "class", "pathArrow svelte-19vqpwh");
-				setStyle(svg, "width", ctx.edgeLength);
-				setStyle(svg, "height", ctx.edgeLength);
-				setStyle(svg, "left", (ctx.viewWidth - ctx.edgeLength) / 2);
-				setStyle(svg, "top", (ctx.viewHeight - ctx.edgeLength) / 2);
-				addLoc(svg, file$D, 18, 4, 490);
-				div2.className = "atlas svelte-19vqpwh";
+				addLoc(path1, file$D, 49, 6, 1339);
+				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
+				setAttribute(svg, "class", "pathArrow svelte-1jegnqk");
+				addLoc(svg, file$D, 20, 4, 634);
+				div2.className = "atlas svelte-1jegnqk";
 				setStyle(div2, "width", "" + (ctx.height-ctx.atlasMargin*2) + "px");
 				setStyle(div2, "height", "" + (ctx.height-ctx.atlasMargin*2) + "px");
 				setStyle(div2, "margin", "" + ctx.atlasMargin + "px");
@@ -14730,7 +14697,7 @@
 				append(div3, text0);
 				append(div3, div2);
 				append(div2, div1);
-				atlasthumbnail._mount(div1, null);
+				append(div1, img);
 				append(div2, text1);
 				append(div2, svg);
 				append(svg, defs);
@@ -14753,18 +14720,13 @@
 				if (changed.color) setoficons_changes.color = ctx.color;
 				setoficons._set(setoficons_changes);
 
-				var atlasthumbnail_changes = {};
-				if (changed.layerName) atlasthumbnail_changes.layerName = ctx.layerName;
-				if (!atlasthumbnail_updating.clientWidth && changed.viewWidth) {
-					atlasthumbnail_changes.clientWidth = ctx.viewWidth;
-					atlasthumbnail_updating.clientWidth = ctx.viewWidth !== void 0;
+				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
+					img.src = img_src_value;
 				}
-				if (!atlasthumbnail_updating.height && changed.viewHeight) {
-					atlasthumbnail_changes.height = ctx.viewHeight;
-					atlasthumbnail_updating.height = ctx.viewHeight !== void 0;
+
+				if ((changed.layerName) && img_alt_value !== (img_alt_value = "thumbnail for " + ctx.layerName)) {
+					img.alt = img_alt_value;
 				}
-				atlasthumbnail._set(atlasthumbnail_changes);
-				atlasthumbnail_updating = {};
 
 				if ((changed.uniqueId) && marker0_id_value !== (marker0_id_value = 'head' + ctx.uniqueId)) {
 					setAttribute(marker0, "id", marker0_id_value);
@@ -14798,17 +14760,8 @@
 					setAttribute(path1, "marker-start", path1_marker_start_value);
 				}
 
-				if (changed.edgeLength) {
-					setStyle(svg, "width", ctx.edgeLength);
-					setStyle(svg, "height", ctx.edgeLength);
-				}
-
-				if (changed.viewWidth || changed.edgeLength) {
-					setStyle(svg, "left", (ctx.viewWidth - ctx.edgeLength) / 2);
-				}
-
-				if (changed.viewHeight || changed.edgeLength) {
-					setStyle(svg, "top", (ctx.viewHeight - ctx.edgeLength) / 2);
+				if ((changed.viewWidth || changed.viewHeight) && svg_viewBox_value !== (svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight)) {
+					setAttribute(svg, "viewBox", svg_viewBox_value);
 				}
 
 				if (changed.height || changed.atlasMargin) {
@@ -14854,7 +14807,6 @@
 				}
 
 				setoficons.destroy();
-				atlasthumbnail.destroy();
 				if (component.refs.clickPath === path1) component.refs.clickPath = null;
 				atlasdataloader.destroy();
 			}
@@ -14939,7 +14891,7 @@
 	const file$E = "src/diagrams/VerticalLayerAnnotation.html";
 
 	function create_main_fragment$F(component, ctx) {
-		var div2, div0, atlas_updating = {}, text0, div1, text1, atlasreticle_updating = {}, text2;
+		var div2, div0, atlas_updating = {}, text0, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {}, text2;
 
 		var atlas_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
@@ -15050,13 +15002,6 @@
 			atlas._bind({ gridSize: 1, homeX: 1, homeY: 1, homeScale: 1, aspectRatio: 1, scale: 1, gcx: 1, gcy: 1, showLabels: 1 }, atlas.get());
 		});
 
-		var atlasthumbnail_initial_data = { layerName: ctx.layerName };
-		var atlasthumbnail = new AtlasThumbnail({
-			root: component.root,
-			store: component.store,
-			data: atlasthumbnail_initial_data
-		});
-
 		var atlasreticle_initial_data = {};
 		if (ctx.aspectRatio
 	       !== void 0) {
@@ -15121,14 +15066,18 @@
 				atlas._fragment.c();
 				text0 = createText("\n  ");
 				div1 = createElement("div");
-				atlasthumbnail._fragment.c();
+				img = createElement("img");
 				text1 = createText("\n    ");
 				atlasreticle._fragment.c();
 				text2 = createText("\n    ");
 				if (if_block) if_block.c();
-				div0.className = "detail svelte-1dvwfeg";
+				div0.className = "detail svelte-bq4534";
 				addLoc(div0, file$E, 3, 2, 19);
-				div1.className = "atlas svelte-1dvwfeg";
+				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
+				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
+				img.className = "svelte-bq4534";
+				addLoc(img, file$E, 20, 4, 360);
+				div1.className = "atlas svelte-bq4534";
 				addLoc(div1, file$E, 19, 2, 336);
 				addLoc(div2, file$E, 2, 0, 2);
 			},
@@ -15139,7 +15088,7 @@
 				atlas._mount(div0, null);
 				append(div2, text0);
 				append(div2, div1);
-				atlasthumbnail._mount(div1, null);
+				append(div1, img);
 				append(div1, text1);
 				atlasreticle._mount(div1, null);
 				append(div1, text2);
@@ -15207,9 +15156,13 @@
 				atlas._set(atlas_changes);
 				atlas_updating = {};
 
-				var atlasthumbnail_changes = {};
-				if (changed.layerName) atlasthumbnail_changes.layerName = ctx.layerName;
-				atlasthumbnail._set(atlasthumbnail_changes);
+				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
+					img.src = img_src_value;
+				}
+
+				if ((changed.layerName) && img_alt_value !== (img_alt_value = "thumbnail for " + ctx.layerName)) {
+					img.alt = img_alt_value;
+				}
 
 				var atlasreticle_changes = {};
 				if (!atlasreticle_updating.aspectRatio && changed.aspectRatio) {
@@ -15257,14 +15210,13 @@
 				}
 
 				atlas.destroy();
-				atlasthumbnail.destroy();
 				atlasreticle.destroy();
 				if (if_block) if_block.d();
 			}
 		};
 	}
 
-	// (30:4) {#if gcx && gcy}
+	// (28:4) {#if gcx && gcy}
 	function create_if_block$8(component, ctx) {
 
 		return {
@@ -16228,19 +16180,21 @@
 				div4 = createElement("div");
 				div4.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
 				setStyle(h40, "width", "" + ctx.loupeSize + "px");
+				h40.className = "svelte-1mpkpzp";
 				addLoc(h40, file$J, 3, 4, 25);
 				setStyle(h41, "width", "" + ctx.loupeSize + "px");
+				h41.className = "svelte-1mpkpzp";
 				addLoc(h41, file$J, 14, 4, 291);
 				addLoc(div0, file$J, 26, 4, 585);
-				div1.className = "figcaption svelte-19pyj07";
+				div1.className = "figcaption svelte-1mpkpzp";
 				addLoc(div1, file$J, 27, 4, 601);
-				div2.className = "figcaption svelte-19pyj07";
+				div2.className = "figcaption svelte-1mpkpzp";
 				addLoc(div2, file$J, 30, 4, 739);
-				div3.className = "figcaption svelte-19pyj07";
+				div3.className = "figcaption svelte-1mpkpzp";
 				addLoc(div3, file$J, 33, 4, 906);
-				div4.className = "figcaption svelte-19pyj07";
+				div4.className = "figcaption svelte-1mpkpzp";
 				addLoc(div4, file$J, 36, 4, 1083);
-				div5.className = "root svelte-19pyj07";
+				div5.className = "root svelte-1mpkpzp";
 				addLoc(div5, file$J, 1, 0, 1);
 			},
 
