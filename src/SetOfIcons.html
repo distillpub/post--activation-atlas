@@ -17,7 +17,6 @@
   </div>
 </div>
 
-
 <script>
 export default {
   components: { 
@@ -33,62 +32,32 @@ export default {
     }
   },
   computed: {
-    // choose the deepest available layer for the images
+    imgList: ({pointList, layers, pathZoomIndex}) => {
+        let imgList = [];
+        pointList.forEach((globalPosPercent) => {
+          if(layers && layers[pathZoomIndex]) {
+            const gridSelected = {
+              // assumes layers is always square
+              x: Math.floor(globalPosPercent[0] * layers[pathZoomIndex].length),
+              y: Math.floor(globalPosPercent[1] * layers[pathZoomIndex].length),
+            }
+            if(layers[pathZoomIndex][gridSelected.y] && 
+              layers[pathZoomIndex][gridSelected.y][gridSelected.x]){
+              const currentIcon = layers[pathZoomIndex][gridSelected.y][gridSelected.x];
+              if(currentIcon.num_activations > 0){
+                imgList.push(layers[pathZoomIndex][gridSelected.y][gridSelected.x]);
+              }
+            }
+          }
+        });
+        return imgList;
+    },
     pathZoomIndex: ({layers}) => {
       if(layers){
         return layers.length - 1
       }
       return 1
     },
-  },
-  onupdate({ changed, current, previous }) {
-    if (changed.pointList, changed.layers) {
-      this.render();
-    }
-  },
-  methods: {
-    render() {
-      const {pointList} = this.get();
-
-      if(pointList){
-
-        let lastIcon = {};
-        let i = 0;
-
-        let imgList = [];
-        pointList.forEach((globalPosPercent) => {
-          let thisIcon = this.getIconData({x: globalPosPercent[0], y: globalPosPercent[1]});
-
-          if(thisIcon != lastIcon){
-            imgList.push(thisIcon)
-            i += 1;
-          }
-          lastIcon = thisIcon;
-        })
-        this.set({imgList})
-        // console.log(imgList)
-      }
-    },
-    getIconData(globalPosPercent) {
-      const {layers, pathZoomIndex} = this.get();
-      if(layers && layers[pathZoomIndex]) {
-
-        const gridSelected = {
-          // assumes layers is always square
-          x: Math.floor(globalPosPercent.x * layers[pathZoomIndex].length),
-          y: Math.floor(globalPosPercent.y * layers[pathZoomIndex].length),
-        }
-      
-        if(layers[pathZoomIndex][gridSelected.y] && 
-            layers[pathZoomIndex][gridSelected.y][gridSelected.x]
-          ){
-            const currentIcon = layers[pathZoomIndex][gridSelected.y][gridSelected.x];
-            if(currentIcon.num_activations > 0){
-              return layers[pathZoomIndex][gridSelected.y][gridSelected.x];
-            }
-          }
-      }
-    }
   }
 }
 </script>
@@ -98,5 +67,7 @@ export default {
     margin-top: 8px;
     display: grid;
     grid-auto-flow: column;
+    overflow: hidden;
+    border-radius: 8px;
   }
 </style>

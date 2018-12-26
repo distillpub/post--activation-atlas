@@ -60,13 +60,8 @@
   </div>
   <AtlasDataLoader 
     id="inceptionv1_{layerName}"
-    layer={0}
-    layout={0}
-    classFilter={0}
-    filter={0}
     bind:config
     bind:layers 
-    bind:labels 
   />
 </div>
 
@@ -85,6 +80,7 @@ export default {
       color: '#ff6600',
       uniqueId: Math.random(),
       atlasMargin: 20,
+      pointList: []
     }
   },
   computed: {
