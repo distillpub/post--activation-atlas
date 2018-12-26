@@ -1,6 +1,7 @@
 import store from "./Store.js";
 
 import LazyComponent from './library/LazyComponent.html';
+import LazyImage from './library/LazyImage.html';
 import NotebookLink from './library/NotebookLink.html';
 
 import App from './components/App.html';
@@ -23,11 +24,10 @@ import OneLayer from './diagrams/OneLayer.html';
 import LayerAnnotation from './diagrams/LayerAnnotation.html';
 import ShowAPath from './diagrams/ShowAPath.html';
 import VerticalLayerAnnotation from './diagrams/VerticalLayerAnnotation.html';
-// import AllLayerComparison from './diagrams/AllLayerComparison.html';
-import Focus1 from './diagrams/Focus1.html';
-import Focus2 from './diagrams/Focus2.html';
-import Focus3 from './diagrams/Focus3.html';
-import Focus3Table from './diagrams/Focus3Table.html';
+import Focus1Static from './diagrams/Focus1Static.html';
+import Focus2Static from './diagrams/Focus2Static.html';
+import Focus3Static from './diagrams/Focus3Static.html';
+import Focus3TableStatic from './diagrams/Focus3TableStatic.html';
 // import FocusPlayground from './diagrams/FocusPlayground.html';
 // import ClassComparisonSingle from './diagrams/ClassComparisonSingle.html';
 
@@ -43,6 +43,44 @@ import Focus3Table from './diagrams/Focus3Table.html';
 // });
 
 document.addEventListener("DOMContentLoaded", (e) => {
+
+	// 
+	// Initialize lazy images
+	// 
+
+	const lazyImages = document.querySelectorAll("[data-lazy-image]");
+	for (const lazyImage of lazyImages) {
+		const url = lazyImage.getAttribute("data-lazy-image");
+		const aspectRatio = lazyImage.getAttribute("data-lazy-image-aspect-ratio");
+		new LazyImage({
+			target: lazyImage,
+			data: {
+				src: "assets/images/renders/" + url,
+				aspectRatio: aspectRatio ? aspectRatio : 1,
+				background: false,
+				border: false,
+			}
+		})
+	}
+
+	// 
+	// Initialize notebook links
+	// 
+
+	const notebookLinks = document.querySelectorAll("[data-notebook-url]");
+	for (const link of notebookLinks) {
+		const url = link.getAttribute("data-notebook-url");
+		new NotebookLink({
+			target: link,
+			data: {
+				url: url
+			}
+		});
+	}
+
+	// 
+	// Components
+	// 
 
 	const cover = document.querySelector("#cover");
 	cover.addEventListener("ready", e => {
@@ -61,17 +99,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			}
 		});
 	});
-
-	const notebookLinks = document.querySelectorAll("[data-notebook-url]");
-	for (const link of notebookLinks) {
-		const url = link.getAttribute("data-notebook-url");
-		new NotebookLink({
-			target: link,
-			data: {
-				url: url
-			}
-		});
-	}
 
 	new Overview({ target: document.querySelector("#overview") });
 
@@ -527,40 +554,24 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 	// Focusing on a Single Classification
 
-	new LazyComponent({
+	new Focus1Static({
 		target: document.querySelector("#focus-1"),
 		store: store,
-		data: {
-			aspectRatio: 2,
-			component: Focus1,
-		}
 	});
 
-	new LazyComponent({
+	new Focus2Static({
 		target: document.querySelector("#focus-2"),
 		store: store,
-		data: {
-			aspectRatio: 2,
-			component: Focus2,
-		}
 	});
 
-	new LazyComponent({
+	new Focus3Static({
 		target: document.querySelector("#focus-3"),
 		store: store,
-		data: {
-			aspectRatio: 2,
-			component: Focus3,
-		}
 	});
 
-	new LazyComponent({
+	new Focus3TableStatic({
 		target: document.querySelector("#focus-3-table"),
 		store: store,
-		data: {
-			aspectRatio: 1,
-			component: Focus3Table,
-		}
 	});
 
 	new App({

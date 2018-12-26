@@ -1,0 +1,59 @@
+
+<div class="root">
+  <div class="main">
+    <LazyImage border={false} background={false} src="assets/images/renders/focus-1-1.png" />
+    <AtlasReticle
+      aspectRatio=1
+      scale={$focus1Highlight.scale}
+      gcx={$focus1Highlight.x}
+      gcy={$focus1Highlight.y}
+      background={false}
+      round={true}
+      enableDragging={false}
+    />
+  </div>
+  <div class="detail">
+    <Loupe>
+      <LazyImage border={false} background={false} src="assets/images/renders/focus-1-2.png" />
+    </Loupe>
+  </div>
+  <div class="figcaption">When we map opacity to the amount that each activation contributes to "fireboat", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.</div>
+</div>
+
+<script>
+  export default {
+    components: {
+      LazyImage: "../library/LazyImage.html",
+      AtlasReticle: "../AtlasReticle.html",
+    Loupe: "../components/Loupe.html"
+    }
+  }
+</script>
+
+
+<style>
+  .root {
+    max-width: 1000px;
+    margin: 0 auto;
+    grid-column: page;
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+      "main detail"
+      "main caption";
+  }
+  .main {
+    grid-area: main;
+    position: relative;
+  }
+  .detail {
+    grid-area: detail;
+    position: relative;
+  }
+  .figcaption {
+    margin-top: 20px;
+    grid-area: caption;
+  }
+</style>

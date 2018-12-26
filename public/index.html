@@ -117,7 +117,7 @@
     <span class="link" on:click="goto(.46, .52, 8)">backgrounds</span>.
     Each grid cell is labeled with the classification it most supports.
     <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote>
-    <div style="margin-top: 8px;"><span data-notebook-url=’’></span></div>
+    <div style="margin-top: 16px;"><span data-notebook-url=’’></span></div>
     <div style="margin-top: 16px;">
       <NotebookLink url=""/>
     </div>
@@ -382,7 +382,7 @@
     <figcaption>Images from ImageNet</figcaption>
   </figure>
 
-  <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns many classes in ImageNet through several layers of InceptionV1.
+  <p>By isolating the activations that contribute strongly to one class and comparing it to other class activations, we can see which activations are conserved among classes and which are recombined to form more complex activations in later layers. Below you can explore the activation patterns of many classes in ImageNet through several layers of InceptionV1. You can even explore negative attributions, which we ignored in this discussion.
 
   <figure class="app-container">
     <d-figure id="focus-playground"></d-figure>
@@ -398,7 +398,7 @@
 
   <p>A class activation atlas gives us a much clearer view of which detectors the network is using to rank a specific class. In the "snorkel" example we can clearly see ocean, underwater, and colorful masks.
 
-  <p>In the previous example, we are only showing those activations whose strongest attribution is toward the class in question. This will show us activations that contribute mostly to our class in question, even if their overall strength is low (like in background detectors). In some cases, though, there are strong correlations that we'd like to see (like fish with snorkelers. These  activations on their own might contribute more strongly to a different class than the one we're interested in, but their existence can also contribute strongly to our class of interest. For these we need to choose a different filtering method.</p>
+  <p>In the previous example, we are only showing those activations whose strongest attribution is toward the class in question. This will show us activations that contribute mostly to our class in question, even if their overall strength is low (like in background detectors). In some cases, though, there are strong correlations that we'd like to see (like fish with snorkelers). These  activations on their own might contribute more strongly to a different class than the one we're interested in, but their existence can also contribute strongly to our class of interest. For these we need to choose a different filtering method.</p>
 
   <figure id="class-filter-comparison" style="grid-column: page;"></figure>
 

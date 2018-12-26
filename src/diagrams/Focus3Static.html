@@ -1,0 +1,67 @@
+
+<div class="root">
+  <h4>Activations for Fireboat</h4>
+  <div class="main">
+    <LazyImage border={false} background={false} src="assets/images/renders/focus-2-1.png" />
+    {#each $focusHighlights as h, i}
+      <AtlasReticle
+        aspectRatio=1
+        annotationValue={i + 1}
+        scale={h.scale}
+        gcx={h.x}
+        gcy={h.y}
+        background={false}
+        round={true}
+        enableDragging={false}
+      />
+    {/each}
+  </div>
+  <h4>Activations for Streetcar</h4>
+  <div class="main">
+    <LazyImage border={false} background={false} src="assets/images/renders/focus-3-1.png" />
+    {#each $focusHighlights as h, i}
+      <AtlasReticle
+        color="#ffaa00"
+        aspectRatio=1
+        annotationValue={i + 1}
+        scale={h.scale}
+        gcx={h.x}
+        gcy={h.y}
+        background={false}
+        round={true}
+        enableDragging={false}
+      />
+    {/each}
+  </div>
+</div>
+
+<script>
+  export default {
+    components: {
+      LazyImage: "../library/LazyImage.html",
+      AtlasReticle: "../AtlasReticle.html",
+    }
+  }
+</script>
+
+
+<style>
+  .root {
+    max-width: 1000px;
+    margin: 1em auto;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: auto 1fr;
+
+  }
+  .main {
+    position: relative;
+  }
+  h4 {
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    padding-bottom: 8px;
+    margin-top: 0;
+  }
+</style>

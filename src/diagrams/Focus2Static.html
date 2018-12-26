@@ -1,0 +1,83 @@
+
+<div class="root">
+  <div class="main">
+    <LazyImage border={false} background={false} src="assets/images/renders/focus-2-1.png" />
+    <AtlasReticle
+      aspectRatio=1
+      annotationValue="3"
+      scale={$focusHighlights[0].scale}
+      gcx={$focusHighlights[0].x}
+      gcy={$focusHighlights[0].y}
+      background={false}
+      round={true}
+      enableDragging={false}
+    />
+    <AtlasReticle
+      aspectRatio=1
+      annotationValue="2"
+      scale={$focusHighlights[1].scale}
+      gcx={$focusHighlights[1].x}
+      gcy={$focusHighlights[1].y}
+      background={false}
+      round={true}
+      enableDragging={false}
+    />
+    <AtlasReticle
+      aspectRatio=1
+      annotationValue="1"
+      scale={$focusHighlights[2].scale}
+      gcx={$focusHighlights[2].x}
+      gcy={$focusHighlights[2].y}
+      background={false}
+      round={true}
+      enableDragging={false}
+    />
+  </div>
+  <div class="detail">
+    <Loupe label={1}>
+      <LazyImage border={false} background={false} src="assets/images/renders/focus-2-2.png" />
+    </Loupe>
+    <Loupe label={2}>
+      <LazyImage border={false} background={false} src="assets/images/renders/focus-2-3.png" />
+    </Loupe>
+    <Loupe label={3}>
+      <LazyImage border={false} background={false} src="assets/images/renders/focus-2-4.png" />
+    </Loupe>
+    <div class="figcaption">In mixed4d we see we see the attribution toward "fireboat" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.</div>
+  </div>
+</div>
+
+<script>
+  export default {
+    components: {
+      LazyImage: "../library/LazyImage.html",
+      AtlasReticle: "../AtlasReticle.html",
+    Loupe: "../components/Loupe.html"
+    }
+  }
+</script>
+
+
+<style>
+  .root {
+    max-width: 1000px;
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .main {
+    position: relative;
+  }
+  .detail {
+    position: relative;
+    display: grid;
+    align-items: center;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .figcaption {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+</style>

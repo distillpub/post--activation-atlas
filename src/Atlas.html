@@ -1,4 +1,4 @@
-<!-- <Radar bind:ready /> -->
+<Radar bind:ready />
 
 {#if ready}
   <AtlasDataLoader 
@@ -132,9 +132,13 @@ export default {
       enableDragToPan: true,
 
 
-      backgroundColor: 'white',
-      strokeColor: 'rgb(220, 220, 220)',
+      backgroundColor: "white",
+      strokeColor: "rgb(220, 220, 220)",
+      strokeThickness: 1,
       imageSmoothing: false,
+      fontSize: 10,
+      textColor: "white",
+      textShadowColor: "rgba(0, 0, 0, 0.8)",
 
       // for positioning the hover icon
       lastRecordedCanvasPos: {x: -100, y: -100},
@@ -433,7 +437,7 @@ export default {
     },
     render() {
 
-      const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+      const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
       this.clear();
       // context.imageSmoothingQuality = "low";
@@ -458,6 +462,7 @@ export default {
                     const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex)
                     context.globalAlpha = 0.75;
                     context.strokeStyle = strokeColor;
+                    context.lineWidth = strokeThickness;
                     context.fillStyle = "white";
                     context.beginPath();
                     context.rect(dx, dy, iconWidth, iconWidth);
@@ -503,13 +508,13 @@ export default {
 
                         if (showLabels && labels) {
                           context.globalAlpha = 1;
-                          context.font="10px Helvetica";
+                          context.font=fontSize + "px Helvetica";
                           if (textShadow) {
                             context.lineWidth = 2;
-                            context.strokeStyle = "rgba(0, 0, 0, 0.8)";
+                            context.strokeStyle = textShadowColor;
                             context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
                           }
-                          context.fillStyle = "rgba(255, 255, 255, 1)"
+                          context.fillStyle = textColor;
                           context.fillText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
                         }
 

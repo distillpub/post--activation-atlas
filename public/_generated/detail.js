@@ -1980,9 +1980,13 @@
 	    enableDragToPan: true,
 
 
-	    backgroundColor: 'white',
-	    strokeColor: 'rgb(220, 220, 220)',
+	    backgroundColor: "white",
+	    strokeColor: "rgb(220, 220, 220)",
+	    strokeThickness: 1,
 	    imageSmoothing: false,
+	    fontSize: 10,
+	    textColor: "white",
+	    textShadowColor: "rgba(0, 0, 0, 0.8)",
 
 	    // for positioning the hover icon
 	    lastRecordedCanvasPos: {x: -100, y: -100},
@@ -2182,7 +2186,7 @@
 	  },
 	  render() {
 
-	    const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
 	    // context.imageSmoothingQuality = "low";
@@ -2207,6 +2211,7 @@
 	                  const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
 	                  context.globalAlpha = 0.75;
 	                  context.strokeStyle = strokeColor;
+	                  context.lineWidth = strokeThickness;
 	                  context.fillStyle = "white";
 	                  context.beginPath();
 	                  context.rect(dx, dy, iconWidth, iconWidth);
@@ -2252,13 +2257,13 @@
 
 	                      if (showLabels && labels) {
 	                        context.globalAlpha = 1;
-	                        context.font="10px Helvetica";
+	                        context.font=fontSize + "px Helvetica";
 	                        if (textShadow) {
 	                          context.lineWidth = 2;
-	                          context.strokeStyle = "rgba(0, 0, 0, 0.8)";
+	                          context.strokeStyle = textShadowColor;
 	                          context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
 	                        }
-	                        context.fillStyle = "rgba(255, 255, 255, 1)";
+	                        context.fillStyle = textColor;
 	                        context.fillText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
 	                      }
 
@@ -2298,7 +2303,30 @@
 	}
 
 	function create_main_fragment$8(component, ctx) {
-		var text0, div1, div0, zoom_updating = {}, text1, canvas, canvas_width_value, canvas_height_value, text2, div0_class_value, text3, div1_resize_listener;
+		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, text4, div1_resize_listener;
+
+		var radar_initial_data = {};
+		if (ctx.ready  !== void 0) {
+			radar_initial_data.ready = ctx.ready ;
+			radar_updating.ready = true;
+		}
+		var radar = new Radar({
+			root: component.root,
+			store: component.store,
+			data: radar_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!radar_updating.ready && changed.ready) {
+					newState.ready = childState.ready;
+				}
+				component._set(newState);
+				radar_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			radar._bind({ ready: 1 }, radar.get());
+		});
 
 		var if_block0 = (ctx.ready) && create_if_block_4(component, ctx);
 
@@ -2385,47 +2413,51 @@
 
 		return {
 			c: function create() {
+				radar._fragment.c();
+				text0 = createText("\n\n");
 				if (if_block0) if_block0.c();
-				text0 = createText("\n\n  ");
+				text1 = createText("\n\n  ");
 				div1 = createElement("div");
 				div0 = createElement("div");
 				zoom._fragment.c();
-				text1 = createText("\n      ");
-				canvas = createElement("canvas");
 				text2 = createText("\n      ");
+				canvas = createElement("canvas");
+				text3 = createText("\n      ");
 				if (if_block1) if_block1.c();
-				text3 = createText("\n\n    ");
+				text4 = createText("\n\n    ");
 				if (if_block2) if_block2.c();
 				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
 				setStyle(canvas, "width", "" + ctx.viewWidth + "px");
 				setStyle(canvas, "height", "" + ctx.viewHeight + "px");
 				canvas.className = "svelte-ptap6b svelte-ref-canvas";
-				addLoc(canvas, file$8, 35, 6, 697);
+				addLoc(canvas, file$8, 35, 6, 688);
 				addListener(div0, "mousedown", mousedown_handler);
 				addListener(div0, "mousemove", mousemove_handler);
 				addListener(div0, "mouseenter", mouseenter_handler);
 				addListener(div0, "mouseout", mouseout_handler);
 				div0.className = div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage";
-				addLoc(div0, file$8, 20, 4, 284);
+				addLoc(div0, file$8, 20, 4, 275);
 				component.root._beforecreate.push(div1_resize_handler);
 				div1.className = "svelte-ptap6b svelte-ref-root";
-				addLoc(div1, file$8, 15, 2, 194);
+				addLoc(div1, file$8, 15, 2, 185);
 			},
 
 			m: function mount(target, anchor) {
-				if (if_block0) if_block0.m(target, anchor);
+				radar._mount(target, anchor);
 				insert(target, text0, anchor);
+				if (if_block0) if_block0.m(target, anchor);
+				insert(target, text1, anchor);
 				insert(target, div1, anchor);
 				append(div1, div0);
 				zoom._mount(div0, null);
-				append(div0, text1);
+				append(div0, text2);
 				append(div0, canvas);
 				component.refs.canvas = canvas;
-				append(div0, text2);
+				append(div0, text3);
 				if (if_block1) if_block1.m(div0, null);
 				component.refs.stage = div0;
-				append(div1, text3);
+				append(div1, text4);
 				if (if_block2) if_block2.m(div1, null);
 				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
 				component.refs.root = div1;
@@ -2433,13 +2465,21 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
+				var radar_changes = {};
+				if (!radar_updating.ready && changed.ready) {
+					radar_changes.ready = ctx.ready ;
+					radar_updating.ready = ctx.ready  !== void 0;
+				}
+				radar._set(radar_changes);
+				radar_updating = {};
+
 				if (ctx.ready) {
 					if (if_block0) {
 						if_block0.p(changed, ctx);
 					} else {
 						if_block0 = create_if_block_4(component, ctx);
 						if_block0.c();
-						if_block0.m(text0.parentNode, text0);
+						if_block0.m(text1.parentNode, text1);
 					}
 				} else if (if_block0) {
 					if_block0.d(1);
@@ -2524,9 +2564,14 @@
 			},
 
 			d: function destroy$$1(detach) {
-				if (if_block0) if_block0.d(detach);
+				radar.destroy(detach);
 				if (detach) {
 					detachNode(text0);
+				}
+
+				if (if_block0) if_block0.d(detach);
+				if (detach) {
+					detachNode(text1);
 					detachNode(div1);
 				}
 
@@ -2658,7 +2703,7 @@
 				setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
 				setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
 				setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
-				addLoc(div, file$8, 42, 8, 929);
+				addLoc(div, file$8, 42, 8, 920);
 			},
 
 			m: function mount(target, anchor) {
@@ -2712,16 +2757,16 @@
 				text3 = createText(text3_value);
 				text4 = createText(" activations");
 				table.className = "svelte-ptap6b";
-				addLoc(table, file$8, 48, 8, 1387);
+				addLoc(table, file$8, 48, 8, 1378);
 				setStyle(div0, "font-size", "10px");
 				setStyle(div0, "margin-top", "4px");
 				setStyle(div0, "color", "#999");
 				setStyle(div0, "text-align", "right");
-				addLoc(div0, file$8, 71, 8, 2422);
+				addLoc(div0, file$8, 71, 8, 2413);
 				div1.className = "hover svelte-ptap6b";
 				setStyle(div1, "top", ((ctx.topLeftCornerHover.y + ctx.iconSizeInPixels + 10) + 'px'));
 				setStyle(div1, "left", ((ctx.topLeftCornerHover.x + ctx.iconSizeInPixels + 10) + 'px'));
-				addLoc(div1, file$8, 47, 6, 1227);
+				addLoc(div1, file$8, 47, 6, 1218);
 			},
 
 			m: function mount(target, anchor) {
@@ -2856,13 +2901,13 @@
 				text3 = createText("\n            ");
 				td1 = createElement("td");
 				text4 = createText(text4_value);
-				addLoc(tr0, file$8, 50, 10, 1437);
+				addLoc(tr0, file$8, 50, 10, 1428);
 				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$8, 55, 12, 1706);
+				addLoc(td0, file$8, 55, 12, 1697);
 				setStyle(td1, "text-align", "right");
 				td1.className = "svelte-ptap6b";
-				addLoc(td1, file$8, 56, 12, 1785);
-				addLoc(tr1, file$8, 54, 10, 1689);
+				addLoc(td1, file$8, 56, 12, 1776);
+				addLoc(tr1, file$8, 54, 10, 1680);
 			},
 
 			m: function mount(target, anchor) {
@@ -2917,13 +2962,13 @@
 				setStyle(td0, "text-align", "right");
 				setStyle(td0, "padding-right", "4px");
 				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$8, 61, 14, 2012);
+				addLoc(td0, file$8, 61, 14, 2003);
 				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-ptap6b";
-				addLoc(td1, file$8, 62, 14, 2104);
+				addLoc(td1, file$8, 62, 14, 2095);
 				setStyle(td2, "text-align", "right");
 				td2.className = "svelte-ptap6b";
-				addLoc(td2, file$8, 63, 14, 2172);
-				addLoc(tr, file$8, 60, 12, 1993);
+				addLoc(td2, file$8, 63, 14, 2163);
+				addLoc(tr, file$8, 60, 12, 1984);
 			},
 
 			m: function mount(target, anchor) {
@@ -2964,7 +3009,7 @@
 		return {
 			c: function create() {
 				canvas = createElement("canvas");
-				addLoc(canvas, file$8, 69, 10, 2367);
+				addLoc(canvas, file$8, 69, 10, 2358);
 			},
 
 			m: function mount(target, anchor) {

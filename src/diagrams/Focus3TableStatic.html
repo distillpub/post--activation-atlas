@@ -1,0 +1,78 @@
+
+<div class="root">
+
+    <h4 style="width:{loupeSize}px">Fireboat</h4>
+    {#each $focusHighlights as h, i}
+    <Loupe label={i + 1}>
+      <LazyImage
+        border={false}
+        background={false}
+        src="assets/images/renders/focus-2-{i + 2}.png" />
+    </Loupe>
+    {/each}
+
+
+    <h4 style="width:{loupeSize}px">Streetcar</h4>
+    {#each $focusHighlights as h, i}
+    <Loupe
+      label={i + 1}
+      color="#ffaa00">
+      <LazyImage
+        border={false}
+        background={false}
+        src="assets/images/renders/focus-3-{i + 2}.png" />
+    </Loupe>
+    {/each}
+
+    <div></div>
+    <div class="figcaption">
+      At mixed4d, Both "streetcar" and "fireboat" contain activations for what look like windows.
+    </div>
+    <div class="figcaption">
+      Both classes also contain activations for crane-like apparatuses, though they are less prominent than the window activations.
+    </div>
+    <div class="figcaption">
+      "Fireboat" activations have much stronger attributions from water than "streetcar", where there is virtually no positive evidence.
+    </div>
+    <div class="figcaption">
+      The activations for "streetcar" have much stronger attributions from buildings than does "fireboat". 
+    </div>
+
+</div>
+
+<script>
+  export default {
+    components: {
+      LazyImage: "../library/LazyImage.html",
+      Loupe: "../components/Loupe.html"
+    }
+  }
+</script>
+
+
+<style>
+  .root {
+    max-width: 1200px;
+    margin: 1em auto;
+    display: grid;
+    grid-column-gap: 50px;
+    grid-row-gap: 8px;
+    grid-template-columns: 100px 1fr 1fr 1fr 1fr;
+    align-items: center;
+  }
+  .main {
+    position: relative;
+  }
+  .detail {
+    position: relative;
+    display: grid;
+    align-items: center;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .figcaption {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+</style>
