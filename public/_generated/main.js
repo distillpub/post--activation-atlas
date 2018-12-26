@@ -14237,32 +14237,10 @@
 	    arrow: null,
 	    arrowHeight: 30,
 	    imgList: [],
+	    color: '#ff6600',
 	  }
 	}
 	var methods$6 = {
-	  drawArrow() {
-	    const {arrow, width, color, arrowHeight} = this.get();
-
-	    const vertAdjust = arrowHeight / 2;
-	    arrow.clearRect(0, 0, width, arrowHeight);
-	    
-	    arrow.lineWidth=2;
-	    arrow.strokeStyle=color;
-	    arrow.fillStyle=color;
-	    arrow.beginPath();
-	    arrow.moveTo(2, vertAdjust);
-	    arrow.lineTo(width, vertAdjust);
-	    arrow.stroke();
-	    arrow.beginPath();
-	    arrow.arc(4,vertAdjust,4,0,2*Math.PI);
-	    arrow.fill();
-	    arrow.beginPath();
-	    arrow.moveTo(width, vertAdjust);
-	    arrow.lineTo(width - 10, vertAdjust - 5);
-	    arrow.lineTo(width - 10, vertAdjust + 5);
-	    arrow.fill();
-
-	  },
 	  render() {
 	    const {pointList} = this.get();
 
@@ -14280,7 +14258,7 @@
 	        lastIcon = thisIcon;
 	      });
 	      this.set({imgList});
-	      console.log(imgList);
+	      // console.log(imgList)
 	    }
 	  },
 	  getIconData(globalPosPercent) {
@@ -14306,12 +14284,8 @@
 	};
 
 	function onupdate$3({ changed, current, previous }) {
-	  this.set({container: this.refs.icons, arrow: this.refs.arrow.getContext('2d')});
 	  if (changed.pointList, changed.layers) {
 	    this.render();
-	  }
-	  if (changed.width) {
-	    this.drawArrow();
 	  }
 	}
 	const file$C = "src/SetOfIcons.html";
@@ -14324,7 +14298,7 @@
 	}
 
 	function create_main_fragment$D(component, ctx) {
-		var div1, canvas, text, div0, div1_resize_listener;
+		var div4, div2, div0, text0, div1, text1, svg, path, text2, div3, div4_resize_listener;
 
 		var each_value = ctx.imgList;
 
@@ -14334,52 +14308,84 @@
 			each_blocks[i] = create_each_block$b(component, get_each_context$a(ctx, each_value, i));
 		}
 
-		function div1_resize_handler() {
-			component.set({ width: div1.clientWidth, height: div1.clientHeight });
+		function div4_resize_handler() {
+			component.set({ width: div4.clientWidth, height: div4.clientHeight });
 		}
 
 		return {
 			c: function create() {
-				div1 = createElement("div");
-				canvas = createElement("canvas");
-				text = createText("\n  ");
+				div4 = createElement("div");
+				div2 = createElement("div");
 				div0 = createElement("div");
+				text0 = createText("\n    ");
+				div1 = createElement("div");
+				text1 = createText("\n    ");
+				svg = createSvgElement("svg");
+				path = createSvgElement("path");
+				text2 = createText("\n  ");
+				div3 = createElement("div");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				canvas.width = ctx.width;
-				canvas.height = ctx.arrowHeight;
-				addLoc(canvas, file$C, 1, 2, 71);
-				div0.className = "icons svelte-106o8is";
-				addLoc(div0, file$C, 2, 2, 136);
-				component.root._beforecreate.push(div1_resize_handler);
-				addLoc(div1, file$C, 0, 0, 0);
+				setStyle(div0, "position", "absolute");
+				setStyle(div0, "left", "0px");
+				setStyle(div0, "top", "1px");
+				setStyle(div0, "background-color", ctx.color);
+				setStyle(div0, "border-radius", "50%");
+				setStyle(div0, "width", "8px");
+				setStyle(div0, "height", "8px");
+				addLoc(div0, file$C, 2, 4, 122);
+				setStyle(div1, "position", "relative");
+				setStyle(div1, "top", "4px");
+				setStyle(div1, "margin", "0 4px");
+				setStyle(div1, "border-top", "solid 2px " + ctx.color);
+				addLoc(div1, file$C, 3, 4, 257);
+				setAttribute(path, "d", "M 0 0 L 10 5 L 0 10 z");
+				setAttribute(path, "fill", ctx.color);
+				addLoc(path, file$C, 5, 6, 458);
+				setStyle(svg, "position", "absolute");
+				setStyle(svg, "right", "-4px");
+				setStyle(svg, "top", "0");
+				setAttribute(svg, "width", "10");
+				setAttribute(svg, "height", "10");
+				setAttribute(svg, "viewBox", "0 0 10 10");
+				addLoc(svg, file$C, 4, 4, 358);
+				setStyle(div2, "position", "relative");
+				setStyle(div2, "height", "10px");
+				addLoc(div2, file$C, 1, 2, 71);
+				div3.className = "icons svelte-177i297";
+				addLoc(div3, file$C, 8, 2, 530);
+				component.root._beforecreate.push(div4_resize_handler);
+				addLoc(div4, file$C, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
-				append(div1, canvas);
-				component.refs.arrow = canvas;
-				append(div1, text);
-				append(div1, div0);
+				insert(target, div4, anchor);
+				append(div4, div2);
+				append(div2, div0);
+				append(div2, text0);
+				append(div2, div1);
+				append(div2, text1);
+				append(div2, svg);
+				append(svg, path);
+				append(div4, text2);
+				append(div4, div3);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(div0, null);
+					each_blocks[i].m(div3, null);
 				}
 
-				component.refs.icons = div0;
-				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
-				component.refs.annotation = div1;
+				component.refs.icons = div3;
+				div4_resize_listener = addResizeListener(div4, div4_resize_handler);
+				component.refs.annotation = div4;
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.width) {
-					canvas.width = ctx.width;
-				}
-
-				if (changed.arrowHeight) {
-					canvas.height = ctx.arrowHeight;
+				if (changed.color) {
+					setStyle(div0, "background-color", ctx.color);
+					setStyle(div1, "border-top", "solid 2px " + ctx.color);
+					setAttribute(path, "fill", ctx.color);
 				}
 
 				if (changed.imgList || changed.config) {
@@ -14393,7 +14399,7 @@
 						} else {
 							each_blocks[i] = create_each_block$b(component, child_ctx);
 							each_blocks[i].c();
-							each_blocks[i].m(div0, null);
+							each_blocks[i].m(div3, null);
 						}
 					}
 
@@ -14406,21 +14412,19 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div1);
+					detachNode(div4);
 				}
-
-				if (component.refs.arrow === canvas) component.refs.arrow = null;
 
 				destroyEach(each_blocks, detach);
 
-				if (component.refs.icons === div0) component.refs.icons = null;
-				div1_resize_listener.cancel();
-				if (component.refs.annotation === div1) component.refs.annotation = null;
+				if (component.refs.icons === div3) component.refs.icons = null;
+				div4_resize_listener.cancel();
+				if (component.refs.annotation === div4) component.refs.annotation = null;
 			}
 		};
 	}
 
-	// (4:4) {#each imgList as icon, i}
+	// (10:4) {#each imgList as icon, i}
 	function create_each_block$b(component, ctx) {
 
 		var clippedicon_initial_data = {
@@ -14470,7 +14474,7 @@
 		if (!('layers' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'layers'");
 		if (!('width' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'width'");
 		if (!('height' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'height'");
-		if (!('arrowHeight' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'arrowHeight'");
+		if (!('color' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'color'");
 		if (!('imgList' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'imgList'");
 		if (!('config' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'config'");
 		this._intro = true;
