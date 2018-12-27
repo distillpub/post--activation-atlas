@@ -10,7 +10,6 @@ const store = new MyStore({
   currentClassAtlasCompareIndex: 507,
   classChoices: [9, 622, 665, 652, 288, 233, 188, 169, 80, 76, 62, 61, 7, 355, 990, 746, 791],
   classAtlasIndices: [
-    
     62,
     9,
     169,
@@ -65,6 +64,72 @@ const store = new MyStore({
     // 947,
     // 737,
   ],
+  multipleLayers: {
+    abacus: [
+      {
+        layerName: "mixed3b",
+        homeX: 0.8086,
+        homeY: 0.4295,
+        gridSize: 3,
+        homeScale: 16 * 1.5 * 2,
+      },
+      {
+        layerName: "mixed4c",
+        homeX: 0.8593,
+        homeY: 0.5814
+      },
+      {
+        layerName: "mixed5b",
+        homeX: 0.8183,
+        homeY: 0.21,
+        gridSize: 4,
+        homeScale: 16 * 6,
+      }
+    ],
+    plant: [
+      {
+        layerName: "mixed3b",
+        homeX: 0.3222,
+        homeY: 0.6352,
+        gridSize: 3,
+        homeScale: 16 * 1.5 * 2,
+
+      },
+      {
+        layerName: "mixed4c",
+        homeX: 0.146,
+        homeY: 0.392,
+
+      },
+      {
+        layerName: "mixed5b",
+        homeX: 0.1668,
+        homeY: 0.2833,
+        gridSize: 4,
+        homeScale: 16 * 3 * 2,
+
+      }
+    ],
+    water: [
+      {
+        layerName: "mixed4c",
+        homeX: 0.365,
+        homeY: 0.673,
+      },
+      {
+        layerName: "mixed4c",
+        homeX: 0.318,
+        homeY: 0.764,
+      },
+      {
+        layerName: "mixed5b",
+        homeX: 0.740,
+        homeY: 0.534,
+        gridSize: 4,
+        homeScale: 16 * 6,
+      },
+    ]
+  },
   // For class gradients and class comparisons
   currentClassComparisonIndex: 0,
   classComparisons: [
@@ -82,22 +147,15 @@ const store = new MyStore({
       ]
     },
     { id: "777_831", leftLabel: "beer bottle", rightLabel: "wine bottle", left: 777, right: 831, annotation: [] },
-    // { id: "359_361", leftLabel: "cliff", rightLabel: "alp", left: 359, right: 361, annotation: []},
-    // { id: "114_361", leftLabel: "Greater Swiss Mountain dog", rightLabel: "alp", left: 114, right: 361, annotation: []},
     { id: "543_544", leftLabel: "computer keyboard", rightLabel: "typewriter keyboard", left: 543, right: 544, annotation: [] },
     { id: "28_205", leftLabel: "red wolf", rightLabel: "timber wolf", left: 28, right: 205, annotation: [] },
     { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
-    // { id: "28_62", leftLabel: "red wolf", rightLabel: "red fox", left: 28, right: 62, annotation: [] },
     { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
-    // { id: "902_827", left: 902, right: 827, annotation: []},
-    // { id: "807_792", left: 807, right: 792, annotation: []},
-    // { id: "233_942", left: 233, right: 942, annotation: []},
     {
       id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
         { pos: { x: 2, y: 7 }, desc: "baseball?" }
       ]
     },
-    // { id: "807_442", leftLabel: "", rightLabel: "", left: 807, right: 442, annotation: []},
   ],
   focus1Highlight: {
     scale:6,
@@ -124,28 +182,6 @@ const store = new MyStore({
       scale: 10,
       x: 0.807,
       y: 0.333,
-    },
-  ],
-  focus3Highlights: [
-    {
-      homeX: 0.873,
-      homeY: 0.415,
-      homeScale: 10
-    },
-    {
-      homeX: 0.660,
-      homeY: 0.405,
-      homeScale: 10
-    },
-    {
-      homeX: 0.208,
-      homeY: 0.160,
-      homeScale: 10
-    },
-    {
-      homeX: 0.807,
-      homeY: 0.333,
-      homeScale: 10
     },
   ],
   pois: {

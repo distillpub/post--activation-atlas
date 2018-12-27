@@ -1,0 +1,59 @@
+
+
+<div style="">
+  <div class="detail">
+    <LazyImage src="assets/images/renders/layers-{subject}-{index}.png" aspectRatio={4/3} border={false} />
+  </div>
+  <div class="atlas">
+    <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
+    <AtlasReticle
+      aspectRatio={4/3}
+      scale={homeScale}
+      gcx={homeX}
+      gcy={homeY}
+    />
+    {#if gcx && gcy}
+    <!-- <label>gcx: {@html gcx.toPrecision(4)}, gcy: {@html gcy.toPrecision(4)}</label> -->
+    {/if}
+  </div>
+</div>
+<script>
+export default {
+  components: { 
+    LazyImage: "../library/LazyImage.html",
+    AtlasReticle: "../AtlasReticle.html"
+  },
+  data() {
+    return {
+      layerName: "mixed4c",
+      gridSize: 3,
+      homeScale: 16 * 3,
+      showLabels: true
+    }
+  }
+}
+</script>
+
+<style>
+  h4 {
+    margin-top: 0;
+  }
+  label {
+    font-size: 11px;
+    color: #ccc;
+  }
+  .atlas {
+    position: relative;
+    margin: 20px auto 0;
+    width: 150px;
+    height: 150px;
+  }
+  .detail {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  img {
+    display: block;
+    width: 100%;
+  }
+</style>

@@ -24,6 +24,7 @@ import OneLayer from './diagrams/OneLayer.html';
 import LayerAnnotation from './diagrams/LayerAnnotation.html';
 import ShowAPath from './diagrams/ShowAPath.html';
 import VerticalLayerAnnotation from './diagrams/VerticalLayerAnnotation.html';
+import VerticalLayerStatic from './diagrams/VerticalLayerStatic.html';
 import Focus1Static from './diagrams/Focus1Static.html';
 import Focus2Static from './diagrams/Focus2Static.html';
 import Focus3Static from './diagrams/Focus3Static.html';
@@ -248,26 +249,26 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			componentData: {
 				layerName: "mixed4c",
 				pointList: [
-					[0.161, 0.38610000610351564],
-					[0.161, 0.39373501368931363],
-					[0.161, 0.4013700212751116],
-					[0.161, 0.40900500161307196],
-					[0.161, 0.41664000919886995],
-					[0.161, 0.42427498953683035],
-					[0.161, 0.43190999712262834],
-					[0.161, 0.43954500470842633],
-					[0.161, 0.4471800122942243],
-					[0.161, 0.4548149926321847],
-					[0.161, 0.46244997297014506],
-					[0.161, 0.47008498055594305],
-					[0.161, 0.47771998814174105],
-					[0.161, 0.48535499572753904],
-					[0.161, 0.49299000331333703],
-					[0.161, 0.500625010899135],
-					[0.161, 0.5082600184849331],
-					[0.161, 0.5158949715750558],
-					[0.161, 0.5235299791608538],
-					[0.161, 0.5311649867466518]
+					[0.161, 0.38610],
+					[0.161, 0.39373],
+					[0.161, 0.4013],
+					[0.161, 0.40900],
+					[0.161, 0.41664],
+					[0.161, 0.42427],
+					[0.161, 0.43190],
+					[0.161, 0.43954],
+					[0.161, 0.4471],
+					[0.161, 0.4548],
+					[0.161, 0.46244],
+					[0.161, 0.47008],
+					[0.161, 0.47771],
+					[0.161, 0.48535],
+					[0.161, 0.49299],
+					[0.161, 0.500],
+					[0.161, 0.5082],
+					[0.161, 0.5158],
+					[0.161, 0.5235],
+					[0.161, 0.5311]
 				],
 			}
 		}
@@ -283,26 +284,26 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			componentData: {
 				layerName: "mixed4c",
 				pointList: [
-					[0.877770015171596, 0.35276998792375835],
-					[0.8758255004882812, 0.3431870596749442],
-					[0.8738809858049665, 0.3336041041782924],
-					[0.871936525617327, 0.3240211486816406],
-					[0.8699920109340122, 0.31443819318498883],
-					[0.8680474962506975, 0.30485523768833706],
-					[0.8661029815673829, 0.2952722821916853],
-					[0.8641585213797432, 0.2856893266950335],
-					[0.8622140066964286, 0.2761063711983817],
-					[0.8602694920131139, 0.26652344294956754],
-					[0.8583249773297991, 0.25694048745291576],
-					[0.8563805171421596, 0.24735755920410157],
-					[0.8544360024588449, 0.23777460370744977],
-					[0.8524914877755302, 0.228191648210798],
-					[0.8505469730922154, 0.2186086927141462],
-					[0.8486025129045759, 0.20902573721749443],
-					[0.8466579982212612, 0.19944279534476145],
-					[0.8447134835379464, 0.18985985347202847],
-					[0.8427689688546317, 0.1802768979753767],
-					[0.8408245086669922, 0.17069394247872488],
+					[0.8777, 0.35276],
+					[0.87582, 0.3431],
+					[0.87388, 0.3336],
+					[0.8719, 0.3240],
+					[0.86999, 0.31443],
+					[0.86804, 0.30485],
+					[0.86610, 0.2952],
+					[0.86415, 0.2856],
+					[0.86221, 0.2761],
+					[0.86026, 0.26652],
+					[0.85832, 0.25694],
+					[0.85638, 0.24735],
+					[0.85443, 0.23777],
+					[0.85249, 0.228],
+					[0.85054, 0.2186],
+					[0.84860, 0.20902],
+					[0.84665, 0.19944],
+					[0.84471, 0.18985],
+					[0.84276, 0.1802],
+					[0.84082, 0.17069],
 				],
 			}
 		}
@@ -319,25 +320,25 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				layerName: "mixed4c",
 				pointList: [
 					[0.275, 0.775],
-					[0.2794630323137556, 0.7651796068464006],
-					[0.2839260646275112, 0.7553592136928013],
-					[0.28838912418910434, 0.7455388205392021],
-					[0.29285215650285995, 0.7357184273856027],
-					[0.2973151888166155, 0.7258980342320034],
-					[0.3017782483782087, 0.716077641078404],
-					[0.3040830067225865, 0.7056094578334263],
-					[0.30576556069510324, 0.6949544634137835],
-					[0.30744808741978236, 0.6842995234898158],
-					[0.3091306413922991, 0.6736445835658482],
-					[0.31081319536481583, 0.6629896436418806],
-					[0.31111000605991906, 0.6522259303501674],
-					[0.31111000605991906, 0.641438947405134],
-					[0.31111000605991906, 0.6306520189557757],
-					[0.31111000605991906, 0.6198650360107422],
-					[0.31111000605991906, 0.6090780530657087],
-					[0.3058485576084682, 0.5997803279331753],
-					[0.3001950400216239, 0.5905935559953962],
-					[0.2945415224347796, 0.5814067840576171]
+					[0.27946, 0.76517],
+					[0.28392, 0.75535],
+					[0.288389, 0.74553],
+					[0.292852, 0.73571],
+					[0.29731, 0.72589],
+					[0.30177, 0.7160],
+					[0.30408, 0.70560],
+					[0.305765, 0.69495],
+					[0.307448, 0.68429],
+					[0.30913, 0.67364],
+					[0.310813, 0.66298],
+					[0.311110, 0.65222],
+					[0.311110, 0.6414],
+					[0.311110, 0.63065],
+					[0.311110, 0.61986],
+					[0.311110, 0.60907],
+					[0.30584, 0.59978],
+					[0.30019, 0.59059],
+					[0.29454, 0.58140]
 				],
 			}
 		}
@@ -381,142 +382,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 	// Looking at Multiple Layers
 
+	const subjects = ["plant", "water"]
+	const groups = [0, 1, 2]
 
-	new LazyComponent({
-		target: document.querySelector("#abacus-0"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed3b",
-				homeX: 0.8086,
-				homeY: 0.4295,
-				gridSize: 3,
-				homeScale: 16 * 1.5 * 2,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#abacus-1"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.8593,
-				homeY: 0.5814
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#abacus-2"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed5b",
-				homeX: 0.8183,
-				homeY: 0.2047,
-				gridSize: 4,
-				homeScale: 16 * 6,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#plant-0"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed3b",
-				homeX: 0.3222, 
-				homeY: 0.6352,
-				gridSize: 3,
-				homeScale: 16 * 1.5 * 2,
-			}
-		}
-	});
-
-
-	new LazyComponent({
-		target: document.querySelector("#plant-1"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.146,
-				homeY: 0.392,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#plant-2"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed5b",
-				homeX: 0.1668,
-				homeY: 0.2833,
-				gridSize: 4,
-				homeScale: 16 * 3 * 2,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#water-0"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.365,
-				homeY: 0.673,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#water-1"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed4c",
-				homeX: 0.318,
-				homeY: 0.764,
-			}
-		}
-	});
-
-	new LazyComponent({
-		target: document.querySelector("#water-2"),
-		store: store,
-		data: {
-			aspectRatio: 0.75,
-			component: VerticalLayerAnnotation,
-			componentData: {
-				layerName: "mixed5b",
-				homeX: 0.740,
-				homeY: 0.534,
-				gridSize: 4,
-				homeScale: 16 * 6,
-			}
-		}
+	subjects.forEach(s => {
+		groups.forEach (g => {
+			new VerticalLayerStatic({
+				target: document.querySelector(`#${s}-${g}`),
+				store: store,
+				data: {
+					index: g,
+					subject: s,
+					...(store.get().multipleLayers.abacus[g])
+				}
+			});
+		})
 	});
 
 

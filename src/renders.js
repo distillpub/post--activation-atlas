@@ -18,10 +18,6 @@ let app = document.querySelector("#app")
 // Atlas Thumbnails
 // 
 
-//   < AtlasThumbnail
-// { layerName }
-// />
-
 let layers = ["mixed3b", "mixed4a", "mixed4b", "mixed4c", "mixed4d", "mixed4e", "mixed5a", "mixed5b"]
 layers.forEach(layer => {
 
@@ -52,6 +48,49 @@ layers.forEach(layer => {
     download(name, image);
   });
   app.appendChild(b);
+})
+
+// 
+// mulitple-layers
+// 
+
+let subjects = ["abacus", "plant", "water"]
+subjects.forEach(s => {
+  let g = store.get().multipleLayers[s];
+  g.forEach((d, i) => {
+
+    let h = document.createElement("h2");
+    h.textContent = `layers-${s}-${i}`;
+    app.appendChild(h);
+    let e = document.createElement("div");
+    e.style.width = "400px";
+    e.style.height = "300px";
+    e.style.position = "relative";
+    app.appendChild(e);
+
+    let defaults = {
+      layerName: "mixed4c",
+      gridSize: 3,
+      homeScale: 16 * 3,
+    }
+    let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c"
+
+    new Atlas({
+      target: e,
+      data: {
+        id,
+        ...defaults,
+        ...d,
+        fontSize: 14,
+        iconCrop: 0.3,
+        showLabels: true,
+        textShadow: true,
+        enableDragToPan: false,
+        enableClickToZoom: false,
+        enableHover: false
+      }
+    })
+  })
 })
 
 

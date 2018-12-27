@@ -268,26 +268,9 @@
   </figure>
 
 
-  <p>To start, let's compare three layers from different areas of the network to try to get a sense for the different personalities of each -- one very early layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), one layer from the middle (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), and the final layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>) before the logits. We'll focus on areas of each layer that most contribute to the classification of "library".
-
-  <figure style="display: grid; grid-column: page; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
-    <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed3b</h4>
-    <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed4c</h4>
-    <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed5b</h4>
+  <p>To start, let's compare three layers from different areas of the network to try to get a sense for the different personalities of each -- one very early layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), one layer from the middle (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), and the final layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>) before the logits. We'll focus on areas of each layer that most contribute to the classification of "cabbage".
 
 
-    <div id="abacus-0"></div>
-    <div id="abacus-1"></div>
-    <div id="abacus-2"></div>
-
-    <div class="figcaption">You'll immediately notice that the early layer is very nonspecific in comparison to the others. The icons that emerge are of patterns and splotches of color. It is suggestive of the final class, but not particularly evocative.</div>
-    <div class="figcaption">In this middle layer, the images get much more detailed, but are still not enough to conclusively identify a particular class.</div>
-    <div class="figcaption">The final layer, mixed5b, is much more salient, much more specific. The final layer is much more aligned with the final classifications.</div>
-  </figure>
-
-  <p>As you move through the network, the later layers seem to get much more specific and complex. This is to be expected, as each layer builds its activations on top of the preceding layer’s activations. The later layers also tend to have larger receptive fields than the ones that precede them (meaning they are shown larger subsets of the image) so the concepts seem to encompass more of the whole of objects.
-
-  <p>Let's focus on "cabbage" to see another example of this effect.
 
   <figure style="display: grid; grid-column: page; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
     <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed3b</h4>
@@ -307,6 +290,24 @@
 
     <div class="figcaption">Here we see foliage with textures that are specific to cabbage, and curved into rounded balls. There are full heads of cabbage rather than individual leaves.</div>
   </figure>
+
+  <!-- <figure style="display: grid; grid-column: page; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
+    <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed3b</h4>
+    <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed4c</h4>
+    <h4 style="margin-bottom: 0; padding-bottom: 4px; width: 100%; border-bottom: solid #CCC 1px;">Mixed5b</h4>
+
+
+    <div id="abacus-0"></div>
+    <div id="abacus-1"></div>
+    <div id="abacus-2"></div>
+
+    <div class="figcaption">You'll immediately notice that the early layer is very nonspecific in comparison to the others. The icons that emerge are of patterns and splotches of color. It is suggestive of the final class, but not particularly evocative.</div>
+    <div class="figcaption">In this middle layer, the images get much more detailed, but are still not enough to conclusively identify a particular class.</div>
+    <div class="figcaption">The final layer, mixed5b, is much more salient, much more specific. The final layer is much more aligned with the final classifications.</div>
+  </figure> -->
+
+  <p>As you move through the network, the later layers seem to get much more specific and complex. This is to be expected, as each layer builds its activations on top of the preceding layer’s activations. The later layers also tend to have larger receptive fields than the ones that precede them (meaning they are shown larger subsets of the image) so the concepts seem to encompass more of the whole of objects.
+
 
   <p>There is another phenomenon worth noting: not only are concepts being refined, but new concepts are appearing out of combinations of old ones. Below, you can see how sand and water are distinct concepts in a middle layer, mixed4c, both with strong attributions to the classification of "sandbar". Contrast this with a later layer, mixed5b, where the two ideas seem to be fused into one activation.
 
