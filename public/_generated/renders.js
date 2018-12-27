@@ -4561,7 +4561,7 @@
 	}
 	var methods$3 = {
 	  render() {
-	    const {gridSize, icons, classHeatmap} = this.get();
+	    const {grid, gridSize, icons, classHeatmap} = this.get();
 	    const context = this.refs.canvas.getContext('2d');
 	    let imageData = context.getImageData(0, 0, gridSize, gridSize);
 	    let data = imageData.data;
@@ -4572,11 +4572,11 @@
 	      // data[i + 3] = 255;
 	    // }
 	    for (const icon of icons) {
-	      let heatmapMultiplier = 0.5;
+	      let heatmapMultiplier = 1.0;
 	      if (classHeatmap > -1) {
 	        let ci = classesToKeep.indexOf(classHeatmap);
 	        let value = Math.max(0, icon.f[ci]);
-	        heatmapMultiplier = Math.max(0.05, value * 5 * 4);
+	        heatmapMultiplier = Math.max(0.1, value * 20);
 	        // console.log(ci, value)
 	      }
 	      const y = icon.x; //x,y switched on purpose 
@@ -4584,7 +4584,7 @@
 	      // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-	      data[y * gridSize * 4 + x * 4 + 3] = icon.n * heatmapMultiplier;
+	      data[y * gridSize * 4 + x * 4 + 3] = 0.005 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
 	    }
 	    
 	    context.putImageData(imageData, 0, 0);
@@ -4620,7 +4620,7 @@
 	function add_css$2() {
 		var style = createElement("style");
 		style.id = 'svelte-sjakuy-style';
-		style.textContent = "canvas.svelte-sjakuy{image-rendering:pixelated}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXRsYXNUaHVtYm5haWwuaHRtbCIsInNvdXJjZXMiOlsiQXRsYXNUaHVtYm5haWwuaHRtbCJdLCJzb3VyY2VzQ29udGVudCI6WyJcbjxkaXYgYmluZDpjbGllbnRXaWR0aCBzdHlsZT1cImhlaWdodDoge2hlaWdodH1weDtcIj5cbiAgPGNhbnZhcyByZWY6Y2FudmFzIHdpZHRoPXtncmlkU2l6ZX0gaGVpZ2h0PXtncmlkU2l6ZX0gc3R5bGU9XCJ3aWR0aDoge2NsaWVudFdpZHRofXB4OyBoZWlnaHQ6IHtoZWlnaHR9cHg7XCI+PC9jYW52YXM+XG48L2Rpdj5cblxuPHNjcmlwdD5cbmltcG9ydCB7IGxvYWQgfSBmcm9tICdsdWNpZC1jb21wb25lbnRzJztcbmltcG9ydCBjbGFzc2VzVG9LZWVwIGZyb20gJy4vY2xhc3Nlc1RvS2VlcC5qcyc7XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgZGF0YSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgcm9vdDogXCJodHRwczovL3N0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vYWN0aXZhdGlvbi1hdGxhcy9idWlsZFwiLFxuICAgICAgbW9kZWw6IFwiaW5jZXB0aW9udjFcIixcbiAgICAgIGxheWVyTmFtZTogXCJtaXhlZDRkXCIsXG4gICAgICBncmlkOiAxLFxuICAgICAgbGF5b3V0OiAwLFxuICAgICAgZ3JpZFNpemU6IDEwLFxuICAgICAgY2xhc3NIZWF0bWFwOiAtMSxcbiAgICAgIGljb25zOiBbXVxuICAgIH07XG4gIH0sXG4gIGNvbXB1dGVkOiB7XG4gICAgaGVpZ2h0OiAoe2NsaWVudFdpZHRofSkgPT4gY2xpZW50V2lkdGgsXG4gICAgaWQ6ICh7bW9kZWwsIGxheWVyTmFtZX0pID0+IG1vZGVsICsgXCJfXCIgKyBsYXllck5hbWVcbiAgfSxcbiAgb25jcmVhdGUoKSB7XG4gICAgY29uc3Qge3Jvb3QsIGlkLCBncmlkfSA9IHRoaXMuZ2V0KCk7XG4gICAgbG9hZChgJHtyb290fS8ke2lkfS8ke2lkfS5qc29uYCkudGhlbihjb25maWcgPT4ge1xuICAgICAgLy8gY29uc29sZS5sb2coXCJjb25maWc6IFwiLCBjb25maWcpXG4gICAgICBpZiAoY29uZmlnLmNsYXNzX2ZpbHRlciA9PSBudWxsKSB7IGNvbmZpZy5jbGFzc19maWx0ZXIgPSBcIk5vbmVcIiB9XG4gICAgICBpZiAoY29uZmlnLmZpbHRlciA9PSBudWxsKSB7IGNvbmZpZy5maWx0ZXIgPSBcIk5vbmVcIiB9XG4gICAgICBpZiAoIUFycmF5LmlzQXJyYXkoY29uZmlnLmxheW91dCkpIHtjb25maWcubGF5b3V0ID0gW2NvbmZpZy5sYXlvdXRdfVxuICAgICAgaWYgKCFBcnJheS5pc0FycmF5KGNvbmZpZy5sYXllcikpIHtjb25maWcubGF5ZXIgPSBbY29uZmlnLmxheWVyXX1cbiAgICAgIGlmICghQXJyYXkuaXNBcnJheShjb25maWcuZmlsdGVyKSkge2NvbmZpZy5maWx0ZXIgPSBbY29uZmlnLmZpbHRlcl19XG4gICAgICB0aGlzLnNldCh7Z3JpZFNpemU6IGNvbmZpZy5ncmlkX3NpemVbZ3JpZF19KVxuICAgICAgY29uc3QgdXJsID0gYCR7cm9vdH0vJHtpZH0vd2ViL3dlYi0tZ3JpZF9zaXplPSR7Y29uZmlnLmdyaWRfc2l6ZVtncmlkXX0tLWxheW91dD0ke2NvbmZpZy5sYXlvdXRbMF19LS1jbGFzc19maWx0ZXI9JHtjb25maWcuY2xhc3NfZmlsdGVyfS0tZmlsdGVyPSR7Y29uZmlnLmZpbHRlclswXX0tLWxheWVyPSR7Y29uZmlnLmxheWVyWzBdfS0tbW9kZWw9JHtjb25maWcubW9kZWx9LS1zYW1wbGVfaW1hZ2VzPSR7Y29uZmlnLnNhbXBsZV9pbWFnZXN9LS1zYW1wbGVfdHlwZT0ke2NvbmZpZy5zYW1wbGVfdHlwZX0uanNvbmBcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwiY29uZmlnXCIsIGNvbmZpZylcbiAgICAgIGxvYWQodXJsKS50aGVuKHdlYiA9PiB7XG4gICAgICAgIC8vIGNvbnNvbGUubG9nKFwid2ViXCIsIHdlYilcbiAgICAgICAgdGhpcy5zZXQoe2ljb25zOiB3ZWJ9KTtcbiAgICAgICAgdGhpcy5yZW5kZXIoKTtcbiAgICAgIH0pXG4gICAgfSlcbiAgfSxcbiAgb251cGRhdGUoe2NoYW5nZWR9KSB7XG4gICAgaWYgKGNoYW5nZWQuY2xhc3NIZWF0bWFwKSB7XG4gICAgICB0aGlzLnJlbmRlcigpO1xuICAgIH1cbiAgfSxcbiAgbWV0aG9kczoge1xuICAgIHJlbmRlcigpIHtcbiAgICAgIGNvbnN0IHtncmlkU2l6ZSwgaWNvbnMsIGNsYXNzSGVhdG1hcH0gPSB0aGlzLmdldCgpO1xuICAgICAgY29uc3QgY29udGV4dCA9IHRoaXMucmVmcy5jYW52YXMuZ2V0Q29udGV4dCgnMmQnKTtcbiAgICAgIGxldCBpbWFnZURhdGEgPSBjb250ZXh0LmdldEltYWdlRGF0YSgwLCAwLCBncmlkU2l6ZSwgZ3JpZFNpemUpO1xuICAgICAgbGV0IGRhdGEgPSBpbWFnZURhdGEuZGF0YTtcbiAgICAgIC8vIGZvciAodmFyIGkgPSAwOyBpIDwgZGF0YS5sZW5ndGg7IGkgKz0gNCkge1xuICAgICAgICAvLyBkYXRhW2ldID0gMTAwO1xuICAgICAgICAvLyBkYXRhW2kgKyAxXSA9IDEwMDtcbiAgICAgICAgLy8gZGF0YVtpICsgMl0gPSAxMDA7XG4gICAgICAgIC8vIGRhdGFbaSArIDNdID0gMjU1O1xuICAgICAgLy8gfVxuICAgICAgZm9yIChjb25zdCBpY29uIG9mIGljb25zKSB7XG4gICAgICAgIGxldCBoZWF0bWFwTXVsdGlwbGllciA9IDAuNTtcbiAgICAgICAgaWYgKGNsYXNzSGVhdG1hcCA+IC0xKSB7XG4gICAgICAgICAgbGV0IGNpID0gY2xhc3Nlc1RvS2VlcC5pbmRleE9mKGNsYXNzSGVhdG1hcCk7XG4gICAgICAgICAgbGV0IHZhbHVlID0gTWF0aC5tYXgoMCwgaWNvbi5mW2NpXSk7XG4gICAgICAgICAgaGVhdG1hcE11bHRpcGxpZXIgPSBNYXRoLm1heCgwLjA1LCB2YWx1ZSAqIDUgKiA0KTtcbiAgICAgICAgICAvLyBjb25zb2xlLmxvZyhjaSwgdmFsdWUpXG4gICAgICAgIH1cbiAgICAgICAgY29uc3QgeSA9IGljb24ueDsgLy94LHkgc3dpdGNoZWQgb24gcHVycG9zZSBcbiAgICAgICAgY29uc3QgeCA9IGljb24ueTsgLy94LHkgc3dpdGNoZWQgb24gcHVycG9zZVxuICAgICAgICAvLyBkYXRhW3kgKiBncmlkU2l6ZSAqIDQgKyB4ICogNCArIDBdID0gKGhlYXRtYXBNdWx0aXBsaWVyKSAqIDI1NSAqIDIwO1xuICAgICAgICAvLyBkYXRhW3kgKiBncmlkU2l6ZSAqIDQgKyB4ICogNCArIDFdID0gKGhlYXRtYXBNdWx0aXBsaWVyKSAqIDEzMCAqIDIwO1xuICAgICAgICAvLyBkYXRhW3kgKiBncmlkU2l6ZSAqIDQgKyB4ICogNCArIDJdID0gKGhlYXRtYXBNdWx0aXBsaWVyKSAqIDEgKiAyMDtcbiAgICAgICAgZGF0YVt5ICogZ3JpZFNpemUgKiA0ICsgeCAqIDQgKyAzXSA9IGljb24ubiAqIGhlYXRtYXBNdWx0aXBsaWVyO1xuICAgICAgfVxuICAgICAgXG4gICAgICBjb250ZXh0LnB1dEltYWdlRGF0YShpbWFnZURhdGEsIDAsIDApO1xuICAgIH1cbiAgfVxufVxuXG5cbjwvc2NyaXB0PlxuPHN0eWxlPlxuY2FudmFzIHtcbiAgaW1hZ2UtcmVuZGVyaW5nOiBwaXhlbGF0ZWQ7XG59XG48L3N0eWxlPiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFzRkEsTUFBTSxjQUFDLENBQUMsQUFDTixlQUFlLENBQUUsU0FBUyxBQUM1QixDQUFDIn0= */";
+		style.textContent = "canvas.svelte-sjakuy{image-rendering:pixelated}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXRsYXNUaHVtYm5haWwuaHRtbCIsInNvdXJjZXMiOlsiQXRsYXNUaHVtYm5haWwuaHRtbCJdLCJzb3VyY2VzQ29udGVudCI6WyJcbjxkaXYgYmluZDpjbGllbnRXaWR0aCBzdHlsZT1cImhlaWdodDoge2hlaWdodH1weDtcIj5cbiAgPGNhbnZhcyByZWY6Y2FudmFzIHdpZHRoPXtncmlkU2l6ZX0gaGVpZ2h0PXtncmlkU2l6ZX0gc3R5bGU9XCJ3aWR0aDoge2NsaWVudFdpZHRofXB4OyBoZWlnaHQ6IHtoZWlnaHR9cHg7XCI+PC9jYW52YXM+XG48L2Rpdj5cblxuPHNjcmlwdD5cbmltcG9ydCB7IGxvYWQgfSBmcm9tICdsdWNpZC1jb21wb25lbnRzJztcbmltcG9ydCBjbGFzc2VzVG9LZWVwIGZyb20gJy4vY2xhc3Nlc1RvS2VlcC5qcyc7XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgZGF0YSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgcm9vdDogXCJodHRwczovL3N0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vYWN0aXZhdGlvbi1hdGxhcy9idWlsZFwiLFxuICAgICAgbW9kZWw6IFwiaW5jZXB0aW9udjFcIixcbiAgICAgIGxheWVyTmFtZTogXCJtaXhlZDRkXCIsXG4gICAgICBncmlkOiAxLFxuICAgICAgbGF5b3V0OiAwLFxuICAgICAgZ3JpZFNpemU6IDEwLFxuICAgICAgY2xhc3NIZWF0bWFwOiAtMSxcbiAgICAgIGljb25zOiBbXVxuICAgIH07XG4gIH0sXG4gIGNvbXB1dGVkOiB7XG4gICAgaGVpZ2h0OiAoe2NsaWVudFdpZHRofSkgPT4gY2xpZW50V2lkdGgsXG4gICAgaWQ6ICh7bW9kZWwsIGxheWVyTmFtZX0pID0+IG1vZGVsICsgXCJfXCIgKyBsYXllck5hbWVcbiAgfSxcbiAgb25jcmVhdGUoKSB7XG4gICAgY29uc3Qge3Jvb3QsIGlkLCBncmlkfSA9IHRoaXMuZ2V0KCk7XG4gICAgbG9hZChgJHtyb290fS8ke2lkfS8ke2lkfS5qc29uYCkudGhlbihjb25maWcgPT4ge1xuICAgICAgLy8gY29uc29sZS5sb2coXCJjb25maWc6IFwiLCBjb25maWcpXG4gICAgICBpZiAoY29uZmlnLmNsYXNzX2ZpbHRlciA9PSBudWxsKSB7IGNvbmZpZy5jbGFzc19maWx0ZXIgPSBcIk5vbmVcIiB9XG4gICAgICBpZiAoY29uZmlnLmZpbHRlciA9PSBudWxsKSB7IGNvbmZpZy5maWx0ZXIgPSBcIk5vbmVcIiB9XG4gICAgICBpZiAoIUFycmF5LmlzQXJyYXkoY29uZmlnLmxheW91dCkpIHtjb25maWcubGF5b3V0ID0gW2NvbmZpZy5sYXlvdXRdfVxuICAgICAgaWYgKCFBcnJheS5pc0FycmF5KGNvbmZpZy5sYXllcikpIHtjb25maWcubGF5ZXIgPSBbY29uZmlnLmxheWVyXX1cbiAgICAgIGlmICghQXJyYXkuaXNBcnJheShjb25maWcuZmlsdGVyKSkge2NvbmZpZy5maWx0ZXIgPSBbY29uZmlnLmZpbHRlcl19XG4gICAgICB0aGlzLnNldCh7Z3JpZFNpemU6IGNvbmZpZy5ncmlkX3NpemVbZ3JpZF19KVxuICAgICAgY29uc3QgdXJsID0gYCR7cm9vdH0vJHtpZH0vd2ViL3dlYi0tZ3JpZF9zaXplPSR7Y29uZmlnLmdyaWRfc2l6ZVtncmlkXX0tLWxheW91dD0ke2NvbmZpZy5sYXlvdXRbMF19LS1jbGFzc19maWx0ZXI9JHtjb25maWcuY2xhc3NfZmlsdGVyfS0tZmlsdGVyPSR7Y29uZmlnLmZpbHRlclswXX0tLWxheWVyPSR7Y29uZmlnLmxheWVyWzBdfS0tbW9kZWw9JHtjb25maWcubW9kZWx9LS1zYW1wbGVfaW1hZ2VzPSR7Y29uZmlnLnNhbXBsZV9pbWFnZXN9LS1zYW1wbGVfdHlwZT0ke2NvbmZpZy5zYW1wbGVfdHlwZX0uanNvbmBcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwiY29uZmlnXCIsIGNvbmZpZylcbiAgICAgIGxvYWQodXJsKS50aGVuKHdlYiA9PiB7XG4gICAgICAgIC8vIGNvbnNvbGUubG9nKFwid2ViXCIsIHdlYilcbiAgICAgICAgdGhpcy5zZXQoe2ljb25zOiB3ZWJ9KTtcbiAgICAgICAgdGhpcy5yZW5kZXIoKTtcbiAgICAgIH0pXG4gICAgfSlcbiAgfSxcbiAgb251cGRhdGUoe2NoYW5nZWR9KSB7XG4gICAgaWYgKGNoYW5nZWQuY2xhc3NIZWF0bWFwKSB7XG4gICAgICB0aGlzLnJlbmRlcigpO1xuICAgIH1cbiAgfSxcbiAgbWV0aG9kczoge1xuICAgIHJlbmRlcigpIHtcbiAgICAgIGNvbnN0IHtncmlkLCBncmlkU2l6ZSwgaWNvbnMsIGNsYXNzSGVhdG1hcH0gPSB0aGlzLmdldCgpO1xuICAgICAgY29uc3QgY29udGV4dCA9IHRoaXMucmVmcy5jYW52YXMuZ2V0Q29udGV4dCgnMmQnKTtcbiAgICAgIGxldCBpbWFnZURhdGEgPSBjb250ZXh0LmdldEltYWdlRGF0YSgwLCAwLCBncmlkU2l6ZSwgZ3JpZFNpemUpO1xuICAgICAgbGV0IGRhdGEgPSBpbWFnZURhdGEuZGF0YTtcbiAgICAgIC8vIGZvciAodmFyIGkgPSAwOyBpIDwgZGF0YS5sZW5ndGg7IGkgKz0gNCkge1xuICAgICAgICAvLyBkYXRhW2ldID0gMTAwO1xuICAgICAgICAvLyBkYXRhW2kgKyAxXSA9IDEwMDtcbiAgICAgICAgLy8gZGF0YVtpICsgMl0gPSAxMDA7XG4gICAgICAgIC8vIGRhdGFbaSArIDNdID0gMjU1O1xuICAgICAgLy8gfVxuICAgICAgZm9yIChjb25zdCBpY29uIG9mIGljb25zKSB7XG4gICAgICAgIGxldCBoZWF0bWFwTXVsdGlwbGllciA9IDEuMDtcbiAgICAgICAgaWYgKGNsYXNzSGVhdG1hcCA+IC0xKSB7XG4gICAgICAgICAgbGV0IGNpID0gY2xhc3Nlc1RvS2VlcC5pbmRleE9mKGNsYXNzSGVhdG1hcCk7XG4gICAgICAgICAgbGV0IHZhbHVlID0gTWF0aC5tYXgoMCwgaWNvbi5mW2NpXSk7XG4gICAgICAgICAgaGVhdG1hcE11bHRpcGxpZXIgPSBNYXRoLm1heCgwLjEsIHZhbHVlICogMjApO1xuICAgICAgICAgIC8vIGNvbnNvbGUubG9nKGNpLCB2YWx1ZSlcbiAgICAgICAgfVxuICAgICAgICBjb25zdCB5ID0gaWNvbi54OyAvL3gseSBzd2l0Y2hlZCBvbiBwdXJwb3NlIFxuICAgICAgICBjb25zdCB4ID0gaWNvbi55OyAvL3gseSBzd2l0Y2hlZCBvbiBwdXJwb3NlXG4gICAgICAgIC8vIGRhdGFbeSAqIGdyaWRTaXplICogNCArIHggKiA0ICsgMF0gPSAoaGVhdG1hcE11bHRpcGxpZXIpICogMjU1ICogMjA7XG4gICAgICAgIC8vIGRhdGFbeSAqIGdyaWRTaXplICogNCArIHggKiA0ICsgMV0gPSAoaGVhdG1hcE11bHRpcGxpZXIpICogMTMwICogMjA7XG4gICAgICAgIC8vIGRhdGFbeSAqIGdyaWRTaXplICogNCArIHggKiA0ICsgMl0gPSAoaGVhdG1hcE11bHRpcGxpZXIpICogMSAqIDIwO1xuICAgICAgICBkYXRhW3kgKiBncmlkU2l6ZSAqIDQgKyB4ICogNCArIDNdID0gMC4wMDUgKiAyNTUgKiAoaWNvbi5uIC8gTWF0aC5wb3coKGdyaWQgKyAxKSwgMikpICogaGVhdG1hcE11bHRpcGxpZXI7XG4gICAgICB9XG4gICAgICBcbiAgICAgIGNvbnRleHQucHV0SW1hZ2VEYXRhKGltYWdlRGF0YSwgMCwgMCk7XG4gICAgfVxuICB9XG59XG5cblxuPC9zY3JpcHQ+XG48c3R5bGU+XG5jYW52YXMge1xuICBpbWFnZS1yZW5kZXJpbmc6IHBpeGVsYXRlZDtcbn1cbjwvc3R5bGU+Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQXNGQSxNQUFNLGNBQUMsQ0FBQyxBQUNOLGVBQWUsQ0FBRSxTQUFTLEFBQzVCLENBQUMifQ== */";
 		append(document.head, style);
 	}
 
@@ -4786,574 +4786,574 @@
 	// mulitple-layers
 	// 
 
-	let subjects = ["abacus", "plant", "water"];
-	subjects.forEach(s => {
-	  let g = store.get().multipleLayers[s];
-	  g.forEach((d, i) => {
+	// let subjects = ["abacus", "plant", "water"]
+	// subjects.forEach(s => {
+	//   let g = store.get().multipleLayers[s];
+	//   g.forEach((d, i) => {
 
-	    let h = document.createElement("h2");
-	    h.textContent = `layers-${s}-${i}`;
-	    app.appendChild(h);
-	    let e = document.createElement("div");
-	    e.style.width = "400px";
-	    e.style.height = "300px";
-	    e.style.position = "relative";
-	    app.appendChild(e);
-	    let zoom = 0.8;
-	    let defaults = {
-	      layerName: "mixed4c",
-	      gridSize: 3,
-	      homeScale: 16 * 3 * zoom,
-	    };
-	    let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c";
+	//     let h = document.createElement("h2");
+	//     h.textContent = `layers-${s}-${i}`;
+	//     app.appendChild(h);
+	//     let e = document.createElement("div");
+	//     e.style.width = "400px";
+	//     e.style.height = "300px";
+	//     e.style.position = "relative";
+	//     app.appendChild(e);
+	//     let zoom = 0.8;
+	//     let defaults = {
+	//       layerName: "mixed4c",
+	//       gridSize: 3,
+	//       homeScale: 16 * 3 * zoom,
+	//     }
+	//     let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c"
 
-	    new Atlas({
-	      target: e,
-	      data: {
-	        id,
-	        ...defaults,
-	        ...d,
-	        homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
-	        fontSize: 14,
-	        iconCrop: 0.3,
-	        showLabels: true,
-	        textShadow: true,
-	        enableDragToPan: false,
-	        enableClickToZoom: false,
-	        enableHover: false,
-	        imageSmoothing: true,
-	      }
-	    });
-	  });
-	});
-
-
-	// 
-	// focus-1-1
-	// 
-	{
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-1-1";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "1500px";
-	  e.style.height = "1500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
-
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeScale: 0.999,
-	      id:"inceptionv1_mixed5b",
-	      gridSize: 1,
-	      alphaAttributionFactor:10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
-
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
-	// 
-	// focus-1-2
-	// 
-	{
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-1-2";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
-
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeScale: store.get().focus1Highlight.scale,
-	      homeX: store.get().focus1Highlight.x,
-	      homeY: store.get().focus1Highlight.y,
-	      id: "inceptionv1_mixed5b",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
-
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
-
-	// 
-	// focus-2-1
-	// 
-	{
-
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-2-1";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "1500px";
-	  e.style.height = "1500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
-
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeScale: 0.999,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
-
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//     new Atlas({
+	//       target: e,
+	//       data: {
+	//         id,
+	//         ...defaults,
+	//         ...d,
+	//         homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
+	//         fontSize: 14,
+	//         iconCrop: 0.3,
+	//         showLabels: true,
+	//         textShadow: true,
+	//         enableDragToPan: false,
+	//         enableClickToZoom: false,
+	//         enableHover: false,
+	//         imageSmoothing: true,
+	//       }
+	//     })
+	//   })
+	// })
 
 
-	// 
-	// focus-2-2
-	// 
-	{
+	// // 
+	// // focus-1-1
+	// // 
+	// {
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-1-1";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "1500px";
+	//   e.style.height = "1500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-2-2";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeScale: 0.999,
+	//       id:"inceptionv1_mixed5b",
+	//       gridSize: 1,
+	//       alphaAttributionFactor:10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[0].x,
-	      homeY: store.get().focusHighlights[0].y,
-	      homeScale: store.get().focusHighlights[0].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
+	// // 
+	// // focus-1-2
+	// // 
+	// {
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-1-2";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeScale: store.get().focus1Highlight.scale,
+	//       homeX: store.get().focus1Highlight.x,
+	//       homeY: store.get().focus1Highlight.y,
+	//       id: "inceptionv1_mixed5b",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
 
-	// 
-	// focus-2-3
-	// 
-	{
+	// // 
+	// // focus-2-1
+	// // 
+	// {
 
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-2-3";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-2-1";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "1500px";
+	//   e.style.height = "1500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[1].x,
-	      homeY: store.get().focusHighlights[1].y,
-	      homeScale: store.get().focusHighlights[1].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeScale: 0.999,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
-
-
-	// 
-	// focus-2-4
-	// 
-	{
-
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-2-4";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
-
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[2].x,
-	      homeY: store.get().focusHighlights[2].y,
-	      homeScale: store.get().focusHighlights[2].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
-
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
 
 
-	// 
-	// focus-2-5
-	// 
-	{
+	// // 
+	// // focus-2-2
+	// // 
+	// {
 
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-2-5";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-2-2";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[3].x,
-	      homeY: store.get().focusHighlights[3].y,
-	      homeScale: store.get().focusHighlights[3].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 235,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[0].x,
+	//       homeY: store.get().focusHighlights[0].y,
+	//       homeScale: store.get().focusHighlights[0].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
-
-	// 
-	// focus-3-1
-	// 
-	{
-
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-3-1";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "1500px";
-	  e.style.height = "1500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
-
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeScale: 0.999,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 287,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
-
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
 
 
-	// 
-	// focus-3-2
-	// 
-	{
+	// // 
+	// // focus-2-3
+	// // 
+	// {
 
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-3-2";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-2-3";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[0].x,
-	      homeY: store.get().focusHighlights[0].y,
-	      homeScale: store.get().focusHighlights[0].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 287,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[1].x,
+	//       homeY: store.get().focusHighlights[1].y,
+	//       homeScale: store.get().focusHighlights[1].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
-
-
-	// 
-	// focus-3-3
-	// 
-	{
-
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-3-3";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
-
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[1].x,
-	      homeY: store.get().focusHighlights[1].y,
-	      homeScale: store.get().focusHighlights[1].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 287,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
-
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
 
 
-	// 
-	// focus-3-4
-	// 
-	{
+	// // 
+	// // focus-2-4
+	// // 
+	// {
 
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-3-4";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-2-4";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[2].x,
-	      homeY: store.get().focusHighlights[2].y,
-	      homeScale: store.get().focusHighlights[2].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 287,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[2].x,
+	//       homeY: store.get().focusHighlights[2].y,
+	//       homeScale: store.get().focusHighlights[2].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
 
 
-	// 
-	// focus-3-5
-	// 
-	{
+	// // 
+	// // focus-2-5
+	// // 
+	// {
 
-	  let h = document.createElement("h2");
-	  h.textContent = "focus-3-5";
-	  app.appendChild(h);
-	  let e = document.createElement("div");
-	  e.style.width = "500px";
-	  e.style.height = "500px";
-	  e.style.position = "relative";
-	  app.appendChild(e);
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-2-5";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
 
-	  let atlas = new Atlas({
-	    target: e,
-	    store,
-	    data: {
-	      homeX: store.get().focusHighlights[3].x,
-	      homeY: store.get().focusHighlights[3].y,
-	      homeScale: store.get().focusHighlights[3].scale,
-	      id: "inceptionv1_mixed4d",
-	      gridSize: 1,
-	      alphaAttributionFactor: 10,
-	      scaleCountFactor: 500,
-	      iconCrop: 0.3,
-	      classHeatmap: 287,
-	      strokeColor: "rgb(150, 150, 150)",
-	      showLabels: false,
-	      textShadow: true,
-	      enableDragToPan: false,
-	      enableClickToZoom: false,
-	      enableHover: false
-	    }
-	  });
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[3].x,
+	//       homeY: store.get().focusHighlights[3].y,
+	//       homeScale: store.get().focusHighlights[3].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 235,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
 
-	  let b = document.createElement("button");
-	  b.textContent = "render";
-	  app.appendChild(b);
-	  b.addEventListener("click", () => {
-	    atlas.render();
-	  });
-	}
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
+
+	// // 
+	// // focus-3-1
+	// // 
+	// {
+
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-3-1";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "1500px";
+	//   e.style.height = "1500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
+
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeScale: 0.999,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 287,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
+
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
+
+
+	// // 
+	// // focus-3-2
+	// // 
+	// {
+
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-3-2";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
+
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[0].x,
+	//       homeY: store.get().focusHighlights[0].y,
+	//       homeScale: store.get().focusHighlights[0].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 287,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
+
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
+
+
+	// // 
+	// // focus-3-3
+	// // 
+	// {
+
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-3-3";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
+
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[1].x,
+	//       homeY: store.get().focusHighlights[1].y,
+	//       homeScale: store.get().focusHighlights[1].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 287,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
+
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
+
+
+	// // 
+	// // focus-3-4
+	// // 
+	// {
+
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-3-4";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
+
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[2].x,
+	//       homeY: store.get().focusHighlights[2].y,
+	//       homeScale: store.get().focusHighlights[2].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 287,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
+
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
+
+
+	// // 
+	// // focus-3-5
+	// // 
+	// {
+
+	//   let h = document.createElement("h2");
+	//   h.textContent = "focus-3-5";
+	//   app.appendChild(h);
+	//   let e = document.createElement("div");
+	//   e.style.width = "500px";
+	//   e.style.height = "500px";
+	//   e.style.position = "relative";
+	//   app.appendChild(e);
+
+	//   let atlas = new Atlas({
+	//     target: e,
+	//     store,
+	//     data: {
+	//       homeX: store.get().focusHighlights[3].x,
+	//       homeY: store.get().focusHighlights[3].y,
+	//       homeScale: store.get().focusHighlights[3].scale,
+	//       id: "inceptionv1_mixed4d",
+	//       gridSize: 1,
+	//       alphaAttributionFactor: 10,
+	//       scaleCountFactor: 500,
+	//       iconCrop: 0.3,
+	//       classHeatmap: 287,
+	//       strokeColor: "rgb(150, 150, 150)",
+	//       showLabels: false,
+	//       textShadow: true,
+	//       enableDragToPan: false,
+	//       enableClickToZoom: false,
+	//       enableHover: false
+	//     }
+	//   });
+
+	//   let b = document.createElement("button");
+	//   b.textContent = "render"
+	//   app.appendChild(b);
+	//   b.addEventListener("click", () => {
+	//     atlas.render();
+	//   });
+	// }
 
 }());
 //# sourceMappingURL=renders.js.map

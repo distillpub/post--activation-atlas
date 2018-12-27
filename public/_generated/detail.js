@@ -4553,7 +4553,7 @@
 	}
 	var methods$4 = {
 	  render() {
-	    const {gridSize, icons, classHeatmap} = this.get();
+	    const {grid, gridSize, icons, classHeatmap} = this.get();
 	    const context = this.refs.canvas.getContext('2d');
 	    let imageData = context.getImageData(0, 0, gridSize, gridSize);
 	    let data = imageData.data;
@@ -4564,11 +4564,11 @@
 	      // data[i + 3] = 255;
 	    // }
 	    for (const icon of icons) {
-	      let heatmapMultiplier = 0.5;
+	      let heatmapMultiplier = 1.0;
 	      if (classHeatmap > -1) {
 	        let ci = classesToKeep.indexOf(classHeatmap);
 	        let value = Math.max(0, icon.f[ci]);
-	        heatmapMultiplier = Math.max(0.05, value * 5 * 4);
+	        heatmapMultiplier = Math.max(0.1, value * 20);
 	        // console.log(ci, value)
 	      }
 	      const y = icon.x; //x,y switched on purpose 
@@ -4576,7 +4576,7 @@
 	      // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-	      data[y * gridSize * 4 + x * 4 + 3] = icon.n * heatmapMultiplier;
+	      data[y * gridSize * 4 + x * 4 + 3] = 0.005 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
 	    }
 	    
 	    context.putImageData(imageData, 0, 0);

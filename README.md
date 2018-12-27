@@ -8,7 +8,11 @@ move hovercard to root so can get around the css contain problem.
 
 quicklinks in multiple layers causes weird async loading issues.
 
+Make minimap a little bigger
+
 # Tweaks
+
+add "reset" to layer tour (and possible zoom buttons)
 
 mousewheel and touch zoom support
 

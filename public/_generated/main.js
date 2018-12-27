@@ -6700,7 +6700,7 @@
 	}
 	var methods$4 = {
 	  render() {
-	    const {gridSize, icons, classHeatmap} = this.get();
+	    const {grid, gridSize, icons, classHeatmap} = this.get();
 	    const context = this.refs.canvas.getContext('2d');
 	    let imageData = context.getImageData(0, 0, gridSize, gridSize);
 	    let data = imageData.data;
@@ -6711,11 +6711,11 @@
 	      // data[i + 3] = 255;
 	    // }
 	    for (const icon of icons) {
-	      let heatmapMultiplier = 0.5;
+	      let heatmapMultiplier = 1.0;
 	      if (classHeatmap > -1) {
 	        let ci = classesToKeep.indexOf(classHeatmap);
 	        let value = Math.max(0, icon.f[ci]);
-	        heatmapMultiplier = Math.max(0.05, value * 5 * 4);
+	        heatmapMultiplier = Math.max(0.1, value * 20);
 	        // console.log(ci, value)
 	      }
 	      const y = icon.x; //x,y switched on purpose 
@@ -6723,7 +6723,7 @@
 	      // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-	      data[y * gridSize * 4 + x * 4 + 3] = icon.n * heatmapMultiplier;
+	      data[y * gridSize * 4 + x * 4 + 3] = 0.005 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
 	    }
 	    
 	    context.putImageData(imageData, 0, 0);
@@ -13941,13 +13941,13 @@
 				img = createElement("img");
 				text1 = createText("\n    ");
 				atlasreticle._fragment.c();
-				div0.className = "detail svelte-1gwxm60";
+				div0.className = "detail svelte-b651pa";
 				addLoc(div0, file$A, 3, 2, 67);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-1gwxm60";
+				img.className = "svelte-b651pa";
 				addLoc(img, file$A, 20, 4, 403);
-				div1.className = "atlas svelte-1gwxm60";
+				div1.className = "atlas svelte-b651pa";
 				addLoc(div1, file$A, 19, 2, 379);
 				setStyle(div2, "display", "grid");
 				setStyle(div2, "grid-template-columns", "1fr 200px");
@@ -15280,19 +15280,19 @@
 				img = createElement("img");
 				text2 = createText("\n      ");
 				atlasreticle._fragment.c();
-				div0.className = "atlas svelte-1ysclud";
+				div0.className = "atlas svelte-mxyxdk";
 				addLoc(div0, file$F, 3, 2, 23);
-				div1.className = "figcaption svelte-1ysclud";
+				div1.className = "figcaption";
 				addLoc(div1, file$F, 7, 2, 163);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-1ysclud";
+				img.className = "svelte-mxyxdk";
 				addLoc(img, file$F, 13, 6, 288);
 				setStyle(div2, "position", "relative");
 				addLoc(div2, file$F, 12, 4, 248);
-				div3.className = "thumbnail svelte-1ysclud";
+				div3.className = "thumbnail svelte-mxyxdk";
 				addLoc(div3, file$F, 11, 2, 220);
-				div4.className = "root svelte-1ysclud";
+				div4.className = "root svelte-mxyxdk";
 				addLoc(div4, file$F, 2, 0, 2);
 			},
 
