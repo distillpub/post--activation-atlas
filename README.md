@@ -6,6 +6,8 @@ in options restrict gridsize to relevant levels.
 
 move hovercard to root so can get around the css contain problem.
 
+quicklinks in multiple layers causes weird async loading issues.
+
 # Tweaks
 
 mousewheel and touch zoom support

@@ -5,6 +5,10 @@
     <LazyImage src="assets/images/renders/layers-{subject}-{index}.png" aspectRatio={4/3} border={false} />
   </div>
 
+  <div class="figcaption">
+    {@html caption}
+  </div>
+
   <div class="thumbnail">
     <div style="position: relative;">
       <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
@@ -16,10 +20,6 @@
         enableDragging={false}
       />
     </div>
-  </div>
-
-  <div class="figcaption">
-    {@html caption}
   </div>
 </div>
 <script>
@@ -43,7 +43,7 @@ export default {
 <style>
   .root {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr auto;
     grid-gap: 20px;
   }
@@ -52,8 +52,11 @@ export default {
     border-radius: 8px;
     overflow: hidden;
   }
+  .figcaption {
+  }
   .thumbnail {
     position: relative;
+    margin-right: 10px;
   }
   img {
     display: block;

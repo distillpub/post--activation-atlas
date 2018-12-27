@@ -15241,7 +15241,7 @@
 	const file$F = "src/diagrams/VerticalLayerStatic.html";
 
 	function create_main_fragment$G(component, ctx) {
-		var div4, div0, text0, div2, div1, img, img_src_value, img_alt_value, text1, text2, div3;
+		var div4, div0, text0, div1, text1, div3, div2, img, img_src_value, img_alt_value, text2;
 
 		var lazyimage_initial_data = {
 		 	src: "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png",
@@ -15273,26 +15273,26 @@
 				div0 = createElement("div");
 				lazyimage._fragment.c();
 				text0 = createText("\n\n  ");
-				div2 = createElement("div");
 				div1 = createElement("div");
-				img = createElement("img");
-				text1 = createText("\n      ");
-				atlasreticle._fragment.c();
-				text2 = createText("\n\n  ");
+				text1 = createText("\n\n  ");
 				div3 = createElement("div");
-				div0.className = "atlas svelte-1v4jy7e";
+				div2 = createElement("div");
+				img = createElement("img");
+				text2 = createText("\n      ");
+				atlasreticle._fragment.c();
+				div0.className = "atlas svelte-1ysclud";
 				addLoc(div0, file$F, 3, 2, 23);
+				div1.className = "figcaption svelte-1ysclud";
+				addLoc(div1, file$F, 7, 2, 163);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-1v4jy7e";
-				addLoc(img, file$F, 9, 6, 231);
-				setStyle(div1, "position", "relative");
-				addLoc(div1, file$F, 8, 4, 191);
-				div2.className = "thumbnail svelte-1v4jy7e";
-				addLoc(div2, file$F, 7, 2, 163);
-				div3.className = "figcaption";
-				addLoc(div3, file$F, 20, 2, 498);
-				div4.className = "root svelte-1v4jy7e";
+				img.className = "svelte-1ysclud";
+				addLoc(img, file$F, 13, 6, 288);
+				setStyle(div2, "position", "relative");
+				addLoc(div2, file$F, 12, 4, 248);
+				div3.className = "thumbnail svelte-1ysclud";
+				addLoc(div3, file$F, 11, 2, 220);
+				div4.className = "root svelte-1ysclud";
 				addLoc(div4, file$F, 2, 0, 2);
 			},
 
@@ -15301,20 +15301,24 @@
 				append(div4, div0);
 				lazyimage._mount(div0, null);
 				append(div4, text0);
-				append(div4, div2);
-				append(div2, div1);
-				append(div1, img);
-				append(div1, text1);
-				atlasreticle._mount(div1, null);
-				append(div4, text2);
+				append(div4, div1);
+				div1.innerHTML = ctx.caption;
+				append(div4, text1);
 				append(div4, div3);
-				div3.innerHTML = ctx.caption;
+				append(div3, div2);
+				append(div2, img);
+				append(div2, text2);
+				atlasreticle._mount(div2, null);
 			},
 
 			p: function update(changed, ctx) {
 				var lazyimage_changes = {};
 				if (changed.subject || changed.index) lazyimage_changes.src = "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png";
 				lazyimage._set(lazyimage_changes);
+
+				if (changed.caption) {
+					div1.innerHTML = ctx.caption;
+				}
 
 				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
 					img.src = img_src_value;
@@ -15329,10 +15333,6 @@
 				if (changed.homeX) atlasreticle_changes.gcx = ctx.homeX;
 				if (changed.homeY) atlasreticle_changes.gcy = ctx.homeY;
 				atlasreticle._set(atlasreticle_changes);
-
-				if (changed.caption) {
-					div3.innerHTML = ctx.caption;
-				}
 			},
 
 			d: function destroy$$1(detach) {
@@ -15356,11 +15356,11 @@
 		this._state = assign(data$v(), options.data);
 		if (!('subject' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'subject'");
 		if (!('index' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'index'");
+		if (!('caption' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'caption'");
 		if (!('layerName' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'layerName'");
 		if (!('homeScale' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeScale'");
 		if (!('homeX' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeX'");
 		if (!('homeY' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeY'");
-		if (!('caption' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'caption'");
 		this._intro = true;
 
 		this._fragment = create_main_fragment$G(this, this._state);

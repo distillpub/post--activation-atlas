@@ -4820,7 +4820,8 @@
 	        textShadow: true,
 	        enableDragToPan: false,
 	        enableClickToZoom: false,
-	        enableHover: false
+	        enableHover: false,
+	        imageSmoothing: true,
 	      }
 	    });
 	  });
