@@ -43,36 +43,6 @@
         <div class="icon" style="width:{iconSizeInPixels + 2 + 'px'}; height:{iconSizeInPixels + 2 + 'px'}; left:{topLeftCornerHover.x + 'px'}; top:{topLeftCornerHover.y + 'px'}"></div>
       {/if}
     </div>
-
-    {#if labels && showHoverIcon && currentIconInfo && currentIconInfo.top_class_indices}
-      <div class="hover" style="top: {(topLeftCornerHover.y + iconSizeInPixels + 10) + 'px'}; left: {(topLeftCornerHover.x + iconSizeInPixels + 10) + 'px'}">
-        <table>
-        {#if classHeatmap > -1}
-          <tr>
-            <!-- <td>{(labels[classHeatmap])}</td> -->
-            <!-- <td style="text-align: right;">{(currentIconInfo.top_class_values[currentIconInfo.top_class_indices.indexOf(classHeatmap)].toPrecision(2))}</td> -->
-          </tr>
-          <tr>
-            <td>top class: {labels[currentIconInfo.top_class_indices[0]]}</td>
-            <td style="text-align: right;">{(currentIconInfo.top_class_values[0].toPrecision(2))}</td>
-          </tr>
-        {:else}
-          {#each currentIconInfo.top_class_indices.slice(0,5) as top, i}
-            <tr>
-              <td style="width: 10px; text-align: right; padding-right: 4px;">{i + 1}.</td>
-              <td class="{i == 0 ? 'first': ''}">{labels[top]}</td>
-              <td style="text-align: right;">{currentIconInfo.top_class_values[i].toPrecision(2)}</td>
-            </tr>
-          {/each}
-        {/if}
-        </table>
-        {#if showHoverImage}
-          <canvas ref:hoverImage></canvas>
-        {/if}
-        <div style="font-size: 10px; margin-top: 4px; color: #999; text-align: right;">Average of {currentIconInfo.num_activations} activations</div>
-      </div>
-    {/if}
-
   </div>
 
 <script>
@@ -244,13 +214,21 @@ export default {
       }
     }
   },
-  onupdate({ changed, current, previous }) {
+  onupdate({changed, current, previous}) {
     this.set({context: this.refs.canvas.getContext('2d')});
     if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
       this.render();
     }
     if (changed.currentIconInfo) {
-      this.updateIconHoverImage();
+      // this.updateIconHoverImage();
+      const { tooltip } = this.store.get();
+      tooltip.show(current.currentIconInfo);
+    }
+    if (changed.showHoverIcon) {
+      if (current.showHoverIcon === false) {
+        const { tooltip } = this.store.get();
+        tooltip.hide();
+      }
     }
 
   },

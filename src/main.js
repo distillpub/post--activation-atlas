@@ -1,5 +1,8 @@
 import store from "./Store.js";
 
+import Tooltip from "./library/Tooltip.html";
+import AtlasTooltip from "./components/AtlasTooltip.html";
+
 import LazyComponent from './library/LazyComponent.html';
 import LazyImage from './library/LazyImage.html';
 import NotebookLink from './library/NotebookLink.html';
@@ -44,6 +47,18 @@ import Focus3TableStatic from './diagrams/Focus3TableStatic.html';
 // });
 
 document.addEventListener("DOMContentLoaded", (e) => {
+
+	// A global tooltip
+	store.set({
+		tooltip: new Tooltip({
+			target: document.body,
+			store,
+			data: {
+				width: 300,
+				component: AtlasTooltip
+			}
+		})
+	});
 
 	// 
 	// Initialize lazy images

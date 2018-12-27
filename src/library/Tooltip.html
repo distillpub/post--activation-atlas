@@ -1,0 +1,100 @@
+<!-- 
+  //You first must add one component to the root document.
+  //It will automatically follow the mouse position.
+  //You should also save it to your global store, so all components have access.
+  //You must also pass in what component to use for rendering the data you will pass later.
+
+	// A global tooltip
+	store.set({
+		tooltip: new Tooltip({
+			target: document.body,
+      store,
+			data: {
+				component: AtlasTooltip
+			}
+		})
+	});
+
+  //When you want to show it:
+  const { tooltip } = this.store.get();
+  tooltip.show(
+    {
+      message: "hello"
+    }
+  );
+
+  //And when you want to hide it: 
+  const { tooltip } = this.store.get();
+  tooltip.hide();
+
+ -->
+
+<svelte:document on:mousemove="mousemove(event)" />
+
+<div ref:root bind:clientHeight {style}>
+  {#if component}
+    <svelte:component this={component} ref:component/>
+  {/if}
+</div>
+
+<script>
+  export default {
+    data() {
+      return {
+        visible: false,
+        width: 200,
+        component: null,
+      }
+    },
+    computed: {
+      style: ({x, width, y, clientHeight, visible}) => {
+        if (visible === false) {
+          return "visibility: hidden;";
+        } else {
+          const scrollLeft = document.documentElement.scrollLeft;
+          const scrollTop = document.documentElement.scrollTop;
+          const rightEdge = document.documentElement.clientWidth - width;
+          const bottomEdge = document.documentElement.clientHeight - clientHeight;
+          let left = Math.min(x, rightEdge);
+          let top = Math.min(y, bottomEdge);
+          if (x >= rightEdge && y >= bottomEdge) {
+            left = x - width;
+          }
+          return `width: ${width}px; top: ${top + scrollTop}px; left: ${left + scrollLeft}px;`;
+        }
+      },
+    },
+    methods: {
+      mousemove: function(event) {
+        const {visible} = this.get();
+        if (visible) {
+          this.set({
+            x: event.clientX,
+            y: event.clientY
+          });
+        }
+      },
+      show: function(d) {
+        this.set({visible: true});
+        this.refs.component.set({...d});
+      },
+      hide: function() {
+        this.set({
+          visible: false
+        });
+        
+      }
+    }
+  }
+</script>
+
+<style>
+  ref:root {
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 1000000;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+</style>

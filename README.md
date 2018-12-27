@@ -2,8 +2,6 @@
 
 ## Bugs
 
-move hovercard to root so can get around the css contain problem.
-
 in options restrict gridsize to relevant levels.
 
 quicklinks in multiple layers causes weird async loading issues.
@@ -41,7 +39,7 @@ by rank, by magnitude
 add 3d slides for intro
 
 ## Done
-
+move hovercard to root so can get around the css contain problem.
 first image of paths is still missing.
 activation atlas button gets cut off
 pre-render thumbnails

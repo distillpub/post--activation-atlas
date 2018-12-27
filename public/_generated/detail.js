@@ -63,10 +63,6 @@
 		return document.createTextNode(data);
 	}
 
-	function createComment() {
-		return document.createComment('');
-	}
-
 	function addListener(node, event, handler, options) {
 		node.addEventListener(event, handler, options);
 	}
@@ -2283,27 +2279,28 @@
 	function oncreate$2() {
 	  this.home();
 	}
-	function onupdate$1({ changed, current, previous }) {
+	function onupdate$1({changed, current, previous}) {
 	  this.set({context: this.refs.canvas.getContext('2d')});
 	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
 	    this.render();
 	  }
 	  if (changed.currentIconInfo) {
-	    this.updateIconHoverImage();
+	    // this.updateIconHoverImage();
+	    const { tooltip } = this.store.get();
+	    tooltip.show(current.currentIconInfo);
+	  }
+	  if (changed.showHoverIcon) {
+	    if (current.showHoverIcon === false) {
+	      const { tooltip } = this.store.get();
+	      tooltip.hide();
+	    }
 	  }
 
 	}
 	const file$8 = "src/Atlas.html";
 
-	function get_each_context(ctx, list, i) {
-		const child_ctx = Object.create(ctx);
-		child_ctx.top = list[i];
-		child_ctx.i = i;
-		return child_ctx;
-	}
-
 	function create_main_fragment$8(component, ctx) {
-		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, text4, div1_resize_listener;
+		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, div1_resize_listener;
 
 		var radar_initial_data = {};
 		if (ctx.ready  !== void 0) {
@@ -2328,7 +2325,7 @@
 			radar._bind({ ready: 1 }, radar.get());
 		});
 
-		var if_block0 = (ctx.ready) && create_if_block_4(component, ctx);
+		var if_block0 = (ctx.ready) && create_if_block_1(component, ctx);
 
 		var zoom_initial_data = { width: ctx.viewWidth, height: ctx.viewHeight };
 		if (ctx.scale
@@ -2387,7 +2384,7 @@
 
 		component.refs.zoom = zoom;
 
-		var if_block1 = (ctx.showHoverIcon) && create_if_block_3(component, ctx);
+		var if_block1 = (ctx.showHoverIcon) && create_if_block(component, ctx);
 
 		function mousedown_handler(event) {
 			component.mouseDown(event);
@@ -2404,8 +2401,6 @@
 		function mouseout_handler(event) {
 			component.mouseOut(event);
 		}
-
-		var if_block2 = (ctx.labels && ctx.showHoverIcon && ctx.currentIconInfo && ctx.currentIconInfo.top_class_indices) && create_if_block(component, ctx);
 
 		function div1_resize_handler() {
 			component.set({ viewWidth: div1.clientWidth, viewHeight: div1.clientHeight });
@@ -2424,8 +2419,6 @@
 				canvas = createElement("canvas");
 				text3 = createText("\n      ");
 				if (if_block1) if_block1.c();
-				text4 = createText("\n\n    ");
-				if (if_block2) if_block2.c();
 				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
 				setStyle(canvas, "width", "" + ctx.viewWidth + "px");
@@ -2457,8 +2450,6 @@
 				append(div0, text3);
 				if (if_block1) if_block1.m(div0, null);
 				component.refs.stage = div0;
-				append(div1, text4);
-				if (if_block2) if_block2.m(div1, null);
 				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
 				component.refs.root = div1;
 			},
@@ -2477,7 +2468,7 @@
 					if (if_block0) {
 						if_block0.p(changed, ctx);
 					} else {
-						if_block0 = create_if_block_4(component, ctx);
+						if_block0 = create_if_block_1(component, ctx);
 						if_block0.c();
 						if_block0.m(text1.parentNode, text1);
 					}
@@ -2536,7 +2527,7 @@
 					if (if_block1) {
 						if_block1.p(changed, ctx);
 					} else {
-						if_block1 = create_if_block_3(component, ctx);
+						if_block1 = create_if_block(component, ctx);
 						if_block1.c();
 						if_block1.m(div0, null);
 					}
@@ -2547,19 +2538,6 @@
 
 				if ((changed.mouseMoveMode || changed.enableDragToPan) && div0_class_value !== (div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage")) {
 					div0.className = div0_class_value;
-				}
-
-				if (ctx.labels && ctx.showHoverIcon && ctx.currentIconInfo && ctx.currentIconInfo.top_class_indices) {
-					if (if_block2) {
-						if_block2.p(changed, ctx);
-					} else {
-						if_block2 = create_if_block(component, ctx);
-						if_block2.c();
-						if_block2.m(div1, null);
-					}
-				} else if (if_block2) {
-					if_block2.d(1);
-					if_block2 = null;
 				}
 			},
 
@@ -2584,7 +2562,6 @@
 				removeListener(div0, "mouseenter", mouseenter_handler);
 				removeListener(div0, "mouseout", mouseout_handler);
 				if (component.refs.stage === div0) component.refs.stage = null;
-				if (if_block2) if_block2.d();
 				div1_resize_listener.cancel();
 				if (component.refs.root === div1) component.refs.root = null;
 			}
@@ -2592,7 +2569,7 @@
 	}
 
 	// (3:0) {#if ready}
-	function create_if_block_4(component, ctx) {
+	function create_if_block_1(component, ctx) {
 		var atlasdataloader_updating = {};
 
 		var atlasdataloader_initial_data = {
@@ -2692,7 +2669,7 @@
 	}
 
 	// (42:6) {#if showHoverIcon}
-	function create_if_block_3(component, ctx) {
+	function create_if_block(component, ctx) {
 		var div;
 
 		return {
@@ -2726,303 +2703,6 @@
 				if (detach) {
 					detachNode(div);
 				}
-			}
-		};
-	}
-
-	// (47:4) {#if labels && showHoverIcon && currentIconInfo && currentIconInfo.top_class_indices}
-	function create_if_block(component, ctx) {
-		var div1, table, text0, text1, div0, text2, text3_value = ctx.currentIconInfo.num_activations, text3, text4;
-
-		function select_block_type(ctx) {
-			if (ctx.classHeatmap > -1) return create_if_block_2;
-			return create_else_block;
-		}
-
-		var current_block_type = select_block_type(ctx);
-		var if_block0 = current_block_type(component, ctx);
-
-		var if_block1 = (ctx.showHoverImage) && create_if_block_1(component, ctx);
-
-		return {
-			c: function create() {
-				div1 = createElement("div");
-				table = createElement("table");
-				if_block0.c();
-				text0 = createText("\n        ");
-				if (if_block1) if_block1.c();
-				text1 = createText("\n        ");
-				div0 = createElement("div");
-				text2 = createText("Average of ");
-				text3 = createText(text3_value);
-				text4 = createText(" activations");
-				table.className = "svelte-ptap6b";
-				addLoc(table, file$8, 48, 8, 1378);
-				setStyle(div0, "font-size", "10px");
-				setStyle(div0, "margin-top", "4px");
-				setStyle(div0, "color", "#999");
-				setStyle(div0, "text-align", "right");
-				addLoc(div0, file$8, 71, 8, 2413);
-				div1.className = "hover svelte-ptap6b";
-				setStyle(div1, "top", ((ctx.topLeftCornerHover.y + ctx.iconSizeInPixels + 10) + 'px'));
-				setStyle(div1, "left", ((ctx.topLeftCornerHover.x + ctx.iconSizeInPixels + 10) + 'px'));
-				addLoc(div1, file$8, 47, 6, 1218);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
-				append(div1, table);
-				if_block0.m(table, null);
-				append(div1, text0);
-				if (if_block1) if_block1.m(div1, null);
-				append(div1, text1);
-				append(div1, div0);
-				append(div0, text2);
-				append(div0, text3);
-				append(div0, text4);
-			},
-
-			p: function update(changed, ctx) {
-				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
-					if_block0.p(changed, ctx);
-				} else {
-					if_block0.d(1);
-					if_block0 = current_block_type(component, ctx);
-					if_block0.c();
-					if_block0.m(table, null);
-				}
-
-				if (ctx.showHoverImage) {
-					if (!if_block1) {
-						if_block1 = create_if_block_1(component, ctx);
-						if_block1.c();
-						if_block1.m(div1, text1);
-					}
-				} else if (if_block1) {
-					if_block1.d(1);
-					if_block1 = null;
-				}
-
-				if ((changed.currentIconInfo) && text3_value !== (text3_value = ctx.currentIconInfo.num_activations)) {
-					setData(text3, text3_value);
-				}
-
-				if (changed.topLeftCornerHover || changed.iconSizeInPixels) {
-					setStyle(div1, "top", ((ctx.topLeftCornerHover.y + ctx.iconSizeInPixels + 10) + 'px'));
-					setStyle(div1, "left", ((ctx.topLeftCornerHover.x + ctx.iconSizeInPixels + 10) + 'px'));
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(div1);
-				}
-
-				if_block0.d();
-				if (if_block1) if_block1.d();
-			}
-		};
-	}
-
-	// (59:8) {:else}
-	function create_else_block(component, ctx) {
-		var each_anchor;
-
-		var each_value = ctx.currentIconInfo.top_class_indices.slice(0,5);
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block(component, get_each_context(ctx, each_value, i));
-		}
-
-		return {
-			c: function create() {
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-
-				each_anchor = createComment();
-			},
-
-			m: function mount(target, anchor) {
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(target, anchor);
-				}
-
-				insert(target, each_anchor, anchor);
-			},
-
-			p: function update(changed, ctx) {
-				if (changed.currentIconInfo || changed.labels) {
-					each_value = ctx.currentIconInfo.top_class_indices.slice(0,5);
-
-					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context(ctx, each_value, i);
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, child_ctx);
-						} else {
-							each_blocks[i] = create_each_block(component, child_ctx);
-							each_blocks[i].c();
-							each_blocks[i].m(each_anchor.parentNode, each_anchor);
-						}
-					}
-
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].d(1);
-					}
-					each_blocks.length = each_value.length;
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				destroyEach(each_blocks, detach);
-
-				if (detach) {
-					detachNode(each_anchor);
-				}
-			}
-		};
-	}
-
-	// (50:8) {#if classHeatmap > -1}
-	function create_if_block_2(component, ctx) {
-		var tr0, text0, tr1, td0, text1, text2_value = ctx.labels[ctx.currentIconInfo.top_class_indices[0]], text2, text3, td1, text4_value = (ctx.currentIconInfo.top_class_values[0].toPrecision(2)), text4;
-
-		return {
-			c: function create() {
-				tr0 = createElement("tr");
-				text0 = createText("\n          ");
-				tr1 = createElement("tr");
-				td0 = createElement("td");
-				text1 = createText("top class: ");
-				text2 = createText(text2_value);
-				text3 = createText("\n            ");
-				td1 = createElement("td");
-				text4 = createText(text4_value);
-				addLoc(tr0, file$8, 50, 10, 1428);
-				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$8, 55, 12, 1697);
-				setStyle(td1, "text-align", "right");
-				td1.className = "svelte-ptap6b";
-				addLoc(td1, file$8, 56, 12, 1776);
-				addLoc(tr1, file$8, 54, 10, 1680);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, tr0, anchor);
-				insert(target, text0, anchor);
-				insert(target, tr1, anchor);
-				append(tr1, td0);
-				append(td0, text1);
-				append(td0, text2);
-				append(tr1, text3);
-				append(tr1, td1);
-				append(td1, text4);
-			},
-
-			p: function update(changed, ctx) {
-				if ((changed.labels || changed.currentIconInfo) && text2_value !== (text2_value = ctx.labels[ctx.currentIconInfo.top_class_indices[0]])) {
-					setData(text2, text2_value);
-				}
-
-				if ((changed.currentIconInfo) && text4_value !== (text4_value = (ctx.currentIconInfo.top_class_values[0].toPrecision(2)))) {
-					setData(text4, text4_value);
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(tr0);
-					detachNode(text0);
-					detachNode(tr1);
-				}
-			}
-		};
-	}
-
-	// (60:10) {#each currentIconInfo.top_class_indices.slice(0,5) as top, i}
-	function create_each_block(component, ctx) {
-		var tr, td0, text0_value = ctx.i + 1, text0, text1, text2, td1, text3_value = ctx.labels[ctx.top], text3, text4, td2, text5_value = ctx.currentIconInfo.top_class_values[ctx.i].toPrecision(2), text5;
-
-		return {
-			c: function create() {
-				tr = createElement("tr");
-				td0 = createElement("td");
-				text0 = createText(text0_value);
-				text1 = createText(".");
-				text2 = createText("\n              ");
-				td1 = createElement("td");
-				text3 = createText(text3_value);
-				text4 = createText("\n              ");
-				td2 = createElement("td");
-				text5 = createText(text5_value);
-				setStyle(td0, "width", "10px");
-				setStyle(td0, "text-align", "right");
-				setStyle(td0, "padding-right", "4px");
-				td0.className = "svelte-ptap6b";
-				addLoc(td0, file$8, 61, 14, 2003);
-				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-ptap6b";
-				addLoc(td1, file$8, 62, 14, 2095);
-				setStyle(td2, "text-align", "right");
-				td2.className = "svelte-ptap6b";
-				addLoc(td2, file$8, 63, 14, 2163);
-				addLoc(tr, file$8, 60, 12, 1984);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, tr, anchor);
-				append(tr, td0);
-				append(td0, text0);
-				append(td0, text1);
-				append(tr, text2);
-				append(tr, td1);
-				append(td1, text3);
-				append(tr, text4);
-				append(tr, td2);
-				append(td2, text5);
-			},
-
-			p: function update(changed, ctx) {
-				if ((changed.labels || changed.currentIconInfo) && text3_value !== (text3_value = ctx.labels[ctx.top])) {
-					setData(text3, text3_value);
-				}
-
-				if ((changed.currentIconInfo) && text5_value !== (text5_value = ctx.currentIconInfo.top_class_values[ctx.i].toPrecision(2))) {
-					setData(text5, text5_value);
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(tr);
-				}
-			}
-		};
-	}
-
-	// (69:8) {#if showHoverImage}
-	function create_if_block_1(component, ctx) {
-		var canvas;
-
-		return {
-			c: function create() {
-				canvas = createElement("canvas");
-				addLoc(canvas, file$8, 69, 10, 2358);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, canvas, anchor);
-				component.refs.hoverImage = canvas;
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(canvas);
-				}
-
-				if (component.refs.hoverImage === canvas) component.refs.hoverImage = null;
 			}
 		};
 	}
@@ -3067,10 +2747,6 @@
 		if (!('enableDragToPan' in this._state)) console.warn("<Atlas> was created without expected data property 'enableDragToPan'");
 		if (!('unit' in this._state)) console.warn("<Atlas> was created without expected data property 'unit'");
 		if (!('screenResolution' in this._state)) console.warn("<Atlas> was created without expected data property 'screenResolution'");
-
-
-
-		if (!('showHoverImage' in this._state)) console.warn("<Atlas> was created without expected data property 'showHoverImage'");
 		this._intro = true;
 		this._handlers.update = [onupdate$1];
 
@@ -4736,7 +4412,7 @@
 	}; }
 	const file$d = "src/components/AppLayerChooser.html";
 
-	function get_each_context$1(ctx, list, i) {
+	function get_each_context(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.layer = list[i];
 		child_ctx.i = i;
@@ -4751,7 +4427,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$1(component, get_each_context$1(ctx, each_value, i));
+			each_blocks[i] = create_each_block(component, get_each_context(ctx, each_value, i));
 		}
 
 		return {
@@ -4778,12 +4454,12 @@
 					each_value = ctx.layers;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$1(ctx, each_value, i);
+						const child_ctx = get_each_context(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$1(component, child_ctx);
+							each_blocks[i] = create_each_block(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div, null);
 						}
@@ -4807,7 +4483,7 @@
 	}
 
 	// (2:0) {#each layers as layer, i}
-	function create_each_block$1(component, ctx) {
+	function create_each_block(component, ctx) {
 		var label, input, input_value_value, text0, div, text1, span, text2_value = ctx.layer, text2, text3, label_class_value;
 
 		function input_change_handler() {
@@ -5957,7 +5633,7 @@
 	}
 	const file$e = "src/components/AppClassFilter.html";
 
-	function get_each_context$2(ctx, list, i) {
+	function get_each_context$1(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.l = list[i];
 		return child_ctx;
@@ -5971,7 +5647,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$2(component, get_each_context$2(ctx, each_value, i));
+			each_blocks[i] = create_each_block$1(component, get_each_context$1(ctx, each_value, i));
 		}
 
 		return {
@@ -5998,12 +5674,12 @@
 					each_value = ctx.labels;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$2(ctx, each_value, i);
+						const child_ctx = get_each_context$1(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$2(component, child_ctx);
+							each_blocks[i] = create_each_block$1(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div, null);
 						}
@@ -6027,7 +5703,7 @@
 	}
 
 	// (2:2) {#each labels as l}
-	function create_each_block$2(component, ctx) {
+	function create_each_block$1(component, ctx) {
 		var label, input, input_value_value, text0, span, text1_value = ctx.l.label, text1, span_title_value, text2, label_class_value;
 
 		function input_change_handler() {
