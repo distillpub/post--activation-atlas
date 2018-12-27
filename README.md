@@ -6,17 +6,11 @@ in options restrict gridsize to relevant levels.
 
 move hovercard to root so can get around the css contain problem.
 
-too many atlases sometimes causing loading problems?
-
 # Tweaks
-
-tighten up verticallayerannotations.html
 
 mousewheel and touch zoom support
 
 detal.html and link to it somewhere
-
-pre-render static atlases
 
 smooth zoom between gridsizes
 
@@ -25,7 +19,7 @@ no label shadow (or labels) when zooming or panning.
 Add support for css resizing lazycomponent.
 Add width variable to lazyComponent.
 
-one-layer initializes with a zero width, causing animation.
+one-layer initializes with a zero width, causing animation. Others do too...
 
 ## Todos
 
@@ -48,3 +42,7 @@ first image of paths is still missing.
 activation atlas button gets cut off
 pre-render thumbnails
 add different filtering strategies in article
+tighten up verticallayerannotations.html
+pre-render static atlases
+too many atlases sometimes causing loading problems?
+
