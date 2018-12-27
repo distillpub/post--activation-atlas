@@ -5015,12 +5015,14 @@
 	    this.render();
 	  }
 	  if (changed.currentIconInfo) {
-	    // this.updateIconHoverImage();
-	    const { tooltip } = this.store.get();
-	    tooltip.show(current.currentIconInfo);
+	    const {tooltip} = this.store.get();
+	    const {showHoverIcon} = this.get();
+	    if (showHoverIcon) {
+	      tooltip.show(current.currentIconInfo);
+	    }
 	  }
 	  if (changed.showHoverIcon) {
-	    if (current.showHoverIcon === false) {
+	    if (current.showHoverIcon == false) {
 	      const { tooltip } = this.store.get();
 	      tooltip.hide();
 	    }
