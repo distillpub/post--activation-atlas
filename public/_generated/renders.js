@@ -4786,574 +4786,577 @@
 	// mulitple-layers
 	// 
 
-	// let subjects = ["abacus", "plant", "water"]
-	// subjects.forEach(s => {
-	//   let g = store.get().multipleLayers[s];
-	//   g.forEach((d, i) => {
+	let subjects = ["abacus", "plant", "water"];
+	subjects.forEach(s => {
+	  let g = store.get().multipleLayers[s];
+	  g.forEach((d, i) => {
 
-	//     let h = document.createElement("h2");
-	//     h.textContent = `layers-${s}-${i}`;
-	//     app.appendChild(h);
-	//     let e = document.createElement("div");
-	//     e.style.width = "400px";
-	//     e.style.height = "300px";
-	//     e.style.position = "relative";
-	//     app.appendChild(e);
-	//     let zoom = 0.8;
-	//     let defaults = {
-	//       layerName: "mixed4c",
-	//       gridSize: 3,
-	//       homeScale: 16 * 3 * zoom,
-	//     }
-	//     let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c"
+	    let h = document.createElement("h2");
+	    h.textContent = `layers-${s}-${i}`;
+	    app.appendChild(h);
+	    let e = document.createElement("div");
+	    e.style.width = "400px";
+	    e.style.height = "300px";
+	    e.style.position = "relative";
+	    app.appendChild(e);
+	    let zoom = 0.8;
+	    let defaults = {
+	      layerName: "mixed4c",
+	      gridSize: 3,
+	      homeScale: 16 * 3 * zoom,
+	    };
+	    let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c";
 
-	//     new Atlas({
-	//       target: e,
-	//       data: {
-	//         id,
-	//         ...defaults,
-	//         ...d,
-	//         homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
-	//         fontSize: 14,
-	//         iconCrop: 0.3,
-	//         showLabels: true,
-	//         textShadow: true,
-	//         enableDragToPan: false,
-	//         enableClickToZoom: false,
-	//         enableHover: false,
-	//         imageSmoothing: true,
-	//       }
-	//     })
-	//   })
-	// })
-
-
-	// // 
-	// // focus-1-1
-	// // 
-	// {
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-1-1";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "1500px";
-	//   e.style.height = "1500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
-
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeScale: 0.999,
-	//       id:"inceptionv1_mixed5b",
-	//       gridSize: 1,
-	//       alphaAttributionFactor:10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
-
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
-	// // 
-	// // focus-1-2
-	// // 
-	// {
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-1-2";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
-
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeScale: store.get().focus1Highlight.scale,
-	//       homeX: store.get().focus1Highlight.x,
-	//       homeY: store.get().focus1Highlight.y,
-	//       id: "inceptionv1_mixed5b",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
-
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
-
-	// // 
-	// // focus-2-1
-	// // 
-	// {
-
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-2-1";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "1500px";
-	//   e.style.height = "1500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
-
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeScale: 0.999,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
-
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	    new Atlas({
+	      target: e,
+	      data: {
+	        id,
+	        ...defaults,
+	        ...d,
+	        homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
+	        fontSize: 14,
+	        iconCrop: 0.3,
+	        showLabels: true,
+	        textShadow: true,
+	        enableDragToPan: false,
+	        enableClickToZoom: false,
+	        enableHover: false,
+	        imageSmoothing: true,
+	      }
+	    });
+	  });
+	});
 
 
-	// // 
-	// // focus-2-2
-	// // 
-	// {
+	// 
+	// focus-1-1
+	// 
+	{
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-1-1";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "1500px";
+	  e.style.height = "1500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-2-2";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeScale: 0.999,
+	      id:"inceptionv1_mixed5b",
+	      gridSize: 1,
+	      alphaAttributionFactor:10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      strokeThickness: 2,
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[0].x,
-	//       homeY: store.get().focusHighlights[0].y,
-	//       homeScale: store.get().focusHighlights[0].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
+	// 
+	// focus-1-2
+	// 
+	{
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-1-2";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeScale: store.get().focus1Highlight.scale,
+	      homeX: store.get().focus1Highlight.x,
+	      homeY: store.get().focus1Highlight.y,
+	      id: "inceptionv1_mixed5b",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
 
-	// // 
-	// // focus-2-3
-	// // 
-	// {
+	// 
+	// focus-2-1
+	// 
+	{
 
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-2-3";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-2-1";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "1500px";
+	  e.style.height = "1500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[1].x,
-	//       homeY: store.get().focusHighlights[1].y,
-	//       homeScale: store.get().focusHighlights[1].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeScale: 0.999,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      strokeThickness: 2,
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
-
-
-	// // 
-	// // focus-2-4
-	// // 
-	// {
-
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-2-4";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
-
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[2].x,
-	//       homeY: store.get().focusHighlights[2].y,
-	//       homeScale: store.get().focusHighlights[2].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
-
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
 
 
-	// // 
-	// // focus-2-5
-	// // 
-	// {
+	// 
+	// focus-2-2
+	// 
+	{
 
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-2-5";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-2-2";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[3].x,
-	//       homeY: store.get().focusHighlights[3].y,
-	//       homeScale: store.get().focusHighlights[3].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 235,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[0].x,
+	      homeY: store.get().focusHighlights[0].y,
+	      homeScale: store.get().focusHighlights[0].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
-
-	// // 
-	// // focus-3-1
-	// // 
-	// {
-
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-3-1";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "1500px";
-	//   e.style.height = "1500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
-
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeScale: 0.999,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 287,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
-
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
 
 
-	// // 
-	// // focus-3-2
-	// // 
-	// {
+	// 
+	// focus-2-3
+	// 
+	{
 
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-3-2";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-2-3";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[0].x,
-	//       homeY: store.get().focusHighlights[0].y,
-	//       homeScale: store.get().focusHighlights[0].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 287,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[1].x,
+	      homeY: store.get().focusHighlights[1].y,
+	      homeScale: store.get().focusHighlights[1].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
-
-
-	// // 
-	// // focus-3-3
-	// // 
-	// {
-
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-3-3";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
-
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[1].x,
-	//       homeY: store.get().focusHighlights[1].y,
-	//       homeScale: store.get().focusHighlights[1].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 287,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
-
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
 
 
-	// // 
-	// // focus-3-4
-	// // 
-	// {
+	// 
+	// focus-2-4
+	// 
+	{
 
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-3-4";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-2-4";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[2].x,
-	//       homeY: store.get().focusHighlights[2].y,
-	//       homeScale: store.get().focusHighlights[2].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 287,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[2].x,
+	      homeY: store.get().focusHighlights[2].y,
+	      homeScale: store.get().focusHighlights[2].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
 
 
-	// // 
-	// // focus-3-5
-	// // 
-	// {
+	// 
+	// focus-2-5
+	// 
+	{
 
-	//   let h = document.createElement("h2");
-	//   h.textContent = "focus-3-5";
-	//   app.appendChild(h);
-	//   let e = document.createElement("div");
-	//   e.style.width = "500px";
-	//   e.style.height = "500px";
-	//   e.style.position = "relative";
-	//   app.appendChild(e);
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-2-5";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
 
-	//   let atlas = new Atlas({
-	//     target: e,
-	//     store,
-	//     data: {
-	//       homeX: store.get().focusHighlights[3].x,
-	//       homeY: store.get().focusHighlights[3].y,
-	//       homeScale: store.get().focusHighlights[3].scale,
-	//       id: "inceptionv1_mixed4d",
-	//       gridSize: 1,
-	//       alphaAttributionFactor: 10,
-	//       scaleCountFactor: 500,
-	//       iconCrop: 0.3,
-	//       classHeatmap: 287,
-	//       strokeColor: "rgb(150, 150, 150)",
-	//       showLabels: false,
-	//       textShadow: true,
-	//       enableDragToPan: false,
-	//       enableClickToZoom: false,
-	//       enableHover: false
-	//     }
-	//   });
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[3].x,
+	      homeY: store.get().focusHighlights[3].y,
+	      homeScale: store.get().focusHighlights[3].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 235,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
 
-	//   let b = document.createElement("button");
-	//   b.textContent = "render"
-	//   app.appendChild(b);
-	//   b.addEventListener("click", () => {
-	//     atlas.render();
-	//   });
-	// }
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
+
+	// 
+	// focus-3-1
+	// 
+	{
+
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-3-1";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "1500px";
+	  e.style.height = "1500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
+
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeScale: 0.999,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 287,
+	      strokeColor: "rgb(150, 150, 150)",
+	      strokeThickness: 2,
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
+
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
+
+
+	// 
+	// focus-3-2
+	// 
+	{
+
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-3-2";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
+
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[0].x,
+	      homeY: store.get().focusHighlights[0].y,
+	      homeScale: store.get().focusHighlights[0].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 287,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
+
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
+
+
+	// 
+	// focus-3-3
+	// 
+	{
+
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-3-3";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
+
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[1].x,
+	      homeY: store.get().focusHighlights[1].y,
+	      homeScale: store.get().focusHighlights[1].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 287,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
+
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
+
+
+	// 
+	// focus-3-4
+	// 
+	{
+
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-3-4";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
+
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[2].x,
+	      homeY: store.get().focusHighlights[2].y,
+	      homeScale: store.get().focusHighlights[2].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 287,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
+
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
+
+
+	// 
+	// focus-3-5
+	// 
+	{
+
+	  let h = document.createElement("h2");
+	  h.textContent = "focus-3-5";
+	  app.appendChild(h);
+	  let e = document.createElement("div");
+	  e.style.width = "500px";
+	  e.style.height = "500px";
+	  e.style.position = "relative";
+	  app.appendChild(e);
+
+	  let atlas = new Atlas({
+	    target: e,
+	    store,
+	    data: {
+	      homeX: store.get().focusHighlights[3].x,
+	      homeY: store.get().focusHighlights[3].y,
+	      homeScale: store.get().focusHighlights[3].scale,
+	      id: "inceptionv1_mixed4d",
+	      gridSize: 1,
+	      alphaAttributionFactor: 10,
+	      scaleCountFactor: 500,
+	      iconCrop: 0.3,
+	      classHeatmap: 287,
+	      strokeColor: "rgb(150, 150, 150)",
+	      showLabels: false,
+	      textShadow: true,
+	      enableDragToPan: false,
+	      enableClickToZoom: false,
+	      enableHover: false
+	    }
+	  });
+
+	  let b = document.createElement("button");
+	  b.textContent = "render";
+	  app.appendChild(b);
+	  b.addEventListener("click", () => {
+	    atlas.render();
+	  });
+	}
 
 }());
 //# sourceMappingURL=renders.js.map
