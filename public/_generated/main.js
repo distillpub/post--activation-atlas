@@ -1586,20 +1586,23 @@
 	        homeY: 0.6352,
 	        gridSize: 3,
 	        homeScale: 16 * 1.5 * 2,
+	        caption: "You'll immediately notice that the early layer is very nonspecific in comparison to the others. The icons that emerge are of patterns and splotches of color. It is suggestive of the final class, but not particularly evocative."
 
 	      },
 	      {
 	        layerName: "mixed4c",
-	        homeX: 0.146,
-	        homeY: 0.392,
+	        homeX: 0.15,
+	        homeY: 0.40,
+	        caption: 'By the middle layer, icons definitely resemble leaves, but they could be any type of plant. Attributions are focused on plants, but are a little all over the board.'
 
 	      },
 	      {
 	        layerName: "mixed5b",
-	        homeX: 0.1668,
-	        homeY: 0.2833,
+	        homeX: 0.168,
+	        homeY: 0.285,
 	        gridSize: 4,
 	        homeScale: 16 * 3 * 2,
+	        caption: 'Here we see foliage with textures that are specific to cabbage, and curved into rounded balls. There are full heads of cabbage rather than individual leaves.'
 
 	      }
 	    ],
@@ -1608,11 +1611,13 @@
 	        layerName: "mixed4c",
 	        homeX: 0.365,
 	        homeY: 0.673,
+	        caption: 'In mixed4c we see two different regions that have high attribution toward "sandbar": an area of <b>sandy textures</b>…',
 	      },
 	      {
 	        layerName: "mixed4c",
 	        homeX: 0.318,
 	        homeY: 0.764,
+	        caption: '…and a separate area of <b>watery textures</b>.'
 	      },
 	      {
 	        layerName: "mixed5b",
@@ -1620,6 +1625,7 @@
 	        homeY: 0.534,
 	        gridSize: 4,
 	        homeScale: 16 * 6,
+	        caption: 'In a later layer we see activations that contain <b>both</b> of those concepts when detecting "sandbar".'
 	      },
 	    ]
 	  },
@@ -15225,6 +15231,7 @@
 
 	function data$v() {
 	  return {
+	    caption: "",
 	    layerName: "mixed4c",
 	    gridSize: 3,
 	    homeScale: 16 * 3,
@@ -15234,7 +15241,7 @@
 	const file$F = "src/diagrams/VerticalLayerStatic.html";
 
 	function create_main_fragment$G(component, ctx) {
-		var div2, div0, text0, div1, img, img_src_value, img_alt_value, text1, text2;
+		var div4, div0, text0, div2, div1, img, img_src_value, img_alt_value, text1, text2, div3;
 
 		var lazyimage_initial_data = {
 		 	src: "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png",
@@ -15251,7 +15258,8 @@
 		 	aspectRatio: 4/3,
 		 	scale: ctx.homeScale,
 		 	gcx: ctx.homeX,
-		 	gcy: ctx.homeY
+		 	gcy: ctx.homeY,
+		 	enableDragging: false
 		 };
 		var atlasreticle = new AtlasReticle({
 			root: component.root,
@@ -15259,42 +15267,48 @@
 			data: atlasreticle_initial_data
 		});
 
-		var if_block = (ctx.gcx && ctx.gcy) && create_if_block$9(component, ctx);
-
 		return {
 			c: function create() {
-				div2 = createElement("div");
+				div4 = createElement("div");
 				div0 = createElement("div");
 				lazyimage._fragment.c();
-				text0 = createText("\n  ");
+				text0 = createText("\n\n  ");
+				div2 = createElement("div");
 				div1 = createElement("div");
 				img = createElement("img");
-				text1 = createText("\n    ");
+				text1 = createText("\n      ");
 				atlasreticle._fragment.c();
-				text2 = createText("\n    ");
-				if (if_block) if_block.c();
-				div0.className = "detail svelte-1cbhb7c";
-				addLoc(div0, file$F, 3, 2, 19);
+				text2 = createText("\n\n  ");
+				div3 = createElement("div");
+				div0.className = "atlas svelte-1v4jy7e";
+				addLoc(div0, file$F, 3, 2, 23);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-1cbhb7c";
-				addLoc(img, file$F, 7, 4, 183);
-				div1.className = "atlas svelte-1cbhb7c";
-				addLoc(div1, file$F, 6, 2, 159);
-				addLoc(div2, file$F, 2, 0, 2);
+				img.className = "svelte-1v4jy7e";
+				addLoc(img, file$F, 9, 6, 231);
+				setStyle(div1, "position", "relative");
+				addLoc(div1, file$F, 8, 4, 191);
+				div2.className = "thumbnail svelte-1v4jy7e";
+				addLoc(div2, file$F, 7, 2, 163);
+				div3.className = "figcaption";
+				addLoc(div3, file$F, 20, 2, 498);
+				div4.className = "root svelte-1v4jy7e";
+				addLoc(div4, file$F, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div2, anchor);
-				append(div2, div0);
+				insert(target, div4, anchor);
+				append(div4, div0);
 				lazyimage._mount(div0, null);
-				append(div2, text0);
+				append(div4, text0);
+				append(div4, div2);
 				append(div2, div1);
 				append(div1, img);
 				append(div1, text1);
 				atlasreticle._mount(div1, null);
-				append(div1, text2);
-				if (if_block) if_block.m(div1, null);
+				append(div4, text2);
+				append(div4, div3);
+				div3.innerHTML = ctx.caption;
 			},
 
 			p: function update(changed, ctx) {
@@ -15316,39 +15330,19 @@
 				if (changed.homeY) atlasreticle_changes.gcy = ctx.homeY;
 				atlasreticle._set(atlasreticle_changes);
 
-				if (ctx.gcx && ctx.gcy) {
-					if (!if_block) {
-						if_block = create_if_block$9(component, ctx);
-						if_block.c();
-						if_block.m(div1, null);
-					}
-				} else if (if_block) {
-					if_block.d(1);
-					if_block = null;
+				if (changed.caption) {
+					div3.innerHTML = ctx.caption;
 				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div2);
+					detachNode(div4);
 				}
 
 				lazyimage.destroy();
 				atlasreticle.destroy();
-				if (if_block) if_block.d();
 			}
-		};
-	}
-
-	// (15:4) {#if gcx && gcy}
-	function create_if_block$9(component, ctx) {
-
-		return {
-			c: noop,
-
-			m: noop,
-
-			d: noop
 		};
 	}
 
@@ -15366,8 +15360,7 @@
 		if (!('homeScale' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeScale'");
 		if (!('homeX' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeX'");
 		if (!('homeY' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeY'");
-		if (!('gcx' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'gcx'");
-		if (!('gcy' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'gcy'");
+		if (!('caption' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'caption'");
 		this._intro = true;
 
 		this._fragment = create_main_fragment$G(this, this._state);
@@ -15401,7 +15394,7 @@
 	function create_main_fragment$H(component, ctx) {
 		var div1, div0, slot_content_default = component._slotted.default, text;
 
-		var if_block = (ctx.label) && create_if_block$a(component, ctx);
+		var if_block = (ctx.label) && create_if_block$9(component, ctx);
 
 		return {
 			c: function create() {
@@ -15439,7 +15432,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$a(component, ctx);
+						if_block = create_if_block$9(component, ctx);
 						if_block.c();
 						if_block.m(div1, null);
 					}
@@ -15472,7 +15465,7 @@
 	}
 
 	// (5:2) {#if label}
-	function create_if_block$a(component, ctx) {
+	function create_if_block$9(component, ctx) {
 		var div, text;
 
 		return {
@@ -16885,7 +16878,7 @@
 					data: {
 						index: g,
 						subject: s,
-						...(store.get().multipleLayers.abacus[g])
+						...(store.get().multipleLayers[s][g])
 					}
 				});
 			});

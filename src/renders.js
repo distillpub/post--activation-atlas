@@ -67,11 +67,11 @@ subjects.forEach(s => {
     e.style.height = "300px";
     e.style.position = "relative";
     app.appendChild(e);
-
+    let zoom = 0.8;
     let defaults = {
       layerName: "mixed4c",
       gridSize: 3,
-      homeScale: 16 * 3,
+      homeScale: 16 * 3 * zoom,
     }
     let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c"
 
@@ -81,6 +81,7 @@ subjects.forEach(s => {
         id,
         ...defaults,
         ...d,
+        homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
         fontSize: 14,
         iconCrop: 0.3,
         showLabels: true,

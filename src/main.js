@@ -393,7 +393,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				data: {
 					index: g,
 					subject: s,
-					...(store.get().multipleLayers.abacus[g])
+					...(store.get().multipleLayers[s][g])
 				}
 			});
 		})

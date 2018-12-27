@@ -1517,20 +1517,23 @@
 	        homeY: 0.6352,
 	        gridSize: 3,
 	        homeScale: 16 * 1.5 * 2,
+	        caption: "You'll immediately notice that the early layer is very nonspecific in comparison to the others. The icons that emerge are of patterns and splotches of color. It is suggestive of the final class, but not particularly evocative."
 
 	      },
 	      {
 	        layerName: "mixed4c",
-	        homeX: 0.146,
-	        homeY: 0.392,
+	        homeX: 0.15,
+	        homeY: 0.40,
+	        caption: 'By the middle layer, icons definitely resemble leaves, but they could be any type of plant. Attributions are focused on plants, but are a little all over the board.'
 
 	      },
 	      {
 	        layerName: "mixed5b",
-	        homeX: 0.1668,
-	        homeY: 0.2833,
+	        homeX: 0.168,
+	        homeY: 0.285,
 	        gridSize: 4,
 	        homeScale: 16 * 3 * 2,
+	        caption: 'Here we see foliage with textures that are specific to cabbage, and curved into rounded balls. There are full heads of cabbage rather than individual leaves.'
 
 	      }
 	    ],
@@ -1539,11 +1542,13 @@
 	        layerName: "mixed4c",
 	        homeX: 0.365,
 	        homeY: 0.673,
+	        caption: 'In mixed4c we see two different regions that have high attribution toward "sandbar": an area of <b>sandy textures</b>…',
 	      },
 	      {
 	        layerName: "mixed4c",
 	        homeX: 0.318,
 	        homeY: 0.764,
+	        caption: '…and a separate area of <b>watery textures</b>.'
 	      },
 	      {
 	        layerName: "mixed5b",
@@ -1551,6 +1556,7 @@
 	        homeY: 0.534,
 	        gridSize: 4,
 	        homeScale: 16 * 6,
+	        caption: 'In a later layer we see activations that contain <b>both</b> of those concepts when detecting "sandbar".'
 	      },
 	    ]
 	  },
@@ -4793,11 +4799,11 @@
 	    e.style.height = "300px";
 	    e.style.position = "relative";
 	    app.appendChild(e);
-
+	    let zoom = 0.8;
 	    let defaults = {
 	      layerName: "mixed4c",
 	      gridSize: 3,
-	      homeScale: 16 * 3,
+	      homeScale: 16 * 3 * zoom,
 	    };
 	    let id = d.layerName ? "inceptionv1_" + d.layerName : "inceptionv1_mixed4c";
 
@@ -4807,6 +4813,7 @@
 	        id,
 	        ...defaults,
 	        ...d,
+	        homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
 	        fontSize: 14,
 	        iconCrop: 0.3,
 	        showLabels: true,
