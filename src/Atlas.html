@@ -24,6 +24,16 @@
       on:mousedown="mouseDown(event)" on:mousemove="mouseMove(event)" 
       on:mouseenter="mouseEnter(event)" on:mouseout="mouseOut(event)"
     >
+      <D3Zoom
+        
+      >
+        <canvas
+          ref:canvas
+          width={viewWidth * screenResolution}
+          height={viewHeight * screenResolution}
+          style="width: {viewWidth}px; height: {viewHeight}px;"
+        ></canvas>
+      </D3Zoom>
       <Zoom
         ref:zoom
         bind:scale
@@ -33,12 +43,7 @@
         width={viewWidth}
         height={viewHeight}
       />
-      <canvas
-        ref:canvas
-        width={viewWidth * screenResolution}
-        height={viewHeight * screenResolution}
-        style="width: {viewWidth}px; height: {viewHeight}px;"
-      ></canvas>
+      
       {#if showHoverIcon}
         <div class="icon" style="width:{iconSizeInPixels + 2 + 'px'}; height:{iconSizeInPixels + 2 + 'px'}; left:{topLeftCornerHover.x + 'px'}; top:{topLeftCornerHover.y + 'px'}"></div>
       {/if}
@@ -53,6 +58,7 @@ export default {
   components: { 
     AtlasDataLoader: './AtlasDataLoader.html', 
     Zoom: './Zoom.html',
+    D3Zoom: './library/D3Zoom.html',
     Radar: './library/Radar.html'
   },
   data() {
