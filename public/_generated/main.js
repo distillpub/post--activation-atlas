@@ -2826,7 +2826,8 @@
 		var switch_instance_anchor;
 
 		var switch_instance_spread_levels = [
-			ctx.componentData
+			ctx.componentData,
+			{ clientWidth: ctx.width }
 		];
 
 		var switch_value = ctx.component;
@@ -2862,8 +2863,9 @@
 			},
 
 			p: function update(changed, ctx) {
-				var switch_instance_changes = changed.componentData ? getSpreadUpdate(switch_instance_spread_levels, [
-					ctx.componentData
+				var switch_instance_changes = (changed.componentData || changed.width) ? getSpreadUpdate(switch_instance_spread_levels, [
+					(changed.componentData) && ctx.componentData,
+					(changed.width) && { clientWidth: ctx.width }
 				]) : {};
 
 				if (switch_value !== (switch_value = ctx.component)) {
@@ -12898,9 +12900,9 @@
 				setXlinkAttribute(image, "xlink:href", ctx.renderURL);
 				setAttribute(image, "width", ctx.columnWidth);
 				setAttribute(image, "height", ctx.columnWidth);
-				addLoc(image, file$A, 61, 6, 2890);
+				addLoc(image, file$A, 61, 6, 2802);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.columnWidth + ctx.columnPadding) * 2 + ", 0)");
-				addLoc(g1, file$A, 60, 4, 2818);
+				addLoc(g1, file$A, 60, 4, 2730);
 				setAttribute(rect0, "fill", "none");
 				setAttribute(rect0, "stroke", "black");
 				setAttribute(rect0, "stroke-width", "2");
@@ -12908,11 +12910,11 @@
 				setAttribute(rect0, "y", rect0_y_value = ctx.iconHighlight.y * ctx.iconWidth);
 				setAttribute(rect0, "width", ctx.iconWidth);
 				setAttribute(rect0, "height", ctx.iconWidth);
-				addLoc(rect0, file$A, 73, 4, 3501);
+				addLoc(rect0, file$A, 73, 4, 3413);
 				setAttribute(path, "fill", "none");
 				setAttribute(path, "stroke", "black");
 				setAttribute(path, "d", path_d_value = "M" + ((ctx.columnWidth + ctx.columnPadding) * 1 + ctx.iconHighlight.x * ctx.iconWidth + ctx.iconWidth / 2) + "," + ctx.iconHighlight.y * ctx.iconWidth + "l0,-30 l" + (ctx.columnWidth + ctx.columnPadding) + ",0 l0,25 m-5,-5 l5,5 l5,-5");
-				addLoc(path, file$A, 74, 4, 3692);
+				addLoc(path, file$A, 74, 4, 3604);
 				setAttribute(rect1, "fill", "none");
 				setAttribute(rect1, "stroke", "black");
 				setAttribute(rect1, "stroke-width", "2");
@@ -12920,25 +12922,25 @@
 				setAttribute(rect1, "y", rect1_y_value = ctx.iconHighlight.y * ctx.iconWidth);
 				setAttribute(rect1, "width", ctx.iconWidth);
 				setAttribute(rect1, "height", ctx.iconWidth);
-				addLoc(rect1, file$A, 75, 4, 3912);
+				addLoc(rect1, file$A, 75, 4, 3824);
 				setAttribute(g2, "transform", "translate(0, 40)");
 				addLoc(g2, file$A, 1, 2, 60);
 				setStyle(svg, "width", "100%");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height);
 				addLoc(svg, file$A, 0, 0, 0);
 				div0.className = "figcaption";
-				addLoc(div0, file$A, 82, 2, 4232);
+				addLoc(div0, file$A, 82, 2, 4144);
 				div1.className = "figcaption";
-				addLoc(div1, file$A, 83, 2, 4383);
+				addLoc(div1, file$A, 83, 2, 4295);
 				setStyle(div2, "margin-top", "8px");
 				setStyle(div2, "text-align", "right");
-				addLoc(div2, file$A, 85, 4, 4712);
+				addLoc(div2, file$A, 85, 4, 4624);
 				div3.className = "figcaption";
-				addLoc(div3, file$A, 84, 2, 4558);
+				addLoc(div3, file$A, 84, 2, 4470);
 				setStyle(div4, "display", "grid");
 				setStyle(div4, "grid-column-gap", "" + ctx.columnPadding / ctx.width * 100 + "%");
 				setStyle(div4, "grid-template-columns", "1fr 1fr 1fr");
-				addLoc(div4, file$A, 81, 0, 4116);
+				addLoc(div4, file$A, 81, 0, 4028);
 			},
 
 			m: function mount(target, anchor) {
@@ -13008,7 +13010,7 @@
 					setAttribute(g0, "transform", g0_transform_value);
 				}
 
-				if (changed.columnWidth || changed.inputs || changed.cellWidth || changed.cellPadding || changed.inputWidth || changed.columnPadding || changed.inputPadding || changed.x || changed.y || changed.Math || changed.numCells) {
+				if (changed.columnWidth || changed.inputs || changed.cellWidth || changed.cellPadding || changed.inputWidth || changed.columnPadding || changed.inputPadding || changed.Math || changed.numCells) {
 					each1_value = ctx.inputs;
 
 					for (var i = 0; i < each1_value.length; i += 1) {
@@ -13305,7 +13307,7 @@
 				setAttribute(line, "y2", line_y__value_1 = ctx.inputWidth + 10);
 				setAttribute(line, "x2", line_x__value = (ctx.inputWidth + ctx.inputPadding) * 3 - ctx.inputPadding);
 				setAttribute(line, "stroke", "#ddd");
-				addLoc(line, file$A, 46, 10, 2354);
+				addLoc(line, file$A, 46, 10, 2266);
 			},
 
 			m: function mount(target, anchor) {
@@ -13336,7 +13338,7 @@
 
 	// (16:4) {#each inputs as input, i}
 	function create_each_block_3$1(component, ctx) {
-		var g2, image0, image0_xlink_href_value, g0, image1, image1_xlink_href_value, g0_transform_value, rect, rect_x_value, rect_y_value, path0, path0_d_value, g1, text5, text0, text1_value = (ctx.Math.random() + "").slice(0, 5), text1, text2, text3_value = (ctx.Math.random() + "").slice(0, 5), text3, text4, text5_dy_value, text5_transform_value, g1_transform_value, g2_transform_value, path1, path1_d_value;
+		var g2, image0, image0_xlink_href_value, g0, image1, image1_xlink_href_value, g0_transform_value, rect, rect_x_value, rect_y_value, path0, path0_d_value, g1, text5, text0, text1_value = (ctx.Math.random() + "").slice(0, 5), text1, text2, text3_value = (ctx.Math.random() + "").slice(0, 5), text3, text4, text5_dy_value, g1_transform_value, g2_transform_value, path1, path1_d_value;
 
 		var each_value = range(ctx.numCells);
 
@@ -13394,7 +13396,6 @@
 				addLoc(path0, file$A, 33, 8, 1582);
 				setAttribute(text5, "font-size", "9");
 				setAttribute(text5, "dy", text5_dy_value = ctx.cellWidth / 1.5);
-				setAttribute(text5, "transform", text5_transform_value = "translate(" + ctx.x * (ctx.cellWidth + ctx.cellPadding) + ", " + ctx.y * (ctx.cellWidth + ctx.cellPadding) + ")");
 				addLoc(text5, file$A, 39, 10, 2030);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.inputWidth + ctx.inputPadding) * 2 + ", " + ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ")");
 				addLoc(g1, file$A, 38, 8, 1920);
@@ -13403,7 +13404,7 @@
 				setAttribute(path1, "fill", "none");
 				setAttribute(path1, "stroke", "black");
 				setAttribute(path1, "d", path1_d_value = pointerPath(ctx.columnWidth, ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2 + (ctx.inputWidth + 20) * ctx.i, (ctx.columnWidth + ctx.columnPadding) + ctx.columnWidth * ctx.input.px, ctx.columnWidth * ctx.input.py));
-				addLoc(path1, file$A, 50, 6, 2525);
+				addLoc(path1, file$A, 50, 6, 2437);
 			},
 
 			m: function mount(target, anchor) {
@@ -13502,10 +13503,6 @@
 					setAttribute(text5, "dy", text5_dy_value);
 				}
 
-				if ((changed.x || changed.cellWidth || changed.cellPadding || changed.y) && text5_transform_value !== (text5_transform_value = "translate(" + ctx.x * (ctx.cellWidth + ctx.cellPadding) + ", " + ctx.y * (ctx.cellWidth + ctx.cellPadding) + ")")) {
-					setAttribute(text5, "transform", text5_transform_value);
-				}
-
 				if ((changed.inputWidth || changed.inputPadding || changed.inputs || changed.cellWidth || changed.cellPadding) && g1_transform_value !== (g1_transform_value = "translate(" + (ctx.inputWidth + ctx.inputPadding) * 2 + ", " + ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ")")) {
 					setAttribute(g1, "transform", g1_transform_value);
 				}
@@ -13561,7 +13558,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.icon.x * ctx.iconWidth);
 				setAttribute(rect, "width", ctx.iconWidth);
 				setAttribute(rect, "height", ctx.iconWidth);
-				addLoc(rect, file$A, 63, 10, 3040);
+				addLoc(rect, file$A, 63, 10, 2952);
 			},
 
 			m: function mount(target, anchor) {
@@ -13610,7 +13607,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * ctx.iconWidth);
 				setAttribute(rect, "width", ctx.iconWidth);
 				setAttribute(rect, "height", ctx.iconWidth);
-				addLoc(rect, file$A, 67, 10, 3292);
+				addLoc(rect, file$A, 67, 10, 3204);
 			},
 
 			m: function mount(target, anchor) {
@@ -13724,8 +13721,6 @@
 		if (!('layoutData' in this._state)) console.warn("<Process> was created without expected data property 'layoutData'");
 		if (!('inputs' in this._state)) console.warn("<Process> was created without expected data property 'inputs'");
 
-		if (!('x' in this._state)) console.warn("<Process> was created without expected data property 'x'");
-		if (!('y' in this._state)) console.warn("<Process> was created without expected data property 'y'");
 
 		if (!('webData' in this._state)) console.warn("<Process> was created without expected data property 'webData'");
 		if (!('renderURL' in this._state)) console.warn("<Process> was created without expected data property 'renderURL'");
@@ -13785,6 +13780,11 @@
 	    iconCrop: 0.4,
 	  }
 	}
+	function onupdate$3({changed, current, previous}) {
+	  if (changed.viewWidth) {
+	    console.log(current.viewWidth);
+	  }
+	}
 	const file$B = "src/diagrams/OneLayer.html";
 
 	function create_main_fragment$C(component, ctx) {
@@ -13792,16 +13792,19 @@
 
 		var atlas_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
+		 	showLabels: ctx.showLabels,
 		 	scaleCountFactor: "10",
-		 	iconCrop: "0.2"
+		 	iconCrop: "0.2",
+		 	enableClickToZoom: false,
+		 	enableDragToPan: false
 		 };
 		if (ctx.gridSize  !== void 0) {
 			atlas_initial_data.gridSize = ctx.gridSize ;
 			atlas_updating.gridSize = true;
 		}
-		if (ctx.showLabels  !== void 0) {
-			atlas_initial_data.showLabels = ctx.showLabels ;
-			atlas_updating.showLabels = true;
+		if (ctx.viewWidth  !== void 0) {
+			atlas_initial_data.viewWidth = ctx.viewWidth ;
+			atlas_updating.viewWidth = true;
 		}
 		var atlas = new Atlas({
 			root: component.root,
@@ -13813,8 +13816,8 @@
 					newState.gridSize = childState.gridSize;
 				}
 
-				if (!atlas_updating.showLabels && changed.showLabels) {
-					newState.showLabels = childState.showLabels;
+				if (!atlas_updating.viewWidth && changed.viewWidth) {
+					newState.viewWidth = childState.viewWidth;
 				}
 				component._set(newState);
 				atlas_updating = {};
@@ -13822,7 +13825,7 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			atlas._bind({ gridSize: 1, showLabels: 1 }, atlas.get());
+			atlas._bind({ gridSize: 1, viewWidth: 1 }, atlas.get());
 		});
 
 		return {
@@ -13843,13 +13846,14 @@
 				ctx = _ctx;
 				var atlas_changes = {};
 				if (changed.layerName) atlas_changes.id = "inceptionv1_" + ctx.layerName;
+				if (changed.showLabels) atlas_changes.showLabels = ctx.showLabels;
 				if (!atlas_updating.gridSize && changed.gridSize) {
 					atlas_changes.gridSize = ctx.gridSize ;
 					atlas_updating.gridSize = ctx.gridSize  !== void 0;
 				}
-				if (!atlas_updating.showLabels && changed.showLabels) {
-					atlas_changes.showLabels = ctx.showLabels ;
-					atlas_updating.showLabels = ctx.showLabels  !== void 0;
+				if (!atlas_updating.viewWidth && changed.viewWidth) {
+					atlas_changes.viewWidth = ctx.viewWidth ;
+					atlas_updating.viewWidth = ctx.viewWidth  !== void 0;
 				}
 				atlas._set(atlas_changes);
 				atlas_updating = {};
@@ -13875,10 +13879,16 @@
 		this._state = assign(data$q(), options.data);
 		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<OneLayer> was created without expected data property 'gridSize'");
+		if (!('viewWidth' in this._state)) console.warn("<OneLayer> was created without expected data property 'viewWidth'");
 		if (!('showLabels' in this._state)) console.warn("<OneLayer> was created without expected data property 'showLabels'");
 		this._intro = true;
+		this._handlers.update = [onupdate$3];
 
 		this._fragment = create_main_fragment$C(this, this._state);
+
+		this.root._oncreate.push(() => {
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -14983,395 +14993,9 @@
 		}
 	};
 
-	/* src/diagrams/VerticalLayerAnnotation.html generated by Svelte v2.15.3 */
-
-	function data$v() {
-	  return {
-	    layerName: "mixed4c",
-	    gridSize: 3,
-	    homeScale: 16 * 3,
-	    showLabels: true
-	  }
-	}
-	const file$G = "src/diagrams/VerticalLayerAnnotation.html";
-
-	function create_main_fragment$H(component, ctx) {
-		var div2, div0, atlas_updating = {}, text0, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {}, text2;
-
-		var atlas_initial_data = {
-		 	id: "inceptionv1_" + ctx.layerName,
-		 	enableDragToPan: true,
-		 	enableClickToZoom: false
-		 };
-		if (ctx.gridSize
-	       !== void 0) {
-			atlas_initial_data.gridSize = ctx.gridSize
-	      ;
-			atlas_updating.gridSize = true;
-		}
-		if (ctx.homeX 
-	       !== void 0) {
-			atlas_initial_data.homeX = ctx.homeX 
-	      ;
-			atlas_updating.homeX = true;
-		}
-		if (ctx.homeY 
-	       !== void 0) {
-			atlas_initial_data.homeY = ctx.homeY 
-	      ;
-			atlas_updating.homeY = true;
-		}
-		if (ctx.homeScale
-	       !== void 0) {
-			atlas_initial_data.homeScale = ctx.homeScale
-	      ;
-			atlas_updating.homeScale = true;
-		}
-		if (ctx.aspectRatio
-	       !== void 0) {
-			atlas_initial_data.aspectRatio = ctx.aspectRatio
-	      ;
-			atlas_updating.aspectRatio = true;
-		}
-		if (ctx.scale
-	       !== void 0) {
-			atlas_initial_data.scale = ctx.scale
-	      ;
-			atlas_updating.scale = true;
-		}
-		if (ctx.gcx
-	       !== void 0) {
-			atlas_initial_data.gcx = ctx.gcx
-	      ;
-			atlas_updating.gcx = true;
-		}
-		if (ctx.gcy
-	       !== void 0) {
-			atlas_initial_data.gcy = ctx.gcy
-	      ;
-			atlas_updating.gcy = true;
-		}
-		if (ctx.showLabels
-	       !== void 0) {
-			atlas_initial_data.showLabels = ctx.showLabels
-	      ;
-			atlas_updating.showLabels = true;
-		}
-		var atlas = new Atlas({
-			root: component.root,
-			store: component.store,
-			data: atlas_initial_data,
-			_bind(changed, childState) {
-				var newState = {};
-				if (!atlas_updating.gridSize && changed.gridSize) {
-					newState.gridSize = childState.gridSize;
-				}
-
-				if (!atlas_updating.homeX && changed.homeX) {
-					newState.homeX = childState.homeX;
-				}
-
-				if (!atlas_updating.homeY && changed.homeY) {
-					newState.homeY = childState.homeY;
-				}
-
-				if (!atlas_updating.homeScale && changed.homeScale) {
-					newState.homeScale = childState.homeScale;
-				}
-
-				if (!atlas_updating.aspectRatio && changed.aspectRatio) {
-					newState.aspectRatio = childState.aspectRatio;
-				}
-
-				if (!atlas_updating.scale && changed.scale) {
-					newState.scale = childState.scale;
-				}
-
-				if (!atlas_updating.gcx && changed.gcx) {
-					newState.gcx = childState.gcx;
-				}
-
-				if (!atlas_updating.gcy && changed.gcy) {
-					newState.gcy = childState.gcy;
-				}
-
-				if (!atlas_updating.showLabels && changed.showLabels) {
-					newState.showLabels = childState.showLabels;
-				}
-				component._set(newState);
-				atlas_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(() => {
-			atlas._bind({ gridSize: 1, homeX: 1, homeY: 1, homeScale: 1, aspectRatio: 1, scale: 1, gcx: 1, gcy: 1, showLabels: 1 }, atlas.get());
-		});
-
-		var atlasreticle_initial_data = {};
-		if (ctx.aspectRatio
-	       !== void 0) {
-			atlasreticle_initial_data.aspectRatio = ctx.aspectRatio
-	      ;
-			atlasreticle_updating.aspectRatio = true;
-		}
-		if (ctx.scale
-	       !== void 0) {
-			atlasreticle_initial_data.scale = ctx.scale
-	      ;
-			atlasreticle_updating.scale = true;
-		}
-		if (ctx.gcx
-	       !== void 0) {
-			atlasreticle_initial_data.gcx = ctx.gcx
-	      ;
-			atlasreticle_updating.gcx = true;
-		}
-		if (ctx.gcy
-	     !== void 0) {
-			atlasreticle_initial_data.gcy = ctx.gcy
-	    ;
-			atlasreticle_updating.gcy = true;
-		}
-		var atlasreticle = new AtlasReticle({
-			root: component.root,
-			store: component.store,
-			data: atlasreticle_initial_data,
-			_bind(changed, childState) {
-				var newState = {};
-				if (!atlasreticle_updating.aspectRatio && changed.aspectRatio) {
-					newState.aspectRatio = childState.aspectRatio;
-				}
-
-				if (!atlasreticle_updating.scale && changed.scale) {
-					newState.scale = childState.scale;
-				}
-
-				if (!atlasreticle_updating.gcx && changed.gcx) {
-					newState.gcx = childState.gcx;
-				}
-
-				if (!atlasreticle_updating.gcy && changed.gcy) {
-					newState.gcy = childState.gcy;
-				}
-				component._set(newState);
-				atlasreticle_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(() => {
-			atlasreticle._bind({ aspectRatio: 1, scale: 1, gcx: 1, gcy: 1 }, atlasreticle.get());
-		});
-
-		var if_block = (ctx.gcx && ctx.gcy) && create_if_block$a(component, ctx);
-
-		return {
-			c: function create() {
-				div2 = createElement("div");
-				div0 = createElement("div");
-				atlas._fragment.c();
-				text0 = createText("\n  ");
-				div1 = createElement("div");
-				img = createElement("img");
-				text1 = createText("\n    ");
-				atlasreticle._fragment.c();
-				text2 = createText("\n    ");
-				if (if_block) if_block.c();
-				div0.className = "detail svelte-bq4534";
-				addLoc(div0, file$G, 3, 2, 19);
-				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
-				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-bq4534";
-				addLoc(img, file$G, 20, 4, 360);
-				div1.className = "atlas svelte-bq4534";
-				addLoc(div1, file$G, 19, 2, 336);
-				addLoc(div2, file$G, 2, 0, 2);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div2, anchor);
-				append(div2, div0);
-				atlas._mount(div0, null);
-				append(div2, text0);
-				append(div2, div1);
-				append(div1, img);
-				append(div1, text1);
-				atlasreticle._mount(div1, null);
-				append(div1, text2);
-				if (if_block) if_block.m(div1, null);
-			},
-
-			p: function update(changed, _ctx) {
-				ctx = _ctx;
-				var atlas_changes = {};
-				if (changed.layerName) atlas_changes.id = "inceptionv1_" + ctx.layerName;
-				if (!atlas_updating.gridSize && changed.gridSize) {
-					atlas_changes.gridSize = ctx.gridSize
-	      ;
-					atlas_updating.gridSize = ctx.gridSize
-	       !== void 0;
-				}
-				if (!atlas_updating.homeX && changed.homeX) {
-					atlas_changes.homeX = ctx.homeX 
-	      ;
-					atlas_updating.homeX = ctx.homeX 
-	       !== void 0;
-				}
-				if (!atlas_updating.homeY && changed.homeY) {
-					atlas_changes.homeY = ctx.homeY 
-	      ;
-					atlas_updating.homeY = ctx.homeY 
-	       !== void 0;
-				}
-				if (!atlas_updating.homeScale && changed.homeScale) {
-					atlas_changes.homeScale = ctx.homeScale
-	      ;
-					atlas_updating.homeScale = ctx.homeScale
-	       !== void 0;
-				}
-				if (!atlas_updating.aspectRatio && changed.aspectRatio) {
-					atlas_changes.aspectRatio = ctx.aspectRatio
-	      ;
-					atlas_updating.aspectRatio = ctx.aspectRatio
-	       !== void 0;
-				}
-				if (!atlas_updating.scale && changed.scale) {
-					atlas_changes.scale = ctx.scale
-	      ;
-					atlas_updating.scale = ctx.scale
-	       !== void 0;
-				}
-				if (!atlas_updating.gcx && changed.gcx) {
-					atlas_changes.gcx = ctx.gcx
-	      ;
-					atlas_updating.gcx = ctx.gcx
-	       !== void 0;
-				}
-				if (!atlas_updating.gcy && changed.gcy) {
-					atlas_changes.gcy = ctx.gcy
-	      ;
-					atlas_updating.gcy = ctx.gcy
-	       !== void 0;
-				}
-				if (!atlas_updating.showLabels && changed.showLabels) {
-					atlas_changes.showLabels = ctx.showLabels
-	      ;
-					atlas_updating.showLabels = ctx.showLabels
-	       !== void 0;
-				}
-				atlas._set(atlas_changes);
-				atlas_updating = {};
-
-				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
-					img.src = img_src_value;
-				}
-
-				if ((changed.layerName) && img_alt_value !== (img_alt_value = "thumbnail for " + ctx.layerName)) {
-					img.alt = img_alt_value;
-				}
-
-				var atlasreticle_changes = {};
-				if (!atlasreticle_updating.aspectRatio && changed.aspectRatio) {
-					atlasreticle_changes.aspectRatio = ctx.aspectRatio
-	      ;
-					atlasreticle_updating.aspectRatio = ctx.aspectRatio
-	       !== void 0;
-				}
-				if (!atlasreticle_updating.scale && changed.scale) {
-					atlasreticle_changes.scale = ctx.scale
-	      ;
-					atlasreticle_updating.scale = ctx.scale
-	       !== void 0;
-				}
-				if (!atlasreticle_updating.gcx && changed.gcx) {
-					atlasreticle_changes.gcx = ctx.gcx
-	      ;
-					atlasreticle_updating.gcx = ctx.gcx
-	       !== void 0;
-				}
-				if (!atlasreticle_updating.gcy && changed.gcy) {
-					atlasreticle_changes.gcy = ctx.gcy
-	    ;
-					atlasreticle_updating.gcy = ctx.gcy
-	     !== void 0;
-				}
-				atlasreticle._set(atlasreticle_changes);
-				atlasreticle_updating = {};
-
-				if (ctx.gcx && ctx.gcy) {
-					if (!if_block) {
-						if_block = create_if_block$a(component, ctx);
-						if_block.c();
-						if_block.m(div1, null);
-					}
-				} else if (if_block) {
-					if_block.d(1);
-					if_block = null;
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(div2);
-				}
-
-				atlas.destroy();
-				atlasreticle.destroy();
-				if (if_block) if_block.d();
-			}
-		};
-	}
-
-	// (28:4) {#if gcx && gcy}
-	function create_if_block$a(component, ctx) {
-
-		return {
-			c: noop,
-
-			m: noop,
-
-			d: noop
-		};
-	}
-
-	function VerticalLayerAnnotation(options) {
-		this._debugName = '<VerticalLayerAnnotation>';
-		if (!options || (!options.target && !options.root)) {
-			throw new Error("'target' is a required option");
-		}
-
-		init(this, options);
-		this._state = assign(data$v(), options.data);
-		if (!('layerName' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'layerName'");
-		if (!('gridSize' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'gridSize'");
-		if (!('homeX' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'homeX'");
-		if (!('homeY' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'homeY'");
-		if (!('homeScale' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'homeScale'");
-		if (!('aspectRatio' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'aspectRatio'");
-		if (!('scale' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'scale'");
-		if (!('gcx' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'gcx'");
-		if (!('gcy' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'gcy'");
-		if (!('showLabels' in this._state)) console.warn("<VerticalLayerAnnotation> was created without expected data property 'showLabels'");
-		this._intro = true;
-
-		this._fragment = create_main_fragment$H(this, this._state);
-
-		if (options.target) {
-			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-			this._fragment.c();
-			this._mount(options.target, options.anchor);
-
-			flush(this);
-		}
-	}
-
-	assign(VerticalLayerAnnotation.prototype, protoDev);
-
-	VerticalLayerAnnotation.prototype._checkReadOnly = function _checkReadOnly(newState) {
-	};
-
 	/* src/diagrams/VerticalLayerStatic.html generated by Svelte v2.15.3 */
 
-	function data$w() {
+	function data$v() {
 	  return {
 	    caption: "",
 	    layerName: "mixed4c",
@@ -15380,9 +15004,9 @@
 	    showLabels: true
 	  }
 	}
-	const file$H = "src/diagrams/VerticalLayerStatic.html";
+	const file$G = "src/diagrams/VerticalLayerStatic.html";
 
-	function create_main_fragment$I(component, ctx) {
+	function create_main_fragment$H(component, ctx) {
 		var div4, div0, text0, div1, text1, div3, div2, img, img_src_value, img_alt_value, text2;
 
 		var lazyimage_initial_data = {
@@ -15423,19 +15047,19 @@
 				text2 = createText("\n      ");
 				atlasreticle._fragment.c();
 				div0.className = "atlas svelte-mxyxdk";
-				addLoc(div0, file$H, 3, 2, 23);
+				addLoc(div0, file$G, 3, 2, 23);
 				div1.className = "figcaption";
-				addLoc(div1, file$H, 7, 2, 163);
+				addLoc(div1, file$G, 7, 2, 163);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
 				img.className = "svelte-mxyxdk";
-				addLoc(img, file$H, 13, 6, 288);
+				addLoc(img, file$G, 13, 6, 288);
 				setStyle(div2, "position", "relative");
-				addLoc(div2, file$H, 12, 4, 248);
+				addLoc(div2, file$G, 12, 4, 248);
 				div3.className = "thumbnail svelte-mxyxdk";
-				addLoc(div3, file$H, 11, 2, 220);
+				addLoc(div3, file$G, 11, 2, 220);
 				div4.className = "root svelte-mxyxdk";
-				addLoc(div4, file$H, 2, 0, 2);
+				addLoc(div4, file$G, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
@@ -15495,7 +15119,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$w(), options.data);
+		this._state = assign(data$v(), options.data);
 		if (!('subject' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'subject'");
 		if (!('index' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'index'");
 		if (!('caption' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'caption'");
@@ -15505,7 +15129,7 @@
 		if (!('homeY' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeY'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$I(this, this._state);
+		this._fragment = create_main_fragment$H(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15523,7 +15147,7 @@
 
 	/* src/components/Loupe.html generated by Svelte v2.15.3 */
 
-	function data$x() {
+	function data$w() {
 	  return {
 	    label: null,
 	    width: null,
@@ -15531,12 +15155,12 @@
 	    color: "#ff6600"
 	  }
 	}
-	const file$I = "src/components/Loupe.html";
+	const file$H = "src/components/Loupe.html";
 
-	function create_main_fragment$J(component, ctx) {
+	function create_main_fragment$I(component, ctx) {
 		var div1, div0, slot_content_default = component._slotted.default, text;
 
-		var if_block = (ctx.label) && create_if_block$b(component, ctx);
+		var if_block = (ctx.label) && create_if_block$a(component, ctx);
 
 		return {
 			c: function create() {
@@ -15546,11 +15170,11 @@
 				if (if_block) if_block.c();
 				div0.className = "loupe svelte-k0t0vh";
 				setStyle(div0, "border-color", ctx.color);
-				addLoc(div0, file$I, 1, 2, 67);
+				addLoc(div0, file$H, 1, 2, 67);
 				div1.className = "root svelte-k0t0vh";
 				setStyle(div1, "width", "" + ctx.width + "px");
 				setStyle(div1, "height", "" + ctx.height + "px");
-				addLoc(div1, file$I, 0, 0, 0);
+				addLoc(div1, file$H, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -15574,7 +15198,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$b(component, ctx);
+						if_block = create_if_block$a(component, ctx);
 						if_block.c();
 						if_block.m(div1, null);
 					}
@@ -15607,7 +15231,7 @@
 	}
 
 	// (5:2) {#if label}
-	function create_if_block$b(component, ctx) {
+	function create_if_block$a(component, ctx) {
 		var div, text;
 
 		return {
@@ -15616,7 +15240,7 @@
 				text = createText(ctx.label);
 				div.className = "label svelte-k0t0vh";
 				setStyle(div, "background-color", ctx.color);
-				addLoc(div, file$I, 5, 4, 162);
+				addLoc(div, file$H, 5, 4, 162);
 			},
 
 			m: function mount(target, anchor) {
@@ -15649,7 +15273,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$x(), options.data);
+		this._state = assign(data$w(), options.data);
 		if (!('width' in this._state)) console.warn("<Loupe> was created without expected data property 'width'");
 		if (!('height' in this._state)) console.warn("<Loupe> was created without expected data property 'height'");
 		if (!('color' in this._state)) console.warn("<Loupe> was created without expected data property 'color'");
@@ -15658,7 +15282,7 @@
 
 		this._slotted = options.slots || {};
 
-		this._fragment = create_main_fragment$J(this, this._state);
+		this._fragment = create_main_fragment$I(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15674,9 +15298,9 @@
 
 	/* src/diagrams/Focus1Static.html generated by Svelte v2.15.3 */
 
-	const file$J = "src/diagrams/Focus1Static.html";
+	const file$I = "src/diagrams/Focus1Static.html";
 
-	function create_main_fragment$K(component, ctx) {
+	function create_main_fragment$J(component, ctx) {
 		var div3, div0, text0, text1, div1, text2, div2;
 
 		var lazyimage0_initial_data = {
@@ -15737,13 +15361,13 @@
 				div2 = createElement("div");
 				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
 				div0.className = "main svelte-drlr3g";
-				addLoc(div0, file$J, 2, 2, 22);
+				addLoc(div0, file$I, 2, 2, 22);
 				div1.className = "detail svelte-drlr3g";
-				addLoc(div1, file$J, 14, 2, 363);
+				addLoc(div1, file$I, 14, 2, 363);
 				div2.className = "figcaption svelte-drlr3g";
-				addLoc(div2, file$J, 19, 2, 516);
+				addLoc(div2, file$I, 19, 2, 516);
 				div3.className = "root svelte-drlr3g";
-				addLoc(div3, file$J, 1, 0, 1);
+				addLoc(div3, file$I, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -15798,7 +15422,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$K(this, this._state);
+		this._fragment = create_main_fragment$J(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15816,9 +15440,9 @@
 
 	/* src/diagrams/Focus2Static.html generated by Svelte v2.15.3 */
 
-	const file$K = "src/diagrams/Focus2Static.html";
+	const file$J = "src/diagrams/Focus2Static.html";
 
-	function create_main_fragment$L(component, ctx) {
+	function create_main_fragment$K(component, ctx) {
 		var div3, div0, text0, text1, text2, text3, div2, text4, text5, text6, div1;
 
 		var lazyimage0_initial_data = {
@@ -15962,13 +15586,13 @@
 				div1 = createElement("div");
 				div1.textContent = "In mixed4d we see we see the attribution toward \"fireboat\" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.";
 				div0.className = "main svelte-1smkqjl";
-				addLoc(div0, file$K, 2, 2, 22);
+				addLoc(div0, file$J, 2, 2, 22);
 				div1.className = "figcaption svelte-1smkqjl";
-				addLoc(div1, file$K, 45, 4, 1320);
+				addLoc(div1, file$J, 45, 4, 1320);
 				div2.className = "detail svelte-1smkqjl";
-				addLoc(div2, file$K, 35, 2, 902);
+				addLoc(div2, file$J, 35, 2, 902);
 				div3.className = "root svelte-1smkqjl";
-				addLoc(div3, file$K, 1, 0, 1);
+				addLoc(div3, file$J, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -16051,7 +15675,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$L(this, this._state);
+		this._fragment = create_main_fragment$K(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16069,7 +15693,7 @@
 
 	/* src/diagrams/Focus3Static.html generated by Svelte v2.15.3 */
 
-	const file$L = "src/diagrams/Focus3Static.html";
+	const file$K = "src/diagrams/Focus3Static.html";
 
 	function get_each1_context$4(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -16085,7 +15709,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$M(component, ctx) {
+	function create_main_fragment$L(component, ctx) {
 		var div2, h40, text1, div0, text2, text3, h41, text5, div1, text6;
 
 		var lazyimage0_initial_data = {
@@ -16152,15 +15776,15 @@
 					each1_blocks[i].c();
 				}
 				h40.className = "svelte-1uisskv";
-				addLoc(h40, file$L, 2, 2, 22);
+				addLoc(h40, file$K, 2, 2, 22);
 				div0.className = "main svelte-1uisskv";
-				addLoc(div0, file$L, 3, 2, 58);
+				addLoc(div0, file$K, 3, 2, 58);
 				h41.className = "svelte-1uisskv";
-				addLoc(h41, file$L, 18, 2, 453);
+				addLoc(h41, file$K, 18, 2, 453);
 				div1.className = "main svelte-1uisskv";
-				addLoc(div1, file$L, 19, 2, 490);
+				addLoc(div1, file$K, 19, 2, 490);
 				div2.className = "root svelte-1uisskv";
-				addLoc(div2, file$L, 1, 0, 1);
+				addLoc(div2, file$K, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -16349,7 +15973,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$M(this, this._state);
+		this._fragment = create_main_fragment$L(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16367,7 +15991,7 @@
 
 	/* src/diagrams/Focus3TableStatic.html generated by Svelte v2.15.3 */
 
-	const file$M = "src/diagrams/Focus3TableStatic.html";
+	const file$L = "src/diagrams/Focus3TableStatic.html";
 
 	function get_each1_context$5(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -16383,7 +16007,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$N(component, ctx) {
+	function create_main_fragment$M(component, ctx) {
 		var div5, h40, text0, text1, text2, h41, text3, text4, text5, div0, text6, div1, text8, div2, text10, div3, text12, div4;
 
 		var each0_value = ctx.$focusHighlights;
@@ -16438,21 +16062,21 @@
 				div4.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
 				setStyle(h40, "width", "" + ctx.loupeSize + "px");
 				h40.className = "svelte-1mpkpzp";
-				addLoc(h40, file$M, 3, 4, 25);
+				addLoc(h40, file$L, 3, 4, 25);
 				setStyle(h41, "width", "" + ctx.loupeSize + "px");
 				h41.className = "svelte-1mpkpzp";
-				addLoc(h41, file$M, 14, 4, 291);
-				addLoc(div0, file$M, 26, 4, 585);
+				addLoc(h41, file$L, 14, 4, 291);
+				addLoc(div0, file$L, 26, 4, 585);
 				div1.className = "figcaption svelte-1mpkpzp";
-				addLoc(div1, file$M, 27, 4, 601);
+				addLoc(div1, file$L, 27, 4, 601);
 				div2.className = "figcaption svelte-1mpkpzp";
-				addLoc(div2, file$M, 30, 4, 739);
+				addLoc(div2, file$L, 30, 4, 739);
 				div3.className = "figcaption svelte-1mpkpzp";
-				addLoc(div3, file$M, 33, 4, 906);
+				addLoc(div3, file$L, 33, 4, 906);
 				div4.className = "figcaption svelte-1mpkpzp";
-				addLoc(div4, file$M, 36, 4, 1083);
+				addLoc(div4, file$L, 36, 4, 1083);
 				div5.className = "root svelte-1mpkpzp";
-				addLoc(div5, file$M, 1, 0, 1);
+				addLoc(div5, file$L, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -16640,7 +16264,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$N(this, this._state);
+		this._fragment = create_main_fragment$M(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16775,7 +16399,7 @@
 			target: document.querySelector("#layer-annotation-1"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.306,
@@ -16788,7 +16412,7 @@
 			target: document.querySelector("#layer-annotation-2"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.309,
@@ -16801,7 +16425,7 @@
 			target: document.querySelector("#layer-annotation-3"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.335,
@@ -16817,7 +16441,7 @@
 			store: store,
 			data: {
 				component: LayerAnnotation,
-				aspectRatio: 2.9,
+				height: 300,
 				componentData: {
 					homeX: 0.330,
 					homeY: 0.666,
@@ -16829,7 +16453,7 @@
 			target: document.querySelector("#layer-annotation-5"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.281,
@@ -16842,7 +16466,7 @@
 			target: document.querySelector("#layer-annotation-6"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.944,
@@ -16855,7 +16479,7 @@
 			target: document.querySelector("#layer-annotation-7"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.837,
@@ -16868,7 +16492,7 @@
 			target: document.querySelector("#layer-annotation-8"),
 			store: store,
 			data: {
-				aspectRatio: 2.9,
+				height: 300,
 				component: LayerAnnotation,
 				componentData: {
 					homeX: 0.594,

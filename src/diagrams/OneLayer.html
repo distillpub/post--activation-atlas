@@ -21,7 +21,7 @@
 
 
 <div class="atlas" style="grid-column: screen">
-  <Atlas id="inceptionv1_{layerName}" bind:gridSize bind:showLabels scaleCountFactor=10 iconCrop=0.2/>
+  <Atlas id="inceptionv1_{layerName}" bind:gridSize bind:viewWidth {showLabels} scaleCountFactor=10 iconCrop=0.2 enableClickToZoom={false} enableDragToPan={false}/>
 </div>
 
 <script>
@@ -34,6 +34,11 @@ export default {
       layerName: "mixed4c",
       gridSize: 1,
       iconCrop: 0.4,
+    }
+  },
+  onupdate({changed, current, previous}) {
+    if (changed.viewWidth) {
+      console.log(current.viewWidth)
     }
   }
 }

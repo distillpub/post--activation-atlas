@@ -20,7 +20,7 @@
 <Radar bind:ready="radarReady" :offscreen :onscreen >
   <div ref:container bind:clientWidth="width" style="height: {finalHeight}px;">
     {#if ready}
-      <svelte:component this={component} {...componentData}/>
+      <svelte:component this={component} {...componentData} clientWidth={width}/>
     {:else}
       <Loading />
     {/if}

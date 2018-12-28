@@ -26,7 +26,6 @@ import Process from './diagrams/Process.html';
 import OneLayer from './diagrams/OneLayer.html';
 import LayerAnnotation from './diagrams/LayerAnnotation.html';
 import ShowAPath from './diagrams/ShowAPath.html';
-import VerticalLayerAnnotation from './diagrams/VerticalLayerAnnotation.html';
 import VerticalLayerStatic from './diagrams/VerticalLayerStatic.html';
 import Focus1Static from './diagrams/Focus1Static.html';
 import Focus2Static from './diagrams/Focus2Static.html';
@@ -151,7 +150,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-1"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.306,
@@ -164,7 +163,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-2"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.309,
@@ -177,7 +176,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-3"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.335,
@@ -193,7 +192,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		store: store,
 		data: {
 			component: LayerAnnotation,
-			aspectRatio: 2.9,
+			height: 300,
 			componentData: {
 				homeX: 0.330,
 				homeY: 0.666,
@@ -205,7 +204,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-5"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.281,
@@ -218,7 +217,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-6"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.944,
@@ -231,7 +230,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-7"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.837,
@@ -244,7 +243,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		target: document.querySelector("#layer-annotation-8"),
 		store: store,
 		data: {
-			aspectRatio: 2.9,
+			height: 300,
 			component: LayerAnnotation,
 			componentData: {
 				homeX: 0.594,
