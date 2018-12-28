@@ -5019,6 +5019,8 @@
 	    const {showHoverIcon} = this.get();
 	    if (showHoverIcon) {
 	      tooltip.show(current.currentIconInfo);
+	    } else {
+	      tooltip.hide();
 	    }
 	  }
 	  if (changed.showHoverIcon) {
