@@ -27,7 +27,9 @@ label only every nth cell if cells are too small
 
 one-layer initializes with a zero width, causing animation. Others do too...
 
-## Todos
+## Nice to haves
+
+add "settings tray" to bottom of minimap
 
 Add support for css resizing lazycomponent.
 Add width variable to lazyComponent.
