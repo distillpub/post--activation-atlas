@@ -13,14 +13,14 @@ Colab notebooks
 Fix zoom.html
 mousewheel and touch zoom support
 
+smooth zoom between gridsizes
+autochoose gridsize
+
 # Tweaks
 
 add "reset" to layer tour (and possible zoom buttons)
 
 detal.html and link to it somewhere
-
-smooth zoom between gridsizes
-autochoose gridsize
 
 no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
