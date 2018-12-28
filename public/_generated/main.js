@@ -13788,12 +13788,27 @@
 	const file$B = "src/diagrams/OneLayer.html";
 
 	function create_main_fragment$C(component, ctx) {
-		var div, atlas_updating = {};
+		var div1, div0, label0, text1, label1, input0, text2, text3, label2, input1, text4, text5, label3, input2, text6, text7, label4, input3, text8, text9, div2, atlas_updating = {};
+
+		function input0_change_handler() {
+			component.set({ gridSize: input0.__value });
+		}
+
+		function input1_change_handler() {
+			component.set({ gridSize: input1.__value });
+		}
+
+		function input2_change_handler() {
+			component.set({ gridSize: input2.__value });
+		}
+
+		function input3_change_handler() {
+			component.set({ gridSize: input3.__value });
+		}
 
 		var atlas_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
-		 	showLabels: ctx.showLabels,
-		 	scaleCountFactor: "10",
+		 	scaleCountFactor: "200",
 		 	iconCrop: "0.2",
 		 	enableClickToZoom: false,
 		 	enableDragToPan: false
@@ -13830,23 +13845,119 @@
 
 		return {
 			c: function create() {
-				div = createElement("div");
+				div1 = createElement("div");
+				div0 = createElement("div");
+				label0 = createElement("label");
+				label0.textContent = "Grid size:";
+				text1 = createText("\n    ");
+				label1 = createElement("label");
+				input0 = createElement("input");
+				text2 = createText(" 20x20");
+				text3 = createText("\n    ");
+				label2 = createElement("label");
+				input1 = createElement("input");
+				text4 = createText(" 40x40");
+				text5 = createText("\n    ");
+				label3 = createElement("label");
+				input2 = createElement("input");
+				text6 = createText(" 80x80");
+				text7 = createText("\n    ");
+				label4 = createElement("label");
+				input3 = createElement("input");
+				text8 = createText(" 160x160");
+				text9 = createText("\n\n\n");
+				div2 = createElement("div");
 				atlas._fragment.c();
-				div.className = "atlas svelte-1wfbhjw";
-				setStyle(div, "grid-column", "screen");
-				addLoc(div, file$B, 22, 0, 1143);
+				addLoc(label0, file$B, 2, 4, 76);
+				component._bindingGroups[0].push(input0);
+				addListener(input0, "change", input0_change_handler);
+				setAttribute(input0, "type", "radio");
+				input0.__value = 0;
+				input0.value = input0.__value;
+				input0.className = "svelte-1h549gh";
+				addLoc(input0, file$B, 3, 11, 114);
+				addLoc(label1, file$B, 3, 4, 107);
+				component._bindingGroups[0].push(input1);
+				addListener(input1, "change", input1_change_handler);
+				setAttribute(input1, "type", "radio");
+				input1.__value = 1;
+				input1.value = input1.__value;
+				input1.className = "svelte-1h549gh";
+				addLoc(input1, file$B, 4, 11, 188);
+				addLoc(label2, file$B, 4, 4, 181);
+				component._bindingGroups[0].push(input2);
+				addListener(input2, "change", input2_change_handler);
+				setAttribute(input2, "type", "radio");
+				input2.__value = 2;
+				input2.value = input2.__value;
+				input2.className = "svelte-1h549gh";
+				addLoc(input2, file$B, 5, 11, 262);
+				addLoc(label3, file$B, 5, 4, 255);
+				component._bindingGroups[0].push(input3);
+				addListener(input3, "change", input3_change_handler);
+				setAttribute(input3, "type", "radio");
+				input3.__value = 3;
+				input3.value = input3.__value;
+				input3.className = "svelte-1h549gh";
+				addLoc(input3, file$B, 6, 11, 336);
+				addLoc(label4, file$B, 6, 4, 329);
+				setStyle(div0, "grid-column", "text");
+				div0.className = "svelte-1h549gh svelte-ref-controls";
+				addLoc(div0, file$B, 1, 2, 26);
+				div1.className = "base-grid";
+				addLoc(div1, file$B, 0, 0, 0);
+				div2.className = "atlas svelte-1h549gh";
+				setStyle(div2, "grid-column", "screen");
+				addLoc(div2, file$B, 12, 0, 420);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-				atlas._mount(div, null);
+				insert(target, div1, anchor);
+				append(div1, div0);
+				append(div0, label0);
+				append(div0, text1);
+				append(div0, label1);
+				append(label1, input0);
+
+				input0.checked = input0.__value === ctx.gridSize;
+
+				append(label1, text2);
+				append(div0, text3);
+				append(div0, label2);
+				append(label2, input1);
+
+				input1.checked = input1.__value === ctx.gridSize;
+
+				append(label2, text4);
+				append(div0, text5);
+				append(div0, label3);
+				append(label3, input2);
+
+				input2.checked = input2.__value === ctx.gridSize;
+
+				append(label3, text6);
+				append(div0, text7);
+				append(div0, label4);
+				append(label4, input3);
+
+				input3.checked = input3.__value === ctx.gridSize;
+
+				append(label4, text8);
+				component.refs.controls = div0;
+				insert(target, text9, anchor);
+				insert(target, div2, anchor);
+				atlas._mount(div2, null);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
+				if (changed.gridSize) input0.checked = input0.__value === ctx.gridSize;
+				if (changed.gridSize) input1.checked = input1.__value === ctx.gridSize;
+				if (changed.gridSize) input2.checked = input2.__value === ctx.gridSize;
+				if (changed.gridSize) input3.checked = input3.__value === ctx.gridSize;
+
 				var atlas_changes = {};
 				if (changed.layerName) atlas_changes.id = "inceptionv1_" + ctx.layerName;
-				if (changed.showLabels) atlas_changes.showLabels = ctx.showLabels;
 				if (!atlas_updating.gridSize && changed.gridSize) {
 					atlas_changes.gridSize = ctx.gridSize ;
 					atlas_updating.gridSize = ctx.gridSize  !== void 0;
@@ -13861,7 +13972,21 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div);
+					detachNode(div1);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input0), 1);
+				removeListener(input0, "change", input0_change_handler);
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input1), 1);
+				removeListener(input1, "change", input1_change_handler);
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input2), 1);
+				removeListener(input2, "change", input2_change_handler);
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input3), 1);
+				removeListener(input3, "change", input3_change_handler);
+				if (component.refs.controls === div0) component.refs.controls = null;
+				if (detach) {
+					detachNode(text9);
+					detachNode(div2);
 				}
 
 				atlas.destroy();
@@ -13876,11 +14001,12 @@
 		}
 
 		init(this, options);
+		this.refs = {};
 		this._state = assign(data$q(), options.data);
-		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<OneLayer> was created without expected data property 'gridSize'");
+		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
 		if (!('viewWidth' in this._state)) console.warn("<OneLayer> was created without expected data property 'viewWidth'");
-		if (!('showLabels' in this._state)) console.warn("<OneLayer> was created without expected data property 'showLabels'");
+		this._bindingGroups = [[]];
 		this._intro = true;
 		this._handlers.update = [onupdate$3];
 
