@@ -8,23 +8,28 @@
   componentData: The data to pass to the component when initializing.
 
   This requires us to know the size of the component before it's initialized.
-  We do this with two properties.
+  If nothing is provided, we assign the parent width: 100%; and height: 100%; 
+  so you can control its size with a wrapper container with position: relative;
 
-  height: Simply uses this constant value.
+  If you want to control the size directly, you can do so with two properties:
+
+  height: Simply uses this constant value. If a number is given, assumed to be
+  pixel height. If a string is given, a css value is assumed and pased directly
+  to a css height: "" declaration. Thus you can use "10vh" as a value.
 
   aspectRatio (w/h): used the width of the element to compute the height based on 
   this ratio. When aspectRatio is used, an optional property "minHeight" is 
-  available.
+  available and any height values given are ignored.
  -->
 
-<Radar bind:ready="radarReady" :offscreen :onscreen >
-  <div ref:container bind:clientWidth="width" style="height: {finalHeight}px;">
-    {#if ready}
-      <svelte:component this={component} {...componentData} clientWidth={width}/>
-    {:else}
-      <Loading />
-    {/if}
-  </div>
+<Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
+<div ref:container bind:clientWidth style="width: {finalWidth}; height: {finalHeight};">
+  {#if ready}
+    <svelte:component this={component} {...componentData} clientWidth={width}/>
+  {:else}
+    <Loading />
+  {/if}
+</div>
 </Radar>
 
 <script>
@@ -41,7 +46,7 @@
         radarReady: false,
         onscreen: false,
         offsreen: true,
-        height: false,
+        height: null,
         width: null,
         aspectRatio: null,
         minHeight: null
@@ -49,18 +54,29 @@
     },
     computed: {
       ready: ({radarReady, component}) => (radarReady && component) ? true : false,
-      finalHeight: ({width, height, aspectRatio, minHeight}) => {
-        if (height) {
-          return height;
-        } else if (aspectRatio) {
-          let h = width / aspectRatio;
-          if (minHeight) {
-            return Math.min(minHeight, h);
-          } else {
-            return h;
-          }
+      finalWidth: ({width}) => {
+        if (width) {
+          if (typeof width == "number") { return width + "px" }
+          if (typeof width == "string") { return width }
+        } else {
+          return "100%"
         }
-      } 
+      },
+      finalHeight: ({clientWidth, height, aspectRatio, minHeight}) => {
+        if (aspectRatio) {
+          let h = clientWidth / aspectRatio;
+          if (minHeight) {
+            return Math.min(minHeight, h) + "px";
+          } else {
+            return h + "px";
+          }
+        } else if (height) {
+          if (typeof height == "number") { return height + "px" };
+          if (typeof height == "string") { return height };
+        } else {
+          return "100%";
+        }
+      }  
     },
     oncreate() {
       // TODO: Make sure we have some sizes set.
@@ -81,6 +97,7 @@
 
 <style>
 ref:container {
+  box-sizing: border-box;
   display: block;
   position: relative;
   overflow: hidden;

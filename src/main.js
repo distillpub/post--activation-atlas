@@ -97,12 +97,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	// Components
 	// 
 
-	const cover = document.querySelector("#cover");
-	cover.addEventListener("ready", e => {
-		new App({
-			target: cover,
-			store,
-			data: {
+	new LazyComponent({
+		target: document.querySelector("#cover"),
+		store: store,
+		data: {
+			component: App,
+			componentData: {
 				showClassFilter: false,
 				layerName: "mixed4d",
 				showLabels: false,
@@ -112,8 +112,26 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				homeScale: 4,
 				gridSize: 2
 			}
-		});
+		}
 	});
+
+	// const cover = document.querySelector("#cover");
+	// cover.addEventListener("ready", e => {
+	// 	new App({
+	// 		target: cover,
+	// 		store,
+	// 		data: {
+	// 			showClassFilter: false,
+	// 			layerName: "mixed4d",
+	// 			showLabels: false,
+	// 			showOptions: false,
+	// 			homeX: 0.55,
+	// 			homeY: 0.7,
+	// 			homeScale: 4,
+	// 			gridSize: 2
+	// 		}
+	// 	});
+	// });
 
 	new Overview({ target: document.querySelector("#overview") });
 
@@ -413,26 +431,28 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		})
 	});
 
+	// const allLayerComparisonElement = document.querySelector("#all-layer-comparison")
+	// allLayerComparisonElement.addEventListener("ready", () => {
+	// 	new App({
+	// 		target: allLayerComparisonElement,
+	// 		store: store,
+	// 		data: {
+	// 			showClassFilter: false
+	// 		}
+	// 	});
+	// });
 
-	let layerComparison = new App({
+
+	new LazyComponent({
 		target: document.querySelector("#all-layer-comparison"),
 		store: store,
 		data: {
-			showClassFilter: false
+			component: App,
+			componentData: {
+				showClassFilter: false,
+			}
 		}
 	});
-
-	// new LazyComponent({
-	// 	target: document.querySelector("#all-layer-comparison"),
-	// 	store: store,
-	// 	data: {
-	// 		aspectRatio: 2,
-	// 		component: App,
-	// 		componentData: {
-	// 			showClassFilter: false,
-	// 		}
-	// 	}
-	// });
 
 
 	const poiLinks = document.querySelectorAll("[data-poi]");
@@ -468,15 +488,29 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		store: store,
 	});
 
-	new App({
+	// const focusPlaygroundElement = document.querySelector("#focus-playground");
+	// focusPlaygroundElement.addEventListener("ready", () => {
+	// 	new App({
+	// 		target: focusPlaygroundElement,
+	// 		store: store,
+	// 		data: {
+	// 			classHeatmap: 235,
+	// 			layerName: "mixed4d"
+	// 		}
+	// 	});
+	// });
+
+	new LazyComponent({
 		target: document.querySelector("#focus-playground"),
 		store: store,
 		data: {
-			classHeatmap: 235,
-			layerName: "mixed4d"
+			component: App,
+			componentData: {
+				classHeatmap: 235,
+				layerName: "mixed4d"
+			}
 		}
 	});
-
 
 	// Further Isolating Classes
 

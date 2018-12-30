@@ -6,7 +6,7 @@
 
 <d-figure
   ref:element
-  style="display: {display};"
+  style="display: {display}; height: {height};"
 >
   <slot></slot>
 </d-figure>
@@ -17,6 +17,7 @@
       return {
         display: "block", // "inline", "inline-block", "block"
         ready: false,
+        height: "",
         onscreen: false,
         offscreen: true
       }
