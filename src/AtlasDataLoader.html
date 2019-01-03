@@ -1,12 +1,12 @@
 <script>
-import { default as load } from './load.js';
+import { default as load } from './library/load.js';
 import classesToKeep from './classesToKeep.js';
 
 export default {
   data() {
     return {
       fingerprint: Math.random() + Date.now(),
-      // root: "assets",
+    // root: "assets",
       root: "https://storage.googleapis.com/activation-atlas/build",
       id: "inceptionv1",
       layer: 0,

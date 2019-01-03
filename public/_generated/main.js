@@ -31,6 +31,12 @@
 		node.parentNode.removeChild(node);
 	}
 
+	function detachBetween(before, after) {
+		while (before.nextSibling && before.nextSibling !== after) {
+			before.parentNode.removeChild(before.nextSibling);
+		}
+	}
+
 	function detachAfter(before) {
 		while (before.nextSibling) {
 			before.parentNode.removeChild(before.nextSibling);
@@ -2287,14 +2293,14 @@
 				text1 = createText("Average of ");
 				text2 = createText(ctx.num_activations);
 				text3 = createText(" activations");
-				table.className = "svelte-15uzduw";
+				table.className = "svelte-1b6k7p4";
 				addLoc(table, file$1, 1, 2, 22);
 				setStyle(div0, "font-size", "10px");
 				setStyle(div0, "margin-top", "4px");
 				setStyle(div0, "color", "#999");
 				setStyle(div0, "text-align", "right");
 				addLoc(div0, file$1, 12, 2, 395);
-				div1.className = "hover svelte-15uzduw";
+				div1.className = "hover svelte-1b6k7p4";
 				addLoc(div1, file$1, 0, 0, 0);
 			},
 
@@ -2419,12 +2425,12 @@
 				setStyle(td0, "width", "10px");
 				setStyle(td0, "text-align", "right");
 				setStyle(td0, "padding-right", "4px");
-				td0.className = "svelte-15uzduw";
+				td0.className = "svelte-1b6k7p4";
 				addLoc(td0, file$1, 5, 8, 126);
-				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-15uzduw";
+				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-1b6k7p4";
 				addLoc(td1, file$1, 6, 8, 212);
 				setStyle(td2, "text-align", "right");
-				td2.className = "svelte-15uzduw";
+				td2.className = "svelte-1b6k7p4";
 				addLoc(td2, file$1, 7, 8, 284);
 				addLoc(tr, file$1, 4, 6, 113);
 			},
@@ -2500,6 +2506,7 @@
 	  return {
 	    display: "block", // "inline", "inline-block", "block"
 	    ready: false,
+	    height: "",
 	    onscreen: false,
 	    offscreen: true
 	  }
@@ -2526,6 +2533,7 @@
 			c: function create() {
 				d_figure = createElement("d-figure");
 				setStyle(d_figure, "display", ctx.display);
+				setStyle(d_figure, "height", ctx.height);
 				addLoc(d_figure, file$2, 6, 0, 173);
 			},
 
@@ -2542,6 +2550,10 @@
 			p: function update(changed, ctx) {
 				if (changed.display) {
 					setStyle(d_figure, "display", ctx.display);
+				}
+
+				if (changed.height) {
+					setStyle(d_figure, "height", ctx.height);
 				}
 			},
 
@@ -2569,6 +2581,7 @@
 		this.refs = {};
 		this._state = assign(data$1(), options.data);
 		if (!('display' in this._state)) console.warn("<Radar> was created without expected data property 'display'");
+		if (!('height' in this._state)) console.warn("<Radar> was created without expected data property 'height'");
 		this._intro = true;
 
 		this._slotted = options.slots || {};
@@ -2657,16 +2670,26 @@
 		return (radarReady && component) ? true : false;
 	}
 
-	function finalHeight({width, height, aspectRatio, minHeight}) {
-	  if (height) {
-	    return height;
-	  } else if (aspectRatio) {
-	    let h = width / aspectRatio;
+	function finalWidth({width}) {
+	  if (width) {
+	    if (typeof width == "number") { return width + "px" }
+	    if (typeof width == "string") { return width }
+	  } else {
+	    return "100%"
+	  }
+	}
+
+	function finalHeight({clientWidth, height, aspectRatio, minHeight}) {
+	  if (aspectRatio) {
+	    let h = clientWidth / aspectRatio;
 	    if (minHeight) {
-	      return Math.min(minHeight, h);
+	      return Math.min(minHeight, h) + "px";
 	    } else {
-	      return h;
+	      return h + "px";
 	    }
+	  } else if (height) {
+	    if (typeof height == "number") { return height + "px" }    if (typeof height == "string") { return height }  } else {
+	    return "100%";
 	  }
 	}
 
@@ -2678,7 +2701,7 @@
 	    radarReady: false,
 	    onscreen: false,
 	    offsreen: true,
-	    height: false,
+	    height: null,
 	    width: null,
 	    aspectRatio: null,
 	    minHeight: null
@@ -2712,12 +2735,13 @@
 		var if_block = current_block_type(component, ctx);
 
 		function div_resize_handler() {
-			component.set({ width: div.clientWidth });
+			component.set({ clientWidth: div.clientWidth });
 		}
 
 		var radar_initial_data = {
 		 	offscreen: ctx.offscreen,
-		 	onscreen: ctx.onscreen
+		 	onscreen: ctx.onscreen,
+		 	height: "100%"
 		 };
 		if (ctx.radarReady !== void 0) {
 			radar_initial_data.ready = ctx.radarReady;
@@ -2748,9 +2772,10 @@
 				if_block.c();
 				radar._fragment.c();
 				component.root._beforecreate.push(div_resize_handler);
-				setStyle(div, "height", "" + ctx.finalHeight + "px");
-				div.className = "svelte-1texnz1 svelte-ref-container";
-				addLoc(div, file$4, 20, 2, 755);
+				setStyle(div, "width", ctx.finalWidth);
+				setStyle(div, "height", ctx.finalHeight);
+				div.className = "svelte-15vhi6w svelte-ref-container";
+				addLoc(div, file$4, 25, 0, 1198);
 			},
 
 			m: function mount(target, anchor) {
@@ -2772,8 +2797,12 @@
 					if_block.m(div, null);
 				}
 
+				if (changed.finalWidth) {
+					setStyle(div, "width", ctx.finalWidth);
+				}
+
 				if (changed.finalHeight) {
-					setStyle(div, "height", "" + ctx.finalHeight + "px");
+					setStyle(div, "height", ctx.finalHeight);
 				}
 
 				var radar_changes = {};
@@ -2796,7 +2825,7 @@
 		};
 	}
 
-	// (24:4) {:else}
+	// (29:2) {:else}
 	function create_else_block(component, ctx) {
 
 		var loading = new Loading({
@@ -2821,7 +2850,7 @@
 		};
 	}
 
-	// (22:4) {#if ready}
+	// (27:2) {#if ready}
 	function create_if_block$2(component, ctx) {
 		var switch_instance_anchor;
 
@@ -2907,15 +2936,17 @@
 		this.refs = {};
 		this._state = assign(data$2(), options.data);
 
-		this._recompute({ radarReady: 1, component: 1, width: 1, height: 1, aspectRatio: 1, minHeight: 1 }, this._state);
+		this._recompute({ radarReady: 1, component: 1, width: 1, clientWidth: 1, height: 1, aspectRatio: 1, minHeight: 1 }, this._state);
 		if (!('radarReady' in this._state)) console.warn("<LazyComponent> was created without expected data property 'radarReady'");
 		if (!('component' in this._state)) console.warn("<LazyComponent> was created without expected data property 'component'");
 		if (!('width' in this._state)) console.warn("<LazyComponent> was created without expected data property 'width'");
+		if (!('clientWidth' in this._state)) console.warn("<LazyComponent> was created without expected data property 'clientWidth'");
 		if (!('height' in this._state)) console.warn("<LazyComponent> was created without expected data property 'height'");
 		if (!('aspectRatio' in this._state)) console.warn("<LazyComponent> was created without expected data property 'aspectRatio'");
 		if (!('minHeight' in this._state)) console.warn("<LazyComponent> was created without expected data property 'minHeight'");
 		if (!('offscreen' in this._state)) console.warn("<LazyComponent> was created without expected data property 'offscreen'");
 		if (!('onscreen' in this._state)) console.warn("<LazyComponent> was created without expected data property 'onscreen'");
+
 
 
 		if (!('componentData' in this._state)) console.warn("<LazyComponent> was created without expected data property 'componentData'");
@@ -2941,6 +2972,7 @@
 
 	LazyComponent.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('ready' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'ready'");
+		if ('finalWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'finalWidth'");
 		if ('finalHeight' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'finalHeight'");
 	};
 
@@ -2949,7 +2981,11 @@
 			if (this._differs(state.ready, (state.ready = ready(state)))) changed.ready = true;
 		}
 
-		if (changed.width || changed.height || changed.aspectRatio || changed.minHeight) {
+		if (changed.width) {
+			if (this._differs(state.finalWidth, (state.finalWidth = finalWidth(state)))) changed.finalWidth = true;
+		}
+
+		if (changed.clientWidth || changed.height || changed.aspectRatio || changed.minHeight) {
 			if (this._differs(state.finalHeight, (state.finalHeight = finalHeight(state)))) changed.finalHeight = true;
 		}
 	};
@@ -4142,7 +4178,7 @@
 	function data$7() {
 	  return {
 	    fingerprint: Math.random() + Date.now(),
-	    // root: "assets",
+	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
 	    layer: 0,
@@ -4495,6 +4531,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
+				setStyle(div, "display", "none");
 				div.className = "svelte-16epbqg svelte-ref-capture";
 				addLoc(div, file$e, 0, 0, 0);
 			},
@@ -4560,12 +4597,3394 @@
 		}
 	};
 
+	var noop$1 = {value: function() {}};
+
+	function dispatch() {
+	  for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+	    if (!(t = arguments[i] + "") || (t in _)) throw new Error("illegal type: " + t);
+	    _[t] = [];
+	  }
+	  return new Dispatch(_);
+	}
+
+	function Dispatch(_) {
+	  this._ = _;
+	}
+
+	function parseTypenames(typenames, types) {
+	  return typenames.trim().split(/^|\s+/).map(function(t) {
+	    var name = "", i = t.indexOf(".");
+	    if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+	    if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+	    return {type: t, name: name};
+	  });
+	}
+
+	Dispatch.prototype = dispatch.prototype = {
+	  constructor: Dispatch,
+	  on: function(typename, callback) {
+	    var _ = this._,
+	        T = parseTypenames(typename + "", _),
+	        t,
+	        i = -1,
+	        n = T.length;
+
+	    // If no callback was specified, return the callback of the given type and name.
+	    if (arguments.length < 2) {
+	      while (++i < n) if ((t = (typename = T[i]).type) && (t = get$1(_[t], typename.name))) return t;
+	      return;
+	    }
+
+	    // If a type was specified, set the callback for the given type and name.
+	    // Otherwise, if a null callback was specified, remove callbacks of the given name.
+	    if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
+	    while (++i < n) {
+	      if (t = (typename = T[i]).type) _[t] = set$1(_[t], typename.name, callback);
+	      else if (callback == null) for (t in _) _[t] = set$1(_[t], typename.name, null);
+	    }
+
+	    return this;
+	  },
+	  copy: function() {
+	    var copy = {}, _ = this._;
+	    for (var t in _) copy[t] = _[t].slice();
+	    return new Dispatch(copy);
+	  },
+	  call: function(type, that) {
+	    if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
+	    if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+	    for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+	  },
+	  apply: function(type, that, args) {
+	    if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+	    for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+	  }
+	};
+
+	function get$1(type, name) {
+	  for (var i = 0, n = type.length, c; i < n; ++i) {
+	    if ((c = type[i]).name === name) {
+	      return c.value;
+	    }
+	  }
+	}
+
+	function set$1(type, name, callback) {
+	  for (var i = 0, n = type.length; i < n; ++i) {
+	    if (type[i].name === name) {
+	      type[i] = noop$1, type = type.slice(0, i).concat(type.slice(i + 1));
+	      break;
+	    }
+	  }
+	  if (callback != null) type.push({name: name, value: callback});
+	  return type;
+	}
+
+	var xhtml = "http://www.w3.org/1999/xhtml";
+
+	var namespaces$1 = {
+	  svg: "http://www.w3.org/2000/svg",
+	  xhtml: xhtml,
+	  xlink: "http://www.w3.org/1999/xlink",
+	  xml: "http://www.w3.org/XML/1998/namespace",
+	  xmlns: "http://www.w3.org/2000/xmlns/"
+	};
+
+	function namespace(name) {
+	  var prefix = name += "", i = prefix.indexOf(":");
+	  if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+	  return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
+	}
+
+	function creatorInherit(name) {
+	  return function() {
+	    var document = this.ownerDocument,
+	        uri = this.namespaceURI;
+	    return uri === xhtml && document.documentElement.namespaceURI === xhtml
+	        ? document.createElement(name)
+	        : document.createElementNS(uri, name);
+	  };
+	}
+
+	function creatorFixed(fullname) {
+	  return function() {
+	    return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+	  };
+	}
+
+	function creator(name) {
+	  var fullname = namespace(name);
+	  return (fullname.local
+	      ? creatorFixed
+	      : creatorInherit)(fullname);
+	}
+
+	function none() {}
+
+	function selector(selector) {
+	  return selector == null ? none : function() {
+	    return this.querySelector(selector);
+	  };
+	}
+
+	function selection_select(select) {
+	  if (typeof select !== "function") select = selector(select);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+	        if ("__data__" in node) subnode.__data__ = node.__data__;
+	        subgroup[i] = subnode;
+	      }
+	    }
+	  }
+
+	  return new Selection(subgroups, this._parents);
+	}
+
+	function empty() {
+	  return [];
+	}
+
+	function selectorAll(selector) {
+	  return selector == null ? empty : function() {
+	    return this.querySelectorAll(selector);
+	  };
+	}
+
+	function selection_selectAll(select) {
+	  if (typeof select !== "function") select = selectorAll(select);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        subgroups.push(select.call(node, node.__data__, i, group));
+	        parents.push(node);
+	      }
+	    }
+	  }
+
+	  return new Selection(subgroups, parents);
+	}
+
+	var matcher = function(selector) {
+	  return function() {
+	    return this.matches(selector);
+	  };
+	};
+
+	if (typeof document !== "undefined") {
+	  var element = document.documentElement;
+	  if (!element.matches) {
+	    var vendorMatches = element.webkitMatchesSelector
+	        || element.msMatchesSelector
+	        || element.mozMatchesSelector
+	        || element.oMatchesSelector;
+	    matcher = function(selector) {
+	      return function() {
+	        return vendorMatches.call(this, selector);
+	      };
+	    };
+	  }
+	}
+
+	var matcher$1 = matcher;
+
+	function selection_filter(match) {
+	  if (typeof match !== "function") match = matcher$1(match);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+	        subgroup.push(node);
+	      }
+	    }
+	  }
+
+	  return new Selection(subgroups, this._parents);
+	}
+
+	function sparse(update) {
+	  return new Array(update.length);
+	}
+
+	function selection_enter() {
+	  return new Selection(this._enter || this._groups.map(sparse), this._parents);
+	}
+
+	function EnterNode(parent, datum) {
+	  this.ownerDocument = parent.ownerDocument;
+	  this.namespaceURI = parent.namespaceURI;
+	  this._next = null;
+	  this._parent = parent;
+	  this.__data__ = datum;
+	}
+
+	EnterNode.prototype = {
+	  constructor: EnterNode,
+	  appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+	  insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+	  querySelector: function(selector) { return this._parent.querySelector(selector); },
+	  querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+	};
+
+	function constant$1(x) {
+	  return function() {
+	    return x;
+	  };
+	}
+
+	var keyPrefix = "$"; // Protect against keys like “__proto__”.
+
+	function bindIndex(parent, group, enter, update, exit, data) {
+	  var i = 0,
+	      node,
+	      groupLength = group.length,
+	      dataLength = data.length;
+
+	  // Put any non-null nodes that fit into update.
+	  // Put any null nodes into enter.
+	  // Put any remaining data into enter.
+	  for (; i < dataLength; ++i) {
+	    if (node = group[i]) {
+	      node.__data__ = data[i];
+	      update[i] = node;
+	    } else {
+	      enter[i] = new EnterNode(parent, data[i]);
+	    }
+	  }
+
+	  // Put any non-null nodes that don’t fit into exit.
+	  for (; i < groupLength; ++i) {
+	    if (node = group[i]) {
+	      exit[i] = node;
+	    }
+	  }
+	}
+
+	function bindKey(parent, group, enter, update, exit, data, key) {
+	  var i,
+	      node,
+	      nodeByKeyValue = {},
+	      groupLength = group.length,
+	      dataLength = data.length,
+	      keyValues = new Array(groupLength),
+	      keyValue;
+
+	  // Compute the key for each node.
+	  // If multiple nodes have the same key, the duplicates are added to exit.
+	  for (i = 0; i < groupLength; ++i) {
+	    if (node = group[i]) {
+	      keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+	      if (keyValue in nodeByKeyValue) {
+	        exit[i] = node;
+	      } else {
+	        nodeByKeyValue[keyValue] = node;
+	      }
+	    }
+	  }
+
+	  // Compute the key for each datum.
+	  // If there a node associated with this key, join and add it to update.
+	  // If there is not (or the key is a duplicate), add it to enter.
+	  for (i = 0; i < dataLength; ++i) {
+	    keyValue = keyPrefix + key.call(parent, data[i], i, data);
+	    if (node = nodeByKeyValue[keyValue]) {
+	      update[i] = node;
+	      node.__data__ = data[i];
+	      nodeByKeyValue[keyValue] = null;
+	    } else {
+	      enter[i] = new EnterNode(parent, data[i]);
+	    }
+	  }
+
+	  // Add any remaining nodes that were not bound to data to exit.
+	  for (i = 0; i < groupLength; ++i) {
+	    if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+	      exit[i] = node;
+	    }
+	  }
+	}
+
+	function selection_data(value, key) {
+	  if (!value) {
+	    data = new Array(this.size()), j = -1;
+	    this.each(function(d) { data[++j] = d; });
+	    return data;
+	  }
+
+	  var bind = key ? bindKey : bindIndex,
+	      parents = this._parents,
+	      groups = this._groups;
+
+	  if (typeof value !== "function") value = constant$1(value);
+
+	  for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+	    var parent = parents[j],
+	        group = groups[j],
+	        groupLength = group.length,
+	        data = value.call(parent, parent && parent.__data__, j, parents),
+	        dataLength = data.length,
+	        enterGroup = enter[j] = new Array(dataLength),
+	        updateGroup = update[j] = new Array(dataLength),
+	        exitGroup = exit[j] = new Array(groupLength);
+
+	    bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+	    // Now connect the enter nodes to their following update node, such that
+	    // appendChild can insert the materialized enter node before this node,
+	    // rather than at the end of the parent node.
+	    for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+	      if (previous = enterGroup[i0]) {
+	        if (i0 >= i1) i1 = i0 + 1;
+	        while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+	        previous._next = next || null;
+	      }
+	    }
+	  }
+
+	  update = new Selection(update, parents);
+	  update._enter = enter;
+	  update._exit = exit;
+	  return update;
+	}
+
+	function selection_exit() {
+	  return new Selection(this._exit || this._groups.map(sparse), this._parents);
+	}
+
+	function selection_merge(selection$$1) {
+
+	  for (var groups0 = this._groups, groups1 = selection$$1._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+	    for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+	      if (node = group0[i] || group1[i]) {
+	        merge[i] = node;
+	      }
+	    }
+	  }
+
+	  for (; j < m0; ++j) {
+	    merges[j] = groups0[j];
+	  }
+
+	  return new Selection(merges, this._parents);
+	}
+
+	function selection_order() {
+
+	  for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+	    for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+	      if (node = group[i]) {
+	        if (next && next !== node.nextSibling) next.parentNode.insertBefore(node, next);
+	        next = node;
+	      }
+	    }
+	  }
+
+	  return this;
+	}
+
+	function selection_sort(compare) {
+	  if (!compare) compare = ascending$1;
+
+	  function compareNode(a, b) {
+	    return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+	  }
+
+	  for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        sortgroup[i] = node;
+	      }
+	    }
+	    sortgroup.sort(compareNode);
+	  }
+
+	  return new Selection(sortgroups, this._parents).order();
+	}
+
+	function ascending$1(a, b) {
+	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+	}
+
+	function selection_call() {
+	  var callback = arguments[0];
+	  arguments[0] = this;
+	  callback.apply(null, arguments);
+	  return this;
+	}
+
+	function selection_nodes() {
+	  var nodes = new Array(this.size()), i = -1;
+	  this.each(function() { nodes[++i] = this; });
+	  return nodes;
+	}
+
+	function selection_node() {
+
+	  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+	    for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+	      var node = group[i];
+	      if (node) return node;
+	    }
+	  }
+
+	  return null;
+	}
+
+	function selection_size() {
+	  var size = 0;
+	  this.each(function() { ++size; });
+	  return size;
+	}
+
+	function selection_empty() {
+	  return !this.node();
+	}
+
+	function selection_each(callback) {
+
+	  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+	    for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+	      if (node = group[i]) callback.call(node, node.__data__, i, group);
+	    }
+	  }
+
+	  return this;
+	}
+
+	function attrRemove(name) {
+	  return function() {
+	    this.removeAttribute(name);
+	  };
+	}
+
+	function attrRemoveNS(fullname) {
+	  return function() {
+	    this.removeAttributeNS(fullname.space, fullname.local);
+	  };
+	}
+
+	function attrConstant(name, value) {
+	  return function() {
+	    this.setAttribute(name, value);
+	  };
+	}
+
+	function attrConstantNS(fullname, value) {
+	  return function() {
+	    this.setAttributeNS(fullname.space, fullname.local, value);
+	  };
+	}
+
+	function attrFunction(name, value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) this.removeAttribute(name);
+	    else this.setAttribute(name, v);
+	  };
+	}
+
+	function attrFunctionNS(fullname, value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+	    else this.setAttributeNS(fullname.space, fullname.local, v);
+	  };
+	}
+
+	function selection_attr(name, value) {
+	  var fullname = namespace(name);
+
+	  if (arguments.length < 2) {
+	    var node = this.node();
+	    return fullname.local
+	        ? node.getAttributeNS(fullname.space, fullname.local)
+	        : node.getAttribute(fullname);
+	  }
+
+	  return this.each((value == null
+	      ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
+	      ? (fullname.local ? attrFunctionNS : attrFunction)
+	      : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
+	}
+
+	function defaultView(node) {
+	  return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+	      || (node.document && node) // node is a Window
+	      || node.defaultView; // node is a Document
+	}
+
+	function styleRemove(name) {
+	  return function() {
+	    this.style.removeProperty(name);
+	  };
+	}
+
+	function styleConstant(name, value, priority) {
+	  return function() {
+	    this.style.setProperty(name, value, priority);
+	  };
+	}
+
+	function styleFunction(name, value, priority) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) this.style.removeProperty(name);
+	    else this.style.setProperty(name, v, priority);
+	  };
+	}
+
+	function selection_style(name, value, priority) {
+	  return arguments.length > 1
+	      ? this.each((value == null
+	            ? styleRemove : typeof value === "function"
+	            ? styleFunction
+	            : styleConstant)(name, value, priority == null ? "" : priority))
+	      : styleValue(this.node(), name);
+	}
+
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
+
+	function propertyRemove(name) {
+	  return function() {
+	    delete this[name];
+	  };
+	}
+
+	function propertyConstant(name, value) {
+	  return function() {
+	    this[name] = value;
+	  };
+	}
+
+	function propertyFunction(name, value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) delete this[name];
+	    else this[name] = v;
+	  };
+	}
+
+	function selection_property(name, value) {
+	  return arguments.length > 1
+	      ? this.each((value == null
+	          ? propertyRemove : typeof value === "function"
+	          ? propertyFunction
+	          : propertyConstant)(name, value))
+	      : this.node()[name];
+	}
+
+	function classArray(string) {
+	  return string.trim().split(/^|\s+/);
+	}
+
+	function classList(node) {
+	  return node.classList || new ClassList(node);
+	}
+
+	function ClassList(node) {
+	  this._node = node;
+	  this._names = classArray(node.getAttribute("class") || "");
+	}
+
+	ClassList.prototype = {
+	  add: function(name) {
+	    var i = this._names.indexOf(name);
+	    if (i < 0) {
+	      this._names.push(name);
+	      this._node.setAttribute("class", this._names.join(" "));
+	    }
+	  },
+	  remove: function(name) {
+	    var i = this._names.indexOf(name);
+	    if (i >= 0) {
+	      this._names.splice(i, 1);
+	      this._node.setAttribute("class", this._names.join(" "));
+	    }
+	  },
+	  contains: function(name) {
+	    return this._names.indexOf(name) >= 0;
+	  }
+	};
+
+	function classedAdd(node, names) {
+	  var list = classList(node), i = -1, n = names.length;
+	  while (++i < n) list.add(names[i]);
+	}
+
+	function classedRemove(node, names) {
+	  var list = classList(node), i = -1, n = names.length;
+	  while (++i < n) list.remove(names[i]);
+	}
+
+	function classedTrue(names) {
+	  return function() {
+	    classedAdd(this, names);
+	  };
+	}
+
+	function classedFalse(names) {
+	  return function() {
+	    classedRemove(this, names);
+	  };
+	}
+
+	function classedFunction(names, value) {
+	  return function() {
+	    (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
+	  };
+	}
+
+	function selection_classed(name, value) {
+	  var names = classArray(name + "");
+
+	  if (arguments.length < 2) {
+	    var list = classList(this.node()), i = -1, n = names.length;
+	    while (++i < n) if (!list.contains(names[i])) return false;
+	    return true;
+	  }
+
+	  return this.each((typeof value === "function"
+	      ? classedFunction : value
+	      ? classedTrue
+	      : classedFalse)(names, value));
+	}
+
+	function textRemove() {
+	  this.textContent = "";
+	}
+
+	function textConstant(value) {
+	  return function() {
+	    this.textContent = value;
+	  };
+	}
+
+	function textFunction(value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    this.textContent = v == null ? "" : v;
+	  };
+	}
+
+	function selection_text(value) {
+	  return arguments.length
+	      ? this.each(value == null
+	          ? textRemove : (typeof value === "function"
+	          ? textFunction
+	          : textConstant)(value))
+	      : this.node().textContent;
+	}
+
+	function htmlRemove() {
+	  this.innerHTML = "";
+	}
+
+	function htmlConstant(value) {
+	  return function() {
+	    this.innerHTML = value;
+	  };
+	}
+
+	function htmlFunction(value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    this.innerHTML = v == null ? "" : v;
+	  };
+	}
+
+	function selection_html(value) {
+	  return arguments.length
+	      ? this.each(value == null
+	          ? htmlRemove : (typeof value === "function"
+	          ? htmlFunction
+	          : htmlConstant)(value))
+	      : this.node().innerHTML;
+	}
+
+	function raise() {
+	  if (this.nextSibling) this.parentNode.appendChild(this);
+	}
+
+	function selection_raise() {
+	  return this.each(raise);
+	}
+
+	function lower() {
+	  if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+	}
+
+	function selection_lower() {
+	  return this.each(lower);
+	}
+
+	function selection_append(name) {
+	  var create = typeof name === "function" ? name : creator(name);
+	  return this.select(function() {
+	    return this.appendChild(create.apply(this, arguments));
+	  });
+	}
+
+	function constantNull() {
+	  return null;
+	}
+
+	function selection_insert(name, before) {
+	  var create = typeof name === "function" ? name : creator(name),
+	      select = before == null ? constantNull : typeof before === "function" ? before : selector(before);
+	  return this.select(function() {
+	    return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+	  });
+	}
+
+	function remove() {
+	  var parent = this.parentNode;
+	  if (parent) parent.removeChild(this);
+	}
+
+	function selection_remove() {
+	  return this.each(remove);
+	}
+
+	function selection_cloneShallow() {
+	  return this.parentNode.insertBefore(this.cloneNode(false), this.nextSibling);
+	}
+
+	function selection_cloneDeep() {
+	  return this.parentNode.insertBefore(this.cloneNode(true), this.nextSibling);
+	}
+
+	function selection_clone(deep) {
+	  return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
+	}
+
+	function selection_datum(value) {
+	  return arguments.length
+	      ? this.property("__data__", value)
+	      : this.node().__data__;
+	}
+
+	var filterEvents = {};
+
+	var event = null;
+
+	if (typeof document !== "undefined") {
+	  var element$1 = document.documentElement;
+	  if (!("onmouseenter" in element$1)) {
+	    filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
+	  }
+	}
+
+	function filterContextListener(listener, index, group) {
+	  listener = contextListener(listener, index, group);
+	  return function(event) {
+	    var related = event.relatedTarget;
+	    if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+	      listener.call(this, event);
+	    }
+	  };
+	}
+
+	function contextListener(listener, index, group) {
+	  return function(event1) {
+	    var event0 = event; // Events can be reentrant (e.g., focus).
+	    event = event1;
+	    try {
+	      listener.call(this, this.__data__, index, group);
+	    } finally {
+	      event = event0;
+	    }
+	  };
+	}
+
+	function parseTypenames$1(typenames) {
+	  return typenames.trim().split(/^|\s+/).map(function(t) {
+	    var name = "", i = t.indexOf(".");
+	    if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+	    return {type: t, name: name};
+	  });
+	}
+
+	function onRemove(typename) {
+	  return function() {
+	    var on = this.__on;
+	    if (!on) return;
+	    for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+	      if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+	        this.removeEventListener(o.type, o.listener, o.capture);
+	      } else {
+	        on[++i] = o;
+	      }
+	    }
+	    if (++i) on.length = i;
+	    else delete this.__on;
+	  };
+	}
+
+	function onAdd(typename, value, capture) {
+	  var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener;
+	  return function(d, i, group) {
+	    var on = this.__on, o, listener = wrap(value, i, group);
+	    if (on) for (var j = 0, m = on.length; j < m; ++j) {
+	      if ((o = on[j]).type === typename.type && o.name === typename.name) {
+	        this.removeEventListener(o.type, o.listener, o.capture);
+	        this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+	        o.value = value;
+	        return;
+	      }
+	    }
+	    this.addEventListener(typename.type, listener, capture);
+	    o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+	    if (!on) this.__on = [o];
+	    else on.push(o);
+	  };
+	}
+
+	function selection_on(typename, value, capture) {
+	  var typenames = parseTypenames$1(typename + ""), i, n = typenames.length, t;
+
+	  if (arguments.length < 2) {
+	    var on = this.node().__on;
+	    if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+	      for (i = 0, o = on[j]; i < n; ++i) {
+	        if ((t = typenames[i]).type === o.type && t.name === o.name) {
+	          return o.value;
+	        }
+	      }
+	    }
+	    return;
+	  }
+
+	  on = value ? onAdd : onRemove;
+	  if (capture == null) capture = false;
+	  for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+	  return this;
+	}
+
+	function customEvent(event1, listener, that, args) {
+	  var event0 = event;
+	  event1.sourceEvent = event;
+	  event = event1;
+	  try {
+	    return listener.apply(that, args);
+	  } finally {
+	    event = event0;
+	  }
+	}
+
+	function dispatchEvent(node, type, params) {
+	  var window = defaultView(node),
+	      event = window.CustomEvent;
+
+	  if (typeof event === "function") {
+	    event = new event(type, params);
+	  } else {
+	    event = window.document.createEvent("Event");
+	    if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+	    else event.initEvent(type, false, false);
+	  }
+
+	  node.dispatchEvent(event);
+	}
+
+	function dispatchConstant(type, params) {
+	  return function() {
+	    return dispatchEvent(this, type, params);
+	  };
+	}
+
+	function dispatchFunction(type, params) {
+	  return function() {
+	    return dispatchEvent(this, type, params.apply(this, arguments));
+	  };
+	}
+
+	function selection_dispatch(type, params) {
+	  return this.each((typeof params === "function"
+	      ? dispatchFunction
+	      : dispatchConstant)(type, params));
+	}
+
+	var root = [null];
+
+	function Selection(groups, parents) {
+	  this._groups = groups;
+	  this._parents = parents;
+	}
+
+	function selection() {
+	  return new Selection([[document.documentElement]], root);
+	}
+
+	Selection.prototype = selection.prototype = {
+	  constructor: Selection,
+	  select: selection_select,
+	  selectAll: selection_selectAll,
+	  filter: selection_filter,
+	  data: selection_data,
+	  enter: selection_enter,
+	  exit: selection_exit,
+	  merge: selection_merge,
+	  order: selection_order,
+	  sort: selection_sort,
+	  call: selection_call,
+	  nodes: selection_nodes,
+	  node: selection_node,
+	  size: selection_size,
+	  empty: selection_empty,
+	  each: selection_each,
+	  attr: selection_attr,
+	  style: selection_style,
+	  property: selection_property,
+	  classed: selection_classed,
+	  text: selection_text,
+	  html: selection_html,
+	  raise: selection_raise,
+	  lower: selection_lower,
+	  append: selection_append,
+	  insert: selection_insert,
+	  remove: selection_remove,
+	  clone: selection_clone,
+	  datum: selection_datum,
+	  on: selection_on,
+	  dispatch: selection_dispatch
+	};
+
+	function select(selector) {
+	  return typeof selector === "string"
+	      ? new Selection([[document.querySelector(selector)]], [document.documentElement])
+	      : new Selection([[selector]], root);
+	}
+
+	function sourceEvent() {
+	  var current = event, source;
+	  while (source = current.sourceEvent) current = source;
+	  return current;
+	}
+
+	function point(node, event) {
+	  var svg = node.ownerSVGElement || node;
+
+	  if (svg.createSVGPoint) {
+	    var point = svg.createSVGPoint();
+	    point.x = event.clientX, point.y = event.clientY;
+	    point = point.matrixTransform(node.getScreenCTM().inverse());
+	    return [point.x, point.y];
+	  }
+
+	  var rect = node.getBoundingClientRect();
+	  return [event.clientX - rect.left - node.clientLeft, event.clientY - rect.top - node.clientTop];
+	}
+
+	function mouse(node) {
+	  var event = sourceEvent();
+	  if (event.changedTouches) event = event.changedTouches[0];
+	  return point(node, event);
+	}
+
+	function touch(node, touches, identifier) {
+	  if (arguments.length < 3) identifier = touches, touches = sourceEvent().changedTouches;
+
+	  for (var i = 0, n = touches ? touches.length : 0, touch; i < n; ++i) {
+	    if ((touch = touches[i]).identifier === identifier) {
+	      return point(node, touch);
+	    }
+	  }
+
+	  return null;
+	}
+
+	function noevent() {
+	  event.preventDefault();
+	  event.stopImmediatePropagation();
+	}
+
+	function nodrag(view) {
+	  var root = view.document.documentElement,
+	      selection$$1 = select(view).on("dragstart.drag", noevent, true);
+	  if ("onselectstart" in root) {
+	    selection$$1.on("selectstart.drag", noevent, true);
+	  } else {
+	    root.__noselect = root.style.MozUserSelect;
+	    root.style.MozUserSelect = "none";
+	  }
+	}
+
+	function yesdrag(view, noclick) {
+	  var root = view.document.documentElement,
+	      selection$$1 = select(view).on("dragstart.drag", null);
+	  if (noclick) {
+	    selection$$1.on("click.drag", noevent, true);
+	    setTimeout(function() { selection$$1.on("click.drag", null); }, 0);
+	  }
+	  if ("onselectstart" in root) {
+	    selection$$1.on("selectstart.drag", null);
+	  } else {
+	    root.style.MozUserSelect = root.__noselect;
+	    delete root.__noselect;
+	  }
+	}
+
+	function define(constructor, factory, prototype) {
+	  constructor.prototype = factory.prototype = prototype;
+	  prototype.constructor = constructor;
+	}
+
+	function extend(parent, definition) {
+	  var prototype = Object.create(parent.prototype);
+	  for (var key in definition) prototype[key] = definition[key];
+	  return prototype;
+	}
+
+	function Color() {}
+
+	var darker = 0.7;
+	var brighter = 1 / darker;
+
+	var reI = "\\s*([+-]?\\d+)\\s*",
+	    reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+	    reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+	    reHex3 = /^#([0-9a-f]{3})$/,
+	    reHex6 = /^#([0-9a-f]{6})$/,
+	    reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+	    reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+	    reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+	    reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+	    reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+	    reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+	var named = {
+	  aliceblue: 0xf0f8ff,
+	  antiquewhite: 0xfaebd7,
+	  aqua: 0x00ffff,
+	  aquamarine: 0x7fffd4,
+	  azure: 0xf0ffff,
+	  beige: 0xf5f5dc,
+	  bisque: 0xffe4c4,
+	  black: 0x000000,
+	  blanchedalmond: 0xffebcd,
+	  blue: 0x0000ff,
+	  blueviolet: 0x8a2be2,
+	  brown: 0xa52a2a,
+	  burlywood: 0xdeb887,
+	  cadetblue: 0x5f9ea0,
+	  chartreuse: 0x7fff00,
+	  chocolate: 0xd2691e,
+	  coral: 0xff7f50,
+	  cornflowerblue: 0x6495ed,
+	  cornsilk: 0xfff8dc,
+	  crimson: 0xdc143c,
+	  cyan: 0x00ffff,
+	  darkblue: 0x00008b,
+	  darkcyan: 0x008b8b,
+	  darkgoldenrod: 0xb8860b,
+	  darkgray: 0xa9a9a9,
+	  darkgreen: 0x006400,
+	  darkgrey: 0xa9a9a9,
+	  darkkhaki: 0xbdb76b,
+	  darkmagenta: 0x8b008b,
+	  darkolivegreen: 0x556b2f,
+	  darkorange: 0xff8c00,
+	  darkorchid: 0x9932cc,
+	  darkred: 0x8b0000,
+	  darksalmon: 0xe9967a,
+	  darkseagreen: 0x8fbc8f,
+	  darkslateblue: 0x483d8b,
+	  darkslategray: 0x2f4f4f,
+	  darkslategrey: 0x2f4f4f,
+	  darkturquoise: 0x00ced1,
+	  darkviolet: 0x9400d3,
+	  deeppink: 0xff1493,
+	  deepskyblue: 0x00bfff,
+	  dimgray: 0x696969,
+	  dimgrey: 0x696969,
+	  dodgerblue: 0x1e90ff,
+	  firebrick: 0xb22222,
+	  floralwhite: 0xfffaf0,
+	  forestgreen: 0x228b22,
+	  fuchsia: 0xff00ff,
+	  gainsboro: 0xdcdcdc,
+	  ghostwhite: 0xf8f8ff,
+	  gold: 0xffd700,
+	  goldenrod: 0xdaa520,
+	  gray: 0x808080,
+	  green: 0x008000,
+	  greenyellow: 0xadff2f,
+	  grey: 0x808080,
+	  honeydew: 0xf0fff0,
+	  hotpink: 0xff69b4,
+	  indianred: 0xcd5c5c,
+	  indigo: 0x4b0082,
+	  ivory: 0xfffff0,
+	  khaki: 0xf0e68c,
+	  lavender: 0xe6e6fa,
+	  lavenderblush: 0xfff0f5,
+	  lawngreen: 0x7cfc00,
+	  lemonchiffon: 0xfffacd,
+	  lightblue: 0xadd8e6,
+	  lightcoral: 0xf08080,
+	  lightcyan: 0xe0ffff,
+	  lightgoldenrodyellow: 0xfafad2,
+	  lightgray: 0xd3d3d3,
+	  lightgreen: 0x90ee90,
+	  lightgrey: 0xd3d3d3,
+	  lightpink: 0xffb6c1,
+	  lightsalmon: 0xffa07a,
+	  lightseagreen: 0x20b2aa,
+	  lightskyblue: 0x87cefa,
+	  lightslategray: 0x778899,
+	  lightslategrey: 0x778899,
+	  lightsteelblue: 0xb0c4de,
+	  lightyellow: 0xffffe0,
+	  lime: 0x00ff00,
+	  limegreen: 0x32cd32,
+	  linen: 0xfaf0e6,
+	  magenta: 0xff00ff,
+	  maroon: 0x800000,
+	  mediumaquamarine: 0x66cdaa,
+	  mediumblue: 0x0000cd,
+	  mediumorchid: 0xba55d3,
+	  mediumpurple: 0x9370db,
+	  mediumseagreen: 0x3cb371,
+	  mediumslateblue: 0x7b68ee,
+	  mediumspringgreen: 0x00fa9a,
+	  mediumturquoise: 0x48d1cc,
+	  mediumvioletred: 0xc71585,
+	  midnightblue: 0x191970,
+	  mintcream: 0xf5fffa,
+	  mistyrose: 0xffe4e1,
+	  moccasin: 0xffe4b5,
+	  navajowhite: 0xffdead,
+	  navy: 0x000080,
+	  oldlace: 0xfdf5e6,
+	  olive: 0x808000,
+	  olivedrab: 0x6b8e23,
+	  orange: 0xffa500,
+	  orangered: 0xff4500,
+	  orchid: 0xda70d6,
+	  palegoldenrod: 0xeee8aa,
+	  palegreen: 0x98fb98,
+	  paleturquoise: 0xafeeee,
+	  palevioletred: 0xdb7093,
+	  papayawhip: 0xffefd5,
+	  peachpuff: 0xffdab9,
+	  peru: 0xcd853f,
+	  pink: 0xffc0cb,
+	  plum: 0xdda0dd,
+	  powderblue: 0xb0e0e6,
+	  purple: 0x800080,
+	  rebeccapurple: 0x663399,
+	  red: 0xff0000,
+	  rosybrown: 0xbc8f8f,
+	  royalblue: 0x4169e1,
+	  saddlebrown: 0x8b4513,
+	  salmon: 0xfa8072,
+	  sandybrown: 0xf4a460,
+	  seagreen: 0x2e8b57,
+	  seashell: 0xfff5ee,
+	  sienna: 0xa0522d,
+	  silver: 0xc0c0c0,
+	  skyblue: 0x87ceeb,
+	  slateblue: 0x6a5acd,
+	  slategray: 0x708090,
+	  slategrey: 0x708090,
+	  snow: 0xfffafa,
+	  springgreen: 0x00ff7f,
+	  steelblue: 0x4682b4,
+	  tan: 0xd2b48c,
+	  teal: 0x008080,
+	  thistle: 0xd8bfd8,
+	  tomato: 0xff6347,
+	  turquoise: 0x40e0d0,
+	  violet: 0xee82ee,
+	  wheat: 0xf5deb3,
+	  white: 0xffffff,
+	  whitesmoke: 0xf5f5f5,
+	  yellow: 0xffff00,
+	  yellowgreen: 0x9acd32
+	};
+
+	define(Color, color, {
+	  displayable: function() {
+	    return this.rgb().displayable();
+	  },
+	  hex: function() {
+	    return this.rgb().hex();
+	  },
+	  toString: function() {
+	    return this.rgb() + "";
+	  }
+	});
+
+	function color(format) {
+	  var m;
+	  format = (format + "").trim().toLowerCase();
+	  return (m = reHex3.exec(format)) ? (m = parseInt(m[1], 16), new Rgb((m >> 8 & 0xf) | (m >> 4 & 0x0f0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1)) // #f00
+	      : (m = reHex6.exec(format)) ? rgbn(parseInt(m[1], 16)) // #ff0000
+	      : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+	      : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+	      : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+	      : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+	      : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+	      : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+	      : named.hasOwnProperty(format) ? rgbn(named[format])
+	      : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+	      : null;
+	}
+
+	function rgbn(n) {
+	  return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+	}
+
+	function rgba(r, g, b, a) {
+	  if (a <= 0) r = g = b = NaN;
+	  return new Rgb(r, g, b, a);
+	}
+
+	function rgbConvert(o) {
+	  if (!(o instanceof Color)) o = color(o);
+	  if (!o) return new Rgb;
+	  o = o.rgb();
+	  return new Rgb(o.r, o.g, o.b, o.opacity);
+	}
+
+	function rgb(r, g, b, opacity) {
+	  return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+	}
+
+	function Rgb(r, g, b, opacity) {
+	  this.r = +r;
+	  this.g = +g;
+	  this.b = +b;
+	  this.opacity = +opacity;
+	}
+
+	define(Rgb, rgb, extend(Color, {
+	  brighter: function(k) {
+	    k = k == null ? brighter : Math.pow(brighter, k);
+	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+	  },
+	  darker: function(k) {
+	    k = k == null ? darker : Math.pow(darker, k);
+	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+	  },
+	  rgb: function() {
+	    return this;
+	  },
+	  displayable: function() {
+	    return (0 <= this.r && this.r <= 255)
+	        && (0 <= this.g && this.g <= 255)
+	        && (0 <= this.b && this.b <= 255)
+	        && (0 <= this.opacity && this.opacity <= 1);
+	  },
+	  hex: function() {
+	    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+	  },
+	  toString: function() {
+	    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+	    return (a === 1 ? "rgb(" : "rgba(")
+	        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+	        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+	        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+	        + (a === 1 ? ")" : ", " + a + ")");
+	  }
+	}));
+
+	function hex(value) {
+	  value = Math.max(0, Math.min(255, Math.round(value) || 0));
+	  return (value < 16 ? "0" : "") + value.toString(16);
+	}
+
+	function hsla(h, s, l, a) {
+	  if (a <= 0) h = s = l = NaN;
+	  else if (l <= 0 || l >= 1) h = s = NaN;
+	  else if (s <= 0) h = NaN;
+	  return new Hsl(h, s, l, a);
+	}
+
+	function hslConvert(o) {
+	  if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+	  if (!(o instanceof Color)) o = color(o);
+	  if (!o) return new Hsl;
+	  if (o instanceof Hsl) return o;
+	  o = o.rgb();
+	  var r = o.r / 255,
+	      g = o.g / 255,
+	      b = o.b / 255,
+	      min = Math.min(r, g, b),
+	      max = Math.max(r, g, b),
+	      h = NaN,
+	      s = max - min,
+	      l = (max + min) / 2;
+	  if (s) {
+	    if (r === max) h = (g - b) / s + (g < b) * 6;
+	    else if (g === max) h = (b - r) / s + 2;
+	    else h = (r - g) / s + 4;
+	    s /= l < 0.5 ? max + min : 2 - max - min;
+	    h *= 60;
+	  } else {
+	    s = l > 0 && l < 1 ? 0 : h;
+	  }
+	  return new Hsl(h, s, l, o.opacity);
+	}
+
+	function hsl(h, s, l, opacity) {
+	  return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+	}
+
+	function Hsl(h, s, l, opacity) {
+	  this.h = +h;
+	  this.s = +s;
+	  this.l = +l;
+	  this.opacity = +opacity;
+	}
+
+	define(Hsl, hsl, extend(Color, {
+	  brighter: function(k) {
+	    k = k == null ? brighter : Math.pow(brighter, k);
+	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  darker: function(k) {
+	    k = k == null ? darker : Math.pow(darker, k);
+	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  rgb: function() {
+	    var h = this.h % 360 + (this.h < 0) * 360,
+	        s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+	        l = this.l,
+	        m2 = l + (l < 0.5 ? l : 1 - l) * s,
+	        m1 = 2 * l - m2;
+	    return new Rgb(
+	      hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+	      hsl2rgb(h, m1, m2),
+	      hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+	      this.opacity
+	    );
+	  },
+	  displayable: function() {
+	    return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+	        && (0 <= this.l && this.l <= 1)
+	        && (0 <= this.opacity && this.opacity <= 1);
+	  }
+	}));
+
+	/* From FvD 13.37, CSS Color Module Level 3 */
+	function hsl2rgb(h, m1, m2) {
+	  return (h < 60 ? m1 + (m2 - m1) * h / 60
+	      : h < 180 ? m2
+	      : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+	      : m1) * 255;
+	}
+
+	var deg2rad = Math.PI / 180;
+	var rad2deg = 180 / Math.PI;
+
+	// https://beta.observablehq.com/@mbostock/lab-and-rgb
+	var K = 18,
+	    Xn = 0.96422,
+	    Yn = 1,
+	    Zn = 0.82521,
+	    t0 = 4 / 29,
+	    t1 = 6 / 29,
+	    t2 = 3 * t1 * t1,
+	    t3 = t1 * t1 * t1;
+
+	function labConvert(o) {
+	  if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
+	  if (o instanceof Hcl) {
+	    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+	    var h = o.h * deg2rad;
+	    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+	  }
+	  if (!(o instanceof Rgb)) o = rgbConvert(o);
+	  var r = rgb2lrgb(o.r),
+	      g = rgb2lrgb(o.g),
+	      b = rgb2lrgb(o.b),
+	      y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
+	  if (r === g && g === b) x = z = y; else {
+	    x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
+	    z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
+	  }
+	  return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+	}
+
+	function lab(l, a, b, opacity) {
+	  return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+	}
+
+	function Lab(l, a, b, opacity) {
+	  this.l = +l;
+	  this.a = +a;
+	  this.b = +b;
+	  this.opacity = +opacity;
+	}
+
+	define(Lab, lab, extend(Color, {
+	  brighter: function(k) {
+	    return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+	  },
+	  darker: function(k) {
+	    return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+	  },
+	  rgb: function() {
+	    var y = (this.l + 16) / 116,
+	        x = isNaN(this.a) ? y : y + this.a / 500,
+	        z = isNaN(this.b) ? y : y - this.b / 200;
+	    x = Xn * lab2xyz(x);
+	    y = Yn * lab2xyz(y);
+	    z = Zn * lab2xyz(z);
+	    return new Rgb(
+	      lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
+	      lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
+	      lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
+	      this.opacity
+	    );
+	  }
+	}));
+
+	function xyz2lab(t) {
+	  return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+	}
+
+	function lab2xyz(t) {
+	  return t > t1 ? t * t * t : t2 * (t - t0);
+	}
+
+	function lrgb2rgb(x) {
+	  return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+	}
+
+	function rgb2lrgb(x) {
+	  return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+	}
+
+	function hclConvert(o) {
+	  if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
+	  if (!(o instanceof Lab)) o = labConvert(o);
+	  if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0, o.l, o.opacity);
+	  var h = Math.atan2(o.b, o.a) * rad2deg;
+	  return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+	}
+
+	function hcl(h, c, l, opacity) {
+	  return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+	}
+
+	function Hcl(h, c, l, opacity) {
+	  this.h = +h;
+	  this.c = +c;
+	  this.l = +l;
+	  this.opacity = +opacity;
+	}
+
+	define(Hcl, hcl, extend(Color, {
+	  brighter: function(k) {
+	    return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+	  },
+	  darker: function(k) {
+	    return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
+	  },
+	  rgb: function() {
+	    return labConvert(this).rgb();
+	  }
+	}));
+
+	var A = -0.14861,
+	    B = +1.78277,
+	    C = -0.29227,
+	    D = -0.90649,
+	    E = +1.97294,
+	    ED = E * D,
+	    EB = E * B,
+	    BC_DA = B * C - D * A;
+
+	function cubehelixConvert(o) {
+	  if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
+	  if (!(o instanceof Rgb)) o = rgbConvert(o);
+	  var r = o.r / 255,
+	      g = o.g / 255,
+	      b = o.b / 255,
+	      l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
+	      bl = b - l,
+	      k = (E * (g - l) - C * bl) / D,
+	      s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
+	      h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
+	  return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
+	}
+
+	function cubehelix(h, s, l, opacity) {
+	  return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
+	}
+
+	function Cubehelix(h, s, l, opacity) {
+	  this.h = +h;
+	  this.s = +s;
+	  this.l = +l;
+	  this.opacity = +opacity;
+	}
+
+	define(Cubehelix, cubehelix, extend(Color, {
+	  brighter: function(k) {
+	    k = k == null ? brighter : Math.pow(brighter, k);
+	    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  darker: function(k) {
+	    k = k == null ? darker : Math.pow(darker, k);
+	    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  rgb: function() {
+	    var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
+	        l = +this.l,
+	        a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
+	        cosh = Math.cos(h),
+	        sinh = Math.sin(h);
+	    return new Rgb(
+	      255 * (l + a * (A * cosh + B * sinh)),
+	      255 * (l + a * (C * cosh + D * sinh)),
+	      255 * (l + a * (E * cosh)),
+	      this.opacity
+	    );
+	  }
+	}));
+
+	function constant$3(x) {
+	  return function() {
+	    return x;
+	  };
+	}
+
+	function linear$3(a, d) {
+	  return function(t) {
+	    return a + t * d;
+	  };
+	}
+
+	function exponential(a, b, y) {
+	  return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+	    return Math.pow(a + t * b, y);
+	  };
+	}
+
+	function gamma(y) {
+	  return (y = +y) === 1 ? nogamma : function(a, b) {
+	    return b - a ? exponential(a, b, y) : constant$3(isNaN(a) ? b : a);
+	  };
+	}
+
+	function nogamma(a, b) {
+	  var d = b - a;
+	  return d ? linear$3(a, d) : constant$3(isNaN(a) ? b : a);
+	}
+
+	var interpolateRgb = (function rgbGamma(y) {
+	  var color$$1 = gamma(y);
+
+	  function rgb$$1(start, end) {
+	    var r = color$$1((start = rgb(start)).r, (end = rgb(end)).r),
+	        g = color$$1(start.g, end.g),
+	        b = color$$1(start.b, end.b),
+	        opacity = nogamma(start.opacity, end.opacity);
+	    return function(t) {
+	      start.r = r(t);
+	      start.g = g(t);
+	      start.b = b(t);
+	      start.opacity = opacity(t);
+	      return start + "";
+	    };
+	  }
+
+	  rgb$$1.gamma = rgbGamma;
+
+	  return rgb$$1;
+	})(1);
+
+	function interpolateNumber(a, b) {
+	  return a = +a, b -= a, function(t) {
+	    return a + b * t;
+	  };
+	}
+
+	var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+	    reB = new RegExp(reA.source, "g");
+
+	function zero(b) {
+	  return function() {
+	    return b;
+	  };
+	}
+
+	function one(b) {
+	  return function(t) {
+	    return b(t) + "";
+	  };
+	}
+
+	function interpolateString(a, b) {
+	  var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
+	      am, // current match in a
+	      bm, // current match in b
+	      bs, // string preceding current number in b, if any
+	      i = -1, // index in s
+	      s = [], // string constants and placeholders
+	      q = []; // number interpolators
+
+	  // Coerce inputs to strings.
+	  a = a + "", b = b + "";
+
+	  // Interpolate pairs of numbers in a & b.
+	  while ((am = reA.exec(a))
+	      && (bm = reB.exec(b))) {
+	    if ((bs = bm.index) > bi) { // a string precedes the next number in b
+	      bs = b.slice(bi, bs);
+	      if (s[i]) s[i] += bs; // coalesce with previous string
+	      else s[++i] = bs;
+	    }
+	    if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+	      if (s[i]) s[i] += bm; // coalesce with previous string
+	      else s[++i] = bm;
+	    } else { // interpolate non-matching numbers
+	      s[++i] = null;
+	      q.push({i: i, x: interpolateNumber(am, bm)});
+	    }
+	    bi = reB.lastIndex;
+	  }
+
+	  // Add remains of b.
+	  if (bi < b.length) {
+	    bs = b.slice(bi);
+	    if (s[i]) s[i] += bs; // coalesce with previous string
+	    else s[++i] = bs;
+	  }
+
+	  // Special optimization for only a single match.
+	  // Otherwise, interpolate each of the numbers and rejoin the string.
+	  return s.length < 2 ? (q[0]
+	      ? one(q[0].x)
+	      : zero(b))
+	      : (b = q.length, function(t) {
+	          for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+	          return s.join("");
+	        });
+	}
+
+	var degrees = 180 / Math.PI;
+
+	var identity$2 = {
+	  translateX: 0,
+	  translateY: 0,
+	  rotate: 0,
+	  skewX: 0,
+	  scaleX: 1,
+	  scaleY: 1
+	};
+
+	function decompose(a, b, c, d, e, f) {
+	  var scaleX, scaleY, skewX;
+	  if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
+	  if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
+	  if (scaleY = Math.sqrt(c * c + d * d)) c /= scaleY, d /= scaleY, skewX /= scaleY;
+	  if (a * d < b * c) a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
+	  return {
+	    translateX: e,
+	    translateY: f,
+	    rotate: Math.atan2(b, a) * degrees,
+	    skewX: Math.atan(skewX) * degrees,
+	    scaleX: scaleX,
+	    scaleY: scaleY
+	  };
+	}
+
+	var cssNode,
+	    cssRoot,
+	    cssView,
+	    svgNode;
+
+	function parseCss(value) {
+	  if (value === "none") return identity$2;
+	  if (!cssNode) cssNode = document.createElement("DIV"), cssRoot = document.documentElement, cssView = document.defaultView;
+	  cssNode.style.transform = value;
+	  value = cssView.getComputedStyle(cssRoot.appendChild(cssNode), null).getPropertyValue("transform");
+	  cssRoot.removeChild(cssNode);
+	  value = value.slice(7, -1).split(",");
+	  return decompose(+value[0], +value[1], +value[2], +value[3], +value[4], +value[5]);
+	}
+
+	function parseSvg(value) {
+	  if (value == null) return identity$2;
+	  if (!svgNode) svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
+	  svgNode.setAttribute("transform", value);
+	  if (!(value = svgNode.transform.baseVal.consolidate())) return identity$2;
+	  value = value.matrix;
+	  return decompose(value.a, value.b, value.c, value.d, value.e, value.f);
+	}
+
+	function interpolateTransform(parse, pxComma, pxParen, degParen) {
+
+	  function pop(s) {
+	    return s.length ? s.pop() + " " : "";
+	  }
+
+	  function translate(xa, ya, xb, yb, s, q) {
+	    if (xa !== xb || ya !== yb) {
+	      var i = s.push("translate(", null, pxComma, null, pxParen);
+	      q.push({i: i - 4, x: interpolateNumber(xa, xb)}, {i: i - 2, x: interpolateNumber(ya, yb)});
+	    } else if (xb || yb) {
+	      s.push("translate(" + xb + pxComma + yb + pxParen);
+	    }
+	  }
+
+	  function rotate(a, b, s, q) {
+	    if (a !== b) {
+	      if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
+	      q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber(a, b)});
+	    } else if (b) {
+	      s.push(pop(s) + "rotate(" + b + degParen);
+	    }
+	  }
+
+	  function skewX(a, b, s, q) {
+	    if (a !== b) {
+	      q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber(a, b)});
+	    } else if (b) {
+	      s.push(pop(s) + "skewX(" + b + degParen);
+	    }
+	  }
+
+	  function scale(xa, ya, xb, yb, s, q) {
+	    if (xa !== xb || ya !== yb) {
+	      var i = s.push(pop(s) + "scale(", null, ",", null, ")");
+	      q.push({i: i - 4, x: interpolateNumber(xa, xb)}, {i: i - 2, x: interpolateNumber(ya, yb)});
+	    } else if (xb !== 1 || yb !== 1) {
+	      s.push(pop(s) + "scale(" + xb + "," + yb + ")");
+	    }
+	  }
+
+	  return function(a, b) {
+	    var s = [], // string constants and placeholders
+	        q = []; // number interpolators
+	    a = parse(a), b = parse(b);
+	    translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
+	    rotate(a.rotate, b.rotate, s, q);
+	    skewX(a.skewX, b.skewX, s, q);
+	    scale(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
+	    a = b = null; // gc
+	    return function(t) {
+	      var i = -1, n = q.length, o;
+	      while (++i < n) s[(o = q[i]).i] = o.x(t);
+	      return s.join("");
+	    };
+	  };
+	}
+
+	var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
+	var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
+
+	var rho = Math.SQRT2,
+	    rho2 = 2,
+	    rho4 = 4,
+	    epsilon2 = 1e-12;
+
+	function cosh(x) {
+	  return ((x = Math.exp(x)) + 1 / x) / 2;
+	}
+
+	function sinh(x) {
+	  return ((x = Math.exp(x)) - 1 / x) / 2;
+	}
+
+	function tanh(x) {
+	  return ((x = Math.exp(2 * x)) - 1) / (x + 1);
+	}
+
+	// p0 = [ux0, uy0, w0]
+	// p1 = [ux1, uy1, w1]
+	function interpolateZoom(p0, p1) {
+	  var ux0 = p0[0], uy0 = p0[1], w0 = p0[2],
+	      ux1 = p1[0], uy1 = p1[1], w1 = p1[2],
+	      dx = ux1 - ux0,
+	      dy = uy1 - uy0,
+	      d2 = dx * dx + dy * dy,
+	      i,
+	      S;
+
+	  // Special case for u0 ≅ u1.
+	  if (d2 < epsilon2) {
+	    S = Math.log(w1 / w0) / rho;
+	    i = function(t) {
+	      return [
+	        ux0 + t * dx,
+	        uy0 + t * dy,
+	        w0 * Math.exp(rho * t * S)
+	      ];
+	    };
+	  }
+
+	  // General case.
+	  else {
+	    var d1 = Math.sqrt(d2),
+	        b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1),
+	        b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1),
+	        r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0),
+	        r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+	    S = (r1 - r0) / rho;
+	    i = function(t) {
+	      var s = t * S,
+	          coshr0 = cosh(r0),
+	          u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
+	      return [
+	        ux0 + u * dx,
+	        uy0 + u * dy,
+	        w0 * coshr0 / cosh(rho * s + r0)
+	      ];
+	    };
+	  }
+
+	  i.duration = S * 1000;
+
+	  return i;
+	}
+
+	var frame = 0, // is an animation frame pending?
+	    timeout = 0, // is a timeout pending?
+	    interval = 0, // are any timers active?
+	    pokeDelay = 1000, // how frequently we check for clock skew
+	    taskHead,
+	    taskTail,
+	    clockLast = 0,
+	    clockNow = 0,
+	    clockSkew = 0,
+	    clock = typeof performance === "object" && performance.now ? performance : Date,
+	    setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
+
+	function now() {
+	  return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
+	}
+
+	function clearNow() {
+	  clockNow = 0;
+	}
+
+	function Timer() {
+	  this._call =
+	  this._time =
+	  this._next = null;
+	}
+
+	Timer.prototype = timer.prototype = {
+	  constructor: Timer,
+	  restart: function(callback, delay, time) {
+	    if (typeof callback !== "function") throw new TypeError("callback is not a function");
+	    time = (time == null ? now() : +time) + (delay == null ? 0 : +delay);
+	    if (!this._next && taskTail !== this) {
+	      if (taskTail) taskTail._next = this;
+	      else taskHead = this;
+	      taskTail = this;
+	    }
+	    this._call = callback;
+	    this._time = time;
+	    sleep();
+	  },
+	  stop: function() {
+	    if (this._call) {
+	      this._call = null;
+	      this._time = Infinity;
+	      sleep();
+	    }
+	  }
+	};
+
+	function timer(callback, delay, time) {
+	  var t = new Timer;
+	  t.restart(callback, delay, time);
+	  return t;
+	}
+
+	function timerFlush() {
+	  now(); // Get the current time, if not already set.
+	  ++frame; // Pretend we’ve set an alarm, if we haven’t already.
+	  var t = taskHead, e;
+	  while (t) {
+	    if ((e = clockNow - t._time) >= 0) t._call.call(null, e);
+	    t = t._next;
+	  }
+	  --frame;
+	}
+
+	function wake() {
+	  clockNow = (clockLast = clock.now()) + clockSkew;
+	  frame = timeout = 0;
+	  try {
+	    timerFlush();
+	  } finally {
+	    frame = 0;
+	    nap();
+	    clockNow = 0;
+	  }
+	}
+
+	function poke() {
+	  var now = clock.now(), delay = now - clockLast;
+	  if (delay > pokeDelay) clockSkew -= delay, clockLast = now;
+	}
+
+	function nap() {
+	  var t0, t1 = taskHead, t2, time = Infinity;
+	  while (t1) {
+	    if (t1._call) {
+	      if (time > t1._time) time = t1._time;
+	      t0 = t1, t1 = t1._next;
+	    } else {
+	      t2 = t1._next, t1._next = null;
+	      t1 = t0 ? t0._next = t2 : taskHead = t2;
+	    }
+	  }
+	  taskTail = t0;
+	  sleep(time);
+	}
+
+	function sleep(time) {
+	  if (frame) return; // Soonest alarm already set, or will be.
+	  if (timeout) timeout = clearTimeout(timeout);
+	  var delay = time - clockNow; // Strictly less than if we recomputed clockNow.
+	  if (delay > 24) {
+	    if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
+	    if (interval) interval = clearInterval(interval);
+	  } else {
+	    if (!interval) clockLast = clock.now(), interval = setInterval(poke, pokeDelay);
+	    frame = 1, setFrame(wake);
+	  }
+	}
+
+	function timeout$1(callback, delay, time) {
+	  var t = new Timer;
+	  delay = delay == null ? 0 : +delay;
+	  t.restart(function(elapsed) {
+	    t.stop();
+	    callback(elapsed + delay);
+	  }, delay, time);
+	  return t;
+	}
+
+	var emptyOn = dispatch("start", "end", "interrupt");
+	var emptyTween = [];
+
+	var CREATED = 0;
+	var SCHEDULED = 1;
+	var STARTING = 2;
+	var STARTED = 3;
+	var RUNNING = 4;
+	var ENDING = 5;
+	var ENDED = 6;
+
+	function schedule(node, name, id, index, group, timing) {
+	  var schedules = node.__transition;
+	  if (!schedules) node.__transition = {};
+	  else if (id in schedules) return;
+	  create$1(node, id, {
+	    name: name,
+	    index: index, // For context during callback.
+	    group: group, // For context during callback.
+	    on: emptyOn,
+	    tween: emptyTween,
+	    time: timing.time,
+	    delay: timing.delay,
+	    duration: timing.duration,
+	    ease: timing.ease,
+	    timer: null,
+	    state: CREATED
+	  });
+	}
+
+	function init$1(node, id) {
+	  var schedule = get$2(node, id);
+	  if (schedule.state > CREATED) throw new Error("too late; already scheduled");
+	  return schedule;
+	}
+
+	function set$2(node, id) {
+	  var schedule = get$2(node, id);
+	  if (schedule.state > STARTING) throw new Error("too late; already started");
+	  return schedule;
+	}
+
+	function get$2(node, id) {
+	  var schedule = node.__transition;
+	  if (!schedule || !(schedule = schedule[id])) throw new Error("transition not found");
+	  return schedule;
+	}
+
+	function create$1(node, id, self) {
+	  var schedules = node.__transition,
+	      tween;
+
+	  // Initialize the self timer when the transition is created.
+	  // Note the actual delay is not known until the first callback!
+	  schedules[id] = self;
+	  self.timer = timer(schedule, 0, self.time);
+
+	  function schedule(elapsed) {
+	    self.state = SCHEDULED;
+	    self.timer.restart(start, self.delay, self.time);
+
+	    // If the elapsed delay is less than our first sleep, start immediately.
+	    if (self.delay <= elapsed) start(elapsed - self.delay);
+	  }
+
+	  function start(elapsed) {
+	    var i, j, n, o;
+
+	    // If the state is not SCHEDULED, then we previously errored on start.
+	    if (self.state !== SCHEDULED) return stop();
+
+	    for (i in schedules) {
+	      o = schedules[i];
+	      if (o.name !== self.name) continue;
+
+	      // While this element already has a starting transition during this frame,
+	      // defer starting an interrupting transition until that transition has a
+	      // chance to tick (and possibly end); see d3/d3-transition#54!
+	      if (o.state === STARTED) return timeout$1(start);
+
+	      // Interrupt the active transition, if any.
+	      // Dispatch the interrupt event.
+	      if (o.state === RUNNING) {
+	        o.state = ENDED;
+	        o.timer.stop();
+	        o.on.call("interrupt", node, node.__data__, o.index, o.group);
+	        delete schedules[i];
+	      }
+
+	      // Cancel any pre-empted transitions. No interrupt event is dispatched
+	      // because the cancelled transitions never started. Note that this also
+	      // removes this transition from the pending list!
+	      else if (+i < id) {
+	        o.state = ENDED;
+	        o.timer.stop();
+	        delete schedules[i];
+	      }
+	    }
+
+	    // Defer the first tick to end of the current frame; see d3/d3#1576.
+	    // Note the transition may be canceled after start and before the first tick!
+	    // Note this must be scheduled before the start event; see d3/d3-transition#16!
+	    // Assuming this is successful, subsequent callbacks go straight to tick.
+	    timeout$1(function() {
+	      if (self.state === STARTED) {
+	        self.state = RUNNING;
+	        self.timer.restart(tick, self.delay, self.time);
+	        tick(elapsed);
+	      }
+	    });
+
+	    // Dispatch the start event.
+	    // Note this must be done before the tween are initialized.
+	    self.state = STARTING;
+	    self.on.call("start", node, node.__data__, self.index, self.group);
+	    if (self.state !== STARTING) return; // interrupted
+	    self.state = STARTED;
+
+	    // Initialize the tween, deleting null tween.
+	    tween = new Array(n = self.tween.length);
+	    for (i = 0, j = -1; i < n; ++i) {
+	      if (o = self.tween[i].value.call(node, node.__data__, self.index, self.group)) {
+	        tween[++j] = o;
+	      }
+	    }
+	    tween.length = j + 1;
+	  }
+
+	  function tick(elapsed) {
+	    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING, 1),
+	        i = -1,
+	        n = tween.length;
+
+	    while (++i < n) {
+	      tween[i].call(null, t);
+	    }
+
+	    // Dispatch the end event.
+	    if (self.state === ENDING) {
+	      self.on.call("end", node, node.__data__, self.index, self.group);
+	      stop();
+	    }
+	  }
+
+	  function stop() {
+	    self.state = ENDED;
+	    self.timer.stop();
+	    delete schedules[id];
+	    for (var i in schedules) return; // eslint-disable-line no-unused-vars
+	    delete node.__transition;
+	  }
+	}
+
+	function interrupt(node, name) {
+	  var schedules = node.__transition,
+	      schedule$$1,
+	      active,
+	      empty = true,
+	      i;
+
+	  if (!schedules) return;
+
+	  name = name == null ? null : name + "";
+
+	  for (i in schedules) {
+	    if ((schedule$$1 = schedules[i]).name !== name) { empty = false; continue; }
+	    active = schedule$$1.state > STARTING && schedule$$1.state < ENDING;
+	    schedule$$1.state = ENDED;
+	    schedule$$1.timer.stop();
+	    if (active) schedule$$1.on.call("interrupt", node, node.__data__, schedule$$1.index, schedule$$1.group);
+	    delete schedules[i];
+	  }
+
+	  if (empty) delete node.__transition;
+	}
+
+	function selection_interrupt(name) {
+	  return this.each(function() {
+	    interrupt(this, name);
+	  });
+	}
+
+	function tweenRemove(id, name) {
+	  var tween0, tween1;
+	  return function() {
+	    var schedule$$1 = set$2(this, id),
+	        tween = schedule$$1.tween;
+
+	    // If this node shared tween with the previous node,
+	    // just assign the updated shared tween and we’re done!
+	    // Otherwise, copy-on-write.
+	    if (tween !== tween0) {
+	      tween1 = tween0 = tween;
+	      for (var i = 0, n = tween1.length; i < n; ++i) {
+	        if (tween1[i].name === name) {
+	          tween1 = tween1.slice();
+	          tween1.splice(i, 1);
+	          break;
+	        }
+	      }
+	    }
+
+	    schedule$$1.tween = tween1;
+	  };
+	}
+
+	function tweenFunction(id, name, value) {
+	  var tween0, tween1;
+	  if (typeof value !== "function") throw new Error;
+	  return function() {
+	    var schedule$$1 = set$2(this, id),
+	        tween = schedule$$1.tween;
+
+	    // If this node shared tween with the previous node,
+	    // just assign the updated shared tween and we’re done!
+	    // Otherwise, copy-on-write.
+	    if (tween !== tween0) {
+	      tween1 = (tween0 = tween).slice();
+	      for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+	        if (tween1[i].name === name) {
+	          tween1[i] = t;
+	          break;
+	        }
+	      }
+	      if (i === n) tween1.push(t);
+	    }
+
+	    schedule$$1.tween = tween1;
+	  };
+	}
+
+	function transition_tween(name, value) {
+	  var id = this._id;
+
+	  name += "";
+
+	  if (arguments.length < 2) {
+	    var tween = get$2(this.node(), id).tween;
+	    for (var i = 0, n = tween.length, t; i < n; ++i) {
+	      if ((t = tween[i]).name === name) {
+	        return t.value;
+	      }
+	    }
+	    return null;
+	  }
+
+	  return this.each((value == null ? tweenRemove : tweenFunction)(id, name, value));
+	}
+
+	function tweenValue(transition, name, value) {
+	  var id = transition._id;
+
+	  transition.each(function() {
+	    var schedule$$1 = set$2(this, id);
+	    (schedule$$1.value || (schedule$$1.value = {}))[name] = value.apply(this, arguments);
+	  });
+
+	  return function(node) {
+	    return get$2(node, id).value[name];
+	  };
+	}
+
+	function interpolate$1(a, b) {
+	  var c;
+	  return (typeof b === "number" ? interpolateNumber
+	      : b instanceof color ? interpolateRgb
+	      : (c = color(b)) ? (b = c, interpolateRgb)
+	      : interpolateString)(a, b);
+	}
+
+	function attrRemove$1(name) {
+	  return function() {
+	    this.removeAttribute(name);
+	  };
+	}
+
+	function attrRemoveNS$1(fullname) {
+	  return function() {
+	    this.removeAttributeNS(fullname.space, fullname.local);
+	  };
+	}
+
+	function attrConstant$1(name, interpolate, value1) {
+	  var value00,
+	      interpolate0;
+	  return function() {
+	    var value0 = this.getAttribute(name);
+	    return value0 === value1 ? null
+	        : value0 === value00 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value1);
+	  };
+	}
+
+	function attrConstantNS$1(fullname, interpolate, value1) {
+	  var value00,
+	      interpolate0;
+	  return function() {
+	    var value0 = this.getAttributeNS(fullname.space, fullname.local);
+	    return value0 === value1 ? null
+	        : value0 === value00 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value1);
+	  };
+	}
+
+	function attrFunction$1(name, interpolate, value$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0, value1 = value$$1(this);
+	    if (value1 == null) return void this.removeAttribute(name);
+	    value0 = this.getAttribute(name);
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function attrFunctionNS$1(fullname, interpolate, value$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0, value1 = value$$1(this);
+	    if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
+	    value0 = this.getAttributeNS(fullname.space, fullname.local);
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function transition_attr(name, value$$1) {
+	  var fullname = namespace(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate$1;
+	  return this.attrTween(name, typeof value$$1 === "function"
+	      ? (fullname.local ? attrFunctionNS$1 : attrFunction$1)(fullname, i, tweenValue(this, "attr." + name, value$$1))
+	      : value$$1 == null ? (fullname.local ? attrRemoveNS$1 : attrRemove$1)(fullname)
+	      : (fullname.local ? attrConstantNS$1 : attrConstant$1)(fullname, i, value$$1 + ""));
+	}
+
+	function attrTweenNS(fullname, value) {
+	  function tween() {
+	    var node = this, i = value.apply(node, arguments);
+	    return i && function(t) {
+	      node.setAttributeNS(fullname.space, fullname.local, i(t));
+	    };
+	  }
+	  tween._value = value;
+	  return tween;
+	}
+
+	function attrTween(name, value) {
+	  function tween() {
+	    var node = this, i = value.apply(node, arguments);
+	    return i && function(t) {
+	      node.setAttribute(name, i(t));
+	    };
+	  }
+	  tween._value = value;
+	  return tween;
+	}
+
+	function transition_attrTween(name, value) {
+	  var key = "attr." + name;
+	  if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+	  if (value == null) return this.tween(key, null);
+	  if (typeof value !== "function") throw new Error;
+	  var fullname = namespace(name);
+	  return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
+	}
+
+	function delayFunction(id, value) {
+	  return function() {
+	    init$1(this, id).delay = +value.apply(this, arguments);
+	  };
+	}
+
+	function delayConstant(id, value) {
+	  return value = +value, function() {
+	    init$1(this, id).delay = value;
+	  };
+	}
+
+	function transition_delay(value) {
+	  var id = this._id;
+
+	  return arguments.length
+	      ? this.each((typeof value === "function"
+	          ? delayFunction
+	          : delayConstant)(id, value))
+	      : get$2(this.node(), id).delay;
+	}
+
+	function durationFunction(id, value) {
+	  return function() {
+	    set$2(this, id).duration = +value.apply(this, arguments);
+	  };
+	}
+
+	function durationConstant(id, value) {
+	  return value = +value, function() {
+	    set$2(this, id).duration = value;
+	  };
+	}
+
+	function transition_duration(value) {
+	  var id = this._id;
+
+	  return arguments.length
+	      ? this.each((typeof value === "function"
+	          ? durationFunction
+	          : durationConstant)(id, value))
+	      : get$2(this.node(), id).duration;
+	}
+
+	function easeConstant(id, value) {
+	  if (typeof value !== "function") throw new Error;
+	  return function() {
+	    set$2(this, id).ease = value;
+	  };
+	}
+
+	function transition_ease(value) {
+	  var id = this._id;
+
+	  return arguments.length
+	      ? this.each(easeConstant(id, value))
+	      : get$2(this.node(), id).ease;
+	}
+
+	function transition_filter(match) {
+	  if (typeof match !== "function") match = matcher$1(match);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+	        subgroup.push(node);
+	      }
+	    }
+	  }
+
+	  return new Transition(subgroups, this._parents, this._name, this._id);
+	}
+
+	function transition_merge(transition$$1) {
+	  if (transition$$1._id !== this._id) throw new Error;
+
+	  for (var groups0 = this._groups, groups1 = transition$$1._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+	    for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+	      if (node = group0[i] || group1[i]) {
+	        merge[i] = node;
+	      }
+	    }
+	  }
+
+	  for (; j < m0; ++j) {
+	    merges[j] = groups0[j];
+	  }
+
+	  return new Transition(merges, this._parents, this._name, this._id);
+	}
+
+	function start(name) {
+	  return (name + "").trim().split(/^|\s+/).every(function(t) {
+	    var i = t.indexOf(".");
+	    if (i >= 0) t = t.slice(0, i);
+	    return !t || t === "start";
+	  });
+	}
+
+	function onFunction(id, name, listener) {
+	  var on0, on1, sit = start(name) ? init$1 : set$2;
+	  return function() {
+	    var schedule$$1 = sit(this, id),
+	        on = schedule$$1.on;
+
+	    // If this node shared a dispatch with the previous node,
+	    // just assign the updated shared dispatch and we’re done!
+	    // Otherwise, copy-on-write.
+	    if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
+
+	    schedule$$1.on = on1;
+	  };
+	}
+
+	function transition_on(name, listener) {
+	  var id = this._id;
+
+	  return arguments.length < 2
+	      ? get$2(this.node(), id).on.on(name)
+	      : this.each(onFunction(id, name, listener));
+	}
+
+	function removeFunction(id) {
+	  return function() {
+	    var parent = this.parentNode;
+	    for (var i in this.__transition) if (+i !== id) return;
+	    if (parent) parent.removeChild(this);
+	  };
+	}
+
+	function transition_remove() {
+	  return this.on("end.remove", removeFunction(this._id));
+	}
+
+	function transition_select(select$$1) {
+	  var name = this._name,
+	      id = this._id;
+
+	  if (typeof select$$1 !== "function") select$$1 = selector(select$$1);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && (subnode = select$$1.call(node, node.__data__, i, group))) {
+	        if ("__data__" in node) subnode.__data__ = node.__data__;
+	        subgroup[i] = subnode;
+	        schedule(subgroup[i], name, id, i, subgroup, get$2(node, id));
+	      }
+	    }
+	  }
+
+	  return new Transition(subgroups, this._parents, name, id);
+	}
+
+	function transition_selectAll(select$$1) {
+	  var name = this._name,
+	      id = this._id;
+
+	  if (typeof select$$1 !== "function") select$$1 = selectorAll(select$$1);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        for (var children = select$$1.call(node, node.__data__, i, group), child, inherit = get$2(node, id), k = 0, l = children.length; k < l; ++k) {
+	          if (child = children[k]) {
+	            schedule(child, name, id, k, children, inherit);
+	          }
+	        }
+	        subgroups.push(children);
+	        parents.push(node);
+	      }
+	    }
+	  }
+
+	  return new Transition(subgroups, parents, name, id);
+	}
+
+	var Selection$1 = selection.prototype.constructor;
+
+	function transition_selection() {
+	  return new Selection$1(this._groups, this._parents);
+	}
+
+	function styleRemove$1(name, interpolate) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0 = styleValue(this, name),
+	        value1 = (this.style.removeProperty(name), styleValue(this, name));
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function styleRemoveEnd(name) {
+	  return function() {
+	    this.style.removeProperty(name);
+	  };
+	}
+
+	function styleConstant$1(name, interpolate, value1) {
+	  var value00,
+	      interpolate0;
+	  return function() {
+	    var value0 = styleValue(this, name);
+	    return value0 === value1 ? null
+	        : value0 === value00 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value1);
+	  };
+	}
+
+	function styleFunction$1(name, interpolate, value$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0 = styleValue(this, name),
+	        value1 = value$$1(this);
+	    if (value1 == null) value1 = (this.style.removeProperty(name), styleValue(this, name));
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function transition_style(name, value$$1, priority) {
+	  var i = (name += "") === "transform" ? interpolateTransformCss : interpolate$1;
+	  return value$$1 == null ? this
+	          .styleTween(name, styleRemove$1(name, i))
+	          .on("end.style." + name, styleRemoveEnd(name))
+	      : this.styleTween(name, typeof value$$1 === "function"
+	          ? styleFunction$1(name, i, tweenValue(this, "style." + name, value$$1))
+	          : styleConstant$1(name, i, value$$1 + ""), priority);
+	}
+
+	function styleTween(name, value, priority) {
+	  function tween() {
+	    var node = this, i = value.apply(node, arguments);
+	    return i && function(t) {
+	      node.style.setProperty(name, i(t), priority);
+	    };
+	  }
+	  tween._value = value;
+	  return tween;
+	}
+
+	function transition_styleTween(name, value, priority) {
+	  var key = "style." + (name += "");
+	  if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+	  if (value == null) return this.tween(key, null);
+	  if (typeof value !== "function") throw new Error;
+	  return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+	}
+
+	function textConstant$1(value) {
+	  return function() {
+	    this.textContent = value;
+	  };
+	}
+
+	function textFunction$1(value) {
+	  return function() {
+	    var value1 = value(this);
+	    this.textContent = value1 == null ? "" : value1;
+	  };
+	}
+
+	function transition_text(value) {
+	  return this.tween("text", typeof value === "function"
+	      ? textFunction$1(tweenValue(this, "text", value))
+	      : textConstant$1(value == null ? "" : value + ""));
+	}
+
+	function transition_transition() {
+	  var name = this._name,
+	      id0 = this._id,
+	      id1 = newId();
+
+	  for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        var inherit = get$2(node, id0);
+	        schedule(node, name, id1, i, group, {
+	          time: inherit.time + inherit.delay + inherit.duration,
+	          delay: 0,
+	          duration: inherit.duration,
+	          ease: inherit.ease
+	        });
+	      }
+	    }
+	  }
+
+	  return new Transition(groups, this._parents, name, id1);
+	}
+
+	var id = 0;
+
+	function Transition(groups, parents, name, id) {
+	  this._groups = groups;
+	  this._parents = parents;
+	  this._name = name;
+	  this._id = id;
+	}
+
+	function transition(name) {
+	  return selection().transition(name);
+	}
+
+	function newId() {
+	  return ++id;
+	}
+
+	var selection_prototype = selection.prototype;
+
+	Transition.prototype = transition.prototype = {
+	  constructor: Transition,
+	  select: transition_select,
+	  selectAll: transition_selectAll,
+	  filter: transition_filter,
+	  merge: transition_merge,
+	  selection: transition_selection,
+	  transition: transition_transition,
+	  call: selection_prototype.call,
+	  nodes: selection_prototype.nodes,
+	  node: selection_prototype.node,
+	  size: selection_prototype.size,
+	  empty: selection_prototype.empty,
+	  each: selection_prototype.each,
+	  on: transition_on,
+	  attr: transition_attr,
+	  attrTween: transition_attrTween,
+	  style: transition_style,
+	  styleTween: transition_styleTween,
+	  text: transition_text,
+	  remove: transition_remove,
+	  tween: transition_tween,
+	  delay: transition_delay,
+	  duration: transition_duration,
+	  ease: transition_ease
+	};
+
+	function cubicInOut$1(t) {
+	  return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+	}
+
+	var pi = Math.PI;
+
+	var tau = 2 * Math.PI;
+
+	var defaultTiming = {
+	  time: null, // Set on use.
+	  delay: 0,
+	  duration: 250,
+	  ease: cubicInOut$1
+	};
+
+	function inherit(node, id) {
+	  var timing;
+	  while (!(timing = node.__transition) || !(timing = timing[id])) {
+	    if (!(node = node.parentNode)) {
+	      return defaultTiming.time = now(), defaultTiming;
+	    }
+	  }
+	  return timing;
+	}
+
+	function selection_transition(name) {
+	  var id,
+	      timing;
+
+	  if (name instanceof Transition) {
+	    id = name._id, name = name._name;
+	  } else {
+	    id = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+	  }
+
+	  for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        schedule(node, name, id, i, group, timing || inherit(node, id));
+	      }
+	    }
+	  }
+
+	  return new Transition(groups, this._parents, name, id);
+	}
+
+	selection.prototype.interrupt = selection_interrupt;
+	selection.prototype.transition = selection_transition;
+
+	function constant$4(x) {
+	  return function() {
+	    return x;
+	  };
+	}
+
+	function ZoomEvent(target, type, transform) {
+	  this.target = target;
+	  this.type = type;
+	  this.transform = transform;
+	}
+
+	function Transform(k, x, y) {
+	  this.k = k;
+	  this.x = x;
+	  this.y = y;
+	}
+
+	Transform.prototype = {
+	  constructor: Transform,
+	  scale: function(k) {
+	    return k === 1 ? this : new Transform(this.k * k, this.x, this.y);
+	  },
+	  translate: function(x, y) {
+	    return x === 0 & y === 0 ? this : new Transform(this.k, this.x + this.k * x, this.y + this.k * y);
+	  },
+	  apply: function(point) {
+	    return [point[0] * this.k + this.x, point[1] * this.k + this.y];
+	  },
+	  applyX: function(x) {
+	    return x * this.k + this.x;
+	  },
+	  applyY: function(y) {
+	    return y * this.k + this.y;
+	  },
+	  invert: function(location) {
+	    return [(location[0] - this.x) / this.k, (location[1] - this.y) / this.k];
+	  },
+	  invertX: function(x) {
+	    return (x - this.x) / this.k;
+	  },
+	  invertY: function(y) {
+	    return (y - this.y) / this.k;
+	  },
+	  rescaleX: function(x) {
+	    return x.copy().domain(x.range().map(this.invertX, this).map(x.invert, x));
+	  },
+	  rescaleY: function(y) {
+	    return y.copy().domain(y.range().map(this.invertY, this).map(y.invert, y));
+	  },
+	  toString: function() {
+	    return "translate(" + this.x + "," + this.y + ") scale(" + this.k + ")";
+	  }
+	};
+
+	var identity$3 = new Transform(1, 0, 0);
+
+	function nopropagation$1() {
+	  event.stopImmediatePropagation();
+	}
+
+	function noevent$1() {
+	  event.preventDefault();
+	  event.stopImmediatePropagation();
+	}
+
+	// Ignore right-click, since that should open the context menu.
+	function defaultFilter$1() {
+	  return !event.button;
+	}
+
+	function defaultExtent() {
+	  var e = this, w, h;
+	  if (e instanceof SVGElement) {
+	    e = e.ownerSVGElement || e;
+	    w = e.width.baseVal.value;
+	    h = e.height.baseVal.value;
+	  } else {
+	    w = e.clientWidth;
+	    h = e.clientHeight;
+	  }
+	  return [[0, 0], [w, h]];
+	}
+
+	function defaultTransform() {
+	  return this.__zoom || identity$3;
+	}
+
+	function defaultWheelDelta() {
+	  return -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
+	}
+
+	function defaultTouchable$1() {
+	  return "ontouchstart" in this;
+	}
+
+	function defaultConstrain(transform$$1, extent, translateExtent) {
+	  var dx0 = transform$$1.invertX(extent[0][0]) - translateExtent[0][0],
+	      dx1 = transform$$1.invertX(extent[1][0]) - translateExtent[1][0],
+	      dy0 = transform$$1.invertY(extent[0][1]) - translateExtent[0][1],
+	      dy1 = transform$$1.invertY(extent[1][1]) - translateExtent[1][1];
+	  return transform$$1.translate(
+	    dx1 > dx0 ? (dx0 + dx1) / 2 : Math.min(0, dx0) || Math.max(0, dx1),
+	    dy1 > dy0 ? (dy0 + dy1) / 2 : Math.min(0, dy0) || Math.max(0, dy1)
+	  );
+	}
+
+	function d3Zoom() {
+	  var filter = defaultFilter$1,
+	      extent = defaultExtent,
+	      constrain = defaultConstrain,
+	      wheelDelta = defaultWheelDelta,
+	      touchable = defaultTouchable$1,
+	      scaleExtent = [0, Infinity],
+	      translateExtent = [[-Infinity, -Infinity], [Infinity, Infinity]],
+	      duration = 250,
+	      interpolate = interpolateZoom,
+	      gestures = [],
+	      listeners = dispatch("start", "zoom", "end"),
+	      touchstarting,
+	      touchending,
+	      touchDelay = 500,
+	      wheelDelay = 150,
+	      clickDistance2 = 0;
+
+	  function zoom(selection$$1) {
+	    selection$$1
+	        .property("__zoom", defaultTransform)
+	        .on("wheel.zoom", wheeled)
+	        .on("mousedown.zoom", mousedowned)
+	        .on("dblclick.zoom", dblclicked)
+	      .filter(touchable)
+	        .on("touchstart.zoom", touchstarted)
+	        .on("touchmove.zoom", touchmoved)
+	        .on("touchend.zoom touchcancel.zoom", touchended)
+	        .style("touch-action", "none")
+	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)");
+	  }
+
+	  zoom.transform = function(collection, transform$$1) {
+	    var selection$$1 = collection.selection ? collection.selection() : collection;
+	    selection$$1.property("__zoom", defaultTransform);
+	    if (collection !== selection$$1) {
+	      schedule(collection, transform$$1);
+	    } else {
+	      selection$$1.interrupt().each(function() {
+	        gesture(this, arguments)
+	            .start()
+	            .zoom(null, typeof transform$$1 === "function" ? transform$$1.apply(this, arguments) : transform$$1)
+	            .end();
+	      });
+	    }
+	  };
+
+	  zoom.scaleBy = function(selection$$1, k) {
+	    zoom.scaleTo(selection$$1, function() {
+	      var k0 = this.__zoom.k,
+	          k1 = typeof k === "function" ? k.apply(this, arguments) : k;
+	      return k0 * k1;
+	    });
+	  };
+
+	  zoom.scaleTo = function(selection$$1, k) {
+	    zoom.transform(selection$$1, function() {
+	      var e = extent.apply(this, arguments),
+	          t0 = this.__zoom,
+	          p0 = centroid(e),
+	          p1 = t0.invert(p0),
+	          k1 = typeof k === "function" ? k.apply(this, arguments) : k;
+	      return constrain(translate(scale(t0, k1), p0, p1), e, translateExtent);
+	    });
+	  };
+
+	  zoom.translateBy = function(selection$$1, x, y) {
+	    zoom.transform(selection$$1, function() {
+	      return constrain(this.__zoom.translate(
+	        typeof x === "function" ? x.apply(this, arguments) : x,
+	        typeof y === "function" ? y.apply(this, arguments) : y
+	      ), extent.apply(this, arguments), translateExtent);
+	    });
+	  };
+
+	  zoom.translateTo = function(selection$$1, x, y) {
+	    zoom.transform(selection$$1, function() {
+	      var e = extent.apply(this, arguments),
+	          t = this.__zoom,
+	          p = centroid(e);
+	      return constrain(identity$3.translate(p[0], p[1]).scale(t.k).translate(
+	        typeof x === "function" ? -x.apply(this, arguments) : -x,
+	        typeof y === "function" ? -y.apply(this, arguments) : -y
+	      ), e, translateExtent);
+	    });
+	  };
+
+	  function scale(transform$$1, k) {
+	    k = Math.max(scaleExtent[0], Math.min(scaleExtent[1], k));
+	    return k === transform$$1.k ? transform$$1 : new Transform(k, transform$$1.x, transform$$1.y);
+	  }
+
+	  function translate(transform$$1, p0, p1) {
+	    var x = p0[0] - p1[0] * transform$$1.k, y = p0[1] - p1[1] * transform$$1.k;
+	    return x === transform$$1.x && y === transform$$1.y ? transform$$1 : new Transform(transform$$1.k, x, y);
+	  }
+
+	  function centroid(extent) {
+	    return [(+extent[0][0] + +extent[1][0]) / 2, (+extent[0][1] + +extent[1][1]) / 2];
+	  }
+
+	  function schedule(transition$$1, transform$$1, center) {
+	    transition$$1
+	        .on("start.zoom", function() { gesture(this, arguments).start(); })
+	        .on("interrupt.zoom end.zoom", function() { gesture(this, arguments).end(); })
+	        .tween("zoom", function() {
+	          var that = this,
+	              args = arguments,
+	              g = gesture(that, args),
+	              e = extent.apply(that, args),
+	              p = center || centroid(e),
+	              w = Math.max(e[1][0] - e[0][0], e[1][1] - e[0][1]),
+	              a = that.__zoom,
+	              b = typeof transform$$1 === "function" ? transform$$1.apply(that, args) : transform$$1,
+	              i = interpolate(a.invert(p).concat(w / a.k), b.invert(p).concat(w / b.k));
+	          return function(t) {
+	            if (t === 1) t = b; // Avoid rounding error on end.
+	            else { var l = i(t), k = w / l[2]; t = new Transform(k, p[0] - l[0] * k, p[1] - l[1] * k); }
+	            g.zoom(null, t);
+	          };
+	        });
+	  }
+
+	  function gesture(that, args) {
+	    for (var i = 0, n = gestures.length, g; i < n; ++i) {
+	      if ((g = gestures[i]).that === that) {
+	        return g;
+	      }
+	    }
+	    return new Gesture(that, args);
+	  }
+
+	  function Gesture(that, args) {
+	    this.that = that;
+	    this.args = args;
+	    this.index = -1;
+	    this.active = 0;
+	    this.extent = extent.apply(that, args);
+	  }
+
+	  Gesture.prototype = {
+	    start: function() {
+	      if (++this.active === 1) {
+	        this.index = gestures.push(this) - 1;
+	        this.emit("start");
+	      }
+	      return this;
+	    },
+	    zoom: function(key, transform$$1) {
+	      if (this.mouse && key !== "mouse") this.mouse[1] = transform$$1.invert(this.mouse[0]);
+	      if (this.touch0 && key !== "touch") this.touch0[1] = transform$$1.invert(this.touch0[0]);
+	      if (this.touch1 && key !== "touch") this.touch1[1] = transform$$1.invert(this.touch1[0]);
+	      this.that.__zoom = transform$$1;
+	      this.emit("zoom");
+	      return this;
+	    },
+	    end: function() {
+	      if (--this.active === 0) {
+	        gestures.splice(this.index, 1);
+	        this.index = -1;
+	        this.emit("end");
+	      }
+	      return this;
+	    },
+	    emit: function(type) {
+	      customEvent(new ZoomEvent(zoom, type, this.that.__zoom), listeners.apply, listeners, [type, this.that, this.args]);
+	    }
+	  };
+
+	  function wheeled() {
+	    if (!filter.apply(this, arguments)) return;
+	    var g = gesture(this, arguments),
+	        t = this.__zoom,
+	        k = Math.max(scaleExtent[0], Math.min(scaleExtent[1], t.k * Math.pow(2, wheelDelta.apply(this, arguments)))),
+	        p = mouse(this);
+
+	    // If the mouse is in the same location as before, reuse it.
+	    // If there were recent wheel events, reset the wheel idle timeout.
+	    if (g.wheel) {
+	      if (g.mouse[0][0] !== p[0] || g.mouse[0][1] !== p[1]) {
+	        g.mouse[1] = t.invert(g.mouse[0] = p);
+	      }
+	      clearTimeout(g.wheel);
+	    }
+
+	    // If this wheel event won’t trigger a transform change, ignore it.
+	    else if (t.k === k) return;
+
+	    // Otherwise, capture the mouse point and location at the start.
+	    else {
+	      g.mouse = [p, t.invert(p)];
+	      interrupt(this);
+	      g.start();
+	    }
+
+	    noevent$1();
+	    g.wheel = setTimeout(wheelidled, wheelDelay);
+	    g.zoom("mouse", constrain(translate(scale(t, k), g.mouse[0], g.mouse[1]), g.extent, translateExtent));
+
+	    function wheelidled() {
+	      g.wheel = null;
+	      g.end();
+	    }
+	  }
+
+	  function mousedowned() {
+	    if (touchending || !filter.apply(this, arguments)) return;
+	    var g = gesture(this, arguments),
+	        v = select(event.view).on("mousemove.zoom", mousemoved, true).on("mouseup.zoom", mouseupped, true),
+	        p = mouse(this),
+	        x0 = event.clientX,
+	        y0 = event.clientY;
+
+	    nodrag(event.view);
+	    nopropagation$1();
+	    g.mouse = [p, this.__zoom.invert(p)];
+	    interrupt(this);
+	    g.start();
+
+	    function mousemoved() {
+	      noevent$1();
+	      if (!g.moved) {
+	        var dx = event.clientX - x0, dy = event.clientY - y0;
+	        g.moved = dx * dx + dy * dy > clickDistance2;
+	      }
+	      g.zoom("mouse", constrain(translate(g.that.__zoom, g.mouse[0] = mouse(g.that), g.mouse[1]), g.extent, translateExtent));
+	    }
+
+	    function mouseupped() {
+	      v.on("mousemove.zoom mouseup.zoom", null);
+	      yesdrag(event.view, g.moved);
+	      noevent$1();
+	      g.end();
+	    }
+	  }
+
+	  function dblclicked() {
+	    if (!filter.apply(this, arguments)) return;
+	    var t0 = this.__zoom,
+	        p0 = mouse(this),
+	        p1 = t0.invert(p0),
+	        k1 = t0.k * (event.shiftKey ? 0.5 : 2),
+	        t1 = constrain(translate(scale(t0, k1), p0, p1), extent.apply(this, arguments), translateExtent);
+
+	    noevent$1();
+	    if (duration > 0) select(this).transition().duration(duration).call(schedule, t1, p0);
+	    else select(this).call(zoom.transform, t1);
+	  }
+
+	  function touchstarted() {
+	    if (!filter.apply(this, arguments)) return;
+	    var g = gesture(this, arguments),
+	        touches$$1 = event.changedTouches,
+	        started,
+	        n = touches$$1.length, i, t, p;
+
+	    nopropagation$1();
+	    for (i = 0; i < n; ++i) {
+	      t = touches$$1[i], p = touch(this, touches$$1, t.identifier);
+	      p = [p, this.__zoom.invert(p), t.identifier];
+	      if (!g.touch0) g.touch0 = p, started = true;
+	      else if (!g.touch1) g.touch1 = p;
+	    }
+
+	    // If this is a dbltap, reroute to the (optional) dblclick.zoom handler.
+	    if (touchstarting) {
+	      touchstarting = clearTimeout(touchstarting);
+	      if (!g.touch1) {
+	        g.end();
+	        p = select(this).on("dblclick.zoom");
+	        if (p) p.apply(this, arguments);
+	        return;
+	      }
+	    }
+
+	    if (started) {
+	      touchstarting = setTimeout(function() { touchstarting = null; }, touchDelay);
+	      interrupt(this);
+	      g.start();
+	    }
+	  }
+
+	  function touchmoved() {
+	    var g = gesture(this, arguments),
+	        touches$$1 = event.changedTouches,
+	        n = touches$$1.length, i, t, p, l;
+
+	    noevent$1();
+	    if (touchstarting) touchstarting = clearTimeout(touchstarting);
+	    for (i = 0; i < n; ++i) {
+	      t = touches$$1[i], p = touch(this, touches$$1, t.identifier);
+	      if (g.touch0 && g.touch0[2] === t.identifier) g.touch0[0] = p;
+	      else if (g.touch1 && g.touch1[2] === t.identifier) g.touch1[0] = p;
+	    }
+	    t = g.that.__zoom;
+	    if (g.touch1) {
+	      var p0 = g.touch0[0], l0 = g.touch0[1],
+	          p1 = g.touch1[0], l1 = g.touch1[1],
+	          dp = (dp = p1[0] - p0[0]) * dp + (dp = p1[1] - p0[1]) * dp,
+	          dl = (dl = l1[0] - l0[0]) * dl + (dl = l1[1] - l0[1]) * dl;
+	      t = scale(t, Math.sqrt(dp / dl));
+	      p = [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2];
+	      l = [(l0[0] + l1[0]) / 2, (l0[1] + l1[1]) / 2];
+	    }
+	    else if (g.touch0) p = g.touch0[0], l = g.touch0[1];
+	    else return;
+	    g.zoom("touch", constrain(translate(t, p, l), g.extent, translateExtent));
+	  }
+
+	  function touchended() {
+	    var g = gesture(this, arguments),
+	        touches$$1 = event.changedTouches,
+	        n = touches$$1.length, i, t;
+
+	    nopropagation$1();
+	    if (touchending) clearTimeout(touchending);
+	    touchending = setTimeout(function() { touchending = null; }, touchDelay);
+	    for (i = 0; i < n; ++i) {
+	      t = touches$$1[i];
+	      if (g.touch0 && g.touch0[2] === t.identifier) delete g.touch0;
+	      else if (g.touch1 && g.touch1[2] === t.identifier) delete g.touch1;
+	    }
+	    if (g.touch1 && !g.touch0) g.touch0 = g.touch1, delete g.touch1;
+	    if (g.touch0) g.touch0[1] = this.__zoom.invert(g.touch0[0]);
+	    else g.end();
+	  }
+
+	  zoom.wheelDelta = function(_) {
+	    return arguments.length ? (wheelDelta = typeof _ === "function" ? _ : constant$4(+_), zoom) : wheelDelta;
+	  };
+
+	  zoom.filter = function(_) {
+	    return arguments.length ? (filter = typeof _ === "function" ? _ : constant$4(!!_), zoom) : filter;
+	  };
+
+	  zoom.touchable = function(_) {
+	    return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$4(!!_), zoom) : touchable;
+	  };
+
+	  zoom.extent = function(_) {
+	    return arguments.length ? (extent = typeof _ === "function" ? _ : constant$4([[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]]), zoom) : extent;
+	  };
+
+	  zoom.scaleExtent = function(_) {
+	    return arguments.length ? (scaleExtent[0] = +_[0], scaleExtent[1] = +_[1], zoom) : [scaleExtent[0], scaleExtent[1]];
+	  };
+
+	  zoom.translateExtent = function(_) {
+	    return arguments.length ? (translateExtent[0][0] = +_[0][0], translateExtent[1][0] = +_[1][0], translateExtent[0][1] = +_[0][1], translateExtent[1][1] = +_[1][1], zoom) : [[translateExtent[0][0], translateExtent[0][1]], [translateExtent[1][0], translateExtent[1][1]]];
+	  };
+
+	  zoom.constrain = function(_) {
+	    return arguments.length ? (constrain = _, zoom) : constrain;
+	  };
+
+	  zoom.duration = function(_) {
+	    return arguments.length ? (duration = +_, zoom) : duration;
+	  };
+
+	  zoom.interpolate = function(_) {
+	    return arguments.length ? (interpolate = _, zoom) : interpolate;
+	  };
+
+	  zoom.on = function() {
+	    var value$$1 = listeners.on.apply(listeners, arguments);
+	    return value$$1 === listeners ? zoom : value$$1;
+	  };
+
+	  zoom.clickDistance = function(_) {
+	    return arguments.length ? (clickDistance2 = (_ = +_) * _, zoom) : Math.sqrt(clickDistance2);
+	  };
+
+	  return zoom;
+	}
+
+	/* src/library/D3Zoom.html generated by Svelte v2.15.3 */
+
+
+
+	function data$9() {
+	  return {
+	    z: d3Zoom(), //d3 zoom object
+	    selection: null, //the d3 selection of the root
+	    translateExtent: [[0, 100], [0, 100]], //
+	    scaleExtent: [1, 16], //
+	    scale: 1,
+	    translateX: 0,
+	    translateY: 0,
+	    k: 1,
+	    x: 0,
+	    y: 0
+	  };
+	}
+	var methods$2 = {
+	  tween,
+	  onzoom: function(that) {
+	    // console.log("onzoom", d3Event.transform);
+	    that.set({
+	      scale: event.transform.k,
+	      translateX: event.transform.x,
+	      translateY: event.transform.y,
+	    });
+	  },
+	  transformTo: function() {
+
+	  },
+	  translateTo: function() {
+
+	  },
+	  zoomTo: function(scale, duration) {
+	    const {scaleExtent} = this.get();
+	    scale = Math.min(scale, scaleExtent[1]);
+	    scale = Math.max(scale, scaleExtent[0]);
+	    if (duration) {
+	      this.tween('k', scale, {
+	        duration, easing: cubicInOut
+	      });
+	    } else {
+	      this.set({k: scale});
+	    }
+	  }
+	};
+
+	function oncreate$3() {
+	  const {z, scaleExtent, translateExtent} = this.get();
+	  z.scaleExtent(scaleExtent);
+	  const selection$$1 = select(this.refs.root);
+	  z(selection$$1);
+	  this.set({
+	    selection: selection$$1,
+	    el: this.refs.zoom
+	    });
+	  const that = this; // needed because d3 gives "this" as the node, not component.
+	  z.on("zoom", () => { this.onzoom(that); });
+	}
+	function onstate({changed, current, previous}) {
+	  // console.log("update", changed, current.scale)
+	  const {z, selection: selection$$1, el, x, y} = this.get();
+	  if (changed.scaleExtent && current.scaleExtent) { z.scaleExtent(current.scaleExtent); } 
+	  if (selection$$1) {
+
+	    if (changed.x || changed.y) {
+	      // let localX = x;
+	      // let localY = y;
+	      // if (changed.x) { localX = current.x; }
+	      // if (changed.y) { localY = current.y; }
+	      z.translateTo(selection$$1, current.x, current.y);
+	    }
+
+	    if (changed.scale) { this.set({k: current.scale}); }
+	    if (changed.k) { z.scaleTo(selection$$1, current.k); } 
+
+	    if (changed.translateX) { this.set({x: current.translateX}); }
+	    if (changed.translateY) { this.set({x: current.translateY}); }
+
+	  }
+	  
+	  // if (changed.x && current.x && selection) { z.scaleTo(selection, current.x, y); } 
+	  
+	  // if (changed.translateY && current.translateY && selection) { this.set({k: current.translateY}); }
+	  // if (changed.k && current.k && selection) { z.scaleTo(selection, current.k); } 
+	  
+	  
+	  // zoom.translateTo(selection, x, y) 
+	}
+	const file$f = "src/library/D3Zoom.html";
+
+	function create_main_fragment$f(component, ctx) {
+		var div, slot_content_default = component._slotted.default;
+
+		return {
+			c: function create$$1() {
+				div = createElement("div");
+				div.className = "d3zoom svelte-1t3xokn svelte-ref-root";
+				addLoc(div, file$f, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				if (slot_content_default) {
+					append(div, slot_content_default);
+				}
+
+				component.refs.root = div;
+			},
+
+			p: noop,
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_default) {
+					reinsertChildren(div, slot_content_default);
+				}
+
+				if (component.refs.root === div) component.refs.root = null;
+			}
+		};
+	}
+
+	function D3Zoom(options) {
+		this._debugName = '<D3Zoom>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(data$9(), options.data);
+		this._intro = true;
+
+		this._handlers.state = [onstate];
+
+		this._slotted = options.slots || {};
+
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$f(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate$3.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(D3Zoom.prototype, protoDev);
+	assign(D3Zoom.prototype, methods$2);
+
+	D3Zoom.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
 	/* src/Atlas.html generated by Svelte v2.15.3 */
 
 
 
 	function maxAttributionValue({layers, layer}) {
-	  // return 0.25;
 	  if (layers == null) return 0;
 	  const l = layers[layer];
 	  let max$$1 = 0;
@@ -4578,21 +7997,14 @@
 	    });
 	  });
 	  return max$$1;
-	  // return layers ? max(l, d => d ? max(d, dd => dd ? (dd.n > 50 ? (dd.top_class_values[dd.top_class_indices.indexOf(classHeatmap)]) : 0) : 0): 0) : 0;
-	  }
-
-	function aspectRatio({viewWidth, viewHeight}) {
-		return viewWidth / viewHeight;
 	}
 
-	function minViewDimInPx({viewWidth, viewHeight}) {
-		return Math.min(viewWidth, viewHeight);
+	function w({viewWidth, screenResolution}) {
+		return viewWidth * screenResolution;
 	}
 
-	function topLeft({gcx, gcy, scale, viewWidth, viewHeight, minViewDimInPx}) {
-	  return {
-	    x: viewWidth / 2 - gcx * minViewDimInPx * scale,
-	    y: viewHeight / 2 - gcy * minViewDimInPx * scale} 
+	function h({viewHeight, screenResolution}) {
+		return viewHeight * screenResolution;
 	}
 
 	function currentZoomIndex({scale, gridSize}) {
@@ -4609,18 +8021,6 @@
 	  return +s;
 	}
 
-	function numIconsWide({currentZoomIndex, layers}) {
-	  if(layers && currentZoomIndex){
-	    return layers[currentZoomIndex].length
-	  }
-	}
-
-	function iconSizeInPixels({config, minViewDimInPx, currentZoomIndex, scale}) {
-	  if(config){
-	    return minViewDimInPx / (config.grid_size[currentZoomIndex]) * scale;
-	  }
-	}
-
 	function showHoverIcon({mouseMoveMode, onCanvas, currentIconInfo, enableHover}) {
 	  return enableHover && onCanvas && (mouseMoveMode == 'hover') && currentIconInfo
 	}
@@ -4631,37 +8031,7 @@
 	  }
 	}
 
-	function gridSelected({lastRecordedCanvasPos, topLeft, layerScale, config}) {
-	  if(config){
-	    return {
-	      x: Math.floor((lastRecordedCanvasPos.x - topLeft.x) / (layerScale * config.icon_size)),
-	      y: Math.floor((lastRecordedCanvasPos.y - topLeft.y) / (layerScale * config.icon_size))
-	    }        
-	  }
-	}
-
-	function topLeftCornerHover({config, layerScale, topLeft, gridSelected}) {
-	  if(config){
-	    return {
-	      x: gridSelected.x * config.icon_size * layerScale + topLeft.x - 1,
-	      y: gridSelected.y * config.icon_size * layerScale + topLeft.y - 1
-	    }
-	  }
-	}
-
-	function currentIconInfo({layers, currentZoomIndex, gridSelected, classHeatmap}) {
-	  if(layers && layers[currentZoomIndex] && 
-	     layers[currentZoomIndex][gridSelected.y] && 
-	     layers[currentZoomIndex][gridSelected.y][gridSelected.x]
-	     ){
-	      const iconInfo = layers[currentZoomIndex][gridSelected.y][gridSelected.x];
-	      if(iconInfo.num_activations > 0){
-	        return iconInfo
-	      }
-	  }
-	}
-
-	function data$9() {
+	function data$a() {
 	  return {
 	    ready: true,
 	    id: "inceptionv1_mixed4c",
@@ -4684,6 +8054,7 @@
 	    context: null,
 
 	    alphaAttributionFactor: 0.02,
+	    density: 1.0,
 	    scaleCountFactor: 1,
 	    classHeatmap: -1,
 	    classHeatmapMultiplier: 1,
@@ -4699,14 +8070,10 @@
 
 	    iconCrop: 0.02,
 
-	    // zoom factor
-	    zoomFactors: {out: 0.5, in: 2},
-
 	    // turn off features
 	    enableClickToZoom: true,
 	    enableHover: true,
 	    enableDragToPan: true,
-
 
 	    backgroundColor: "white",
 	    strokeColor: "rgb(220, 220, 220)",
@@ -4716,25 +8083,16 @@
 	    textColor: "white",
 	    textShadowColor: "rgba(0, 0, 0, 0.8)",
 
-	    // for positioning the hover icon
-	    lastRecordedCanvasPos: {x: -100, y: -100},
-
 	    // for managing panning off the screen
 	    mouseDownScreenPos: {x: 0, y: 0},
 
 	    // can be "hover" or "pan"
-	    mouseMoveMode: 'hover',
 	    onCanvas: false,
 
 	    screenResolution: 1,
-
-	    mouseDownTimer: 0,
-	    mouseMoveFunction: function(){},
-	    mouseUpFunction: function(){},
-
 	  }
 	}
-	var methods$2 = {
+	var methods$3 = {
 	  fullscreen() {
 	    this.refs.root.webkitRequestFullscreen();
 	  },
@@ -4742,49 +8100,11 @@
 	    this.set({onCanvas: true});
 	  },
 	  mouseDown(event) {
-	    // should this be set once, somewhere else? oncreate? 
-	    this.set({mouseMoveFunction: this.mouseMove.bind(this), mouseUpFunction: this.mouseUp.bind(this)});
 
-	    const {mouseMoveFunction, mouseUpFunction} = this.get();
-
-	    event.preventDefault();
-
-	    // set event listeners on window
-	    window.addEventListener("mousemove", mouseMoveFunction);
-	    window.addEventListener("mouseup",mouseUpFunction);
-	    // do I need to unset local listener? 
-
-	    this.set({mouseMoveMode: 'pan'});
-	    this.set({mouseDownTimer: Date.now()});
-
-	    // canvas position
-	    this.set({lastRecordedCanvasPos: {x: event.offsetX, y: event.offsetY}});
-
-	    // screenPosition at mousedown
-	    this.set({mouseDownScreenPos: {x: event.screenX, y: event.screenY}});
 
 	  },
 	  mouseMove(event) {
-	    const { mouseMoveMode } = this.get();
 
-	    this.set({lastRecordedCanvasPos: {x: event.offsetX, y: event.offsetY}});
-
-	    if (mouseMoveMode == 'pan') {
-	      const {mouseDownScreenPos, gcx, gcy, enableDragToPan} = this.get();
-
-	      // update gcx, gcy, mouseDownScreenPos
-	      this.set({
-	        mouseDownScreenPos: {x: event.screenX, y: event.screenY}
-	      });
-
-	      if(enableDragToPan){
-	        this.refs.zoom.panTo(
-	          this.toPercent(mouseDownScreenPos.x - event.screenX) + gcx,
-	          this.toPercent(mouseDownScreenPos.y - event.screenY) + gcy,
-	          0
-	        );
-	      } 
-	    }
 
 	  },
 	  mouseOut(event) {
@@ -4793,100 +8113,58 @@
 	    });
 	  },
 	  mouseUp(event) {
-	    const {mouseDownTimer, mouseMoveMode, scale, zoomFactors, mouseMoveFunction, mouseUpFunction, lastRecordedCanvasPos, topLeft, gcx, gcy, enableClickToZoom} = this.get();
-
-	    // reset mode to hover
-	    this.set({mouseMoveMode: 'hover'});
-
-	    // remove body event listeners
-	    window.removeEventListener("mousemove", mouseMoveFunction);
-	    window.removeEventListener("mouseup", mouseUpFunction);
-
-	    // calculate offsets to determine to zoom or not
-	    const clickDiff = (Date.now() - mouseDownTimer);
-	    const clickDistance = Math.sqrt(
-	      Math.pow(event.offsetX - lastRecordedCanvasPos.x, 2) + 
-	      Math.pow(event.offsetY - lastRecordedCanvasPos.y, 2)
-	      );
 
 
-	    // 200ms and 5 pixels distance is fairly arbitrary
-	    if(clickDiff < 200 && clickDistance < 5) {
-	      // ZOOM!
-	      if(enableClickToZoom){
-	        // use shift key to determine to zoom in or zoom out
-	        let zoomBy = zoomFactors.in;
-	        if(event.shiftKey){
-	          zoomBy = zoomFactors.out;
-	        }
-
-	        let newCenter = {x: 0.5, y: 0.5};
-
-	        // go home if scale < 1
-	        let newScale = zoomBy * scale;
-	        if(newScale > 1){
-	          // use current mouse position to find new center position
-	          const fixedPoint = {
-	            x: this.toPercent(event.offsetX - topLeft.x),
-	            y: this.toPercent(event.offsetY - topLeft.y)
-	          };
-	          newCenter = {
-	            x: fixedPoint.x - ((fixedPoint.x - gcx)/zoomBy),
-	            y: fixedPoint.y - ((fixedPoint.y - gcy)/zoomBy)
-	          };
-	        } else {
-	          newScale = 1;
-	        }
-	        this.transitionTo(newCenter.x, newCenter.y, newScale, 500);
-	      }
-	    }
 	  },
-	  home() {
+	  home(duration=0) {
 	    const {homeX, homeY, homeScale} = this.get();
-	    this.transitionTo(homeX,homeY,homeScale,800);
+	    this.transitionTo(homeX, homeY, homeScale, duration);
 	  },
-	  transitionTo(x, y, scale, duration) {
-	    this.refs.zoom.transitionTo(x,y,scale,duration);
+	  transitionTo(x, y, scale, duration=0) {
+	    this.refs.d3Zoom.transformTo(x, y, scale, duration);
 	  },
 	  zoomit(multiplier) {
 	    const { scale } = this.get();
-	    this.refs.zoom.scaleTo(scale * multiplier, 500);
+	    this.refs.d3Zoom.zoomTo(scale * multiplier, 500);
+	    // this.refs.zoom.scaleTo(scale * multiplier, 500)
 	  },
-	  iconToCanvasPosition(icon, layerIndex) {
-	    const {config, scaleCountFactor, topLeft, layerScale, currentZoomIndex} = this.get();
+	  iconToGlobalPosition(icon, layerIndex) {
+	    const {density, scale, translateX, translateY, config, layerScale, w, h} = this.get();
+	    // const proportionalScaleCountFactor = scaleCountFactor / (currentZoomIndex + 1)
+	    // const scaleModifier = (Math.sqrt(Math.min(proportionalScaleCountFactor, icon.num_activations) / proportionalScaleCountFactor)) 
+	    // console.log(icon, config, layerIndex)
+	    // const iconWidth = config.icon_size //* layerScale * scaleModifier;
+	    const gridSize = config.grid_size[layerIndex];
+	    const gridWidth = config.icon_size * gridSize;
 
-	    const proportionalScaleCountFactor = scaleCountFactor / (currentZoomIndex + 1);
-	    const scaleModifier = (Math.sqrt(Math.min(proportionalScaleCountFactor, icon.num_activations) / proportionalScaleCountFactor)); 
-	    const iconWidth = config.icon_size * layerScale * scaleModifier;
+	    const iconWidthPct = config.icon_size / gridWidth;
+	    const iconWidth = iconWidthPct * scale * Math.min(w, h);
 
-	    const sx = icon.localX * config.icon_size;
-	    const sy = icon.localY * config.icon_size;
+	    // x, y swapped intentionally
+	    const iconXPct = icon.grid_y * config.icon_size / gridWidth;
+	    const iconYPct = icon.grid_x * config.icon_size / gridWidth;
 
-	    const tilePos_x = icon.grid_y * config.icon_size;
-	    const tilePos_y = icon.grid_x * config.icon_size;
+	    const iconX = iconXPct * scale * Math.min(w, h) + translateX;
+	    const iconY = iconYPct * scale * Math.min(w, h) + translateY;
 
-	    // pixel coordinate in the global coordinate space
-	    const globalPixelPos_x = tilePos_x * layerScale;
-	    const globalPixelPos_y = tilePos_y * layerScale;
+	    const sourceX = icon.localX * config.icon_size;
+	    const sourceY = icon.localY * config.icon_size;
 
-	    const canvasPos_x = globalPixelPos_x + topLeft.x;
-	    const canvasPos_y = globalPixelPos_y + topLeft.y;      
+	    const totalSamples = (typeof config.filter[0] == "number" ? config.filter[0] : config.sample_images);
+	    const avgSamples = totalSamples / (gridSize * gridSize);
 
-	    // calc scale adjust factor to center the image for the icon in it's box
-	    const scaleAdjustFactor =  (1 - scaleModifier) * config.icon_size * layerScale  / 2;
+	    const relativeDensity = Math.min(1, density * icon.num_activations / avgSamples);
 
-	    const dx = canvasPos_x + scaleAdjustFactor;
-	    const dy = canvasPos_y + scaleAdjustFactor;
+	    const adjustedIconWidth = iconWidth * relativeDensity;
+	    const adjustedIconX = iconX + (iconWidth - adjustedIconWidth) / 2;
+	    const adjustedIconY = iconY + (iconWidth - adjustedIconWidth) / 2;
+	    // console.log(relativeDensity);
+	    // If we have resizing based on density, calculate those offsets here
+	                      
 
-	    return {sx, sy, dx, dy, iconWidth}
-	  },
-	  toPercent(p) {
-	    const {scale, minViewDimInPx} = this.get();
-	    return p / (scale * minViewDimInPx);
-	  },
-	  toPixels(p) {
-	    const {scale, minViewDimInPx} = this.get();
-	    return p * scale * minViewDimInPx;
+	    return {sourceX, sourceY, iconX: adjustedIconX, iconY: adjustedIconY, iconWidth: adjustedIconWidth}
+
+	    // return {sx, sy, dx, dy, iconWidth}
 	  },
 	  clear() {
 	    const {viewHeight, viewWidth, context, backgroundColor} = this.get();
@@ -4895,23 +8173,23 @@
 	    context.clearRect(0, 0, viewWidth, viewHeight);
 	    context.fillRect(0, 0, viewWidth, viewHeight);
 	  },
-	  updateIconHoverImage() {
-	    const {currentIconInfo, currentZoomIndex, iconCrop, config, showHoverImage} = this.get();
-	    if(currentIconInfo && showHoverImage){
-	      load(currentIconInfo.url).then(response => {
-	        const hoverImageContext = this.refs.hoverImage.getContext('2d');
-	        const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(currentIconInfo, currentZoomIndex);
-	        const iconOffset = (iconCrop * config.icon_size) / 2;
-	        const edgeLength = Math.min(this.refs.hoverImage.height, this.refs.hoverImage.width);
-	        hoverImageContext.drawImage(response,
-	                        //source
-	                        sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
-	                        //destination
-	                        0, 0, edgeLength, edgeLength
-	                      );
-	      });
-	    }
-	  },
+	  // updateIconHoverImage() {
+	    // const {currentIconInfo, currentZoomIndex, iconCrop, config, showHoverImage} = this.get();
+	    // if(currentIconInfo && showHoverImage){
+	    //   load(currentIconInfo.url).then(response => {
+	    //     const hoverImageContext = this.refs.hoverImage.getContext('2d');
+	    //     const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(currentIconInfo, currentZoomIndex)
+	    //     const iconOffset = (iconCrop * config.icon_size) / 2;
+	    //     const edgeLength = Math.min(this.refs.hoverImage.height, this.refs.hoverImage.width)
+	    //     hoverImageContext.drawImage(response,
+	    //                     //source
+	    //                     sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+	    //                     //destination
+	    //                     0, 0, edgeLength, edgeLength
+	    //                   );
+	    //   })
+	    // }
+	  // },
 	  render() {
 
 	    const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
@@ -4930,22 +8208,23 @@
 	            columns.forEach((icon, y) => {
 	              if (icon.num_activations >= minActivations) {
 
-	                const {dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
-
+	                const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+	                
 	                // If icon is in the viewport
-	                if (dx > -iconWidth && dx < viewWidth && dy > -iconWidth && dy < viewHeight) {
+	                if (iconX > -iconWidth && iconX < viewWidth && iconY > -iconWidth && iconY < viewHeight) {
 	                  
 	                  // We want to draw a box before the icon has loaded so there isn't just whiteness.
-	                  const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
-	                  context.globalAlpha = 0.75;
-	                  context.strokeStyle = strokeColor;
-	                  context.lineWidth = strokeThickness;
-	                  context.fillStyle = "white";
-	                  context.beginPath();
-	                  context.rect(dx, dy, iconWidth, iconWidth);
-	                  context.stroke();
-	                  context.fill();
-	                  context.closePath();
+	                  if (classHeatmap > -1) {
+	                    context.globalAlpha = 0.75;
+	                    context.strokeStyle = strokeColor;
+	                    context.lineWidth = strokeThickness;
+	                    context.fillStyle = "white";
+	                    context.beginPath();
+	                    context.rect(iconX, iconY, iconWidth, iconWidth);
+	                    context.stroke();
+	                    context.fill();
+	                    context.closePath();
+	                  }
 
 	                  load(icon.url).then(response => {
 	                    // check that we're still on the right layer/zoom
@@ -4953,6 +8232,9 @@
 	                    if(currentZoomIndex == layerIndex) {
 	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
+	                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+
+	                      // If we have a class heatmap active, calculate the transparency for the current icon
 	                      let a = 1;
 	                      if (classHeatmap > -1) {
 	                        let i = icon.full_class_indices.indexOf(classHeatmap);
@@ -4964,22 +8246,16 @@
 	                          a = 0.0;
 	                        }
 	                      }
-	                      // let a = Math.min(1,
-	                      //   Math.max(0.2, Math.pow(icon.top_class_values[0], 2) * 
-	                      //   1000 * alphaAttributionFactor));
-
-	                      // get current values in case they changed while loading
-	                      const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
 
 	                      // draw the icon
 	                      context.globalAlpha = a;
 	                      const iconOffset = (iconCrop * config.icon_size) / 2;
-	                      context.clearRect(dx + 1, dy + 1, iconWidth - 2, iconWidth - 2);
+	                      context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
 	                      context.drawImage(response,
 	                        //source
-	                        sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+	                        sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
 	                        //destination
-	                        dx, dy, iconWidth, iconWidth
+	                        iconX, iconY, iconWidth, iconWidth
 	                      );
 	                      context.globalAlpha = 1;
 
@@ -4989,10 +8265,10 @@
 	                        if (textShadow) {
 	                          context.lineWidth = 2;
 	                          context.strokeStyle = textShadowColor;
-	                          context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+	                          context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
 	                        }
 	                        context.fillStyle = textColor;
-	                        context.fillText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+	                        context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
 	                      }
 
 	                    }
@@ -5008,12 +8284,15 @@
 	  }
 	  };
 
-	function oncreate$3() {
+	function oncreate$4() {
 	  this.home();
 	}
 	function onupdate$1({changed, current, previous}) {
-	  this.set({context: this.refs.canvas.getContext('2d')});
-	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
+	  // console.log("atlas", changed, current.scale)
+	  if (!current.context || changed.viewWidth || changed.viewHeight) {
+	    this.set({context: this.refs.canvas.getContext('2d')});
+	  }
+	  if (changed.density || changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
 	    this.render();
 	  }
 	  if (changed.currentIconInfo) {
@@ -5033,10 +8312,10 @@
 	  }
 
 	}
-	const file$f = "src/Atlas.html";
+	const file$g = "src/Atlas.html";
 
-	function create_main_fragment$f(component, ctx) {
-		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, div1_resize_listener;
+	function create_main_fragment$g(component, ctx) {
+		var radar_updating = {}, text0, text1, div, canvas, canvas_width_value, canvas_height_value, d3zoom_updating = {}, div_resize_listener, text2, zoom_updating = {};
 
 		var radar_initial_data = {};
 		if (ctx.ready  !== void 0) {
@@ -5061,31 +8340,77 @@
 			radar._bind({ ready: 1 }, radar.get());
 		});
 
-		var if_block0 = (ctx.ready) && create_if_block_1(component, ctx);
+		var if_block = (ctx.ready) && create_if_block$4(component, ctx);
+
+		var d3zoom_initial_data = {};
+		if (ctx.scale
+	     !== void 0) {
+			d3zoom_initial_data.scale = ctx.scale
+	    ;
+			d3zoom_updating.scale = true;
+		}
+		if (ctx.translateX
+	     !== void 0) {
+			d3zoom_initial_data.translateX = ctx.translateX
+	    ;
+			d3zoom_updating.translateX = true;
+		}
+		if (ctx.translateY
+	   !== void 0) {
+			d3zoom_initial_data.translateY = ctx.translateY
+	  ;
+			d3zoom_updating.translateY = true;
+		}
+		var d3zoom = new D3Zoom({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: d3zoom_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!d3zoom_updating.scale && changed.scale) {
+					newState.scale = childState.scale;
+				}
+
+				if (!d3zoom_updating.translateX && changed.translateX) {
+					newState.translateX = childState.translateX;
+				}
+
+				if (!d3zoom_updating.translateY && changed.translateY) {
+					newState.translateY = childState.translateY;
+				}
+				component._set(newState);
+				d3zoom_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			d3zoom._bind({ scale: 1, translateX: 1, translateY: 1 }, d3zoom.get());
+		});
+
+		component.refs.d3Zoom = d3zoom;
+
+		function div_resize_handler() {
+			component.set({ viewWidth: div.clientWidth, viewHeight: div.clientHeight });
+		}
 
 		var zoom_initial_data = { width: ctx.viewWidth, height: ctx.viewHeight };
-		if (ctx.scale
-	         !== void 0) {
-			zoom_initial_data.scale = ctx.scale
-	        ;
-			zoom_updating.scale = true;
-		}
 		if (ctx.unit
-	         !== void 0) {
+	   !== void 0) {
 			zoom_initial_data.unit = ctx.unit
-	        ;
+	  ;
 			zoom_updating.unit = true;
 		}
 		if (ctx.gcx
-	         !== void 0) {
+	   !== void 0) {
 			zoom_initial_data.gcx = ctx.gcx
-	        ;
+	  ;
 			zoom_updating.gcx = true;
 		}
 		if (ctx.gcy
-	         !== void 0) {
+	   !== void 0) {
 			zoom_initial_data.gcy = ctx.gcy
-	        ;
+	  ;
 			zoom_updating.gcy = true;
 		}
 		var zoom = new Zoom({
@@ -5094,10 +8419,6 @@
 			data: zoom_initial_data,
 			_bind(changed, childState) {
 				var newState = {};
-				if (!zoom_updating.scale && changed.scale) {
-					newState.scale = childState.scale;
-				}
-
 				if (!zoom_updating.unit && changed.unit) {
 					newState.unit = childState.unit;
 				}
@@ -5115,79 +8436,44 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			zoom._bind({ scale: 1, unit: 1, gcx: 1, gcy: 1 }, zoom.get());
+			zoom._bind({ unit: 1, gcx: 1, gcy: 1 }, zoom.get());
 		});
 
 		component.refs.zoom = zoom;
-
-		var if_block1 = (ctx.showHoverIcon) && create_if_block$4(component, ctx);
-
-		function mousedown_handler(event) {
-			component.mouseDown(event);
-		}
-
-		function mousemove_handler(event) {
-			component.mouseMove(event);
-		}
-
-		function mouseenter_handler(event) {
-			component.mouseEnter(event);
-		}
-
-		function mouseout_handler(event) {
-			component.mouseOut(event);
-		}
-
-		function div1_resize_handler() {
-			component.set({ viewWidth: div1.clientWidth, viewHeight: div1.clientHeight });
-		}
 
 		return {
 			c: function create() {
 				radar._fragment.c();
 				text0 = createText("\n\n");
-				if (if_block0) if_block0.c();
-				text1 = createText("\n\n  ");
-				div1 = createElement("div");
-				div0 = createElement("div");
-				zoom._fragment.c();
-				text2 = createText("\n      ");
+				if (if_block) if_block.c();
+				text1 = createText("\n\n");
+				div = createElement("div");
 				canvas = createElement("canvas");
-				text3 = createText("\n      ");
-				if (if_block1) if_block1.c();
+				d3zoom._fragment.c();
+				text2 = createText("\n\n");
+				zoom._fragment.c();
 				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
-				setStyle(canvas, "width", "" + ctx.viewWidth + "px");
-				setStyle(canvas, "height", "" + ctx.viewHeight + "px");
-				canvas.className = "svelte-ptap6b svelte-ref-canvas";
-				addLoc(canvas, file$f, 35, 6, 688);
-				addListener(div0, "mousedown", mousedown_handler);
-				addListener(div0, "mousemove", mousemove_handler);
-				addListener(div0, "mouseenter", mouseenter_handler);
-				addListener(div0, "mouseout", mouseout_handler);
-				div0.className = div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage";
-				addLoc(div0, file$f, 20, 4, 275);
-				component.root._beforecreate.push(div1_resize_handler);
-				div1.className = "svelte-ptap6b svelte-ref-root";
-				addLoc(div1, file$f, 15, 2, 185);
+				canvas.className = "svelte-welq1r svelte-ref-canvas";
+				addLoc(canvas, file$g, 26, 4, 349);
+				component.root._beforecreate.push(div_resize_handler);
+				div.className = "svelte-welq1r svelte-ref-root";
+				addLoc(div, file$g, 15, 0, 183);
 			},
 
 			m: function mount(target, anchor) {
 				radar._mount(target, anchor);
 				insert(target, text0, anchor);
-				if (if_block0) if_block0.m(target, anchor);
+				if (if_block) if_block.m(target, anchor);
 				insert(target, text1, anchor);
-				insert(target, div1, anchor);
-				append(div1, div0);
-				zoom._mount(div0, null);
-				append(div0, text2);
-				append(div0, canvas);
+				insert(target, div, anchor);
+				append(d3zoom._slotted.default, canvas);
 				component.refs.canvas = canvas;
-				append(div0, text3);
-				if (if_block1) if_block1.m(div0, null);
-				component.refs.stage = div0;
-				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
-				component.refs.root = div1;
+				d3zoom._mount(div, null);
+				div_resize_listener = addResizeListener(div, div_resize_handler);
+				component.refs.root = div;
+				insert(target, text2, anchor);
+				zoom._mount(target, anchor);
 			},
 
 			p: function update(changed, _ctx) {
@@ -5201,47 +8487,17 @@
 				radar_updating = {};
 
 				if (ctx.ready) {
-					if (if_block0) {
-						if_block0.p(changed, ctx);
+					if (if_block) {
+						if_block.p(changed, ctx);
 					} else {
-						if_block0 = create_if_block_1(component, ctx);
-						if_block0.c();
-						if_block0.m(text1.parentNode, text1);
+						if_block = create_if_block$4(component, ctx);
+						if_block.c();
+						if_block.m(text1.parentNode, text1);
 					}
-				} else if (if_block0) {
-					if_block0.d(1);
-					if_block0 = null;
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
 				}
-
-				var zoom_changes = {};
-				if (changed.viewWidth) zoom_changes.width = ctx.viewWidth;
-				if (changed.viewHeight) zoom_changes.height = ctx.viewHeight;
-				if (!zoom_updating.scale && changed.scale) {
-					zoom_changes.scale = ctx.scale
-	        ;
-					zoom_updating.scale = ctx.scale
-	         !== void 0;
-				}
-				if (!zoom_updating.unit && changed.unit) {
-					zoom_changes.unit = ctx.unit
-	        ;
-					zoom_updating.unit = ctx.unit
-	         !== void 0;
-				}
-				if (!zoom_updating.gcx && changed.gcx) {
-					zoom_changes.gcx = ctx.gcx
-	        ;
-					zoom_updating.gcx = ctx.gcx
-	         !== void 0;
-				}
-				if (!zoom_updating.gcy && changed.gcy) {
-					zoom_changes.gcy = ctx.gcy
-	        ;
-					zoom_updating.gcy = ctx.gcy
-	         !== void 0;
-				}
-				zoom._set(zoom_changes);
-				zoom_updating = {};
 
 				if ((changed.viewWidth || changed.screenResolution) && canvas_width_value !== (canvas_width_value = ctx.viewWidth * ctx.screenResolution)) {
 					canvas.width = canvas_width_value;
@@ -5251,30 +8507,51 @@
 					canvas.height = canvas_height_value;
 				}
 
-				if (changed.viewWidth) {
-					setStyle(canvas, "width", "" + ctx.viewWidth + "px");
+				var d3zoom_changes = {};
+				if (!d3zoom_updating.scale && changed.scale) {
+					d3zoom_changes.scale = ctx.scale
+	    ;
+					d3zoom_updating.scale = ctx.scale
+	     !== void 0;
 				}
+				if (!d3zoom_updating.translateX && changed.translateX) {
+					d3zoom_changes.translateX = ctx.translateX
+	    ;
+					d3zoom_updating.translateX = ctx.translateX
+	     !== void 0;
+				}
+				if (!d3zoom_updating.translateY && changed.translateY) {
+					d3zoom_changes.translateY = ctx.translateY
+	  ;
+					d3zoom_updating.translateY = ctx.translateY
+	   !== void 0;
+				}
+				d3zoom._set(d3zoom_changes);
+				d3zoom_updating = {};
 
-				if (changed.viewHeight) {
-					setStyle(canvas, "height", "" + ctx.viewHeight + "px");
+				var zoom_changes = {};
+				if (changed.viewWidth) zoom_changes.width = ctx.viewWidth;
+				if (changed.viewHeight) zoom_changes.height = ctx.viewHeight;
+				if (!zoom_updating.unit && changed.unit) {
+					zoom_changes.unit = ctx.unit
+	  ;
+					zoom_updating.unit = ctx.unit
+	   !== void 0;
 				}
-
-				if (ctx.showHoverIcon) {
-					if (if_block1) {
-						if_block1.p(changed, ctx);
-					} else {
-						if_block1 = create_if_block$4(component, ctx);
-						if_block1.c();
-						if_block1.m(div0, null);
-					}
-				} else if (if_block1) {
-					if_block1.d(1);
-					if_block1 = null;
+				if (!zoom_updating.gcx && changed.gcx) {
+					zoom_changes.gcx = ctx.gcx
+	  ;
+					zoom_updating.gcx = ctx.gcx
+	   !== void 0;
 				}
-
-				if ((changed.mouseMoveMode || changed.enableDragToPan) && div0_class_value !== (div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage")) {
-					div0.className = div0_class_value;
+				if (!zoom_updating.gcy && changed.gcy) {
+					zoom_changes.gcy = ctx.gcy
+	  ;
+					zoom_updating.gcy = ctx.gcy
+	   !== void 0;
 				}
+				zoom._set(zoom_changes);
+				zoom_updating = {};
 			},
 
 			d: function destroy$$1(detach) {
@@ -5283,29 +8560,29 @@
 					detachNode(text0);
 				}
 
-				if (if_block0) if_block0.d(detach);
+				if (if_block) if_block.d(detach);
 				if (detach) {
 					detachNode(text1);
-					detachNode(div1);
+					detachNode(div);
 				}
 
-				zoom.destroy();
-				if (component.refs.zoom === zoom) component.refs.zoom = null;
 				if (component.refs.canvas === canvas) component.refs.canvas = null;
-				if (if_block1) if_block1.d();
-				removeListener(div0, "mousedown", mousedown_handler);
-				removeListener(div0, "mousemove", mousemove_handler);
-				removeListener(div0, "mouseenter", mouseenter_handler);
-				removeListener(div0, "mouseout", mouseout_handler);
-				if (component.refs.stage === div0) component.refs.stage = null;
-				div1_resize_listener.cancel();
-				if (component.refs.root === div1) component.refs.root = null;
+				d3zoom.destroy();
+				if (component.refs.d3Zoom === d3zoom) component.refs.d3Zoom = null;
+				div_resize_listener.cancel();
+				if (component.refs.root === div) component.refs.root = null;
+				if (detach) {
+					detachNode(text2);
+				}
+
+				zoom.destroy(detach);
+				if (component.refs.zoom === zoom) component.refs.zoom = null;
 			}
 		};
 	}
 
 	// (3:0) {#if ready}
-	function create_if_block_1(component, ctx) {
+	function create_if_block$4(component, ctx) {
 		var atlasdataloader_updating = {};
 
 		var atlasdataloader_initial_data = {
@@ -5404,45 +8681,6 @@
 		};
 	}
 
-	// (42:6) {#if showHoverIcon}
-	function create_if_block$4(component, ctx) {
-		var div;
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div.className = "icon svelte-ptap6b";
-				setStyle(div, "width", (ctx.iconSizeInPixels + 2 + 'px'));
-				setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
-				setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
-				setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
-				addLoc(div, file$f, 42, 8, 920);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-			},
-
-			p: function update(changed, ctx) {
-				if (changed.iconSizeInPixels) {
-					setStyle(div, "width", (ctx.iconSizeInPixels + 2 + 'px'));
-					setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
-				}
-
-				if (changed.topLeftCornerHover) {
-					setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
-					setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(div);
-				}
-			}
-		};
-	}
-
 	function Atlas(options) {
 		this._debugName = '<Atlas>';
 		if (!options || (!options.target && !options.root)) {
@@ -5451,45 +8689,41 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$9(), options.data);
+		this._state = assign(data$a(), options.data);
 
-		this._recompute({ layers: 1, layer: 1, viewWidth: 1, viewHeight: 1, gcx: 1, gcy: 1, scale: 1, minViewDimInPx: 1, gridSize: 1, currentZoomIndex: 1, config: 1, lastRecordedCanvasPos: 1, topLeft: 1, layerScale: 1, gridSelected: 1, classHeatmap: 1, mouseMoveMode: 1, onCanvas: 1, currentIconInfo: 1, enableHover: 1 }, this._state);
+		this._recompute({ layers: 1, layer: 1, viewWidth: 1, screenResolution: 1, viewHeight: 1, scale: 1, gridSize: 1, mouseMoveMode: 1, onCanvas: 1, currentIconInfo: 1, enableHover: 1, minViewDimInPx: 1, config: 1, currentZoomIndex: 1 }, this._state);
 		if (!('layers' in this._state)) console.warn("<Atlas> was created without expected data property 'layers'");
 		if (!('layer' in this._state)) console.warn("<Atlas> was created without expected data property 'layer'");
 		if (!('viewWidth' in this._state)) console.warn("<Atlas> was created without expected data property 'viewWidth'");
+		if (!('screenResolution' in this._state)) console.warn("<Atlas> was created without expected data property 'screenResolution'");
 		if (!('viewHeight' in this._state)) console.warn("<Atlas> was created without expected data property 'viewHeight'");
-		if (!('gcx' in this._state)) console.warn("<Atlas> was created without expected data property 'gcx'");
-		if (!('gcy' in this._state)) console.warn("<Atlas> was created without expected data property 'gcy'");
 		if (!('scale' in this._state)) console.warn("<Atlas> was created without expected data property 'scale'");
-
 		if (!('gridSize' in this._state)) console.warn("<Atlas> was created without expected data property 'gridSize'");
-
-		if (!('config' in this._state)) console.warn("<Atlas> was created without expected data property 'config'");
 		if (!('mouseMoveMode' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseMoveMode'");
 		if (!('onCanvas' in this._state)) console.warn("<Atlas> was created without expected data property 'onCanvas'");
-
+		if (!('currentIconInfo' in this._state)) console.warn("<Atlas> was created without expected data property 'currentIconInfo'");
 		if (!('enableHover' in this._state)) console.warn("<Atlas> was created without expected data property 'enableHover'");
-		if (!('lastRecordedCanvasPos' in this._state)) console.warn("<Atlas> was created without expected data property 'lastRecordedCanvasPos'");
+		if (!('minViewDimInPx' in this._state)) console.warn("<Atlas> was created without expected data property 'minViewDimInPx'");
+		if (!('config' in this._state)) console.warn("<Atlas> was created without expected data property 'config'");
 
-
-
-		if (!('classHeatmap' in this._state)) console.warn("<Atlas> was created without expected data property 'classHeatmap'");
 		if (!('ready' in this._state)) console.warn("<Atlas> was created without expected data property 'ready'");
 		if (!('id' in this._state)) console.warn("<Atlas> was created without expected data property 'id'");
 		if (!('layout' in this._state)) console.warn("<Atlas> was created without expected data property 'layout'");
 		if (!('classFilter' in this._state)) console.warn("<Atlas> was created without expected data property 'classFilter'");
 		if (!('filter' in this._state)) console.warn("<Atlas> was created without expected data property 'filter'");
 		if (!('labels' in this._state)) console.warn("<Atlas> was created without expected data property 'labels'");
-		if (!('enableDragToPan' in this._state)) console.warn("<Atlas> was created without expected data property 'enableDragToPan'");
+		if (!('translateX' in this._state)) console.warn("<Atlas> was created without expected data property 'translateX'");
+		if (!('translateY' in this._state)) console.warn("<Atlas> was created without expected data property 'translateY'");
 		if (!('unit' in this._state)) console.warn("<Atlas> was created without expected data property 'unit'");
-		if (!('screenResolution' in this._state)) console.warn("<Atlas> was created without expected data property 'screenResolution'");
+		if (!('gcx' in this._state)) console.warn("<Atlas> was created without expected data property 'gcx'");
+		if (!('gcy' in this._state)) console.warn("<Atlas> was created without expected data property 'gcy'");
 		this._intro = true;
 		this._handlers.update = [onupdate$1];
 
-		this._fragment = create_main_fragment$f(this, this._state);
+		this._fragment = create_main_fragment$g(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$3.call(this);
+			oncreate$4.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -5503,21 +8737,15 @@
 	}
 
 	assign(Atlas.prototype, protoDev);
-	assign(Atlas.prototype, methods$2);
+	assign(Atlas.prototype, methods$3);
 
 	Atlas.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('maxAttributionValue' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'maxAttributionValue'");
-		if ('aspectRatio' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'aspectRatio'");
-		if ('minViewDimInPx' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'minViewDimInPx'");
-		if ('topLeft' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'topLeft'");
+		if ('w' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'w'");
+		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'h'");
 		if ('currentZoomIndex' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentZoomIndex'");
-		if ('numIconsWide' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'numIconsWide'");
-		if ('iconSizeInPixels' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'iconSizeInPixels'");
-		if ('layerScale' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'layerScale'");
-		if ('gridSelected' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'gridSelected'");
-		if ('currentIconInfo' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentIconInfo'");
 		if ('showHoverIcon' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'showHoverIcon'");
-		if ('topLeftCornerHover' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'topLeftCornerHover'");
+		if ('layerScale' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'layerScale'");
 	};
 
 	Atlas.prototype._recompute = function _recompute(changed, state) {
@@ -5525,55 +8753,34 @@
 			if (this._differs(state.maxAttributionValue, (state.maxAttributionValue = maxAttributionValue(state)))) changed.maxAttributionValue = true;
 		}
 
-		if (changed.viewWidth || changed.viewHeight) {
-			if (this._differs(state.aspectRatio, (state.aspectRatio = aspectRatio(state)))) changed.aspectRatio = true;
-			if (this._differs(state.minViewDimInPx, (state.minViewDimInPx = minViewDimInPx(state)))) changed.minViewDimInPx = true;
+		if (changed.viewWidth || changed.screenResolution) {
+			if (this._differs(state.w, (state.w = w(state)))) changed.w = true;
 		}
 
-		if (changed.gcx || changed.gcy || changed.scale || changed.viewWidth || changed.viewHeight || changed.minViewDimInPx) {
-			if (this._differs(state.topLeft, (state.topLeft = topLeft(state)))) changed.topLeft = true;
+		if (changed.viewHeight || changed.screenResolution) {
+			if (this._differs(state.h, (state.h = h(state)))) changed.h = true;
 		}
 
 		if (changed.scale || changed.gridSize) {
 			if (this._differs(state.currentZoomIndex, (state.currentZoomIndex = currentZoomIndex(state)))) changed.currentZoomIndex = true;
 		}
 
-		if (changed.currentZoomIndex || changed.layers) {
-			if (this._differs(state.numIconsWide, (state.numIconsWide = numIconsWide(state)))) changed.numIconsWide = true;
-		}
-
-		if (changed.config || changed.minViewDimInPx || changed.currentZoomIndex || changed.scale) {
-			if (this._differs(state.iconSizeInPixels, (state.iconSizeInPixels = iconSizeInPixels(state)))) changed.iconSizeInPixels = true;
+		if (changed.mouseMoveMode || changed.onCanvas || changed.currentIconInfo || changed.enableHover) {
+			if (this._differs(state.showHoverIcon, (state.showHoverIcon = showHoverIcon(state)))) changed.showHoverIcon = true;
 		}
 
 		if (changed.minViewDimInPx || changed.config || changed.currentZoomIndex || changed.scale) {
 			if (this._differs(state.layerScale, (state.layerScale = layerScale(state)))) changed.layerScale = true;
 		}
-
-		if (changed.lastRecordedCanvasPos || changed.topLeft || changed.layerScale || changed.config) {
-			if (this._differs(state.gridSelected, (state.gridSelected = gridSelected(state)))) changed.gridSelected = true;
-		}
-
-		if (changed.layers || changed.currentZoomIndex || changed.gridSelected || changed.classHeatmap) {
-			if (this._differs(state.currentIconInfo, (state.currentIconInfo = currentIconInfo(state)))) changed.currentIconInfo = true;
-		}
-
-		if (changed.mouseMoveMode || changed.onCanvas || changed.currentIconInfo || changed.enableHover) {
-			if (this._differs(state.showHoverIcon, (state.showHoverIcon = showHoverIcon(state)))) changed.showHoverIcon = true;
-		}
-
-		if (changed.config || changed.layerScale || changed.topLeft || changed.gridSelected) {
-			if (this._differs(state.topLeftCornerHover, (state.topLeftCornerHover = topLeftCornerHover(state)))) changed.topLeftCornerHover = true;
-		}
 	};
 
 	/* src/AtlasReticle.html generated by Svelte v2.15.3 */
 
-	function h({scale}) {
+	function h$1({scale}) {
 		return 1 / scale;
 	}
 
-	function w({scale, aspectRatio}) {
+	function w$1({scale, aspectRatio}) {
 		return 1 / scale * aspectRatio;
 	}
 
@@ -5609,7 +8816,7 @@
 		return b * height;
 	}
 
-	function data$a() {
+	function data$b() {
 	  return {
 	    width: 0,
 	    height: 0,
@@ -5621,7 +8828,7 @@
 	    enableDragging: true,
 	  }
 	}
-	var methods$3 = {
+	var methods$4 = {
 	  mouseUp() {
 	    const { startPos, height, width, scale, aspectRatio, gcx, gcy} = this.get();
 	    this.set({dragging: false});
@@ -5647,9 +8854,9 @@
 	  },
 	};
 
-	const file$g = "src/AtlasReticle.html";
+	const file$h = "src/AtlasReticle.html";
 
-	function create_main_fragment$g(component, ctx) {
+	function create_main_fragment$h(component, ctx) {
 		var div, div_resize_listener;
 
 		var if_block = (ctx.scale) && create_if_block$5(component, ctx);
@@ -5664,7 +8871,7 @@
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
 				div.className = "root svelte-1ejkfbm";
-				addLoc(div, file$g, 0, 0, 0);
+				addLoc(div, file$h, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -5711,7 +8918,7 @@
 			component.mouseUp(event);
 		}
 
-		var if_block = (ctx.annotationValue) && create_if_block_1$1(component, ctx);
+		var if_block = (ctx.annotationValue) && create_if_block_1(component, ctx);
 
 		function mousemove_handler_1(event) {
 			component.mouseMove(event);
@@ -5736,11 +8943,11 @@
 				addListener(path, "mouseup", mouseup_handler);
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1ejkfbm");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.width + ",0 L" + ctx.width + "," + ctx.height + " L0," + ctx.height + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$g, 3, 4, 114);
+				addLoc(path, file$h, 3, 4, 114);
 				setAttribute(svg, "width", ctx.width);
 				setAttribute(svg, "height", ctx.height);
 				setAttribute(svg, "class", "svelte-1ejkfbm");
-				addLoc(svg, file$g, 2, 2, 87);
+				addLoc(svg, file$h, 2, 2, 87);
 				addListener(div, "mousemove", mousemove_handler_1);
 				addListener(div, "mousedown", mousedown_handler);
 				addListener(div, "mouseup", mouseup_handler_1);
@@ -5752,7 +8959,7 @@
 				setStyle(div, "width", "" + (ctx.right-ctx.left-1) + "px");
 				setStyle(div, "height", "" + (ctx.bottom-ctx.top-1) + "px");
 				setStyle(div, "cursor", "" + (ctx.enableDragging ? 'move' : 'default') + "\n      ");
-				addLoc(div, file$g, 10, 2, 383);
+				addLoc(div, file$h, 10, 2, 383);
 			},
 
 			m: function mount(target, anchor) {
@@ -5784,7 +8991,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_1$1(component, ctx);
+						if_block = create_if_block_1(component, ctx);
 						if_block.c();
 						if_block.m(div, null);
 					}
@@ -5843,7 +9050,7 @@
 	}
 
 	// (25:4) {#if annotationValue}
-	function create_if_block_1$1(component, ctx) {
+	function create_if_block_1(component, ctx) {
 		var div1, div0, p, text;
 
 		return {
@@ -5853,13 +9060,13 @@
 				p = createElement("p");
 				text = createText(ctx.annotationValue);
 				p.className = "annotation svelte-1ejkfbm";
-				addLoc(p, file$g, 27, 10, 951);
+				addLoc(p, file$h, 27, 10, 951);
 				div0.className = "annotationTab svelte-1ejkfbm";
 				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$g, 26, 8, 885);
+				addLoc(div0, file$h, 26, 8, 885);
 				div1.className = "annotationTabParent svelte-1ejkfbm";
 				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$g, 25, 6, 810);
+				addLoc(div1, file$h, 25, 6, 810);
 			},
 
 			m: function mount(target, anchor) {
@@ -5898,7 +9105,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$a(), options.data);
+		this._state = assign(data$b(), options.data);
 
 		this._recompute({ scale: 1, aspectRatio: 1, gcx: 1, w: 1, width: 1, gcy: 1, h: 1, height: 1, l: 1, t: 1, r: 1, b: 1 }, this._state);
 		if (!('scale' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'scale'");
@@ -5924,7 +9131,7 @@
 		if (!('annotationValue' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'annotationValue'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$g(this, this._state);
+		this._fragment = create_main_fragment$h(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5936,7 +9143,7 @@
 	}
 
 	assign(AtlasReticle.prototype, protoDev);
-	assign(AtlasReticle.prototype, methods$3);
+	assign(AtlasReticle.prototype, methods$4);
 
 	AtlasReticle.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<AtlasReticle>: Cannot set read-only property 'h'");
@@ -5953,11 +9160,11 @@
 
 	AtlasReticle.prototype._recompute = function _recompute(changed, state) {
 		if (changed.scale) {
-			if (this._differs(state.h, (state.h = h(state)))) changed.h = true;
+			if (this._differs(state.h, (state.h = h$1(state)))) changed.h = true;
 		}
 
 		if (changed.scale || changed.aspectRatio) {
-			if (this._differs(state.w, (state.w = w(state)))) changed.w = true;
+			if (this._differs(state.w, (state.w = w$1(state)))) changed.w = true;
 		}
 
 		if (changed.gcx || changed.w || changed.width) {
@@ -5995,14 +9202,14 @@
 
 	/* src/components/AppMiniMap.html generated by Svelte v2.15.3 */
 
-	function data$b() {
+	function data$c() {
 	  return {
 	    scaleCountFactor: 200
 	  }
 	}
-	const file$h = "src/components/AppMiniMap.html";
+	const file$i = "src/components/AppMiniMap.html";
 
-	function create_main_fragment$h(component, ctx) {
+	function create_main_fragment$i(component, ctx) {
 		var div, text, atlasreticle_updating = {};
 
 		var atlas_initial_data = {
@@ -6090,7 +9297,7 @@
 				atlasreticle._fragment.c();
 				placeholder._fragment.c();
 				div.className = "svelte-kiaj48 svelte-ref-root";
-				addLoc(div, file$h, 0, 0, 0);
+				addLoc(div, file$i, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -6161,7 +9368,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$b(), options.data);
+		this._state = assign(data$c(), options.data);
 		if (!('id' in this._state)) console.warn("<AppMiniMap> was created without expected data property 'id'");
 		if (!('classHeatmap' in this._state)) console.warn("<AppMiniMap> was created without expected data property 'classHeatmap'");
 		if (!('scaleCountFactor' in this._state)) console.warn("<AppMiniMap> was created without expected data property 'scaleCountFactor'");
@@ -6171,7 +9378,7 @@
 		if (!('gcy' in this._state)) console.warn("<AppMiniMap> was created without expected data property 'gcy'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$h(this, this._state);
+		this._fragment = create_main_fragment$i(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6187,7 +9394,7 @@
 	AppMiniMap.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	function noop$1() {}
+	function noop$2() {}
 
 	function assign$1(target) {
 		var k,
@@ -6219,9 +9426,9 @@
 	}
 
 	function destroy$1(detach) {
-		this.destroy = noop$1;
+		this.destroy = noop$2;
 		this.fire('destroy');
-		this.set = this.get = noop$1;
+		this.set = this.get = noop$2;
 
 		if (detach !== false) this._fragment.u();
 		this._fragment.d();
@@ -6263,11 +9470,11 @@
 		}
 	}
 
-	function get$1(key) {
+	function get$3(key) {
 		return key ? this._state[key] : this._state;
 	}
 
-	function init$1(component, options) {
+	function init$2(component, options) {
 		component._observers = { pre: blankObject$1(), post: blankObject$1() };
 		component._handlers = blankObject$1();
 		component._bind = options._bind;
@@ -6312,7 +9519,7 @@
 		};
 	}
 
-	function set$1(newState) {
+	function set$3(newState) {
 		this._set(assign$1({}, newState));
 		if (this.root._lock) return;
 		this.root._lock = true;
@@ -6357,13 +9564,13 @@
 
 	var proto$1 = {
 		destroy: destroy$1,
-		get: get$1,
+		get: get$3,
 		fire: fire$1,
 		observe: observe$1,
 		on: on$1,
-		set: set$1,
+		set: set$3,
 		teardown: destroy$1,
-		_recompute: noop$1,
+		_recompute: noop$2,
 		_set: _set$1,
 		_mount: _mount$1,
 		_unmount: _unmount,
@@ -6379,7 +9586,7 @@
 	  return height ? height : width;
 	}
 
-	function data$c() {
+	function data$d() {
 	  return {
 	    url: '',
 	    index: 0,
@@ -6390,7 +9597,7 @@
 	    img: null
 	  }
 	}
-	var methods$4 = {
+	var methods$5 = {
 	  draw() {
 	    if (this.refs.canvas) {
 	      const context = this.refs.canvas.getContext('2d');
@@ -6412,7 +9619,7 @@
 	  }
 	};
 
-	function oncreate$4() {
+	function oncreate$5() {
 	  const done = (e) => {
 	    this.set({loaded: true});
 	    const {img} = this.get();
@@ -6471,7 +9678,7 @@
 	    }
 	  });
 	}
-	function create_main_fragment$i(component, state) {
+	function create_main_fragment$j(component, state) {
 		var canvas;
 
 		return {
@@ -6511,18 +9718,18 @@
 	}
 
 	function Sprite(options) {
-		init$1(this, options);
+		init$2(this, options);
 		this.refs = {};
-		this._state = assign$1(data$c(), options.data);
+		this._state = assign$1(data$d(), options.data);
 		this._recompute({ width: 1, height: 1 }, this._state);
 
-		var _oncreate = oncreate$4.bind(this);
+		var _oncreate = oncreate$5.bind(this);
 
 		if (!options.root) {
 			this._oncreate = [];
 		}
 
-		this._fragment = create_main_fragment$i(this, this._state);
+		this._fragment = create_main_fragment$j(this, this._state);
 
 		this.root._oncreate.push(_oncreate);
 
@@ -6534,7 +9741,7 @@
 		}
 	}
 
-	assign$1(Sprite.prototype, methods$4, proto$1);
+	assign$1(Sprite.prototype, methods$5, proto$1);
 
 	Sprite.prototype._recompute = function _recompute(changed, state) {
 		if (changed.width || changed.height) {
@@ -6697,7 +9904,7 @@
 	// We will cache requests and parsing.
 	const cache$1$1 = new Map();
 	const suppress$1 = new Map();
-	const namespaces$1 = new Map();
+	const namespaces$2 = new Map();
 
 	// Mapping file extensions to loaders
 	const loaders$1 = new Map([
@@ -6760,11 +9967,11 @@
 	  // If we have a previous request in this namespace, mark it as suppressed so 
 	  // that the promise is never resolved. Then we reset the current namespace to 
 	  // the current request.
-	  if (namespaces$1.has(ns)) {
-	    const pendingRequestID = namespaces$1.get(ns);
+	  if (namespaces$2.has(ns)) {
+	    const pendingRequestID = namespaces$2.get(ns);
 	    suppress$1.set(pendingRequestID, true);
 	  }
-	  namespaces$1.set(ns, requestID);
+	  namespaces$2.set(ns, requestID);
 	  
 	  return new Promise((resolve, reject) => {
 	    let p;
@@ -6826,11 +10033,11 @@
 		return clientWidth;
 	}
 
-	function id({model, layerName}) {
+	function id$1({model, layerName}) {
 		return model + "_" + layerName;
 	}
 
-	function data$d() {
+	function data$e() {
 	  return {
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    model: "inceptionv1",
@@ -6842,7 +10049,7 @@
 	    icons: []
 	  };
 	}
-	var methods$5 = {
+	var methods$6 = {
 	  render() {
 	    const {grid, gridSize, icons, classHeatmap} = this.get();
 	    const context = this.refs.canvas.getContext('2d');
@@ -6874,7 +10081,7 @@
 	  }
 	};
 
-	function oncreate$5() {
+	function oncreate$6() {
 	  const {root, id, grid} = this.get();
 	  load$1(`${root}/${id}/${id}.json`).then(config => {
 	    // console.log("config: ", config)
@@ -6898,9 +10105,9 @@
 	    this.render();
 	  }
 	}
-	const file$i = "src/AtlasThumbnail.html";
+	const file$j = "src/AtlasThumbnail.html";
 
-	function create_main_fragment$j(component, ctx) {
+	function create_main_fragment$k(component, ctx) {
 		var div, canvas, div_resize_listener;
 
 		function div_resize_handler() {
@@ -6916,10 +10123,10 @@
 				setStyle(canvas, "width", "" + ctx.clientWidth + "px");
 				setStyle(canvas, "height", "" + ctx.height + "px");
 				canvas.className = "svelte-sjakuy";
-				addLoc(canvas, file$i, 2, 2, 54);
+				addLoc(canvas, file$j, 2, 2, 54);
 				component.root._beforecreate.push(div_resize_handler);
 				setStyle(div, "height", "" + ctx.height + "px");
-				addLoc(div, file$i, 1, 0, 1);
+				addLoc(div, file$j, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -6964,7 +10171,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$d(), options.data);
+		this._state = assign(data$e(), options.data);
 
 		this._recompute({ clientWidth: 1, model: 1, layerName: 1 }, this._state);
 		if (!('clientWidth' in this._state)) console.warn("<AtlasThumbnail> was created without expected data property 'clientWidth'");
@@ -6975,10 +10182,10 @@
 		this._intro = true;
 		this._handlers.update = [onupdate$2];
 
-		this._fragment = create_main_fragment$j(this, this._state);
+		this._fragment = create_main_fragment$k(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$5.call(this);
+			oncreate$6.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -6992,7 +10199,7 @@
 	}
 
 	assign(AtlasThumbnail.prototype, protoDev);
-	assign(AtlasThumbnail.prototype, methods$5);
+	assign(AtlasThumbnail.prototype, methods$6);
 
 	AtlasThumbnail.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('height' in newState && !this._updatingReadonlyProperty) throw new Error("<AtlasThumbnail>: Cannot set read-only property 'height'");
@@ -7005,13 +10212,13 @@
 		}
 
 		if (changed.model || changed.layerName) {
-			if (this._differs(state.id, (state.id = id(state)))) changed.id = true;
+			if (this._differs(state.id, (state.id = id$1(state)))) changed.id = true;
 		}
 	};
 
 	/* src/components/AppLayerChooser.html generated by Svelte v2.15.3 */
 
-	function data$e() { return {
+	function data$f() { return {
 	  layerName: "mixed4c",
 	  layers: [
 	    "mixed3b",
@@ -7025,7 +10232,7 @@
 	  ],
 	  classHeatmap: -1
 	}; }
-	const file$j = "src/components/AppLayerChooser.html";
+	const file$k = "src/components/AppLayerChooser.html";
 
 	function get_each_context$1(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -7034,7 +10241,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$k(component, ctx) {
+	function create_main_fragment$l(component, ctx) {
 		var div;
 
 		var each_value = ctx.layers;
@@ -7053,7 +10260,7 @@
 					each_blocks[i].c();
 				}
 				div.className = "stack";
-				addLoc(div, file$j, 0, 0, 0);
+				addLoc(div, file$k, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -7132,14 +10339,14 @@
 				input.__value = input_value_value = ctx.layer;
 				input.value = input.__value;
 				input.className = "svelte-hzvbih";
-				addLoc(input, file$j, 3, 4, 114);
+				addLoc(input, file$k, 3, 4, 114);
 				setStyle(div, "width", "50px");
 				setStyle(div, "position", "relative");
-				addLoc(div, file$j, 4, 4, 172);
+				addLoc(div, file$k, 4, 4, 172);
 				span.className = "svelte-hzvbih";
-				addLoc(span, file$j, 7, 4, 291);
+				addLoc(span, file$k, 7, 4, 291);
 				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-hzvbih";
-				addLoc(label, file$j, 2, 2, 49);
+				addLoc(label, file$k, 2, 2, 49);
 			},
 
 			m: function mount(target, anchor) {
@@ -7198,14 +10405,14 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$e(), options.data);
+		this._state = assign(data$f(), options.data);
 		if (!('layers' in this._state)) console.warn("<AppLayerChooser> was created without expected data property 'layers'");
 		if (!('layerName' in this._state)) console.warn("<AppLayerChooser> was created without expected data property 'layerName'");
 		if (!('classHeatmap' in this._state)) console.warn("<AppLayerChooser> was created without expected data property 'classHeatmap'");
 		this._bindingGroups = [[]];
 		this._intro = true;
 
-		this._fragment = create_main_fragment$k(this, this._state);
+		this._fragment = create_main_fragment$l(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7233,14 +10440,14 @@
 	  return [{label: "show all", i: -1}].concat(out);
 	}
 
-	function data$f() {
+	function data$g() {
 	  return {
 	    classesToKeep,
 	    inceptionLabels,
 	    classHeatmap: 235
 	  }
 	}
-	const file$k = "src/components/AppClassFilter.html";
+	const file$l = "src/components/AppClassFilter.html";
 
 	function get_each_context$2(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -7248,7 +10455,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$l(component, ctx) {
+	function create_main_fragment$m(component, ctx) {
 		var div;
 
 		var each_value = ctx.labels;
@@ -7267,7 +10474,7 @@
 					each_blocks[i].c();
 				}
 				div.className = "chooser svelte-h2ed57";
-				addLoc(div, file$k, 0, 0, 0);
+				addLoc(div, file$l, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -7333,11 +10540,11 @@
 				input.__value = input_value_value = ctx.l.i;
 				input.value = input.__value;
 				input.className = "svelte-h2ed57";
-				addLoc(input, file$k, 3, 6, 111);
+				addLoc(input, file$l, 3, 6, 111);
 				span.title = span_title_value = ctx.l.i;
-				addLoc(span, file$k, 4, 6, 172);
+				addLoc(span, file$l, 4, 6, 172);
 				label.className = label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-h2ed57";
-				addLoc(label, file$k, 2, 4, 48);
+				addLoc(label, file$l, 2, 4, 48);
 			},
 
 			m: function mount(target, anchor) {
@@ -7390,7 +10597,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$f(), options.data);
+		this._state = assign(data$g(), options.data);
 
 		this._recompute({ inceptionLabels: 1 }, this._state);
 		if (!('inceptionLabels' in this._state)) console.warn("<AppClassFilter> was created without expected data property 'inceptionLabels'");
@@ -7399,7 +10606,7 @@
 		this._bindingGroups = [[]];
 		this._intro = true;
 
-		this._fragment = create_main_fragment$l(this, this._state);
+		this._fragment = create_main_fragment$m(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7422,9 +10629,9 @@
 
 	/* src/library/App/Panel.html generated by Svelte v2.15.3 */
 
-	const file$l = "src/library/App/Panel.html";
+	const file$m = "src/library/App/Panel.html";
 
-	function create_main_fragment$m(component, ctx) {
+	function create_main_fragment$n(component, ctx) {
 		var div2, div0, slot_content_head = component._slotted.head, text, div1, slot_content_body = component._slotted.body;
 
 		return {
@@ -7434,11 +10641,11 @@
 				text = createText("\n  ");
 				div1 = createElement("div");
 				div0.className = "head svelte-l56anp";
-				addLoc(div0, file$l, 1, 2, 21);
+				addLoc(div0, file$m, 1, 2, 21);
 				div1.className = "body svelte-l56anp";
-				addLoc(div1, file$l, 4, 2, 81);
+				addLoc(div1, file$m, 4, 2, 81);
 				div2.className = "root svelte-l56anp";
-				addLoc(div2, file$l, 0, 0, 0);
+				addLoc(div2, file$m, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -7487,7 +10694,7 @@
 
 		this._slotted = options.slots || {};
 
-		this._fragment = create_main_fragment$m(this, this._state);
+		this._fragment = create_main_fragment$n(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7511,7 +10718,7 @@
 		return 1000000 / (realGridSize * realGridSize * iconScaleFactor);
 	}
 
-	function data$g() {
+	function data$h() {
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 1,
@@ -7528,9 +10735,9 @@
 	}
 	var format_1$1 = format(".3f");
 
-	const file$m = "src/components/App.html";
+	const file$n = "src/components/App.html";
 
-	function create_main_fragment$n(component, ctx) {
+	function create_main_fragment$o(component, ctx) {
 		var div22, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div8, div7, atlas_updating = {}, text6, div6, div4, appminimap_updating = {}, text7, div5, text8, text9, text10, div21, h22, text12, div20, div12, div9, text13, raw0_value = format_1$1(ctx.gcx), raw0_before, text14, div10, text15, raw1_value = format_1$1(ctx.gcy), raw1_before, text16, div11, text17, raw2_value = format_1$1(ctx.scale), raw2_before, text18, div13, h30, text20, label0, input0, text21, text22, div14, h31, text24, label1, input1, text25, text26, label2, input2, text27, text28, label3, input3, text29, text30, label4, input4, text31, text32, label5, input5, text33, text34, div17, h32, text36, div15, text37, raw3_before, text38, input6, text39, br, text40, div16, text41, raw4_before, text42, input7, text43, div19, h33, text45, div18, text46, raw5_before, text47, input8, text48, label6, input9, text49, text50, label7, input10, text51;
 
 		var appclassfilter_initial_data = {};
@@ -7600,12 +10807,17 @@
 		 	strokeColor: "#666",
 		 	backgroundColor: "#dfdfdf",
 		 	showHoverImage: false,
-		 	scaleCountFactor: ctx.scaleCountFactor,
 		 	classHeatmap: ctx.classHeatmap,
 		 	homeX: ctx.homeX,
 		 	homeY: ctx.homeY,
 		 	homeScale: ctx.homeScale
 		 };
+		if (ctx.density
+	           !== void 0) {
+			atlas_initial_data.density = ctx.density
+	          ;
+			atlas_updating.density = true;
+		}
 		if (ctx.iconCrop 
 	           !== void 0) {
 			atlas_initial_data.iconCrop = ctx.iconCrop 
@@ -7636,12 +10848,6 @@
 	          ;
 			atlas_updating.showLabels = true;
 		}
-		if (ctx.aspectRatio
-	           !== void 0) {
-			atlas_initial_data.aspectRatio = ctx.aspectRatio
-	          ;
-			atlas_updating.aspectRatio = true;
-		}
 		if (ctx.scale
 	           !== void 0) {
 			atlas_initial_data.scale = ctx.scale
@@ -7666,6 +10872,10 @@
 			data: atlas_initial_data,
 			_bind(changed, childState) {
 				var newState = {};
+				if (!atlas_updating.density && changed.density) {
+					newState.density = childState.density;
+				}
+
 				if (!atlas_updating.iconCrop && changed.iconCrop) {
 					newState.iconCrop = childState.iconCrop;
 				}
@@ -7686,10 +10896,6 @@
 					newState.showLabels = childState.showLabels;
 				}
 
-				if (!atlas_updating.aspectRatio && changed.aspectRatio) {
-					newState.aspectRatio = childState.aspectRatio;
-				}
-
 				if (!atlas_updating.scale && changed.scale) {
 					newState.scale = childState.scale;
 				}
@@ -7707,7 +10913,7 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			atlas._bind({ iconCrop: 1, classHeatmapMultiplier: 1, classHeatmapPositive: 1, gridSize: 1, showLabels: 1, aspectRatio: 1, scale: 1, gcx: 1, gcy: 1 }, atlas.get());
+			atlas._bind({ density: 1, iconCrop: 1, classHeatmapMultiplier: 1, classHeatmapPositive: 1, gridSize: 1, showLabels: 1, scale: 1, gcx: 1, gcy: 1 }, atlas.get());
 		});
 
 		component.refs.atlas = atlas;
@@ -7849,7 +11055,7 @@
 		}
 
 		function input6_change_input_handler() {
-			component.set({ iconScaleFactor: toNumber(input6.value) });
+			component.set({ density: toNumber(input6.value) });
 		}
 
 		function input7_change_input_handler() {
@@ -7998,140 +11204,140 @@
 				text51 = createText(" negative influence");
 				panel2._fragment.c();
 				setAttribute(h20, "slot", "head");
-				addLoc(h20, file$m, 3, 8, 126);
+				addLoc(h20, file$n, 3, 8, 126);
 				setAttribute(div0, "slot", "body");
-				addLoc(div0, file$m, 4, 8, 168);
+				addLoc(div0, file$n, 4, 8, 168);
 				div1.className = "filter svelte-1rc1tnm";
 				setStyle(div1, "display", (ctx.showClassFilter ? 'block' : 'none'));
-				addLoc(div1, file$m, 1, 4, 28);
+				addLoc(div1, file$n, 1, 4, 28);
 				setAttribute(h21, "slot", "head");
-				addLoc(h21, file$m, 13, 8, 398);
+				addLoc(h21, file$n, 13, 8, 398);
 				setAttribute(div2, "slot", "body");
-				addLoc(div2, file$m, 14, 8, 433);
+				addLoc(div2, file$n, 14, 8, 433);
 				div3.className = "stack svelte-1rc1tnm";
 				setStyle(div3, "display", (ctx.showLayerChooser ? 'block' : 'none'));
-				addLoc(div3, file$m, 11, 4, 300);
+				addLoc(div3, file$n, 11, 4, 300);
 				div4.className = "map svelte-1rc1tnm";
 				setStyle(div4, "display", (ctx.scale > 1.0 ? 'block' : 'none'));
-				addLoc(div4, file$m, 46, 10, 1198);
+				addLoc(div4, file$n, 45, 10, 1165);
 				div5.className = "buttons svelte-1rc1tnm";
-				addLoc(div5, file$m, 59, 10, 1603);
+				addLoc(div5, file$n, 58, 10, 1570);
 				div6.className = "svelte-1rc1tnm svelte-ref-controls";
-				addLoc(div6, file$m, 45, 8, 1169);
+				addLoc(div6, file$n, 44, 8, 1136);
 				div7.className = "atlas svelte-1rc1tnm";
-				addLoc(div7, file$m, 23, 4, 611);
+				addLoc(div7, file$n, 23, 4, 611);
 				div8.className = "main svelte-1rc1tnm";
-				addLoc(div8, file$m, 22, 2, 588);
+				addLoc(div8, file$n, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$m, 70, 6, 2165);
-				addLoc(div9, file$m, 74, 10, 2264);
-				addLoc(div10, file$m, 75, 10, 2308);
-				addLoc(div11, file$m, 76, 10, 2352);
-				addLoc(div12, file$m, 73, 8, 2248);
-				addLoc(h30, file$m, 79, 8, 2429);
+				addLoc(h22, file$n, 69, 6, 2132);
+				addLoc(div9, file$n, 73, 10, 2231);
+				addLoc(div10, file$n, 74, 10, 2275);
+				addLoc(div11, file$n, 75, 10, 2319);
+				addLoc(div12, file$n, 72, 8, 2215);
+				addLoc(h30, file$n, 78, 8, 2396);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$m, 80, 17, 2467);
+				addLoc(input0, file$n, 79, 17, 2434);
 				label0.className = "svelte-1rc1tnm";
-				addLoc(label0, file$m, 80, 10, 2460);
-				addLoc(div13, file$m, 78, 8, 2415);
-				addLoc(h31, file$m, 83, 10, 2590);
+				addLoc(label0, file$n, 79, 10, 2427);
+				addLoc(div13, file$n, 77, 8, 2382);
+				addLoc(h31, file$n, 82, 10, 2557);
 				component._bindingGroups[0].push(input1);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "radio");
 				input1.__value = 0;
 				input1.value = input1.__value;
-				addLoc(input1, file$m, 84, 17, 2626);
+				addLoc(input1, file$n, 83, 17, 2593);
 				label1.className = "svelte-1rc1tnm";
-				addLoc(label1, file$m, 84, 10, 2619);
+				addLoc(label1, file$n, 83, 10, 2586);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "radio");
 				input2.__value = 1;
 				input2.value = input2.__value;
-				addLoc(input2, file$m, 85, 17, 2706);
+				addLoc(input2, file$n, 84, 17, 2673);
 				label2.className = "svelte-1rc1tnm";
-				addLoc(label2, file$m, 85, 10, 2699);
+				addLoc(label2, file$n, 84, 10, 2666);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 2;
 				input3.value = input3.__value;
-				addLoc(input3, file$m, 86, 17, 2786);
+				addLoc(input3, file$n, 85, 17, 2753);
 				label3.className = "svelte-1rc1tnm";
-				addLoc(label3, file$m, 86, 10, 2779);
+				addLoc(label3, file$n, 85, 10, 2746);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 3;
 				input4.value = input4.__value;
-				addLoc(input4, file$m, 87, 17, 2866);
+				addLoc(input4, file$n, 86, 17, 2833);
 				label4.className = "svelte-1rc1tnm";
-				addLoc(label4, file$m, 87, 10, 2859);
+				addLoc(label4, file$n, 86, 10, 2826);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 4;
 				input5.value = input5.__value;
-				addLoc(input5, file$m, 88, 17, 2948);
+				addLoc(input5, file$n, 87, 17, 2915);
 				label5.className = "svelte-1rc1tnm";
-				addLoc(label5, file$m, 88, 10, 2941);
+				addLoc(label5, file$n, 87, 10, 2908);
 				div14.className = "grid-size";
-				addLoc(div14, file$m, 82, 8, 2556);
-				addLoc(h32, file$m, 91, 10, 3052);
-				addLoc(div15, file$m, 92, 10, 3077);
+				addLoc(div14, file$n, 81, 8, 2523);
+				addLoc(h32, file$n, 90, 10, 3019);
+				addLoc(div15, file$n, 91, 10, 3044);
 				addListener(input6, "change", input6_change_input_handler);
 				addListener(input6, "input", input6_change_input_handler);
 				setAttribute(input6, "type", "range");
 				input6.min = 0.2;
-				input6.max = 10;
-				input6.step = 0.1;
-				addLoc(input6, file$m, 93, 10, 3131);
-				addLoc(br, file$m, 94, 10, 3219);
-				addLoc(div16, file$m, 95, 10, 3234);
+				input6.max = 8;
+				input6.step = 0.01;
+				addLoc(input6, file$n, 92, 10, 3090);
+				addLoc(br, file$n, 93, 10, 3170);
+				addLoc(div16, file$n, 94, 10, 3185);
 				addListener(input7, "change", input7_change_input_handler);
 				addListener(input7, "input", input7_change_input_handler);
 				setAttribute(input7, "type", "range");
 				input7.min = 0;
 				input7.max = 0.5;
 				input7.step = 0.01;
-				addLoc(input7, file$m, 96, 10, 3278);
-				addLoc(div17, file$m, 90, 8, 3036);
-				addLoc(h33, file$m, 99, 10, 3444);
-				addLoc(div18, file$m, 100, 10, 3476);
+				addLoc(input7, file$n, 95, 10, 3229);
+				addLoc(div17, file$n, 89, 8, 3003);
+				addLoc(h33, file$n, 98, 10, 3395);
+				addLoc(div18, file$n, 99, 10, 3427);
 				addListener(input8, "change", input8_change_input_handler);
 				addListener(input8, "input", input8_change_input_handler);
 				setAttribute(input8, "type", "range");
 				input8.min = "0.5";
 				input8.max = "2";
 				input8.step = "0.1";
-				addLoc(input8, file$m, 101, 10, 3539);
+				addLoc(input8, file$n, 100, 10, 3490);
 				component._bindingGroups[1].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = 1;
 				input9.value = input9.__value;
-				addLoc(input9, file$m, 102, 17, 3634);
+				addLoc(input9, file$n, 101, 17, 3585);
 				label6.className = "svelte-1rc1tnm";
-				addLoc(label6, file$m, 102, 10, 3627);
+				addLoc(label6, file$n, 101, 10, 3578);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
 				setAttribute(input10, "type", "radio");
 				input10.__value = -1;
 				input10.value = input10.__value;
-				addLoc(input10, file$m, 103, 17, 3739);
+				addLoc(input10, file$n, 102, 17, 3690);
 				label7.className = "svelte-1rc1tnm";
-				addLoc(label7, file$m, 103, 10, 3732);
+				addLoc(label7, file$n, 102, 10, 3683);
 				setStyle(div19, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div19, file$m, 98, 8, 3372);
+				addLoc(div19, file$n, 97, 8, 3323);
 				setAttribute(div20, "slot", "body");
 				div20.className = "options-body svelte-1rc1tnm";
-				addLoc(div20, file$m, 71, 6, 2200);
+				addLoc(div20, file$n, 70, 6, 2167);
 				div21.className = "options svelte-1rc1tnm";
 				setStyle(div21, "display", (ctx.showOptions ? 'block' : 'none'));
-				addLoc(div21, file$m, 68, 2, 2074);
+				addLoc(div21, file$n, 67, 2, 2041);
 				div22.className = "container svelte-1rc1tnm";
-				addLoc(div22, file$m, 0, 0, 0);
+				addLoc(div22, file$n, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -8243,11 +11449,11 @@
 				append(div17, div15);
 				append(div15, text37);
 				append(div15, raw3_before);
-				raw3_before.insertAdjacentHTML("afterend", ctx.iconScaleFactor);
+				raw3_before.insertAdjacentHTML("afterend", ctx.density);
 				append(div17, text38);
 				append(div17, input6);
 
-				input6.value = ctx.iconScaleFactor;
+				input6.value = ctx.density;
 
 				append(div17, text39);
 				append(div17, br);
@@ -8324,11 +11530,16 @@
 
 				var atlas_changes = {};
 				if (changed.layerName) atlas_changes.id = "inceptionv1_" + ctx.layerName;
-				if (changed.scaleCountFactor) atlas_changes.scaleCountFactor = ctx.scaleCountFactor;
 				if (changed.classHeatmap) atlas_changes.classHeatmap = ctx.classHeatmap;
 				if (changed.homeX) atlas_changes.homeX = ctx.homeX;
 				if (changed.homeY) atlas_changes.homeY = ctx.homeY;
 				if (changed.homeScale) atlas_changes.homeScale = ctx.homeScale;
+				if (!atlas_updating.density && changed.density) {
+					atlas_changes.density = ctx.density
+	          ;
+					atlas_updating.density = ctx.density
+	           !== void 0;
+				}
 				if (!atlas_updating.iconCrop && changed.iconCrop) {
 					atlas_changes.iconCrop = ctx.iconCrop 
 	          ;
@@ -8357,12 +11568,6 @@
 					atlas_changes.showLabels = ctx.showLabels
 	          ;
 					atlas_updating.showLabels = ctx.showLabels
-	           !== void 0;
-				}
-				if (!atlas_updating.aspectRatio && changed.aspectRatio) {
-					atlas_changes.aspectRatio = ctx.aspectRatio
-	          ;
-					atlas_updating.aspectRatio = ctx.aspectRatio
 	           !== void 0;
 				}
 				if (!atlas_updating.scale && changed.scale) {
@@ -8443,12 +11648,12 @@
 				if (changed.gridSize) input3.checked = input3.__value === ctx.gridSize;
 				if (changed.gridSize) input4.checked = input4.__value === ctx.gridSize;
 				if (changed.gridSize) input5.checked = input5.__value === ctx.gridSize;
-				if (changed.iconScaleFactor) {
+				if (changed.density) {
 					detachAfter(raw3_before);
-					raw3_before.insertAdjacentHTML("afterend", ctx.iconScaleFactor);
+					raw3_before.insertAdjacentHTML("afterend", ctx.density);
 				}
 
-				if (changed.iconScaleFactor) input6.value = ctx.iconScaleFactor;
+				if (changed.density) input6.value = ctx.density;
 				if (changed.iconCrop) {
 					detachAfter(raw4_before);
 					raw4_before.insertAdjacentHTML("afterend", ctx.iconCrop);
@@ -8525,7 +11730,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$g(), options.data);
+		this._state = assign(data$h(), options.data);
 
 		this._recompute({ gridSize: 1, iconScaleFactor: 1, realGridSize: 1 }, this._state);
 		if (!('gridSize' in this._state)) console.warn("<App> was created without expected data property 'gridSize'");
@@ -8535,23 +11740,24 @@
 		if (!('classHeatmap' in this._state)) console.warn("<App> was created without expected data property 'classHeatmap'");
 		if (!('showLayerChooser' in this._state)) console.warn("<App> was created without expected data property 'showLayerChooser'");
 		if (!('layerName' in this._state)) console.warn("<App> was created without expected data property 'layerName'");
-
+		if (!('density' in this._state)) console.warn("<App> was created without expected data property 'density'");
 		if (!('iconCrop' in this._state)) console.warn("<App> was created without expected data property 'iconCrop'");
 		if (!('classHeatmapMultiplier' in this._state)) console.warn("<App> was created without expected data property 'classHeatmapMultiplier'");
 		if (!('classHeatmapPositive' in this._state)) console.warn("<App> was created without expected data property 'classHeatmapPositive'");
 		if (!('showLabels' in this._state)) console.warn("<App> was created without expected data property 'showLabels'");
-		if (!('aspectRatio' in this._state)) console.warn("<App> was created without expected data property 'aspectRatio'");
 		if (!('scale' in this._state)) console.warn("<App> was created without expected data property 'scale'");
 		if (!('gcx' in this._state)) console.warn("<App> was created without expected data property 'gcx'");
 		if (!('gcy' in this._state)) console.warn("<App> was created without expected data property 'gcy'");
 		if (!('homeX' in this._state)) console.warn("<App> was created without expected data property 'homeX'");
 		if (!('homeY' in this._state)) console.warn("<App> was created without expected data property 'homeY'");
 		if (!('homeScale' in this._state)) console.warn("<App> was created without expected data property 'homeScale'");
+		if (!('aspectRatio' in this._state)) console.warn("<App> was created without expected data property 'aspectRatio'");
+
 		if (!('showOptions' in this._state)) console.warn("<App> was created without expected data property 'showOptions'");
 		this._bindingGroups = [[], []];
 		this._intro = true;
 
-		this._fragment = create_main_fragment$n(this, this._state);
+		this._fragment = create_main_fragment$o(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8581,9 +11787,9 @@
 
 	/* src/diagrams/Overview.html generated by Svelte v2.15.3 */
 
-	const file$n = "src/diagrams/Overview.html";
+	const file$o = "src/diagrams/Overview.html";
 
-	function create_main_fragment$o(component, ctx) {
+	function create_main_fragment$p(component, ctx) {
 		var div8, div1, h40, text1, text2, div0, text4, div3, h41, text6, text7, div2, text9, div5, h42, text11, text12, div4, text14, div7, h43, text16, text17, div6;
 
 		var lazyimage0_initial_data = {
@@ -8665,27 +11871,27 @@
 				div6 = createElement("div");
 				div6.textContent = "Activation atlases show important combinations of neurons, but give a bigger picture overview.";
 				h40.className = "svelte-7yn287";
-				addLoc(h40, file$n, 2, 4, 27);
+				addLoc(h40, file$o, 2, 4, 27);
 				div0.className = "figcaption svelte-7yn287";
-				addLoc(div0, file$n, 7, 4, 148);
-				addLoc(div1, file$n, 1, 2, 17);
+				addLoc(div0, file$o, 7, 4, 148);
+				addLoc(div1, file$o, 1, 2, 17);
 				h41.className = "svelte-7yn287";
-				addLoc(h41, file$n, 10, 4, 312);
+				addLoc(h41, file$o, 10, 4, 312);
 				div2.className = "figcaption svelte-7yn287";
-				addLoc(div2, file$n, 15, 4, 438);
-				addLoc(div3, file$n, 9, 2, 302);
+				addLoc(div2, file$o, 15, 4, 438);
+				addLoc(div3, file$o, 9, 2, 302);
 				h42.className = "svelte-7yn287";
-				addLoc(h42, file$n, 18, 4, 638);
+				addLoc(h42, file$o, 18, 4, 638);
 				div4.className = "figcaption svelte-7yn287";
-				addLoc(div4, file$n, 23, 4, 760);
-				addLoc(div5, file$n, 17, 2, 628);
+				addLoc(div4, file$o, 23, 4, 760);
+				addLoc(div5, file$o, 17, 2, 628);
 				h43.className = "svelte-7yn287";
-				addLoc(h43, file$n, 26, 4, 913);
+				addLoc(h43, file$o, 26, 4, 913);
 				div6.className = "figcaption svelte-7yn287";
-				addLoc(div6, file$n, 31, 4, 1031);
-				addLoc(div7, file$n, 25, 2, 903);
+				addLoc(div6, file$o, 31, 4, 1031);
+				addLoc(div7, file$o, 25, 2, 903);
 				div8.className = "svelte-7yn287 svelte-ref-root";
-				addLoc(div8, file$n, 0, 0, 0);
+				addLoc(div8, file$o, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -8747,7 +11953,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$o(this, this._state);
+		this._fragment = create_main_fragment$p(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8765,9 +11971,9 @@
 
 	/* src/diagrams/ModelOverview.html generated by Svelte v2.15.3 */
 
-	const file$o = "src/diagrams/ModelOverview.html";
+	const file$p = "src/diagrams/ModelOverview.html";
 
-	function create_main_fragment$p(component, ctx) {
+	function create_main_fragment$q(component, ctx) {
 		var div;
 
 		var lazyimage_initial_data = {
@@ -8788,7 +11994,7 @@
 				div = createElement("div");
 				lazyimage._fragment.c();
 				div.className = "svelte-rd22a7 svelte-ref-root";
-				addLoc(div, file$o, 0, 0, 0);
+				addLoc(div, file$p, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -8821,7 +12027,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$p(this, this._state);
+		this._fragment = create_main_fragment$q(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8839,9 +12045,9 @@
 
 	/* src/diagrams/GridDetail.html generated by Svelte v2.15.3 */
 
-	const file$p = "src/diagrams/GridDetail.html";
+	const file$q = "src/diagrams/GridDetail.html";
 
-	function create_main_fragment$q(component, ctx) {
+	function create_main_fragment$r(component, ctx) {
 		var div4, div1, text0, div0, text2, div3, text3, div2;
 
 		var lazyimage0_initial_data = {
@@ -8879,13 +12085,13 @@
 				div2 = createElement("div");
 				div2.textContent = "Activation grid from InceptionV1, layer mixed4d.";
 				div0.className = "figcaption svelte-scrtb8";
-				addLoc(div0, file$p, 7, 4, 116);
-				addLoc(div1, file$p, 2, 2, 22);
+				addLoc(div0, file$q, 7, 4, 116);
+				addLoc(div1, file$q, 2, 2, 22);
 				div2.className = "figcaption svelte-scrtb8";
-				addLoc(div2, file$p, 14, 4, 287);
-				addLoc(div3, file$p, 9, 2, 184);
+				addLoc(div2, file$q, 14, 4, 287);
+				addLoc(div3, file$q, 9, 2, 184);
 				div4.className = "root svelte-scrtb8";
-				addLoc(div4, file$p, 1, 0, 1);
+				addLoc(div4, file$q, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -8924,7 +12130,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$q(this, this._state);
+		this._fragment = create_main_fragment$r(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8942,7 +12148,7 @@
 
 	/* src/diagrams/ClassAtlas.html generated by Svelte v2.15.3 */
 
-	function root({filterType}) {
+	function root$2({filterType}) {
 		return `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/render/`;
 	}
 
@@ -8954,7 +12160,7 @@
 		return `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`;
 	}
 
-	function data$h() {
+	function data$i() {
 	  return {
 	    filterType: "winner",
 	    classFilter: 62,
@@ -8965,7 +12171,7 @@
 	// https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_winner/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=1_winner--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 	// https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_top--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 
-	const file$q = "src/diagrams/ClassAtlas.html";
+	const file$r = "src/diagrams/ClassAtlas.html";
 
 	function get_each1_context(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -8979,7 +12185,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$r(component, ctx) {
+	function create_main_fragment$s(component, ctx) {
 		var div, text, svg, each0_anchor;
 
 		var lazyimage_initial_data = {
@@ -9026,9 +12232,9 @@
 				}
 				setAttribute(svg, "viewBox", "0 0 500 500");
 				setAttribute(svg, "class", "svelte-hfoyhc");
-				addLoc(svg, file$q, 7, 2, 81);
+				addLoc(svg, file$r, 7, 2, 81);
 				div.className = "svelte-hfoyhc svelte-ref-root";
-				addLoc(div, file$q, 0, 0, 0);
+				addLoc(div, file$r, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -9127,7 +12333,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$q, 9, 4, 134);
+				addLoc(line, file$r, 9, 4, 134);
 			},
 
 			m: function mount(target, anchor) {
@@ -9165,7 +12371,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$q, 13, 4, 297);
+				addLoc(line, file$r, 13, 4, 297);
 			},
 
 			m: function mount(target, anchor) {
@@ -9198,7 +12404,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$h(), options.data);
+		this._state = assign(data$i(), options.data);
 
 		this._recompute({ filterType: 1, gridSize: 1, root: 1, classFilter: 1 }, this._state);
 		if (!('filterType' in this._state)) console.warn("<ClassAtlas> was created without expected data property 'filterType'");
@@ -9207,7 +12413,7 @@
 		if (!('classFilter' in this._state)) console.warn("<ClassAtlas> was created without expected data property 'classFilter'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$r(this, this._state);
+		this._fragment = create_main_fragment$s(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9228,7 +12434,7 @@
 
 	ClassAtlas.prototype._recompute = function _recompute(changed, state) {
 		if (changed.filterType) {
-			if (this._differs(state.root, (state.root = root(state)))) changed.root = true;
+			if (this._differs(state.root, (state.root = root$2(state)))) changed.root = true;
 		}
 
 		if (changed.gridSize) {
@@ -9242,12 +12448,12 @@
 
 	/* src/diagrams/ClassSubset.html generated by Svelte v2.15.3 */
 
-	function data$i() {
+	function data$j() {
 	  return {
 	    layout: 0,
 	  }
 	}
-	const file$r = "src/diagrams/ClassSubset.html";
+	const file$s = "src/diagrams/ClassSubset.html";
 
 	function get_each_context$3(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -9255,7 +12461,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$s(component, ctx) {
+	function create_main_fragment$t(component, ctx) {
 		var h4, text0, text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasIndex], text1, text2, text3, div3, div0, text4, div2, div1, text5, div4;
 
 		var classatlas_initial_data = { classFilter: ctx.$currentClassAtlasIndex };
@@ -9302,17 +12508,17 @@
 				div4 = createElement("div");
 				notebooklink._fragment.c();
 				h4.className = "svelte-15rolwy";
-				addLoc(h4, file$r, 0, 0, 0);
+				addLoc(h4, file$s, 0, 0, 0);
 				setStyle(div0, "position", "relative");
-				addLoc(div0, file$r, 2, 2, 112);
+				addLoc(div0, file$s, 2, 2, 112);
 				div1.className = "chooser svelte-15rolwy";
-				addLoc(div1, file$r, 6, 4, 249);
+				addLoc(div1, file$s, 6, 4, 249);
 				div2.className = "chooser-container svelte-15rolwy";
-				addLoc(div2, file$r, 5, 2, 213);
+				addLoc(div2, file$s, 5, 2, 213);
 				div3.className = "svelte-15rolwy svelte-ref-root";
-				addLoc(div3, file$r, 1, 0, 95);
+				addLoc(div3, file$s, 1, 0, 95);
 				setStyle(div4, "margin-top", "16px");
-				addLoc(div4, file$r, 16, 0, 553);
+				addLoc(div4, file$s, 16, 0, 553);
 			},
 
 			m: function mount(target, anchor) {
@@ -9414,9 +12620,9 @@
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
 				input.className = "svelte-15rolwy";
-				addLoc(input, file$r, 9, 10, 393);
+				addLoc(input, file$s, 9, 10, 393);
 				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-15rolwy";
-				addLoc(label, file$r, 8, 8, 317);
+				addLoc(label, file$s, 8, 8, 317);
 			},
 
 			m: function mount(target, anchor) {
@@ -9474,7 +12680,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(assign(this.store._init(["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]), data$i()), options.data);
+		this._state = assign(assign(this.store._init(["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]), data$j()), options.data);
 		this.store._add(this, ["inceptionLabels","currentClassAtlasIndex","classAtlasIndices"]);
 		if (!('$inceptionLabels' in this._state)) console.warn("<ClassSubset> was created without expected data property '$inceptionLabels'");
 		if (!('$currentClassAtlasIndex' in this._state)) console.warn("<ClassSubset> was created without expected data property '$currentClassAtlasIndex'");
@@ -9484,7 +12690,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$s(this, this._state);
+		this._fragment = create_main_fragment$t(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9502,11 +12708,11 @@
 
 	/* src/diagrams/ClassFilterComparison.html generated by Svelte v2.15.3 */
 
-	function data$j() {
+	function data$k() {
 	  return {
 	  };
 	}
-	const file$s = "src/diagrams/ClassFilterComparison.html";
+	const file$t = "src/diagrams/ClassFilterComparison.html";
 
 	function get_each_context$4(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -9514,8 +12720,8 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$t(component, ctx) {
-		var div8, div2, h40, text0, text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], text1, text2, text3, div0, text4, div1, text6, div5, h41, text7, text8_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], text8, text9, text10, div3, text11, div4, text13, div7, div6;
+	function create_main_fragment$u(component, ctx) {
+		var div8, div2, h40, text0, raw0_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], raw0_before, raw0_after, text1, text2, div0, text3, div1, text5, div5, h41, text6, raw1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], raw1_before, raw1_after, text7, text8, div3, text9, div4, text11, div7, div6;
 
 		var classatlas0_initial_data = {
 		 	classFilter: ctx.$currentClassAtlasCompareIndex,
@@ -9551,27 +12757,29 @@
 				div2 = createElement("div");
 				h40 = createElement("h4");
 				text0 = createText("“");
-				text1 = createText(text1_value);
-				text2 = createText("” filtered by top rank");
-				text3 = createText("\n    ");
+				raw0_before = createElement('noscript');
+				raw0_after = createElement('noscript');
+				text1 = createText("” filtered by top rank");
+				text2 = createText("\n    ");
 				div0 = createElement("div");
 				classatlas0._fragment.c();
-				text4 = createText("\n    ");
+				text3 = createText("\n    ");
 				div1 = createElement("div");
 				div1.textContent = "We pluck only those activations whose top attribution is toward the class in question. The results are often much more focused and isolated, exclusive to the class. Some are low magnitude, like backgrounds, and we miss correlations or concepts that are shared among many classes.";
-				text6 = createText("\n  ");
+				text5 = createText("\n  ");
 				div5 = createElement("div");
 				h41 = createElement("h4");
-				text7 = createText("“");
-				text8 = createText(text8_value);
-				text9 = createText("” filtered by overall magnitude");
-				text10 = createText("\n    ");
+				text6 = createText("“");
+				raw1_before = createElement('noscript');
+				raw1_after = createElement('noscript');
+				text7 = createText("” filtered by overall magnitude");
+				text8 = createText("\n    ");
 				div3 = createElement("div");
 				classatlas1._fragment.c();
-				text11 = createText("\n    ");
+				text9 = createText("\n    ");
 				div4 = createElement("div");
 				div4.textContent = "Here we sort all the activations by the magnitude toward the class in question (independent of other classes) and take the top 2,000 activations. We see more correlated activations that could, on their own, contribute to another classification. Some of them are spurious, however.";
-				text13 = createText("\n  ");
+				text11 = createText("\n  ");
 				div7 = createElement("div");
 				div6 = createElement("div");
 
@@ -9579,27 +12787,27 @@
 					each_blocks[i].c();
 				}
 				h40.className = "svelte-1kmawds";
-				addLoc(h40, file$s, 5, 4, 106);
+				addLoc(h40, file$t, 5, 4, 106);
 				div0.className = "atlas";
-				addLoc(div0, file$s, 6, 4, 193);
+				addLoc(div0, file$t, 6, 4, 199);
 				div1.className = "figcaption svelte-1kmawds";
-				addLoc(div1, file$s, 9, 4, 314);
-				addLoc(div2, file$s, 4, 2, 96);
+				addLoc(div1, file$t, 9, 4, 320);
+				addLoc(div2, file$t, 4, 2, 96);
 				h41.className = "svelte-1kmawds";
-				addLoc(h41, file$s, 12, 4, 646);
+				addLoc(h41, file$t, 12, 4, 652);
 				div3.className = "atlas";
-				addLoc(div3, file$s, 13, 4, 742);
+				addLoc(div3, file$t, 13, 4, 754);
 				div4.className = "figcaption svelte-1kmawds";
-				addLoc(div4, file$s, 16, 4, 860);
-				addLoc(div5, file$s, 11, 2, 636);
+				addLoc(div4, file$t, 16, 4, 872);
+				addLoc(div5, file$t, 11, 2, 642);
 				div6.className = "chooser svelte-1kmawds";
-				addLoc(div6, file$s, 19, 4, 1219);
+				addLoc(div6, file$t, 19, 4, 1231);
 				div7.className = "chooser-container svelte-1kmawds";
-				addLoc(div7, file$s, 18, 2, 1183);
+				addLoc(div7, file$t, 18, 2, 1195);
 				setStyle(div8, "display", "grid");
 				setStyle(div8, "grid-column-gap", "20px");
 				setStyle(div8, "grid-template-columns", "1fr 1fr 200px");
-				addLoc(div8, file$s, 2, 0, 2);
+				addLoc(div8, file$t, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
@@ -9607,25 +12815,29 @@
 				append(div8, div2);
 				append(div2, h40);
 				append(h40, text0);
+				append(h40, raw0_before);
+				raw0_before.insertAdjacentHTML("afterend", raw0_value);
+				append(h40, raw0_after);
 				append(h40, text1);
-				append(h40, text2);
-				append(div2, text3);
+				append(div2, text2);
 				append(div2, div0);
 				classatlas0._mount(div0, null);
-				append(div2, text4);
+				append(div2, text3);
 				append(div2, div1);
-				append(div8, text6);
+				append(div8, text5);
 				append(div8, div5);
 				append(div5, h41);
+				append(h41, text6);
+				append(h41, raw1_before);
+				raw1_before.insertAdjacentHTML("afterend", raw1_value);
+				append(h41, raw1_after);
 				append(h41, text7);
-				append(h41, text8);
-				append(h41, text9);
-				append(div5, text10);
+				append(div5, text8);
 				append(div5, div3);
 				classatlas1._mount(div3, null);
-				append(div5, text11);
+				append(div5, text9);
 				append(div5, div4);
-				append(div8, text13);
+				append(div8, text11);
 				append(div8, div7);
 				append(div7, div6);
 
@@ -9635,16 +12847,18 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.$inceptionLabels || changed.$currentClassAtlasCompareIndex) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex])) {
-					setData(text1, text1_value);
+				if ((changed.$inceptionLabels || changed.$currentClassAtlasCompareIndex) && raw0_value !== (raw0_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex])) {
+					detachBetween(raw0_before, raw0_after);
+					raw0_before.insertAdjacentHTML("afterend", raw0_value);
 				}
 
 				var classatlas0_changes = {};
 				if (changed.$currentClassAtlasCompareIndex) classatlas0_changes.classFilter = ctx.$currentClassAtlasCompareIndex;
 				classatlas0._set(classatlas0_changes);
 
-				if ((changed.$inceptionLabels || changed.$currentClassAtlasCompareIndex) && text8_value !== (text8_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex])) {
-					setData(text8, text8_value);
+				if ((changed.$inceptionLabels || changed.$currentClassAtlasCompareIndex) && raw1_value !== (raw1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex])) {
+					detachBetween(raw1_before, raw1_after);
+					raw1_before.insertAdjacentHTML("afterend", raw1_value);
 				}
 
 				var classatlas1_changes = {};
@@ -9709,9 +12923,9 @@
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
 				input.className = "svelte-1kmawds";
-				addLoc(input, file$s, 22, 10, 1370);
+				addLoc(input, file$t, 22, 10, 1382);
 				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1kmawds";
-				addLoc(label, file$s, 21, 8, 1287);
+				addLoc(label, file$t, 21, 8, 1299);
 			},
 
 			m: function mount(target, anchor) {
@@ -9768,7 +12982,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(this.store._init(["inceptionLabels","currentClassAtlasCompareIndex","classAtlasIndices"]), data$j()), options.data);
+		this._state = assign(assign(this.store._init(["inceptionLabels","currentClassAtlasCompareIndex","classAtlasIndices"]), data$k()), options.data);
 		this.store._add(this, ["inceptionLabels","currentClassAtlasCompareIndex","classAtlasIndices"]);
 		if (!('$inceptionLabels' in this._state)) console.warn("<ClassFilterComparison> was created without expected data property '$inceptionLabels'");
 		if (!('$currentClassAtlasCompareIndex' in this._state)) console.warn("<ClassFilterComparison> was created without expected data property '$currentClassAtlasCompareIndex'");
@@ -9778,7 +12992,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$t(this, this._state);
+		this._fragment = create_main_fragment$u(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9804,14 +13018,14 @@
 		return $classComparisons[classComparisonIndex].right;
 	}
 
-	function data$k() {
+	function data$l() {
 	  return {
 	    classComparisonIndex: 0,
 	    showControls: true,
 	    filterType: "top"
 	  };
 	}
-	const file$t = "src/diagrams/ClassComparison.html";
+	const file$u = "src/diagrams/ClassComparison.html";
 
 	function click_handler(event) {
 		const { component, ctx } = this._svelte;
@@ -9826,7 +13040,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$u(component, ctx) {
+	function create_main_fragment$v(component, ctx) {
 		var text0, div4, div1, h40, text1, text2_value = ctx.$inceptionLabels[ctx.leftIndex], text2, text3, text4, div0, text5, div3, h41, text6, text7_value = ctx.$inceptionLabels[ctx.rightIndex], text7, text8, text9, div2;
 
 		var if_block = (ctx.showControls) && create_if_block$6(component, ctx);
@@ -9874,20 +13088,20 @@
 				div2 = createElement("div");
 				classatlas1._fragment.c();
 				h40.className = "svelte-a1781g";
-				addLoc(h40, file$t, 8, 4, 307);
+				addLoc(h40, file$u, 8, 4, 307);
 				div0.className = "atlas";
-				addLoc(div0, file$t, 9, 4, 352);
-				addLoc(div1, file$t, 7, 2, 297);
+				addLoc(div0, file$u, 9, 4, 352);
+				addLoc(div1, file$u, 7, 2, 297);
 				h41.className = "svelte-a1781g";
-				addLoc(h41, file$t, 14, 4, 462);
+				addLoc(h41, file$u, 14, 4, 462);
 				div2.className = "atlas";
-				addLoc(div2, file$t, 15, 4, 508);
-				addLoc(div3, file$t, 13, 2, 452);
+				addLoc(div2, file$u, 15, 4, 508);
+				addLoc(div3, file$u, 13, 2, 452);
 				setStyle(div4, "display", "grid");
 				setStyle(div4, "grid-auto-flow", "column");
 				setStyle(div4, "grid-column-gap", "20px");
 				setStyle(div4, "grid-auto-columns", "1fr");
-				addLoc(div4, file$t, 6, 0, 195);
+				addLoc(div4, file$u, 6, 0, 195);
 			},
 
 			m: function mount(target, anchor) {
@@ -10034,7 +13248,7 @@
 				button._svelte = { component, ctx };
 
 				addListener(button, "click", click_handler);
-				addLoc(button, file$t, 2, 4, 68);
+				addLoc(button, file$u, 2, 4, 68);
 			},
 
 			m: function mount(target, anchor) {
@@ -10077,7 +13291,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(this.store._init(["classComparisons","inceptionLabels"]), data$k()), options.data);
+		this._state = assign(assign(this.store._init(["classComparisons","inceptionLabels"]), data$l()), options.data);
 		this.store._add(this, ["classComparisons","inceptionLabels"]);
 
 		this._recompute({ $classComparisons: 1, classComparisonIndex: 1 }, this._state);
@@ -10091,7 +13305,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$u(this, this._state);
+		this._fragment = create_main_fragment$v(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10138,7 +13352,7 @@
 		return $classComparisons[currentClassComparisonIndex];
 	}
 
-	function data$l() {
+	function data$m() {
 	  return {
 	    width: 504,
 	    selected: 0,
@@ -10152,7 +13366,7 @@
 	    currentClassComparisonIndex: 0
 	  }
 	}
-	const file$u = "src/diagrams/ClassGradient.html";
+	const file$v = "src/diagrams/ClassGradient.html";
 
 	function get_each_context$6(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -10173,7 +13387,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$v(component, ctx) {
+	function create_main_fragment$w(component, ctx) {
 		var div, svg, defs, marker, path, g5, image, image_xlink_href_value, image_alt_value, g1, text2, tspan0, text0, tspan1, text1_value = ctx.comparison.leftLabel, text1, text5, tspan2, text3, tspan3, text4_value = ctx.comparison.rightLabel, text4, g0, line0, line1, g1_transform_value, g3, g2, line2, line3, text10, tspan4, text6, tspan5, text7, tspan6, text8, tspan7, text9, g3_transform_value, g4, line4, line4_y__value, line4_y__value_1, line5, line5_y__value, line5_y__value_1, g4_transform_value, each0_anchor, each1_anchor, g5_transform_value, svg_viewBox_value;
 
 		var each0_value = range(11);
@@ -10248,7 +13462,7 @@
 				if (if_block) if_block.c();
 				setAttribute(path, "d", "M0,0 L0,10 L10,5 z");
 				setAttribute(path, "fill", ctx.color);
-				addLoc(path, file$u, 11, 10, 462);
+				addLoc(path, file$v, 11, 10, 462);
 				setAttribute(marker, "id", 'arrow');
 				setAttribute(marker, "markerWidth", "7");
 				setAttribute(marker, "markerHeight", "7");
@@ -10257,97 +13471,97 @@
 				setAttribute(marker, "orient", "auto");
 				setAttribute(marker, "markerUnits", "strokeWidth");
 				setAttribute(marker, "viewBox", "0 0 10 10");
-				addLoc(marker, file$u, 10, 7, 316);
-				addLoc(defs, file$u, 9, 3, 302);
+				addLoc(marker, file$v, 10, 7, 316);
+				addLoc(defs, file$v, 9, 3, 302);
 				setAttribute(image, "id", "comparisonImg");
 				setAttribute(image, "width", ctx.width);
 				setAttribute(image, "height", ctx.height);
 				setXlinkAttribute(image, "xlink:href", image_xlink_href_value = "https://storage.googleapis.com/activation-atlas/build/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg");
 				setAttribute(image, "alt", image_alt_value = ctx.comparison.label);
-				addLoc(image, file$u, 19, 6, 625);
+				addLoc(image, file$v, 19, 6, 625);
 				setAttribute(tspan0, "x", "-10");
 				setAttribute(tspan0, "dy", "1.3em");
-				addLoc(tspan0, file$u, 31, 10, 1167);
+				addLoc(tspan0, file$v, 31, 10, 1167);
 				setAttribute(tspan1, "x", "-10");
 				setAttribute(tspan1, "dy", "1.3em");
 				setAttribute(tspan1, "font-weight", "bold");
-				addLoc(tspan1, file$u, 32, 10, 1231);
+				addLoc(tspan1, file$v, 32, 10, 1231);
 				setAttribute(text2, "y", "-50");
 				setAttribute(text2, "text-anchor", "end");
 				setAttribute(text2, "class", "svelte-1jr0ob8");
-				addLoc(text2, file$u, 30, 8, 1124);
+				addLoc(text2, file$v, 30, 8, 1124);
 				setAttribute(tspan2, "x", "10");
 				setAttribute(tspan2, "dy", "1.3em");
-				addLoc(tspan2, file$u, 35, 10, 1356);
+				addLoc(tspan2, file$v, 35, 10, 1356);
 				setAttribute(tspan3, "x", "10");
 				setAttribute(tspan3, "dy", "1.3em");
 				setAttribute(tspan3, "font-weight", "bold");
-				addLoc(tspan3, file$u, 36, 10, 1419);
+				addLoc(tspan3, file$v, 36, 10, 1419);
 				setAttribute(text5, "y", "-50");
 				setAttribute(text5, "class", "svelte-1jr0ob8");
-				addLoc(text5, file$u, 34, 8, 1331);
+				addLoc(text5, file$v, 34, 8, 1331);
 				setAttribute(line0, "x2", "-50");
 				setAttribute(line0, "transform", "translate(-120,0)");
 				setAttribute(line0, "stroke", ctx.color);
 				setAttribute(line0, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line0, file$u, 40, 10, 1564);
+				addLoc(line0, file$v, 40, 10, 1564);
 				setAttribute(line1, "x2", "50");
 				setAttribute(line1, "transform", "translate(120,0)");
 				setAttribute(line1, "stroke", ctx.color);
 				setAttribute(line1, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line1, file$u, 41, 10, 1671);
+				addLoc(line1, file$v, 41, 10, 1671);
 				setAttribute(g0, "transform", "translate(0, -28)");
-				addLoc(g0, file$u, 39, 8, 1520);
+				addLoc(g0, file$v, 39, 8, 1520);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + ctx.width / 2 + ", 0)");
-				addLoc(g1, file$u, 29, 6, 1074);
+				addLoc(g1, file$v, 29, 6, 1074);
 				setAttribute(line2, "y2", "-50");
 				setAttribute(line2, "transform", "translate(0,-38)");
 				setAttribute(line2, "stroke", ctx.color);
 				setAttribute(line2, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line2, file$u, 49, 10, 1936);
+				addLoc(line2, file$v, 49, 10, 1936);
 				setAttribute(line3, "y2", "50");
 				setAttribute(line3, "transform", "translate(0,30)");
 				setAttribute(line3, "stroke", ctx.color);
 				setAttribute(line3, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line3, file$u, 50, 10, 2042);
+				addLoc(line3, file$v, 50, 10, 2042);
 				setAttribute(g2, "transform", "translate(10, 0)");
-				addLoc(g2, file$u, 48, 8, 1893);
+				addLoc(g2, file$v, 48, 8, 1893);
 				setAttribute(tspan4, "x", "0");
 				setAttribute(tspan4, "y", "-1.8em");
-				addLoc(tspan4, file$u, 53, 10, 2202);
+				addLoc(tspan4, file$v, 53, 10, 2202);
 				setAttribute(tspan5, "x", "0");
 				setAttribute(tspan5, "y", "-0.6em");
-				addLoc(tspan5, file$u, 54, 10, 2255);
+				addLoc(tspan5, file$v, 54, 10, 2255);
 				setAttribute(tspan6, "x", "0");
 				setAttribute(tspan6, "y", "0.6em");
-				addLoc(tspan6, file$u, 55, 10, 2311);
+				addLoc(tspan6, file$v, 55, 10, 2311);
 				setAttribute(tspan7, "x", "0");
 				setAttribute(tspan7, "y", "1.8em");
-				addLoc(tspan7, file$u, 56, 10, 2369);
+				addLoc(tspan7, file$v, 56, 10, 2369);
 				setAttribute(text10, "alignment-baseline", "middle");
 				setAttribute(text10, "class", "svelte-1jr0ob8");
-				addLoc(text10, file$u, 52, 8, 2157);
+				addLoc(text10, file$v, 52, 8, 2157);
 				setAttribute(g3, "transform", g3_transform_value = "translate(" + (- ctx.margin.left + 8) + "," + ctx.height/2 + ")");
-				addLoc(g3, file$u, 47, 6, 1827);
+				addLoc(g3, file$v, 47, 6, 1827);
 				setAttribute(line4, "y1", line4_y__value = -ctx.margin.top + 4);
 				setAttribute(line4, "y2", line4_y__value_1 = ctx.height + 8);
 				setAttribute(line4, "stroke", "white");
 				setAttribute(line4, "stroke-width", "5");
 				setAttribute(line4, "stroke-opacity", "0.6");
-				addLoc(line4, file$u, 63, 8, 2513);
+				addLoc(line4, file$v, 63, 8, 2513);
 				setAttribute(line5, "y1", line5_y__value = -ctx.margin.top + 4);
 				setAttribute(line5, "y2", line5_y__value_1 = ctx.height + 8);
 				setAttribute(line5, "stroke", "black");
-				addLoc(line5, file$u, 64, 8, 2627);
+				addLoc(line5, file$v, 64, 8, 2627);
 				setAttribute(g4, "transform", g4_transform_value = "translate(" + ctx.width / 2 + ", 0)");
-				addLoc(g4, file$u, 62, 6, 2463);
+				addLoc(g4, file$v, 62, 6, 2463);
 				setAttribute(g5, "transform", g5_transform_value = "translate(" + ctx.margin.left + "," + ctx.margin.top + ")");
-				addLoc(g5, file$u, 15, 4, 542);
+				addLoc(g5, file$v, 15, 4, 542);
 				setAttribute(svg, "class", "overlay svelte-1jr0ob8");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.outerWidth + " " + ctx.outerHeight);
-				addLoc(svg, file$u, 5, 2, 210);
+				addLoc(svg, file$v, 5, 2, 210);
 				div.className = "overlay-wrap svelte-1jr0ob8";
-				addLoc(div, file$u, 4, 0, 180);
+				addLoc(div, file$v, 4, 0, 180);
 			},
 
 			m: function mount(target, anchor) {
@@ -10560,7 +13774,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$u, 68, 8, 2747);
+				addLoc(line, file$v, 68, 8, 2747);
 			},
 
 			m: function mount(target, anchor) {
@@ -10597,7 +13811,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$u, 72, 8, 2930);
+				addLoc(line, file$v, 72, 8, 2930);
 			},
 
 			m: function mount(target, anchor) {
@@ -10701,26 +13915,26 @@
 				setAttribute(line, "x2", line_x__value_1 = ctx.width + 10);
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.4");
-				addLoc(line, file$u, 80, 12, 3283);
+				addLoc(line, file$v, 80, 12, 3283);
 				setAttribute(text1, "x", text1_x_value = ctx.width + 20);
 				setAttribute(text1, "alignment-baseline", "middle");
 				setAttribute(text1, "class", "svelte-1jr0ob8");
-				addLoc(text1, file$u, 81, 12, 3428);
+				addLoc(text1, file$v, 81, 12, 3428);
 				setAttribute(g0, "transform", g0_transform_value = "translate(0, " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g0, file$u, 79, 10, 3202);
+				addLoc(g0, file$v, 79, 10, 3202);
 				setAttribute(circle0, "r", circle0_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle0, "fill", "none");
 				setAttribute(circle0, "stroke", "white");
 				setAttribute(circle0, "stroke-opacity", "0.5");
 				setAttribute(circle0, "stroke-width", "5");
-				addLoc(circle0, file$u, 84, 12, 3645);
+				addLoc(circle0, file$v, 84, 12, 3645);
 				setAttribute(circle1, "r", circle1_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle1, "fill", "none");
 				setAttribute(circle1, "stroke", "black");
 				setAttribute(circle1, "stroke-opacity", "1");
-				addLoc(circle1, file$u, 85, 12, 3765);
+				addLoc(circle1, file$v, 85, 12, 3765);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.annotation.pos.y + 0.5) * ctx.cellWidth + ", " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g1, file$u, 83, 10, 3527);
+				addLoc(g1, file$v, 83, 10, 3527);
 			},
 
 			m: function mount(target, anchor) {
@@ -10786,7 +14000,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign(assign({ Math : Math }, this.store._init(["classComparisons"])), data$l()), options.data);
+		this._state = assign(assign(assign({ Math : Math }, this.store._init(["classComparisons"])), data$m()), options.data);
 		this.store._add(this, ["classComparisons"]);
 
 		this._recompute({ width: 1, margin: 1, height: 1, currentClassComparisonIndex: 1, $classComparisons: 1 }, this._state);
@@ -10802,7 +14016,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$v(this, this._state);
+		this._fragment = create_main_fragment$w(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10845,7 +14059,7 @@
 
 	/* src/diagrams/Adversarial.html generated by Svelte v2.15.3 */
 
-	function data$m() {
+	function data$n() {
 	  return {
 	    image: "",
 	    left: "", 
@@ -10856,7 +14070,7 @@
 	}
 	var f = format(".1f");
 
-	const file$v = "src/diagrams/Adversarial.html";
+	const file$w = "src/diagrams/Adversarial.html";
 
 	function get_each_context_1(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -10871,7 +14085,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$w(component, ctx) {
+	function create_main_fragment$x(component, ctx) {
 		var div;
 
 		var each_value = ctx.classifications;
@@ -10891,7 +14105,7 @@
 				}
 				div.className = "adversarial svelte-1ghs2gk";
 				setStyle(div, "grid-template-columns", "repeat(" + ctx.classifications.length + ", 1fr)");
-				addLoc(div, file$v, 0, 0, 0);
+				addLoc(div, file$w, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -10957,13 +14171,13 @@
 				text5 = createText(text5_value);
 				text6 = createText("%");
 				td0.className = "svelte-1ghs2gk";
-				addLoc(td0, file$v, 11, 10, 385);
+				addLoc(td0, file$w, 11, 10, 385);
 				td1.className = "svelte-1ghs2gk";
-				addLoc(td1, file$v, 12, 10, 414);
+				addLoc(td1, file$w, 12, 10, 414);
 				td2.className = "svelte-1ghs2gk";
-				addLoc(td2, file$v, 13, 10, 442);
+				addLoc(td2, file$w, 13, 10, 442);
 				tr.className = tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1ghs2gk";
-				addLoc(tr, file$v, 10, 8, 296);
+				addLoc(tr, file$w, 10, 8, 296);
 			},
 
 			m: function mount(target, anchor) {
@@ -11041,10 +14255,10 @@
 				text2 = createText(text2_value);
 				text3 = createText("\n    ");
 				table.className = "svelte-1ghs2gk";
-				addLoc(table, file$v, 8, 6, 247);
+				addLoc(table, file$w, 8, 6, 247);
 				div0.className = "figcaption";
-				addLoc(div0, file$v, 17, 6, 515);
-				addLoc(div1, file$v, 2, 4, 131);
+				addLoc(div0, file$w, 17, 6, 515);
+				addLoc(div1, file$w, 2, 4, 131);
 			},
 
 			m: function mount(target, anchor) {
@@ -11115,14 +14329,14 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$m(), options.data);
+		this._state = assign(data$n(), options.data);
 		if (!('classifications' in this._state)) console.warn("<Adversarial> was created without expected data property 'classifications'");
 		if (!('left' in this._state)) console.warn("<Adversarial> was created without expected data property 'left'");
 		if (!('right' in this._state)) console.warn("<Adversarial> was created without expected data property 'right'");
 		if (!('aspectRatio' in this._state)) console.warn("<Adversarial> was created without expected data property 'aspectRatio'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$w(this, this._state);
+		this._fragment = create_main_fragment$x(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11140,9 +14354,9 @@
 
 	/* src/diagrams/Samples.html generated by Svelte v2.15.3 */
 
-	const file$w = "src/diagrams/Samples.html";
+	const file$x = "src/diagrams/Samples.html";
 
-	function create_main_fragment$x(component, ctx) {
+	function create_main_fragment$y(component, ctx) {
 		var div6, div1, text0, div0, text2, div3, text3, div2, text5, div5, text6, div4;
 
 		var lazyimage0_initial_data = {
@@ -11196,16 +14410,16 @@
 				div4 = createElement("div");
 				div4.textContent = "1,000,000 activations";
 				setStyle(div0, "margin-top", "4px");
-				addLoc(div0, file$w, 6, 4, 381);
-				addLoc(div1, file$w, 1, 2, 17);
+				addLoc(div0, file$x, 6, 4, 381);
+				addLoc(div1, file$x, 1, 2, 17);
 				setStyle(div2, "margin-top", "4px");
-				addLoc(div2, file$w, 13, 4, 813);
-				addLoc(div3, file$w, 8, 2, 447);
+				addLoc(div2, file$x, 13, 4, 813);
+				addLoc(div3, file$x, 8, 2, 447);
 				setStyle(div4, "margin-top", "4px");
-				addLoc(div4, file$w, 20, 4, 1249);
-				addLoc(div5, file$w, 15, 2, 880);
+				addLoc(div4, file$x, 20, 4, 1249);
+				addLoc(div5, file$x, 15, 2, 880);
 				div6.className = "svelte-1ppku9e svelte-ref-root";
-				addLoc(div6, file$w, 0, 0, 0);
+				addLoc(div6, file$x, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -11253,7 +14467,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$x(this, this._state);
+		this._fragment = create_main_fragment$y(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11271,9 +14485,9 @@
 
 	/* src/diagrams/ClassGrids.html generated by Svelte v2.15.3 */
 
-	const file$x = "src/diagrams/ClassGrids.html";
+	const file$y = "src/diagrams/ClassGrids.html";
 
-	function create_main_fragment$y(component, ctx) {
+	function create_main_fragment$z(component, ctx) {
 		var div9, div2, div0, text0, div1, b0, text2, text3, div5, div3, text4, div4, b1, text6, text7, div8, div6, text8, div7, b2, text10;
 
 		var lazyimage0_initial_data = {
@@ -11336,28 +14550,28 @@
 				b2.textContent = "2 x 2";
 				text10 = createText(" When the grid is too big, concepts are lost in the averages. One sees less diversity within related concepts.");
 				div0.className = "atlas";
-				addLoc(div0, file$x, 2, 6, 114);
-				addLoc(b0, file$x, 5, 30, 252);
+				addLoc(div0, file$y, 2, 6, 114);
+				addLoc(b0, file$y, 5, 30, 252);
 				div1.className = "figcaption svelte-dmx176";
-				addLoc(div1, file$x, 5, 6, 228);
-				addLoc(div2, file$x, 1, 2, 102);
+				addLoc(div1, file$y, 5, 6, 228);
+				addLoc(div2, file$y, 1, 2, 102);
 				div3.className = "atlas";
-				addLoc(div3, file$x, 8, 6, 373);
-				addLoc(b1, file$x, 11, 30, 507);
+				addLoc(div3, file$y, 8, 6, 373);
+				addLoc(b1, file$y, 11, 30, 507);
 				div4.className = "figcaption svelte-dmx176";
-				addLoc(div4, file$x, 11, 6, 483);
-				addLoc(div5, file$x, 7, 2, 361);
+				addLoc(div4, file$y, 11, 6, 483);
+				addLoc(div5, file$y, 7, 2, 361);
 				div6.className = "atlas";
-				addLoc(div6, file$x, 14, 6, 666);
-				addLoc(b2, file$x, 17, 30, 800);
+				addLoc(div6, file$y, 14, 6, 666);
+				addLoc(b2, file$y, 17, 30, 800);
 				div7.className = "figcaption svelte-dmx176";
-				addLoc(div7, file$x, 17, 6, 776);
-				addLoc(div8, file$x, 13, 2, 654);
+				addLoc(div7, file$y, 17, 6, 776);
+				addLoc(div8, file$y, 13, 2, 654);
 				setStyle(div9, "display", "grid");
 				setStyle(div9, "grid-auto-flow", "column");
 				setStyle(div9, "grid-column-gap", "20px");
 				setStyle(div9, "grid-auto-columns", "1fr");
-				addLoc(div9, file$x, 0, 0, 0);
+				addLoc(div9, file$y, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -11411,7 +14625,7 @@
 		this._state = assign({}, options.data);
 		this._intro = true;
 
-		this._fragment = create_main_fragment$y(this, this._state);
+		this._fragment = create_main_fragment$z(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11429,13 +14643,13 @@
 
 	/* src/components/Figure.html generated by Svelte v2.15.3 */
 
-	function data$n() {
+	function data$o() {
 	  return {
 	    ready: false,
 	    onscreen: false,
 	  }
 	}
-	function oncreate$6() {
+	function oncreate$7() {
 	  this.refs.figure.addEventListener("ready", event => {
 	    this.set({ready: true});
 	  });
@@ -11448,15 +14662,15 @@
 	    this.fire("offscreen");
 	  });
 	}
-	const file$y = "src/components/Figure.html";
+	const file$z = "src/components/Figure.html";
 
-	function create_main_fragment$z(component, ctx) {
+	function create_main_fragment$A(component, ctx) {
 		var d_figure, slot_content_default = component._slotted.default;
 
 		return {
 			c: function create() {
 				d_figure = createElement("d-figure");
-				addLoc(d_figure, file$y, 0, 0, 0);
+				addLoc(d_figure, file$z, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -11493,15 +14707,15 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$n(), options.data);
+		this._state = assign(data$o(), options.data);
 		this._intro = true;
 
 		this._slotted = options.slots || {};
 
-		this._fragment = create_main_fragment$z(this, this._state);
+		this._fragment = create_main_fragment$A(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$6.call(this);
+			oncreate$7.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -11559,7 +14773,7 @@
 		return range(numCells).map(i => range(numCells).map( i => range(6).map(i => Math.random() - 0.5)));
 	}
 
-	function data$o() {
+	function data$p() {
 	  return {
 	    paused: true,
 	    inputWidth: 250,
@@ -11580,7 +14794,7 @@
 	}
 	var format_1$2 = format(" .5f");
 
-	const file$z = "src/diagrams/ActivationGrid.html";
+	const file$A = "src/diagrams/ActivationGrid.html";
 
 	function mouseover_handler_1(event) {
 		const { component, ctx } = this._svelte;
@@ -11625,7 +14839,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$A(component, ctx) {
+	function create_main_fragment$B(component, ctx) {
 		var div, figure_updating = {}, text0, svg, clipPath0, rect0, rect0_x_value, rect0_y_value, clipPath1, rect1, rect1_x_value, rect1_y_value, rect1_width_value, rect1_height_value, g7, g0, text2, text1, image0, rect2, rect2_x_value, rect2_y_value, rect2_width_value, rect2_height_value, g2, path0, path0_transform_value, path0_d_value, text4, text3, g1, image1, g1_transform_value, rect3, text8, tspan0, text5, tspan1, text6, tspan2, text7, text8_transform_value, g2_transform_value, g3, path1, path1_transform_value, path1_d_value, text10, text9, text15, tspan3, text11, tspan4, text12, tspan5, text13, tspan6, text14, text15_transform_value, g3_transform_value, g5, path2, path2_transform_value, path2_d_value, text17, text16, g4, image2, g4_transform_value, rect4, text21, tspan7, text18, tspan8, text19, tspan9, text20, text21_transform_value, g5_transform_value, g6, path3, path3_transform_value, path3_d_value, text23, text22, image3, rect5, rect5_x_value, rect5_y_value, g6_transform_value, svg_viewBox_value;
 
 		var figure_initial_data = {};
@@ -11765,23 +14979,23 @@
 				setAttribute(rect0, "y", rect0_y_value = ctx.windowY * ctx.cellWidth);
 				setAttribute(rect0, "width", ctx.cellWidth);
 				setAttribute(rect0, "height", ctx.cellWidth);
-				addLoc(rect0, file$z, 5, 6, 280);
+				addLoc(rect0, file$A, 5, 6, 280);
 				setAttribute(clipPath0, "id", "activationGridClipRect");
-				addLoc(clipPath0, file$z, 4, 4, 235);
+				addLoc(clipPath0, file$A, 4, 4, 235);
 				setAttribute(rect1, "x", rect1_x_value = ctx.windowX * ctx.inputCellWidth);
 				setAttribute(rect1, "y", rect1_y_value = ctx.windowY * ctx.inputCellWidth);
 				setAttribute(rect1, "width", rect1_width_value = ctx.inputCellWidth * ctx.windowSize);
 				setAttribute(rect1, "height", rect1_height_value = ctx.inputCellWidth * ctx.windowSize);
-				addLoc(rect1, file$z, 9, 6, 444);
+				addLoc(rect1, file$A, 9, 6, 444);
 				setAttribute(clipPath1, "id", "activationGridClipRectInput");
-				addLoc(clipPath1, file$z, 8, 4, 394);
+				addLoc(clipPath1, file$A, 8, 4, 394);
 				setAttribute(text2, "class", "head svelte-qwhwb1");
 				setAttribute(text2, "dy", "-13");
-				addLoc(text2, file$z, 15, 8, 700);
+				addLoc(text2, file$A, 15, 8, 700);
 				setXlinkAttribute(image0, "xlink:href", "assets/images/dogcat.jpg");
 				setAttribute(image0, "width", ctx.inputWidth);
 				setAttribute(image0, "height", ctx.inputWidth);
-				addLoc(image0, file$z, 16, 8, 755);
+				addLoc(image0, file$A, 16, 8, 755);
 				setAttribute(rect2, "stroke", "rgb(255, 170, 0)");
 				setAttribute(rect2, "pointer-events", "none");
 				setAttribute(rect2, "stroke-width", "2");
@@ -11790,114 +15004,114 @@
 				setAttribute(rect2, "y", rect2_y_value = ctx.windowY * ctx.inputCellWidth);
 				setAttribute(rect2, "width", rect2_width_value = ctx.inputCellWidth * ctx.windowSize);
 				setAttribute(rect2, "height", rect2_height_value = ctx.inputCellWidth * ctx.windowSize);
-				addLoc(rect2, file$z, 29, 8, 1552);
+				addLoc(rect2, file$A, 29, 8, 1552);
 				setAttribute(g0, "transform", "translate(0, 0)");
-				addLoc(g0, file$z, 14, 6, 660);
+				addLoc(g0, file$A, 14, 6, 660);
 				setAttribute(path0, "class", "arrow svelte-qwhwb1");
 				setAttribute(path0, "transform", path0_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path0, "d", path0_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path0, file$z, 33, 8, 1869);
+				addLoc(path0, file$A, 33, 8, 1869);
 				setAttribute(text4, "class", "head svelte-qwhwb1");
 				setAttribute(text4, "dy", "-13");
-				addLoc(text4, file$z, 34, 8, 2014);
+				addLoc(text4, file$A, 34, 8, 2014);
 				setAttribute(image1, "image-rendering", "pixelated");
 				setXlinkAttribute(image1, "xlink:href", "assets/images/dogcat.jpg");
 				setAttribute(image1, "width", ctx.inputWidth);
 				setAttribute(image1, "height", ctx.inputWidth);
 				setAttribute(image1, "clip-path", "url(#activationGridClipRectInput)");
-				addLoc(image1, file$z, 36, 10, 2215);
+				addLoc(image1, file$A, 36, 10, 2215);
 				setAttribute(g1, "transform", g1_transform_value = "scale(" + ctx.columnWidth / (ctx.inputCellWidth * ctx.windowSize) + ")translate(-" + ctx.windowX * ctx.inputCellWidth + ", -" + ctx.windowY * ctx.inputCellWidth + ")");
-				addLoc(g1, file$z, 35, 8, 2069);
+				addLoc(g1, file$A, 35, 8, 2069);
 				setAttribute(rect3, "stroke", "rgb(255, 170, 0)");
 				setAttribute(rect3, "stroke-width", "4");
 				setAttribute(rect3, "fill-opacity", "0");
 				setAttribute(rect3, "width", ctx.columnWidth);
 				setAttribute(rect3, "height", ctx.columnWidth);
-				addLoc(rect3, file$z, 42, 8, 2443);
+				addLoc(rect3, file$A, 42, 8, 2443);
 				setAttribute(tspan0, "x", "0");
 				setAttribute(tspan0, "dy", "1.4em");
-				addLoc(tspan0, file$z, 44, 10, 2637);
+				addLoc(tspan0, file$A, 44, 10, 2637);
 				setAttribute(tspan1, "x", "0");
 				setAttribute(tspan1, "dy", "1.4em");
-				addLoc(tspan1, file$z, 45, 10, 2697);
+				addLoc(tspan1, file$A, 45, 10, 2697);
 				setAttribute(tspan2, "x", "0");
 				setAttribute(tspan2, "dy", "1.4em");
-				addLoc(tspan2, file$z, 46, 10, 2760);
+				addLoc(tspan2, file$A, 46, 10, 2760);
 				setAttribute(text8, "class", "figcaption svelte-qwhwb1");
 				setAttribute(text8, "transform", text8_transform_value = "translate(0, " + (ctx.columnWidth + 10) + ")");
-				addLoc(text8, file$z, 43, 8, 2556);
+				addLoc(text8, file$A, 43, 8, 2556);
 				setAttribute(g2, "transform", g2_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin) + ", 0)");
-				addLoc(g2, file$z, 32, 6, 1803);
+				addLoc(g2, file$A, 32, 6, 1803);
 				setAttribute(path1, "class", "arrow svelte-qwhwb1");
 				setAttribute(path1, "transform", path1_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path1, "d", path1_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path1, file$z, 51, 8, 2957);
+				addLoc(path1, file$A, 51, 8, 2957);
 				setAttribute(text10, "class", "head svelte-qwhwb1");
 				setAttribute(text10, "dy", "-13");
-				addLoc(text10, file$z, 52, 8, 3102);
+				addLoc(text10, file$A, 52, 8, 3102);
 				setAttribute(tspan3, "x", "0");
 				setAttribute(tspan3, "dy", "1.4em");
-				addLoc(tspan3, file$z, 68, 10, 4048);
+				addLoc(tspan3, file$A, 68, 10, 4048);
 				setAttribute(tspan4, "x", "0");
 				setAttribute(tspan4, "dy", "1.4em");
-				addLoc(tspan4, file$z, 69, 10, 4108);
+				addLoc(tspan4, file$A, 69, 10, 4108);
 				setAttribute(tspan5, "x", "0");
 				setAttribute(tspan5, "dy", "1.4em");
-				addLoc(tspan5, file$z, 70, 10, 4175);
+				addLoc(tspan5, file$A, 70, 10, 4175);
 				setAttribute(tspan6, "x", "0");
 				setAttribute(tspan6, "dy", "1.4em");
-				addLoc(tspan6, file$z, 71, 10, 4235);
+				addLoc(tspan6, file$A, 71, 10, 4235);
 				setAttribute(text15, "class", "figcaption svelte-qwhwb1");
 				setAttribute(text15, "transform", text15_transform_value = "translate(0, " + (ctx.columnWidth + 10) + ")");
-				addLoc(text15, file$z, 67, 6, 3967);
+				addLoc(text15, file$A, 67, 6, 3967);
 				setAttribute(g3, "transform", g3_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin + ctx.columnWidth + ctx.columnMargin) + ", 0)");
-				addLoc(g3, file$z, 50, 6, 2862);
+				addLoc(g3, file$A, 50, 6, 2862);
 				setAttribute(path2, "class", "arrow svelte-qwhwb1");
 				setAttribute(path2, "transform", path2_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path2, "d", path2_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path2, file$z, 77, 8, 4451);
+				addLoc(path2, file$A, 77, 8, 4451);
 				setAttribute(text17, "class", "head svelte-qwhwb1");
 				setAttribute(text17, "dy", "-13");
-				addLoc(text17, file$z, 78, 8, 4596);
+				addLoc(text17, file$A, 78, 8, 4596);
 				setAttribute(image2, "image-rendering", "pixelated");
 				setXlinkAttribute(image2, "xlink:href", "assets/images/dogcat-grid.jpg");
 				setAttribute(image2, "width", ctx.inputWidth);
 				setAttribute(image2, "height", ctx.inputWidth);
 				setAttribute(image2, "clip-path", "url(#activationGridClipRect)");
-				addLoc(image2, file$z, 80, 10, 4777);
+				addLoc(image2, file$A, 80, 10, 4777);
 				setAttribute(g4, "transform", g4_transform_value = "scale(" + ctx.columnWidth / ctx.cellWidth + ")translate(-" + ctx.windowX * ctx.cellWidth + ", -" + ctx.windowY * ctx.cellWidth + ")");
-				addLoc(g4, file$z, 79, 8, 4661);
+				addLoc(g4, file$A, 79, 8, 4661);
 				setAttribute(rect4, "stroke", "#ff6600");
 				setAttribute(rect4, "stroke-width", "4");
 				setAttribute(rect4, "fill-opacity", "0");
 				setAttribute(rect4, "width", ctx.columnWidth);
 				setAttribute(rect4, "height", ctx.columnWidth);
-				addLoc(rect4, file$z, 86, 8, 5006);
+				addLoc(rect4, file$A, 86, 8, 5006);
 				setAttribute(tspan7, "x", "0");
 				setAttribute(tspan7, "dy", "1.4em");
-				addLoc(tspan7, file$z, 89, 10, 5192);
+				addLoc(tspan7, file$A, 89, 10, 5192);
 				setAttribute(tspan8, "x", "0");
 				setAttribute(tspan8, "dy", "1.4em");
-				addLoc(tspan8, file$z, 90, 10, 5252);
+				addLoc(tspan8, file$A, 90, 10, 5252);
 				setAttribute(tspan9, "x", "0");
 				setAttribute(tspan9, "dy", "1.4em");
-				addLoc(tspan9, file$z, 91, 10, 5314);
+				addLoc(tspan9, file$A, 91, 10, 5314);
 				setAttribute(text21, "class", "figcaption svelte-qwhwb1");
 				setAttribute(text21, "transform", text21_transform_value = "translate(0, " + (ctx.columnWidth + 10) + ")");
-				addLoc(text21, file$z, 88, 8, 5111);
+				addLoc(text21, file$A, 88, 8, 5111);
 				setAttribute(g5, "transform", g5_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin + 2 * (ctx.columnWidth + ctx.columnMargin)) + ", 0)");
-				addLoc(g5, file$z, 76, 6, 4350);
+				addLoc(g5, file$A, 76, 6, 4350);
 				setAttribute(path3, "class", "arrow svelte-qwhwb1");
 				setAttribute(path3, "transform", path3_transform_value = "translate(0," + ctx.columnWidth / 2 + ")");
 				setAttribute(path3, "d", path3_d_value = "M" + -2 * ctx.columnMargin / 3 + ",0 L" + -ctx.columnMargin / 3 + ",0 m-5,-5 l5,5 l-5,5");
-				addLoc(path3, file$z, 96, 8, 5521);
+				addLoc(path3, file$A, 96, 8, 5521);
 				setAttribute(text23, "class", "head svelte-qwhwb1");
 				setAttribute(text23, "dy", "-13");
-				addLoc(text23, file$z, 97, 8, 5666);
+				addLoc(text23, file$A, 97, 8, 5666);
 				setXlinkAttribute(image3, "xlink:href", "assets/images/dogcat-grid.jpg");
 				setAttribute(image3, "width", ctx.inputWidth);
 				setAttribute(image3, "height", ctx.inputWidth);
-				addLoc(image3, file$z, 98, 8, 5725);
+				addLoc(image3, file$A, 98, 8, 5725);
 				setAttribute(rect5, "stroke", "#ff6600");
 				setAttribute(rect5, "pointer-events", "none");
 				setAttribute(rect5, "stroke-width", "2");
@@ -11906,19 +15120,19 @@
 				setAttribute(rect5, "y", rect5_y_value = ctx.windowY * ctx.cellWidth);
 				setAttribute(rect5, "width", ctx.cellWidth);
 				setAttribute(rect5, "height", ctx.cellWidth);
-				addLoc(rect5, file$z, 110, 8, 6298);
+				addLoc(rect5, file$A, 110, 8, 6298);
 				setAttribute(g6, "transform", g6_transform_value = "translate(" + (ctx.inputWidth + ctx.columnMargin + 3 * (ctx.columnWidth + ctx.columnMargin)) + ", 0)");
-				addLoc(g6, file$z, 95, 6, 5420);
+				addLoc(g6, file$A, 95, 6, 5420);
 				setAttribute(g7, "transform", "translate(0, 30)");
-				addLoc(g7, file$z, 12, 4, 604);
+				addLoc(g7, file$A, 12, 4, 604);
 				setStyle(svg, "width", "100%");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height);
-				addLoc(svg, file$z, 3, 2, 173);
+				addLoc(svg, file$A, 3, 2, 173);
 				addListener(div, "mouseout", mouseout_handler);
 				setStyle(div, "position", "relative");
 				setStyle(div, "background", "white");
 				setStyle(div, "text-align", "right");
-				addLoc(div, file$z, 0, 0, 0);
+				addLoc(div, file$A, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -12271,7 +15485,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * (ctx.inputCellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.inputCellWidth);
 				setAttribute(rect, "height", ctx.inputCellWidth);
-				addLoc(rect, file$z, 19, 12, 939);
+				addLoc(rect, file$A, 19, 12, 939);
 			},
 
 			m: function mount(target, anchor) {
@@ -12383,14 +15597,14 @@
 				line = createSvgElement("line");
 				setAttribute(text_1, "transform", "rotate(90)translate(-7, -25)");
 				setAttribute(text_1, "font-size", "11");
-				addLoc(text_1, file$z, 56, 10, 3361);
+				addLoc(text_1, file$A, 56, 10, 3361);
 				setAttribute(line, "y1", "7");
 				setAttribute(line, "y2", "7");
 				setAttribute(line, "stroke", "#eee");
 				setAttribute(line, "x2", line_x__value = ctx.inputWidth * 2 / 3 - 20);
-				addLoc(line, file$z, 57, 10, 3440);
+				addLoc(line, file$A, 57, 10, 3440);
 				setAttribute(g, "transform", g_transform_value = "translate(0," + (20 + 20 * (ctx.activations[0][0].length - 1)) + ")");
-				addLoc(g, file$z, 55, 8, 3279);
+				addLoc(g, file$A, 55, 8, 3279);
 			},
 
 			m: function mount(target, anchor) {
@@ -12438,19 +15652,19 @@
 				setAttribute(text3, "font-size", "11");
 				setAttribute(text3, "fill", "#999");
 				setAttribute(text3, "dy", "");
-				addLoc(text3, file$z, 61, 10, 3648);
+				addLoc(text3, file$A, 61, 10, 3648);
 				setAttribute(text5, "text-anchor", "end");
 				setAttribute(text5, "font-size", "11");
 				setAttribute(text5, "font-family", "monospace");
 				setAttribute(text5, "dx", text5_dx_value = ctx.inputWidth * 2 / 3 - 20);
-				addLoc(text5, file$z, 62, 10, 3755);
+				addLoc(text5, file$A, 62, 10, 3755);
 				setAttribute(line, "y1", "7");
 				setAttribute(line, "y2", "7");
 				setAttribute(line, "stroke", "#eee");
 				setAttribute(line, "x2", ctx.columnWidth);
-				addLoc(line, file$z, 63, 10, 3883);
+				addLoc(line, file$A, 63, 10, 3883);
 				setAttribute(g, "transform", g_transform_value = "translate(0," + (ctx.i === ctx.activations[0][0].length - 1 ? 20 + 20 * (ctx.i + 1) : 20 + 20 * ctx.i) + ")");
-				addLoc(g, file$z, 60, 8, 3537);
+				addLoc(g, file$A, 60, 8, 3537);
 			},
 
 			m: function mount(target, anchor) {
@@ -12527,7 +15741,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * (ctx.cellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.cellWidth);
 				setAttribute(rect, "height", ctx.cellWidth);
-				addLoc(rect, file$z, 101, 12, 5904);
+				addLoc(rect, file$A, 101, 12, 5904);
 			},
 
 			m: function mount(target, anchor) {
@@ -12634,7 +15848,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign({ Math : Math }, data$o()), options.data);
+		this._state = assign(assign({ Math : Math }, data$p()), options.data);
 
 		this._recompute({ inputWidth: 1, columnWidth: 1, columnMargin: 1, timerCount: 1, numCells: 1, clippedCount: 1, cellPadding: 1, windowSize: 1, numInputCells: 1 }, this._state);
 		if (!('inputWidth' in this._state)) console.warn("<ActivationGrid> was created without expected data property 'inputWidth'");
@@ -12649,7 +15863,7 @@
 		if (!('onscreen' in this._state)) console.warn("<ActivationGrid> was created without expected data property 'onscreen'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$A(this, this._state);
+		this._fragment = create_main_fragment$B(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -12729,7 +15943,7 @@
 		return columnWidth / numIcons;
 	}
 
-	function data$p() {
+	function data$q() {
 	  return {
 	    width: 1000,
 	    height: 380,
@@ -12755,7 +15969,7 @@
 	  return `M${sx},${sy} L${sx + 10},${sy} L${sx + 40},${ey} L${ex},${ey} m-5,-5 l5,5 l-5,5`;
 	}
 
-	function oncreate$7() {
+	function oncreate$8() {
 	  console.log("loading");
 	  const {dataURL, webURL} = this.get();
 	  load$1([dataURL, webURL]).then(responses => {
@@ -12765,7 +15979,7 @@
 	    });
 	  });
 	}
-	const file$A = "src/diagrams/Process.html";
+	const file$B = "src/diagrams/Process.html";
 
 	function get_each_context_2(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -12810,7 +16024,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$B(component, ctx) {
+	function create_main_fragment$C(component, ctx) {
 		var svg, g2, g0, g0_transform_value, g1, image, image_opacity_value, each2_anchor, g1_transform_value, rect0, rect0_x_value, rect0_y_value, path, path_d_value, rect1, rect1_x_value, rect1_y_value, svg_viewBox_value, text0, div4, div0, text2, div1, text4, div3, text5, div2;
 
 		var each0_value = ctx.layoutData;
@@ -12895,14 +16109,14 @@
 				div2 = createElement("div");
 				notebooklink._fragment.c();
 				setAttribute(g0, "transform", g0_transform_value = "translate(" + (ctx.columnWidth + ctx.columnPadding) * 1 + ", 0)");
-				addLoc(g0, file$A, 4, 4, 120);
+				addLoc(g0, file$B, 4, 4, 120);
 				setAttribute(image, "opacity", image_opacity_value = ctx.webData.length > 0 ? 1 : 0);
 				setXlinkAttribute(image, "xlink:href", ctx.renderURL);
 				setAttribute(image, "width", ctx.columnWidth);
 				setAttribute(image, "height", ctx.columnWidth);
-				addLoc(image, file$A, 61, 6, 2802);
+				addLoc(image, file$B, 61, 6, 2802);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.columnWidth + ctx.columnPadding) * 2 + ", 0)");
-				addLoc(g1, file$A, 60, 4, 2730);
+				addLoc(g1, file$B, 60, 4, 2730);
 				setAttribute(rect0, "fill", "none");
 				setAttribute(rect0, "stroke", "black");
 				setAttribute(rect0, "stroke-width", "2");
@@ -12910,11 +16124,11 @@
 				setAttribute(rect0, "y", rect0_y_value = ctx.iconHighlight.y * ctx.iconWidth);
 				setAttribute(rect0, "width", ctx.iconWidth);
 				setAttribute(rect0, "height", ctx.iconWidth);
-				addLoc(rect0, file$A, 73, 4, 3413);
+				addLoc(rect0, file$B, 73, 4, 3413);
 				setAttribute(path, "fill", "none");
 				setAttribute(path, "stroke", "black");
 				setAttribute(path, "d", path_d_value = "M" + ((ctx.columnWidth + ctx.columnPadding) * 1 + ctx.iconHighlight.x * ctx.iconWidth + ctx.iconWidth / 2) + "," + ctx.iconHighlight.y * ctx.iconWidth + "l0,-30 l" + (ctx.columnWidth + ctx.columnPadding) + ",0 l0,25 m-5,-5 l5,5 l5,-5");
-				addLoc(path, file$A, 74, 4, 3604);
+				addLoc(path, file$B, 74, 4, 3604);
 				setAttribute(rect1, "fill", "none");
 				setAttribute(rect1, "stroke", "black");
 				setAttribute(rect1, "stroke-width", "2");
@@ -12922,25 +16136,25 @@
 				setAttribute(rect1, "y", rect1_y_value = ctx.iconHighlight.y * ctx.iconWidth);
 				setAttribute(rect1, "width", ctx.iconWidth);
 				setAttribute(rect1, "height", ctx.iconWidth);
-				addLoc(rect1, file$A, 75, 4, 3824);
+				addLoc(rect1, file$B, 75, 4, 3824);
 				setAttribute(g2, "transform", "translate(0, 40)");
-				addLoc(g2, file$A, 1, 2, 60);
+				addLoc(g2, file$B, 1, 2, 60);
 				setStyle(svg, "width", "100%");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height);
-				addLoc(svg, file$A, 0, 0, 0);
+				addLoc(svg, file$B, 0, 0, 0);
 				div0.className = "figcaption";
-				addLoc(div0, file$A, 82, 2, 4144);
+				addLoc(div0, file$B, 82, 2, 4144);
 				div1.className = "figcaption";
-				addLoc(div1, file$A, 83, 2, 4295);
+				addLoc(div1, file$B, 83, 2, 4295);
 				setStyle(div2, "margin-top", "8px");
 				setStyle(div2, "text-align", "right");
-				addLoc(div2, file$A, 85, 4, 4624);
+				addLoc(div2, file$B, 85, 4, 4624);
 				div3.className = "figcaption";
-				addLoc(div3, file$A, 84, 2, 4470);
+				addLoc(div3, file$B, 84, 2, 4470);
 				setStyle(div4, "display", "grid");
 				setStyle(div4, "grid-column-gap", "" + ctx.columnPadding / ctx.width * 100 + "%");
 				setStyle(div4, "grid-template-columns", "1fr 1fr 1fr");
-				addLoc(div4, file$A, 81, 0, 4028);
+				addLoc(div4, file$B, 81, 0, 4028);
 			},
 
 			m: function mount(target, anchor) {
@@ -13164,9 +16378,9 @@
 				setAttribute(rect, "fill-opacity", "0.5");
 				setAttribute(rect, "width", "2");
 				setAttribute(rect, "height", "2");
-				addLoc(rect, file$A, 7, 10, 316);
+				addLoc(rect, file$B, 7, 10, 316);
 				setAttribute(g, "transform", g_transform_value = "translate(" + ctx.point[1] * ctx.columnWidth + ", " + ctx.point[0] * ctx.columnWidth + ")");
-				addLoc(g, file$A, 6, 8, 228);
+				addLoc(g, file$B, 6, 8, 228);
 			},
 
 			m: function mount(target, anchor) {
@@ -13203,7 +16417,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * (ctx.cellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.cellWidth);
 				setAttribute(rect, "height", ctx.cellWidth);
-				addLoc(rect, file$A, 25, 14, 1104);
+				addLoc(rect, file$B, 25, 14, 1104);
 			},
 
 			m: function mount(target, anchor) {
@@ -13307,7 +16521,7 @@
 				setAttribute(line, "y2", line_y__value_1 = ctx.inputWidth + 10);
 				setAttribute(line, "x2", line_x__value = (ctx.inputWidth + ctx.inputPadding) * 3 - ctx.inputPadding);
 				setAttribute(line, "stroke", "#ddd");
-				addLoc(line, file$A, 46, 10, 2266);
+				addLoc(line, file$B, 46, 10, 2266);
 			},
 
 			m: function mount(target, anchor) {
@@ -13375,13 +16589,13 @@
 				setXlinkAttribute(image0, "xlink:href", image0_xlink_href_value = "assets/images/" + ctx.input.id + ".jpg");
 				setAttribute(image0, "width", ctx.inputWidth);
 				setAttribute(image0, "height", ctx.inputWidth);
-				addLoc(image0, file$A, 19, 8, 732);
+				addLoc(image0, file$B, 19, 8, 732);
 				setXlinkAttribute(image1, "xlink:href", image1_xlink_href_value = "assets/images/" + ctx.input.id + ".jpg");
 				setAttribute(image1, "width", ctx.inputWidth);
 				setAttribute(image1, "height", ctx.inputWidth);
-				addLoc(image1, file$A, 22, 10, 920);
+				addLoc(image1, file$B, 22, 10, 920);
 				setAttribute(g0, "transform", g0_transform_value = "translate(" + (ctx.inputWidth + ctx.inputPadding) + ", 0)");
-				addLoc(g0, file$A, 21, 8, 852);
+				addLoc(g0, file$B, 21, 8, 852);
 				setAttribute(rect, "fill", "none");
 				setAttribute(rect, "stroke", "black");
 				setAttribute(rect, "stroke-width", "2");
@@ -13389,22 +16603,22 @@
 				setAttribute(rect, "y", rect_y_value = ctx.input.y * (ctx.cellWidth + ctx.cellPadding));
 				setAttribute(rect, "width", ctx.cellWidth);
 				setAttribute(rect, "height", ctx.cellWidth);
-				addLoc(rect, file$A, 32, 8, 1373);
+				addLoc(rect, file$B, 32, 8, 1373);
 				setAttribute(path0, "fill", "none");
 				setAttribute(path0, "stroke", "black");
 				setAttribute(path0, "d", path0_d_value = "M" + ((ctx.inputWidth + ctx.inputPadding) * 1 + ctx.input.x * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth) + "," + (ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2) + " L" + ((ctx.inputWidth + ctx.inputPadding) * 2 - 10) + "," + (ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2) + " m-5,-5 l5,5 l-5,5");
-				addLoc(path0, file$A, 33, 8, 1582);
+				addLoc(path0, file$B, 33, 8, 1582);
 				setAttribute(text5, "font-size", "9");
 				setAttribute(text5, "dy", text5_dy_value = ctx.cellWidth / 1.5);
-				addLoc(text5, file$A, 39, 10, 2030);
+				addLoc(text5, file$B, 39, 10, 2030);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.inputWidth + ctx.inputPadding) * 2 + ", " + ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ")");
-				addLoc(g1, file$A, 38, 8, 1920);
+				addLoc(g1, file$B, 38, 8, 1920);
 				setAttribute(g2, "transform", g2_transform_value = "translate(0, " + (ctx.inputWidth + 20) * ctx.i + ")");
-				addLoc(g2, file$A, 17, 6, 647);
+				addLoc(g2, file$B, 17, 6, 647);
 				setAttribute(path1, "fill", "none");
 				setAttribute(path1, "stroke", "black");
 				setAttribute(path1, "d", path1_d_value = pointerPath(ctx.columnWidth, ctx.input.y * (ctx.cellWidth + ctx.cellPadding) + ctx.cellWidth / 2 + (ctx.inputWidth + 20) * ctx.i, (ctx.columnWidth + ctx.columnPadding) + ctx.columnWidth * ctx.input.px, ctx.columnWidth * ctx.input.py));
-				addLoc(path1, file$A, 50, 6, 2437);
+				addLoc(path1, file$B, 50, 6, 2437);
 			},
 
 			m: function mount(target, anchor) {
@@ -13558,7 +16772,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.icon.x * ctx.iconWidth);
 				setAttribute(rect, "width", ctx.iconWidth);
 				setAttribute(rect, "height", ctx.iconWidth);
-				addLoc(rect, file$A, 63, 10, 2952);
+				addLoc(rect, file$B, 63, 10, 2952);
 			},
 
 			m: function mount(target, anchor) {
@@ -13607,7 +16821,7 @@
 				setAttribute(rect, "y", rect_y_value = ctx.y * ctx.iconWidth);
 				setAttribute(rect, "width", ctx.iconWidth);
 				setAttribute(rect, "height", ctx.iconWidth);
-				addLoc(rect, file$A, 67, 10, 3204);
+				addLoc(rect, file$B, 67, 10, 3204);
 			},
 
 			m: function mount(target, anchor) {
@@ -13706,7 +16920,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(assign({ Math : Math }, data$p()), options.data);
+		this._state = assign(assign({ Math : Math }, data$q()), options.data);
 
 		this._recompute({ width: 1, columnPadding: 1, columnWidth: 1, inputPadding: 1, inputWidth: 1, numCells: 1, cellPadding: 1, numIcons: 1 }, this._state);
 		if (!('width' in this._state)) console.warn("<Process> was created without expected data property 'width'");
@@ -13728,10 +16942,10 @@
 		if (!('iconHighlight' in this._state)) console.warn("<Process> was created without expected data property 'iconHighlight'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$B(this, this._state);
+		this._fragment = create_main_fragment$C(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$7.call(this);
+			oncreate$8.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -13773,7 +16987,7 @@
 
 	/* src/diagrams/OneLayer.html generated by Svelte v2.15.3 */
 
-	function data$q() {
+	function data$r() {
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 1,
@@ -13785,9 +16999,9 @@
 	    console.log(current.viewWidth);
 	  }
 	}
-	const file$B = "src/diagrams/OneLayer.html";
+	const file$C = "src/diagrams/OneLayer.html";
 
-	function create_main_fragment$C(component, ctx) {
+	function create_main_fragment$D(component, ctx) {
 		var div1, div0, label0, text1, label1, input0, text2, text3, label2, input1, text4, text5, label3, input2, text6, text7, label4, input3, text8, text9, div2, atlas_updating = {};
 
 		function input0_change_handler() {
@@ -13868,47 +17082,47 @@
 				text9 = createText("\n\n\n");
 				div2 = createElement("div");
 				atlas._fragment.c();
-				addLoc(label0, file$B, 2, 4, 76);
+				addLoc(label0, file$C, 2, 4, 76);
 				component._bindingGroups[0].push(input0);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "radio");
 				input0.__value = 0;
 				input0.value = input0.__value;
 				input0.className = "svelte-1h549gh";
-				addLoc(input0, file$B, 3, 11, 114);
-				addLoc(label1, file$B, 3, 4, 107);
+				addLoc(input0, file$C, 3, 11, 114);
+				addLoc(label1, file$C, 3, 4, 107);
 				component._bindingGroups[0].push(input1);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "radio");
 				input1.__value = 1;
 				input1.value = input1.__value;
 				input1.className = "svelte-1h549gh";
-				addLoc(input1, file$B, 4, 11, 188);
-				addLoc(label2, file$B, 4, 4, 181);
+				addLoc(input1, file$C, 4, 11, 188);
+				addLoc(label2, file$C, 4, 4, 181);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "radio");
 				input2.__value = 2;
 				input2.value = input2.__value;
 				input2.className = "svelte-1h549gh";
-				addLoc(input2, file$B, 5, 11, 262);
-				addLoc(label3, file$B, 5, 4, 255);
+				addLoc(input2, file$C, 5, 11, 262);
+				addLoc(label3, file$C, 5, 4, 255);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 3;
 				input3.value = input3.__value;
 				input3.className = "svelte-1h549gh";
-				addLoc(input3, file$B, 6, 11, 336);
-				addLoc(label4, file$B, 6, 4, 329);
+				addLoc(input3, file$C, 6, 11, 336);
+				addLoc(label4, file$C, 6, 4, 329);
 				setStyle(div0, "grid-column", "text");
 				div0.className = "svelte-1h549gh svelte-ref-controls";
-				addLoc(div0, file$B, 1, 2, 26);
+				addLoc(div0, file$C, 1, 2, 26);
 				div1.className = "base-grid";
-				addLoc(div1, file$B, 0, 0, 0);
+				addLoc(div1, file$C, 0, 0, 0);
 				div2.className = "atlas svelte-1h549gh";
 				setStyle(div2, "grid-column", "screen");
-				addLoc(div2, file$B, 12, 0, 420);
+				addLoc(div2, file$C, 12, 0, 420);
 			},
 
 			m: function mount(target, anchor) {
@@ -14002,7 +17216,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$q(), options.data);
+		this._state = assign(data$r(), options.data);
 		if (!('gridSize' in this._state)) console.warn("<OneLayer> was created without expected data property 'gridSize'");
 		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
 		if (!('viewWidth' in this._state)) console.warn("<OneLayer> was created without expected data property 'viewWidth'");
@@ -14010,7 +17224,7 @@
 		this._intro = true;
 		this._handlers.update = [onupdate$3];
 
-		this._fragment = create_main_fragment$C(this, this._state);
+		this._fragment = create_main_fragment$D(this, this._state);
 
 		this.root._oncreate.push(() => {
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
@@ -14032,7 +17246,7 @@
 
 	/* src/diagrams/LayerAnnotation.html generated by Svelte v2.15.3 */
 
-	function data$r() {
+	function data$s() {
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 2,
@@ -14040,9 +17254,9 @@
 	    showLabels: true
 	  }
 	}
-	const file$C = "src/diagrams/LayerAnnotation.html";
+	const file$D = "src/diagrams/LayerAnnotation.html";
 
-	function create_main_fragment$D(component, ctx) {
+	function create_main_fragment$E(component, ctx) {
 		var div2, div0, atlas_updating = {}, text0, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {};
 
 		var atlas_initial_data = {
@@ -14220,16 +17434,16 @@
 				text1 = createText("\n    ");
 				atlasreticle._fragment.c();
 				div0.className = "detail svelte-b651pa";
-				addLoc(div0, file$C, 3, 2, 67);
+				addLoc(div0, file$D, 3, 2, 67);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
 				img.className = "svelte-b651pa";
-				addLoc(img, file$C, 20, 4, 403);
+				addLoc(img, file$D, 20, 4, 403);
 				div1.className = "atlas svelte-b651pa";
-				addLoc(div1, file$C, 19, 2, 379);
+				addLoc(div1, file$D, 19, 2, 379);
 				setStyle(div2, "display", "grid");
 				setStyle(div2, "grid-template-columns", "1fr 200px");
-				addLoc(div2, file$C, 2, 0, 2);
+				addLoc(div2, file$D, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
@@ -14359,7 +17573,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$r(), options.data);
+		this._state = assign(data$s(), options.data);
 		if (!('layerName' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'gridSize'");
 		if (!('homeX' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'homeX'");
@@ -14372,7 +17586,7 @@
 		if (!('showLabels' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'showLabels'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$D(this, this._state);
+		this._fragment = create_main_fragment$E(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -14394,7 +17608,7 @@
 		return width;
 	}
 
-	function data$s() {
+	function data$t() {
 	  return {
 	    iconCrop: 0.0,
 	    width: null,
@@ -14402,7 +17616,7 @@
 	    config: null
 	  }
 	}
-	var methods$6 = {
+	var methods$7 = {
 	  render() {
 	    const {icon, config, width, height, iconCrop} = this.get();
 	    let context = this.refs.canvas.getContext('2d');
@@ -14432,12 +17646,12 @@
 	  }
 	};
 
-	function oncreate$8() {
+	function oncreate$9() {
 	  this.render();
 	}
-	const file$D = "src/ClippedIcon.html";
+	const file$E = "src/ClippedIcon.html";
 
-	function create_main_fragment$E(component, ctx) {
+	function create_main_fragment$F(component, ctx) {
 		var div, canvas;
 
 		return {
@@ -14450,11 +17664,11 @@
 				canvas.className = "singleIcon";
 				canvas.width = ctx.width;
 				canvas.height = ctx.height;
-				addLoc(canvas, file$D, 1, 2, 72);
+				addLoc(canvas, file$E, 1, 2, 72);
 				setStyle(div, "position", "relative");
 				setStyle(div, "overflow", "hidden");
 				setStyle(div, "height", "" + ctx.width + "px");
-				addLoc(div, file$D, 0, 0, 0);
+				addLoc(div, file$E, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -14496,16 +17710,16 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$s(), options.data);
+		this._state = assign(data$t(), options.data);
 
 		this._recompute({ width: 1 }, this._state);
 		if (!('width' in this._state)) console.warn("<ClippedIcon> was created without expected data property 'width'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$E(this, this._state);
+		this._fragment = create_main_fragment$F(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$8.call(this);
+			oncreate$9.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -14519,7 +17733,7 @@
 	}
 
 	assign(ClippedIcon.prototype, protoDev);
-	assign(ClippedIcon.prototype, methods$6);
+	assign(ClippedIcon.prototype, methods$7);
 
 	ClippedIcon.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('height' in newState && !this._updatingReadonlyProperty) throw new Error("<ClippedIcon>: Cannot set read-only property 'height'");
@@ -14561,7 +17775,7 @@
 	  return 1
 	}
 
-	function data$t() {
+	function data$u() {
 	  return {
 	    container: null,
 	    arrow: null,
@@ -14570,7 +17784,7 @@
 	    color: '#ff6600',
 	  }
 	}
-	const file$E = "src/SetOfIcons.html";
+	const file$F = "src/SetOfIcons.html";
 
 	function get_each_context$a(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -14579,7 +17793,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$F(component, ctx) {
+	function create_main_fragment$G(component, ctx) {
 		var div4, div2, div0, text0, div1, text1, svg, path, text2, div3, div4_resize_listener;
 
 		var each_value = ctx.imgList;
@@ -14617,29 +17831,29 @@
 				setStyle(div0, "border-radius", "50%");
 				setStyle(div0, "width", "8px");
 				setStyle(div0, "height", "8px");
-				addLoc(div0, file$E, 2, 4, 122);
+				addLoc(div0, file$F, 2, 4, 122);
 				setStyle(div1, "position", "relative");
 				setStyle(div1, "top", "4px");
 				setStyle(div1, "margin", "0 4px");
 				setStyle(div1, "border-top", "solid 2px " + ctx.color);
-				addLoc(div1, file$E, 3, 4, 257);
+				addLoc(div1, file$F, 3, 4, 257);
 				setAttribute(path, "d", "M 0 0 L 10 5 L 0 10 z");
 				setAttribute(path, "fill", ctx.color);
-				addLoc(path, file$E, 5, 6, 458);
+				addLoc(path, file$F, 5, 6, 458);
 				setStyle(svg, "position", "absolute");
 				setStyle(svg, "right", "-4px");
 				setStyle(svg, "top", "0");
 				setAttribute(svg, "width", "10");
 				setAttribute(svg, "height", "10");
 				setAttribute(svg, "viewBox", "0 0 10 10");
-				addLoc(svg, file$E, 4, 4, 358);
+				addLoc(svg, file$F, 4, 4, 358);
 				setStyle(div2, "position", "relative");
 				setStyle(div2, "height", "10px");
-				addLoc(div2, file$E, 1, 2, 71);
+				addLoc(div2, file$F, 1, 2, 71);
 				div3.className = "icons svelte-w4igyz";
-				addLoc(div3, file$E, 8, 2, 530);
+				addLoc(div3, file$F, 8, 2, 530);
 				component.root._beforecreate.push(div4_resize_handler);
-				addLoc(div4, file$E, 0, 0, 0);
+				addLoc(div4, file$F, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -14750,7 +17964,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$t(), options.data);
+		this._state = assign(data$u(), options.data);
 
 		this._recompute({ layers: 1, pointList: 1, pathZoomIndex: 1 }, this._state);
 		if (!('pointList' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'pointList'");
@@ -14763,7 +17977,7 @@
 		if (!('config' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'config'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$F(this, this._state);
+		this._fragment = create_main_fragment$G(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -14804,7 +18018,7 @@
 	  return 0
 	}
 
-	function topLeft$1({viewWidth, viewHeight, edgeLength}) {
+	function topLeft({viewWidth, viewHeight, edgeLength}) {
 	  if(viewWidth && viewHeight){
 	    return [(viewWidth - edgeLength) / 2, (viewHeight - edgeLength) / 2]
 	  }
@@ -14823,7 +18037,7 @@
 	  return path_d
 	}
 
-	function data$u() {
+	function data$v() {
 	  return {
 	    gridSize: 1,
 	    viewWidth: 160,
@@ -14834,9 +18048,9 @@
 	    pointList: []
 	  }
 	}
-	const file$F = "src/diagrams/ShowAPath.html";
+	const file$G = "src/diagrams/ShowAPath.html";
 
-	function create_main_fragment$G(component, ctx) {
+	function create_main_fragment$H(component, ctx) {
 		var div3, div0, text0, div2, div1, img, img_src_value, img_alt_value, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, text2, atlasdataloader_updating = {};
 
 		var setoficons_initial_data = {
@@ -14905,18 +18119,18 @@
 				path1 = createSvgElement("path");
 				text2 = createText("\n  ");
 				atlasdataloader._fragment.c();
-				addLoc(div0, file$F, 1, 2, 28);
+				addLoc(div0, file$G, 1, 2, 28);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
 				setStyle(img, "width", "100%");
 				setStyle(img, "display", "block");
-				addLoc(img, file$F, 11, 6, 184);
+				addLoc(img, file$G, 11, 6, 184);
 				div1.className = "thumbnail svelte-1wb5xrc";
-				addLoc(div1, file$F, 10, 4, 154);
+				addLoc(div1, file$G, 10, 4, 154);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$F, 28, 10, 678);
+				addLoc(circle, file$G, 28, 10, 678);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -14925,9 +18139,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$F, 18, 8, 431);
+				addLoc(marker0, file$G, 18, 8, 431);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$F, 39, 10, 971);
+				addLoc(path0, file$G, 39, 10, 971);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -14936,22 +18150,22 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$F, 30, 8, 734);
-				addLoc(defs, file$F, 17, 6, 416);
+				addLoc(marker1, file$G, 30, 8, 734);
+				addLoc(defs, file$G, 17, 6, 416);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$F, 42, 6, 1044);
+				addLoc(path1, file$G, 42, 6, 1044);
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
 				setAttribute(svg, "class", "pathArrow svelte-1wb5xrc");
-				addLoc(svg, file$F, 13, 4, 327);
+				addLoc(svg, file$G, 13, 4, 327);
 				div2.className = "atlas svelte-1wb5xrc";
-				addLoc(div2, file$F, 9, 2, 130);
+				addLoc(div2, file$G, 9, 2, 130);
 				div3.className = "showapath svelte-1wb5xrc";
-				addLoc(div3, file$F, 0, 0, 0);
+				addLoc(div3, file$G, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -15066,7 +18280,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$u(), options.data);
+		this._state = assign(data$v(), options.data);
 
 		this._recompute({ pointList: 1, viewWidth: 1, viewHeight: 1, edgeLength: 1, topLeft: 1 }, this._state);
 		if (!('pointList' in this._state)) console.warn("<ShowAPath> was created without expected data property 'pointList'");
@@ -15081,7 +18295,7 @@
 		if (!('uniqueId' in this._state)) console.warn("<ShowAPath> was created without expected data property 'uniqueId'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$G(this, this._state);
+		this._fragment = create_main_fragment$H(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15111,7 +18325,7 @@
 		}
 
 		if (changed.viewWidth || changed.viewHeight || changed.edgeLength) {
-			if (this._differs(state.topLeft, (state.topLeft = topLeft$1(state)))) changed.topLeft = true;
+			if (this._differs(state.topLeft, (state.topLeft = topLeft(state)))) changed.topLeft = true;
 		}
 
 		if (changed.pointList || changed.topLeft || changed.edgeLength) {
@@ -15121,7 +18335,7 @@
 
 	/* src/diagrams/VerticalLayerStatic.html generated by Svelte v2.15.3 */
 
-	function data$v() {
+	function data$w() {
 	  return {
 	    caption: "",
 	    layerName: "mixed4c",
@@ -15130,9 +18344,9 @@
 	    showLabels: true
 	  }
 	}
-	const file$G = "src/diagrams/VerticalLayerStatic.html";
+	const file$H = "src/diagrams/VerticalLayerStatic.html";
 
-	function create_main_fragment$H(component, ctx) {
+	function create_main_fragment$I(component, ctx) {
 		var div4, div0, text0, div1, text1, div3, div2, img, img_src_value, img_alt_value, text2;
 
 		var lazyimage_initial_data = {
@@ -15173,19 +18387,19 @@
 				text2 = createText("\n      ");
 				atlasreticle._fragment.c();
 				div0.className = "atlas svelte-mxyxdk";
-				addLoc(div0, file$G, 3, 2, 23);
+				addLoc(div0, file$H, 3, 2, 23);
 				div1.className = "figcaption";
-				addLoc(div1, file$G, 7, 2, 163);
+				addLoc(div1, file$H, 7, 2, 163);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
 				img.className = "svelte-mxyxdk";
-				addLoc(img, file$G, 13, 6, 288);
+				addLoc(img, file$H, 13, 6, 288);
 				setStyle(div2, "position", "relative");
-				addLoc(div2, file$G, 12, 4, 248);
+				addLoc(div2, file$H, 12, 4, 248);
 				div3.className = "thumbnail svelte-mxyxdk";
-				addLoc(div3, file$G, 11, 2, 220);
+				addLoc(div3, file$H, 11, 2, 220);
 				div4.className = "root svelte-mxyxdk";
-				addLoc(div4, file$G, 2, 0, 2);
+				addLoc(div4, file$H, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
@@ -15245,7 +18459,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$v(), options.data);
+		this._state = assign(data$w(), options.data);
 		if (!('subject' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'subject'");
 		if (!('index' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'index'");
 		if (!('caption' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'caption'");
@@ -15255,7 +18469,7 @@
 		if (!('homeY' in this._state)) console.warn("<VerticalLayerStatic> was created without expected data property 'homeY'");
 		this._intro = true;
 
-		this._fragment = create_main_fragment$H(this, this._state);
+		this._fragment = create_main_fragment$I(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15273,7 +18487,7 @@
 
 	/* src/components/Loupe.html generated by Svelte v2.15.3 */
 
-	function data$w() {
+	function data$x() {
 	  return {
 	    label: null,
 	    width: null,
@@ -15281,9 +18495,9 @@
 	    color: "#ff6600"
 	  }
 	}
-	const file$H = "src/components/Loupe.html";
+	const file$I = "src/components/Loupe.html";
 
-	function create_main_fragment$I(component, ctx) {
+	function create_main_fragment$J(component, ctx) {
 		var div1, div0, slot_content_default = component._slotted.default, text;
 
 		var if_block = (ctx.label) && create_if_block$a(component, ctx);
@@ -15296,11 +18510,11 @@
 				if (if_block) if_block.c();
 				div0.className = "loupe svelte-k0t0vh";
 				setStyle(div0, "border-color", ctx.color);
-				addLoc(div0, file$H, 1, 2, 67);
+				addLoc(div0, file$I, 1, 2, 67);
 				div1.className = "root svelte-k0t0vh";
 				setStyle(div1, "width", "" + ctx.width + "px");
 				setStyle(div1, "height", "" + ctx.height + "px");
-				addLoc(div1, file$H, 0, 0, 0);
+				addLoc(div1, file$I, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -15366,7 +18580,7 @@
 				text = createText(ctx.label);
 				div.className = "label svelte-k0t0vh";
 				setStyle(div, "background-color", ctx.color);
-				addLoc(div, file$H, 5, 4, 162);
+				addLoc(div, file$I, 5, 4, 162);
 			},
 
 			m: function mount(target, anchor) {
@@ -15399,7 +18613,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$w(), options.data);
+		this._state = assign(data$x(), options.data);
 		if (!('width' in this._state)) console.warn("<Loupe> was created without expected data property 'width'");
 		if (!('height' in this._state)) console.warn("<Loupe> was created without expected data property 'height'");
 		if (!('color' in this._state)) console.warn("<Loupe> was created without expected data property 'color'");
@@ -15408,7 +18622,7 @@
 
 		this._slotted = options.slots || {};
 
-		this._fragment = create_main_fragment$I(this, this._state);
+		this._fragment = create_main_fragment$J(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15424,9 +18638,9 @@
 
 	/* src/diagrams/Focus1Static.html generated by Svelte v2.15.3 */
 
-	const file$I = "src/diagrams/Focus1Static.html";
+	const file$J = "src/diagrams/Focus1Static.html";
 
-	function create_main_fragment$J(component, ctx) {
+	function create_main_fragment$K(component, ctx) {
 		var div3, div0, text0, text1, div1, text2, div2;
 
 		var lazyimage0_initial_data = {
@@ -15487,13 +18701,13 @@
 				div2 = createElement("div");
 				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
 				div0.className = "main svelte-drlr3g";
-				addLoc(div0, file$I, 2, 2, 22);
+				addLoc(div0, file$J, 2, 2, 22);
 				div1.className = "detail svelte-drlr3g";
-				addLoc(div1, file$I, 14, 2, 363);
+				addLoc(div1, file$J, 14, 2, 363);
 				div2.className = "figcaption svelte-drlr3g";
-				addLoc(div2, file$I, 19, 2, 516);
+				addLoc(div2, file$J, 19, 2, 516);
 				div3.className = "root svelte-drlr3g";
-				addLoc(div3, file$I, 1, 0, 1);
+				addLoc(div3, file$J, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -15548,7 +18762,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$J(this, this._state);
+		this._fragment = create_main_fragment$K(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15566,9 +18780,9 @@
 
 	/* src/diagrams/Focus2Static.html generated by Svelte v2.15.3 */
 
-	const file$J = "src/diagrams/Focus2Static.html";
+	const file$K = "src/diagrams/Focus2Static.html";
 
-	function create_main_fragment$K(component, ctx) {
+	function create_main_fragment$L(component, ctx) {
 		var div3, div0, text0, text1, text2, text3, div2, text4, text5, text6, div1;
 
 		var lazyimage0_initial_data = {
@@ -15712,13 +18926,13 @@
 				div1 = createElement("div");
 				div1.textContent = "In mixed4d we see we see the attribution toward \"fireboat\" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.";
 				div0.className = "main svelte-1smkqjl";
-				addLoc(div0, file$J, 2, 2, 22);
+				addLoc(div0, file$K, 2, 2, 22);
 				div1.className = "figcaption svelte-1smkqjl";
-				addLoc(div1, file$J, 45, 4, 1320);
+				addLoc(div1, file$K, 45, 4, 1320);
 				div2.className = "detail svelte-1smkqjl";
-				addLoc(div2, file$J, 35, 2, 902);
+				addLoc(div2, file$K, 35, 2, 902);
 				div3.className = "root svelte-1smkqjl";
-				addLoc(div3, file$J, 1, 0, 1);
+				addLoc(div3, file$K, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -15801,7 +19015,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$K(this, this._state);
+		this._fragment = create_main_fragment$L(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15819,7 +19033,7 @@
 
 	/* src/diagrams/Focus3Static.html generated by Svelte v2.15.3 */
 
-	const file$K = "src/diagrams/Focus3Static.html";
+	const file$L = "src/diagrams/Focus3Static.html";
 
 	function get_each1_context$4(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -15835,7 +19049,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$L(component, ctx) {
+	function create_main_fragment$M(component, ctx) {
 		var div2, h40, text1, div0, text2, text3, h41, text5, div1, text6;
 
 		var lazyimage0_initial_data = {
@@ -15902,15 +19116,15 @@
 					each1_blocks[i].c();
 				}
 				h40.className = "svelte-1uisskv";
-				addLoc(h40, file$K, 2, 2, 22);
+				addLoc(h40, file$L, 2, 2, 22);
 				div0.className = "main svelte-1uisskv";
-				addLoc(div0, file$K, 3, 2, 58);
+				addLoc(div0, file$L, 3, 2, 58);
 				h41.className = "svelte-1uisskv";
-				addLoc(h41, file$K, 18, 2, 453);
+				addLoc(h41, file$L, 18, 2, 453);
 				div1.className = "main svelte-1uisskv";
-				addLoc(div1, file$K, 19, 2, 490);
+				addLoc(div1, file$L, 19, 2, 490);
 				div2.className = "root svelte-1uisskv";
-				addLoc(div2, file$K, 1, 0, 1);
+				addLoc(div2, file$L, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -16099,7 +19313,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$L(this, this._state);
+		this._fragment = create_main_fragment$M(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16117,7 +19331,7 @@
 
 	/* src/diagrams/Focus3TableStatic.html generated by Svelte v2.15.3 */
 
-	const file$L = "src/diagrams/Focus3TableStatic.html";
+	const file$M = "src/diagrams/Focus3TableStatic.html";
 
 	function get_each1_context$5(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -16133,7 +19347,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$M(component, ctx) {
+	function create_main_fragment$N(component, ctx) {
 		var div5, h40, text0, text1, text2, h41, text3, text4, text5, div0, text6, div1, text8, div2, text10, div3, text12, div4;
 
 		var each0_value = ctx.$focusHighlights;
@@ -16188,21 +19402,21 @@
 				div4.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
 				setStyle(h40, "width", "" + ctx.loupeSize + "px");
 				h40.className = "svelte-1mpkpzp";
-				addLoc(h40, file$L, 3, 4, 25);
+				addLoc(h40, file$M, 3, 4, 25);
 				setStyle(h41, "width", "" + ctx.loupeSize + "px");
 				h41.className = "svelte-1mpkpzp";
-				addLoc(h41, file$L, 14, 4, 291);
-				addLoc(div0, file$L, 26, 4, 585);
+				addLoc(h41, file$M, 14, 4, 291);
+				addLoc(div0, file$M, 26, 4, 585);
 				div1.className = "figcaption svelte-1mpkpzp";
-				addLoc(div1, file$L, 27, 4, 601);
+				addLoc(div1, file$M, 27, 4, 601);
 				div2.className = "figcaption svelte-1mpkpzp";
-				addLoc(div2, file$L, 30, 4, 739);
+				addLoc(div2, file$M, 30, 4, 739);
 				div3.className = "figcaption svelte-1mpkpzp";
-				addLoc(div3, file$L, 33, 4, 906);
+				addLoc(div3, file$M, 33, 4, 906);
 				div4.className = "figcaption svelte-1mpkpzp";
-				addLoc(div4, file$L, 36, 4, 1083);
+				addLoc(div4, file$M, 36, 4, 1083);
 				div5.className = "root svelte-1mpkpzp";
-				addLoc(div5, file$L, 1, 0, 1);
+				addLoc(div5, file$M, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
@@ -16390,7 +19604,7 @@
 
 		this._handlers.destroy = [removeFromStore];
 
-		this._fragment = create_main_fragment$M(this, this._state);
+		this._fragment = create_main_fragment$N(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16472,12 +19686,12 @@
 		// Components
 		// 
 
-		const cover = document.querySelector("#cover");
-		cover.addEventListener("ready", e => {
-			new App({
-				target: cover,
-				store,
-				data: {
+		new LazyComponent({
+			target: document.querySelector("#cover"),
+			store: store,
+			data: {
+				component: App,
+				componentData: {
 					showClassFilter: false,
 					layerName: "mixed4d",
 					showLabels: false,
@@ -16487,8 +19701,26 @@
 					homeScale: 4,
 					gridSize: 2
 				}
-			});
+			}
 		});
+
+		// const cover = document.querySelector("#cover");
+		// cover.addEventListener("ready", e => {
+		// 	new App({
+		// 		target: cover,
+		// 		store,
+		// 		data: {
+		// 			showClassFilter: false,
+		// 			layerName: "mixed4d",
+		// 			showLabels: false,
+		// 			showOptions: false,
+		// 			homeX: 0.55,
+		// 			homeY: 0.7,
+		// 			homeScale: 4,
+		// 			gridSize: 2
+		// 		}
+		// 	});
+		// });
 
 		new Overview({ target: document.querySelector("#overview") });
 
@@ -16788,26 +20020,28 @@
 			});
 		});
 
+		// const allLayerComparisonElement = document.querySelector("#all-layer-comparison")
+		// allLayerComparisonElement.addEventListener("ready", () => {
+		// 	new App({
+		// 		target: allLayerComparisonElement,
+		// 		store: store,
+		// 		data: {
+		// 			showClassFilter: false
+		// 		}
+		// 	});
+		// });
 
-		let layerComparison = new App({
+
+		new LazyComponent({
 			target: document.querySelector("#all-layer-comparison"),
 			store: store,
 			data: {
-				showClassFilter: false
+				component: App,
+				componentData: {
+					showClassFilter: false,
+				}
 			}
 		});
-
-		// new LazyComponent({
-		// 	target: document.querySelector("#all-layer-comparison"),
-		// 	store: store,
-		// 	data: {
-		// 		aspectRatio: 2,
-		// 		component: App,
-		// 		componentData: {
-		// 			showClassFilter: false,
-		// 		}
-		// 	}
-		// });
 
 
 		const poiLinks = document.querySelectorAll("[data-poi]");
@@ -16843,15 +20077,29 @@
 			store: store,
 		});
 
-		new App({
+		// const focusPlaygroundElement = document.querySelector("#focus-playground");
+		// focusPlaygroundElement.addEventListener("ready", () => {
+		// 	new App({
+		// 		target: focusPlaygroundElement,
+		// 		store: store,
+		// 		data: {
+		// 			classHeatmap: 235,
+		// 			layerName: "mixed4d"
+		// 		}
+		// 	});
+		// });
+
+		new LazyComponent({
 			target: document.querySelector("#focus-playground"),
 			store: store,
 			data: {
-				classHeatmap: 235,
-				layerName: "mixed4d"
+				component: App,
+				componentData: {
+					classHeatmap: 235,
+					layerName: "mixed4d"
+				}
 			}
 		});
-
 
 		// Further Isolating Classes
 

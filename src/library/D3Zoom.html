@@ -1,0 +1,106 @@
+<div ref:root class="d3zoom">
+  <slot />
+</div>
+
+<script>
+import {zoom as d3Zoom, zoomTransform as d3ZoomTransform} from "d3-zoom";
+import {event as d3Event, select as d3Select} from "d3-selection";
+import { tween } from 'svelte-extras';
+import * as eases from 'eases-jsnext';
+
+export default {
+  data() {
+    return {
+      z: d3Zoom(), //d3 zoom object
+      selection: null, //the d3 selection of the root
+      translateExtent: [[0, 100], [0, 100]], //
+      scaleExtent: [1, 16], //
+      scale: 1,
+      translateX: 0,
+      translateY: 0,
+      k: 1,
+      x: 0,
+      y: 0
+    };
+  },
+  oncreate() {
+    const {z, scaleExtent, translateExtent} = this.get();
+    z.scaleExtent(scaleExtent);
+    const selection = d3Select(this.refs.root);
+    z(selection);
+    this.set({
+      selection,
+      el: this.refs.zoom
+      })
+    const that = this; // needed because d3 gives "this" as the node, not component.
+    z.on("zoom", () => { this.onzoom(that); });
+  },
+  onstate({changed, current, previous}) {
+    // console.log("update", changed, current.scale)
+    const {z, selection, el, x, y} = this.get();
+    if (changed.scaleExtent && current.scaleExtent) { z.scaleExtent(current.scaleExtent) } 
+    if (selection) {
+
+      if (changed.x || changed.y) {
+        // let localX = x;
+        // let localY = y;
+        // if (changed.x) { localX = current.x; }
+        // if (changed.y) { localY = current.y; }
+        z.translateTo(selection, current.x, current.y);
+      }
+
+      if (changed.scale) { this.set({k: current.scale}); }
+      if (changed.k) { z.scaleTo(selection, current.k); } 
+
+      if (changed.translateX) { this.set({x: current.translateX}); }
+      if (changed.translateY) { this.set({x: current.translateY}); }
+
+    }
+    
+    // if (changed.x && current.x && selection) { z.scaleTo(selection, current.x, y); } 
+    
+    // if (changed.translateY && current.translateY && selection) { this.set({k: current.translateY}); }
+    // if (changed.k && current.k && selection) { z.scaleTo(selection, current.k); } 
+    
+    
+    // zoom.translateTo(selection, x, y) 
+  },
+  methods: {
+    tween,
+    onzoom: function(that) {
+      // console.log("onzoom", d3Event.transform);
+      that.set({
+        scale: d3Event.transform.k,
+        translateX: d3Event.transform.x,
+        translateY: d3Event.transform.y,
+      });
+    },
+    transformTo: function() {
+
+    },
+    translateTo: function() {
+
+    },
+    zoomTo: function(scale, duration) {
+      const {scaleExtent} = this.get()
+      scale = Math.min(scale, scaleExtent[1]);
+      scale = Math.max(scale, scaleExtent[0]);
+      if (duration) {
+        this.tween('k', scale, {
+          duration, easing: eases.cubicInOut
+        });
+      } else {
+        this.set({k: scale});
+      }
+    }
+  }
+}
+</script>
+
+<style>
+ref:root {
+  background: white;
+  width: 100%;
+  height: 100%;
+}
+</style>

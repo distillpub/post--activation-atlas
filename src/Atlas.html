@@ -13,45 +13,36 @@
   />
 {/if}
 
-  <div
-    ref:root
-    bind:clientWidth=viewWidth
-    bind:clientHeight=viewHeight
+<div
+  ref:root
+  bind:clientWidth=viewWidth
+  bind:clientHeight=viewHeight
+>
+  <D3Zoom
+    ref:d3Zoom
+    bind:scale
+    bind:translateX
+    bind:translateY
   >
-    <div
-      ref:stage
-      class="{(mouseMoveMode == 'pan' & enableDragToPan) ? 'panning' : ''}"
-      on:mousedown="mouseDown(event)" on:mousemove="mouseMove(event)" 
-      on:mouseenter="mouseEnter(event)" on:mouseout="mouseOut(event)"
-    >
-      <D3Zoom
-        
-      >
-        <canvas
-          ref:canvas
-          width={viewWidth * screenResolution}
-          height={viewHeight * screenResolution}
-          style="width: {viewWidth}px; height: {viewHeight}px;"
-        ></canvas>
-      </D3Zoom>
-      <Zoom
-        ref:zoom
-        bind:scale
-        bind:unit
-        bind:gcx
-        bind:gcy
-        width={viewWidth}
-        height={viewHeight}
-      />
-      
-      {#if showHoverIcon}
-        <div class="icon" style="width:{iconSizeInPixels + 2 + 'px'}; height:{iconSizeInPixels + 2 + 'px'}; left:{topLeftCornerHover.x + 'px'}; top:{topLeftCornerHover.y + 'px'}"></div>
-      {/if}
-    </div>
-  </div>
+    <canvas
+      ref:canvas
+      width={viewWidth * screenResolution}
+      height={viewHeight * screenResolution}
+    ></canvas>
+  </D3Zoom>
+</div>
+
+<Zoom
+  ref:zoom
+  bind:unit
+  bind:gcx
+  bind:gcy
+  width={viewWidth}
+  height={viewHeight}
+/>
 
 <script>
-import { default as load } from './load.js';
+import { default as load } from './library/load.js';
 import { max } from 'd3-array';
 
 export default {
@@ -84,6 +75,7 @@ export default {
       context: null,
 
       alphaAttributionFactor: 0.02,
+      density: 1.0,
       scaleCountFactor: 1,
       classHeatmap: -1,
       classHeatmapMultiplier: 1,
@@ -99,14 +91,10 @@ export default {
 
       iconCrop: 0.02,
 
-      // zoom factor
-      zoomFactors: {out: 0.5, in: 2},
-
       // turn off features
       enableClickToZoom: true,
       enableHover: true,
       enableDragToPan: true,
-
 
       backgroundColor: "white",
       strokeColor: "rgb(220, 220, 220)",
@@ -116,27 +104,17 @@ export default {
       textColor: "white",
       textShadowColor: "rgba(0, 0, 0, 0.8)",
 
-      // for positioning the hover icon
-      lastRecordedCanvasPos: {x: -100, y: -100},
-
       // for managing panning off the screen
       mouseDownScreenPos: {x: 0, y: 0},
 
       // can be "hover" or "pan"
-      mouseMoveMode: 'hover',
       onCanvas: false,
 
       screenResolution: 1,
-
-      mouseDownTimer: 0,
-      mouseMoveFunction: function(){},
-      mouseUpFunction: function(){},
-
     }
   },
   computed: {
     maxAttributionValue: ({layers, layer}) => {
-      // return 0.25;
       if (layers == null) return 0;
       const l = layers[layer];
       let max = 0;
@@ -149,18 +127,9 @@ export default {
         })
       })
       return max;
-      // return layers ? max(l, d => d ? max(d, dd => dd ? (dd.n > 50 ? (dd.top_class_values[dd.top_class_indices.indexOf(classHeatmap)]) : 0) : 0): 0) : 0;
-      },
-    aspectRatio: ({viewWidth, viewHeight}) => viewWidth / viewHeight,
-    // viewHeight: ({viewWidth}) => viewWidth / 1.5,
-    // Math.min of viewHeight/viewWidth to make sure it fits inside when scale = 1
-    minViewDimInPx: ({viewWidth, viewHeight}) => Math.min(viewWidth, viewHeight), 
-    // defines top left corner of global in pixels, relative to the upper left corner of the canvas as 0,0
-    topLeft: ({gcx, gcy, scale, viewWidth, viewHeight, minViewDimInPx}) => {
-      return {
-        x: viewWidth / 2 - gcx * minViewDimInPx * scale,
-        y: viewHeight / 2 - gcy * minViewDimInPx * scale} 
     },
+    w: ({viewWidth, screenResolution}) => viewWidth * screenResolution,
+    h: ({viewHeight, screenResolution}) => viewHeight * screenResolution,
     currentZoomIndex: ({scale, gridSize}) => {
       let s = 0;
       if (gridSize != null) {
@@ -174,16 +143,6 @@ export default {
       }
       return +s;
     },
-    numIconsWide: ({currentZoomIndex, layers}) => {
-      if(layers && currentZoomIndex){
-        return layers[currentZoomIndex].length
-      }
-    },
-    iconSizeInPixels: ({config, minViewDimInPx, currentZoomIndex, scale}) => {
-      if(config){
-        return minViewDimInPx / (config.grid_size[currentZoomIndex]) * scale;
-      }
-    },
     showHoverIcon: ({mouseMoveMode, onCanvas, currentIconInfo, enableHover}) => {
       return enableHover && onCanvas && (mouseMoveMode == 'hover') && currentIconInfo
     },
@@ -192,37 +151,13 @@ export default {
         return (minViewDimInPx / (config.icon_size * config.grid_size[currentZoomIndex])) * scale
       }
     }, 
-    gridSelected: ({lastRecordedCanvasPos, topLeft, layerScale, config}) => {
-      if(config){
-        return {
-          x: Math.floor((lastRecordedCanvasPos.x - topLeft.x) / (layerScale * config.icon_size)),
-          y: Math.floor((lastRecordedCanvasPos.y - topLeft.y) / (layerScale * config.icon_size))
-        }        
-      }
-    }, 
-    topLeftCornerHover: ({config, layerScale, topLeft, gridSelected}) => {
-      if(config){
-        return {
-          x: gridSelected.x * config.icon_size * layerScale + topLeft.x - 1,
-          y: gridSelected.y * config.icon_size * layerScale + topLeft.y - 1
-        }
-      }
-    },
-    currentIconInfo: ({layers, currentZoomIndex, gridSelected, classHeatmap}) => {
-      if(layers && layers[currentZoomIndex] && 
-         layers[currentZoomIndex][gridSelected.y] && 
-         layers[currentZoomIndex][gridSelected.y][gridSelected.x]
-         ){
-          const iconInfo = layers[currentZoomIndex][gridSelected.y][gridSelected.x];
-          if(iconInfo.num_activations > 0){
-            return iconInfo
-          }
-      }
-    }
   },
   onupdate({changed, current, previous}) {
-    this.set({context: this.refs.canvas.getContext('2d')});
-    if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
+    // console.log("atlas", changed, current.scale)
+    if (!current.context || changed.viewWidth || changed.viewHeight) {
+      this.set({context: this.refs.canvas.getContext('2d')});
+    }
+    if (changed.density || changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
       this.render();
     }
     if (changed.currentIconInfo) {
@@ -253,49 +188,11 @@ export default {
       this.set({onCanvas: true})
     },
     mouseDown(event) {
-      // should this be set once, somewhere else? oncreate? 
-      this.set({mouseMoveFunction: this.mouseMove.bind(this), mouseUpFunction: this.mouseUp.bind(this)});
 
-      const {mouseMoveFunction, mouseUpFunction} = this.get();
-
-      event.preventDefault();
-
-      // set event listeners on window
-      window.addEventListener("mousemove", mouseMoveFunction);
-      window.addEventListener("mouseup",mouseUpFunction);
-      // do I need to unset local listener? 
-
-      this.set({mouseMoveMode: 'pan'})
-      this.set({mouseDownTimer: Date.now()})
-
-      // canvas position
-      this.set({lastRecordedCanvasPos: {x: event.offsetX, y: event.offsetY}})
-
-      // screenPosition at mousedown
-      this.set({mouseDownScreenPos: {x: event.screenX, y: event.screenY}})
 
     },
     mouseMove(event) {
-      const { mouseMoveMode } = this.get();
 
-      this.set({lastRecordedCanvasPos: {x: event.offsetX, y: event.offsetY}});
-
-      if (mouseMoveMode == 'pan') {
-        const {mouseDownScreenPos, gcx, gcy, enableDragToPan} = this.get();
-
-        // update gcx, gcy, mouseDownScreenPos
-        this.set({
-          mouseDownScreenPos: {x: event.screenX, y: event.screenY}
-        })
-
-        if(enableDragToPan){
-          this.refs.zoom.panTo(
-            this.toPercent(mouseDownScreenPos.x - event.screenX) + gcx,
-            this.toPercent(mouseDownScreenPos.y - event.screenY) + gcy,
-            0
-          )
-        } 
-      }
 
     },
     mouseOut(event) {
@@ -304,100 +201,58 @@ export default {
       });
     },
     mouseUp(event) {
-      const {mouseDownTimer, mouseMoveMode, scale, zoomFactors, mouseMoveFunction, mouseUpFunction, lastRecordedCanvasPos, topLeft, gcx, gcy, enableClickToZoom} = this.get();
-
-      // reset mode to hover
-      this.set({mouseMoveMode: 'hover'})
-
-      // remove body event listeners
-      window.removeEventListener("mousemove", mouseMoveFunction);
-      window.removeEventListener("mouseup", mouseUpFunction);
-
-      // calculate offsets to determine to zoom or not
-      const clickDiff = (Date.now() - mouseDownTimer);
-      const clickDistance = Math.sqrt(
-        Math.pow(event.offsetX - lastRecordedCanvasPos.x, 2) + 
-        Math.pow(event.offsetY - lastRecordedCanvasPos.y, 2)
-        );
 
 
-      // 200ms and 5 pixels distance is fairly arbitrary
-      if(clickDiff < 200 && clickDistance < 5) {
-        // ZOOM!
-        if(enableClickToZoom){
-          // use shift key to determine to zoom in or zoom out
-          let zoomBy = zoomFactors.in;
-          if(event.shiftKey){
-            zoomBy = zoomFactors.out;
-          }
-
-          let newCenter = {x: 0.5, y: 0.5}
-
-          // go home if scale < 1
-          let newScale = zoomBy * scale;
-          if(newScale > 1){
-            // use current mouse position to find new center position
-            const fixedPoint = {
-              x: this.toPercent(event.offsetX - topLeft.x),
-              y: this.toPercent(event.offsetY - topLeft.y)
-            }
-            newCenter = {
-              x: fixedPoint.x - ((fixedPoint.x - gcx)/zoomBy),
-              y: fixedPoint.y - ((fixedPoint.y - gcy)/zoomBy)
-            }
-          } else {
-            newScale = 1;
-          }
-          this.transitionTo(newCenter.x, newCenter.y, newScale, 500)
-        }
-      }
     },
-    home() {
+    home(duration=0) {
       const {homeX, homeY, homeScale} = this.get();
-      this.transitionTo(homeX,homeY,homeScale,800)
+      this.transitionTo(homeX, homeY, homeScale, duration);
     },
-    transitionTo(x, y, scale, duration) {
-      this.refs.zoom.transitionTo(x,y,scale,duration);
+    transitionTo(x, y, scale, duration=0) {
+      this.refs.d3Zoom.transformTo(x, y, scale, duration);
     },
     zoomit(multiplier) {
       const { scale } = this.get();
-      this.refs.zoom.scaleTo(scale * multiplier, 500)
+      this.refs.d3Zoom.zoomTo(scale * multiplier, 500);
+      // this.refs.zoom.scaleTo(scale * multiplier, 500)
     },
-    iconToCanvasPosition(icon, layerIndex) {
-      const {config, scaleCountFactor, topLeft, layerScale, currentZoomIndex} = this.get();
+    iconToGlobalPosition(icon, layerIndex) {
+      const {density, scale, translateX, translateY, config, layerScale, w, h} = this.get();
+      // const proportionalScaleCountFactor = scaleCountFactor / (currentZoomIndex + 1)
+      // const scaleModifier = (Math.sqrt(Math.min(proportionalScaleCountFactor, icon.num_activations) / proportionalScaleCountFactor)) 
+      // console.log(icon, config, layerIndex)
+      // const iconWidth = config.icon_size //* layerScale * scaleModifier;
+      const gridSize = config.grid_size[layerIndex];
+      const gridWidth = config.icon_size * gridSize;
 
-      const proportionalScaleCountFactor = scaleCountFactor / (currentZoomIndex + 1)
-      const scaleModifier = (Math.sqrt(Math.min(proportionalScaleCountFactor, icon.num_activations) / proportionalScaleCountFactor)) 
-      const iconWidth = config.icon_size * layerScale * scaleModifier;
+      const iconWidthPct = config.icon_size / gridWidth;
+      const iconWidth = iconWidthPct * scale * Math.min(w, h);
 
-      const sx = icon.localX * config.icon_size;
-      const sy = icon.localY * config.icon_size;
+      // x, y swapped intentionally
+      const iconXPct = icon.grid_y * config.icon_size / gridWidth;
+      const iconYPct = icon.grid_x * config.icon_size / gridWidth;
 
-      const tilePos_x = icon.grid_y * config.icon_size;
-      const tilePos_y = icon.grid_x * config.icon_size;
+      const iconX = iconXPct * scale * Math.min(w, h) + translateX;
+      const iconY = iconYPct * scale * Math.min(w, h) + translateY;
 
-      // pixel coordinate in the global coordinate space
-      const globalPixelPos_x = tilePos_x * layerScale;
-      const globalPixelPos_y = tilePos_y * layerScale;
+      const sourceX = icon.localX * config.icon_size;
+      const sourceY = icon.localY * config.icon_size;
 
-      const canvasPos_x = globalPixelPos_x + topLeft.x;
-      const canvasPos_y = globalPixelPos_y + topLeft.y;      
+      const totalSamples = (typeof config.filter[0] == "number" ? config.filter[0] : config.sample_images)
+      const avgSamples = totalSamples / (gridSize * gridSize);
 
-      // calc scale adjust factor to center the image for the icon in it's box
-      const scaleAdjustFactor =  (1 - scaleModifier) * config.icon_size * layerScale  / 2;
+      const relativeDensity = Math.min(1, density * icon.num_activations / avgSamples);
 
-      const dx = canvasPos_x + scaleAdjustFactor;
-      const dy = canvasPos_y + scaleAdjustFactor;
+      const adjustedIconWidth = iconWidth * relativeDensity;
+      const adjustedIconX = iconX + (iconWidth - adjustedIconWidth) / 2;
+      const adjustedIconY = iconY + (iconWidth - adjustedIconWidth) / 2
+      // console.log(relativeDensity);
+      // If we have resizing based on density, calculate those offsets here
+                        
 
-      return {sx, sy, dx, dy, iconWidth}
-    },
-    toPercent(p) {
-      const {scale, minViewDimInPx} = this.get();
-      return p / (scale * minViewDimInPx);
-    },
-    toPixels(p) {
-      const {scale, minViewDimInPx} = this.get();
-      return p * scale * minViewDimInPx;
+      return {sourceX, sourceY, iconX: adjustedIconX, iconY: adjustedIconY, iconWidth: adjustedIconWidth}
+
+      // return {sx, sy, dx, dy, iconWidth}
     },
     clear() {
       const {viewHeight, viewWidth, context, backgroundColor} = this.get();
@@ -406,23 +261,23 @@ export default {
       context.clearRect(0, 0, viewWidth, viewHeight);
       context.fillRect(0, 0, viewWidth, viewHeight);
     },
-    updateIconHoverImage() {
-      const {currentIconInfo, currentZoomIndex, iconCrop, config, showHoverImage} = this.get();
-      if(currentIconInfo && showHoverImage){
-        load(currentIconInfo.url).then(response => {
-          const hoverImageContext = this.refs.hoverImage.getContext('2d');
-          const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(currentIconInfo, currentZoomIndex)
-          const iconOffset = (iconCrop * config.icon_size) / 2;
-          const edgeLength = Math.min(this.refs.hoverImage.height, this.refs.hoverImage.width)
-          hoverImageContext.drawImage(response,
-                          //source
-                          sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
-                          //destination
-                          0, 0, edgeLength, edgeLength
-                        );
-        })
-      }
-    },
+    // updateIconHoverImage() {
+      // const {currentIconInfo, currentZoomIndex, iconCrop, config, showHoverImage} = this.get();
+      // if(currentIconInfo && showHoverImage){
+      //   load(currentIconInfo.url).then(response => {
+      //     const hoverImageContext = this.refs.hoverImage.getContext('2d');
+      //     const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(currentIconInfo, currentZoomIndex)
+      //     const iconOffset = (iconCrop * config.icon_size) / 2;
+      //     const edgeLength = Math.min(this.refs.hoverImage.height, this.refs.hoverImage.width)
+      //     hoverImageContext.drawImage(response,
+      //                     //source
+      //                     sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+      //                     //destination
+      //                     0, 0, edgeLength, edgeLength
+      //                   );
+      //   })
+      // }
+    // },
     render() {
 
       const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
@@ -441,22 +296,23 @@ export default {
               columns.forEach((icon, y) => {
                 if (icon.num_activations >= minActivations) {
 
-                  const {dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
-
+                  const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+                  
                   // If icon is in the viewport
-                  if (dx > -iconWidth && dx < viewWidth && dy > -iconWidth && dy < viewHeight) {
+                  if (iconX > -iconWidth && iconX < viewWidth && iconY > -iconWidth && iconY < viewHeight) {
                     
                     // We want to draw a box before the icon has loaded so there isn't just whiteness.
-                    const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex)
-                    context.globalAlpha = 0.75;
-                    context.strokeStyle = strokeColor;
-                    context.lineWidth = strokeThickness;
-                    context.fillStyle = "white";
-                    context.beginPath();
-                    context.rect(dx, dy, iconWidth, iconWidth);
-                    context.stroke();
-                    context.fill();
-                    context.closePath();
+                    if (classHeatmap > -1) {
+                      context.globalAlpha = 0.75;
+                      context.strokeStyle = strokeColor;
+                      context.lineWidth = strokeThickness;
+                      context.fillStyle = "white";
+                      context.beginPath();
+                      context.rect(iconX, iconY, iconWidth, iconWidth);
+                      context.stroke();
+                      context.fill();
+                      context.closePath();
+                    }
 
                     load(icon.url).then(response => {
                       // check that we're still on the right layer/zoom
@@ -464,6 +320,9 @@ export default {
                       if(currentZoomIndex == layerIndex) {
                         const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
+                        const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+
+                        // If we have a class heatmap active, calculate the transparency for the current icon
                         let a = 1;
                         if (classHeatmap > -1) {
                           let i = icon.full_class_indices.indexOf(classHeatmap);
@@ -475,22 +334,16 @@ export default {
                             a = 0.0;
                           }
                         }
-                        // let a = Math.min(1,
-                        //   Math.max(0.2, Math.pow(icon.top_class_values[0], 2) * 
-                        //   1000 * alphaAttributionFactor));
-
-                        // get current values in case they changed while loading
-                        const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex)
 
                         // draw the icon
                         context.globalAlpha = a;
                         const iconOffset = (iconCrop * config.icon_size) / 2;
-                        context.clearRect(dx + 1, dy + 1, iconWidth - 2, iconWidth - 2);
+                        context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
                         context.drawImage(response,
                           //source
-                          sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+                          sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
                           //destination
-                          dx, dy, iconWidth, iconWidth
+                          iconX, iconY, iconWidth, iconWidth
                         );
                         context.globalAlpha = 1;
 
@@ -500,10 +353,10 @@ export default {
                           if (textShadow) {
                             context.lineWidth = 2;
                             context.strokeStyle = textShadowColor;
-                            context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+                            context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
                           }
                           context.fillStyle = textColor;
-                          context.fillText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+                          context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
                         }
 
                       }
@@ -542,6 +395,7 @@ export default {
     cursor: move;
   }
   ref:canvas {
+    pointer-events: none;
     position: absolute;
     top: 0;
     left: 0;

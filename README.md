@@ -12,9 +12,8 @@ Colab notebooks
 
 Fix zoom.html
 mousewheel and touch zoom support
-
 smooth zoom between gridsizes
-autochoose gridsize
+autochoose gridsize (this is questionable?)
 
 # Tweaks
 
@@ -25,17 +24,14 @@ detal.html and link to it somewhere
 no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
 
-one-layer initializes with a zero width, causing animation. Others do too...
+one-layer initializes with animation. Others do too...
 
 ## Nice to haves
 
 add "settings tray" to bottom of minimap
 
-Add support for css resizing lazycomponent.
-Add width variable to lazyComponent.
-
 add different filtering strategies in playground
-by rank, by magnitude
+by rank, by magnitude -- this might not be possible due to averaging
 
 add 3d slides for intro
 
@@ -48,4 +44,5 @@ add different filtering strategies in article
 tighten up verticallayerannotations.html
 pre-render static atlases
 too many atlases sometimes causing loading problems?
-
+Add support for css resizing lazycomponent.
+Add width variable to lazyComponent.
