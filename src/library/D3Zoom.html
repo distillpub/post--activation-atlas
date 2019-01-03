@@ -1,9 +1,17 @@
-<div ref:root class="d3zoom">
+<div 
+  ref:root 
+  class="d3zoom" 
+  bind:clientWidth
+  bind:clientHeight
+  on:mousemove="mouseMove(event)"
+  on:mousedown="set({msx: null, msy: null})"
+  on:mouseout="set({msx: null, msy: null})"
+>
   <slot />
 </div>
 
 <script>
-import {zoom as d3Zoom, zoomTransform as d3ZoomTransform} from "d3-zoom";
+import {zoomIdentity as d3ZoomIdentity, zoom as d3Zoom, zoomTransform as d3ZoomTransform} from "d3-zoom";
 import {event as d3Event, select as d3Select} from "d3-selection";
 import { tween } from 'svelte-extras';
 import * as eases from 'eases-jsnext';
@@ -12,40 +20,60 @@ export default {
   data() {
     return {
       z: d3Zoom(), //d3 zoom object
+      el: null,
       selection: null, //the d3 selection of the root
-      translateExtent: [[0, 100], [0, 100]], //
-      scaleExtent: [1, 16], //
+      transform: null, // the d3 transform
+      scaleExtent: [1, 32], //
       scale: 1,
       translateX: 0,
       translateY: 0,
+      msx: null,
+      msy: null,
       k: 1,
       x: 0,
       y: 0
     };
   },
+  computed: {
+    minSize: ({clientWidth, clientHeight}) => Math.min(clientWidth, clientHeight),
+    mouseOver: ({msx, msy}) => msx != undefined && msy != undefined,
+    mouseGlobalPosition: ({transform, msx, msy, clientHeight, clientWidth, minSize}) => {
+      if (transform && msx != undefined && msy != undefined) {
+        const scale = transform.k;
+        return [
+          transform.invertX(msx) - (clientWidth - minSize) / 2,
+          transform.invertY(msy) - (clientHeight - minSize) / 2,
+        ];
+      } else {
+        return null;
+      }
+    },
+  },
   oncreate() {
-    const {z, scaleExtent, translateExtent} = this.get();
+    const {z, scaleExtent, clientWidth, clientHeight} = this.get();
+    const that = this; // needed because d3 gives "this" as the node, not component.
     z.scaleExtent(scaleExtent);
     const selection = d3Select(this.refs.root);
     z(selection);
     this.set({
       selection,
-      el: this.refs.zoom
-      })
-    const that = this; // needed because d3 gives "this" as the node, not component.
+      el: this.refs.root,
+    });
     z.on("zoom", () => { this.onzoom(that); });
+    this.update();
   },
   onstate({changed, current, previous}) {
+    if (previous != undefined) {
+      if ((changed.clientWidth || changed.clientHeight) && current.el) {
+        this.update();
+      }
+    }
     // console.log("update", changed, current.scale)
     const {z, selection, el, x, y} = this.get();
     if (changed.scaleExtent && current.scaleExtent) { z.scaleExtent(current.scaleExtent) } 
     if (selection) {
 
       if (changed.x || changed.y) {
-        // let localX = x;
-        // let localY = y;
-        // if (changed.x) { localX = current.x; }
-        // if (changed.y) { localY = current.y; }
         z.translateTo(selection, current.x, current.y);
       }
 
@@ -56,24 +84,30 @@ export default {
       if (changed.translateY) { this.set({x: current.translateY}); }
 
     }
-    
-    // if (changed.x && current.x && selection) { z.scaleTo(selection, current.x, y); } 
-    
-    // if (changed.translateY && current.translateY && selection) { this.set({k: current.translateY}); }
-    // if (changed.k && current.k && selection) { z.scaleTo(selection, current.k); } 
-    
-    
-    // zoom.translateTo(selection, x, y) 
   },
   methods: {
     tween,
-    onzoom: function(that) {
-      // console.log("onzoom", d3Event.transform);
-      that.set({
-        scale: d3Event.transform.k,
-        translateX: d3Event.transform.x,
-        translateY: d3Event.transform.y,
+    mouseMove: function(event) {
+      const msx = event.offsetX;
+      const msy = event.offsetY;
+      this.set({
+        msx, msy
       });
+      const {mouseGlobalPosition} = this.get();
+    },
+    update: function() {
+      const {clientWidth, clientHeight, minSize, el} = this.get();
+      const transform = d3ZoomTransform(el);
+      const scale = transform.k;
+      this.set({
+        scale,
+        transform,
+        translateX: transform.x + scale * (clientWidth - minSize) / 2,
+        translateY: transform.y + scale * (clientHeight - minSize) / 2,
+      });
+    },
+    onzoom: function(that) {
+      that.update();
     },
     transformTo: function() {
 
@@ -99,6 +133,7 @@ export default {
 
 <style>
 ref:root {
+  position: relative;
   background: white;
   width: 100%;
   height: 100%;

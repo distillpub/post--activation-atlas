@@ -2,18 +2,11 @@
 
 ## Bugs
 
-in options restrict gridsize to relevant levels.
-
 quicklinks in multiple layers causes weird async loading issues.
 
 Make minimap a little bigger
 
-Colab notebooks
-
-Fix zoom.html
-mousewheel and touch zoom support
 smooth zoom between gridsizes
-autochoose gridsize (this is questionable?)
 
 # Tweaks
 
@@ -24,18 +17,22 @@ detal.html and link to it somewhere
 no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
 
-one-layer initializes with animation. Others do too...
-
 ## Nice to haves
 
 add "settings tray" to bottom of minimap
 
+add 3d slides for intro
+
 add different filtering strategies in playground
 by rank, by magnitude -- this might not be possible due to averaging
 
-add 3d slides for intro
-
 ## Done
+one-layer initializes with animation. Others do too...
+Colab notebooks
+in options restrict gridsize to relevant levels.
+Fix zoom.html
+mousewheel and touch zoom support
+autochoose gridsize (this is questionable?)
 move hovercard to root so can get around the css contain problem.
 first image of paths is still missing.
 activation atlas button gets cut off

@@ -33,9 +33,11 @@
           bind:iconCrop 
           bind:classHeatmapMultiplier
           bind:classHeatmapPositive
+          bind:autoGridSizeMultiplier
           bind:gridSize
           bind:showLabels
           bind:scale
+          bind:aspectRatio
           bind:gcx
           bind:gcy
           {homeX}
@@ -86,6 +88,11 @@
           <label><input type=radio bind:group=gridSize value={2}> 80x80</label>
           <label><input type=radio bind:group=gridSize value={3}> 160x160</label>
           <label><input type=radio bind:group=gridSize value={4}> 320x320</label>
+          <label><input type=radio bind:group=gridSize value={-1}> auto</label>
+          <div style="display: {gridSize == -1 ? 'block': 'none'};">
+            <div>auto threshold: {@html autoGridSizeMultiplier}</div>
+            <input type="range" min={0.6} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
+          </div>
         </div>
         <div>
           <h3>Icons</h3>
