@@ -2,7 +2,7 @@
 
 ## Bugs
 
-quicklinks in multiple layers causes weird async loading issues.
+quicklinks in multiple layers causes weird async loading issues. (this might be fixed)
 
 Make minimap draggable
 
@@ -14,6 +14,8 @@ format numbers in toolip
 
 add hover state for notebooklink
 
+add "settings tray" to bottom of minimap
+
 # Tweaks
 
 add "reset" to layer tour (and possible zoom buttons)
@@ -24,8 +26,6 @@ no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
 
 ## Nice to haves
-
-add "settings tray" to bottom of minimap
 
 add 3d slides for intro
 

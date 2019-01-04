@@ -8557,6 +8557,10 @@
 
 	}
 
+	function visibleLayers({currentZoomIndex}) {
+	  return [currentZoomIndex];
+	}
+
 	function currentLayerData({currentZoomIndex, layers}) {
 	  return layers ? layers[currentZoomIndex] : [[]]
 	}
@@ -8702,7 +8706,7 @@
 	  },
 	  render() {
 
-	    const {imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {id, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
 	    // context.imageSmoothingQuality = "low";
@@ -8711,12 +8715,10 @@
 	    if (config && layers) {
 
 	      layers.forEach((icons, layerIndex) => {
-	        const visibleLayers = [currentZoomIndex];
 	        if (visibleLayers.indexOf(layerIndex) > -1) {
 	          
-
+	          // Calculating min and max indices for icon render loop
 	          const minSize = Math.min(w, h);
-	          
 	          const minX = Math.max(0, Math.floor(-(translateX / scale / minSize) * icons.length));
 	          const maxX = minX + Math.ceil(( w / scale / minSize) * icons.length);
 	          const minY = Math.max(0, Math.floor(-(translateY / scale / minSize) * icons.length));
@@ -8728,19 +8730,15 @@
 	              if (icons[y] && icons[y][x]) {
 	                const icon = icons[y][x];
 
-	          // icons.forEach((columns, x) => {
-	            // columns.forEach((icon, y) => {
-	              // console.log(x, icon.x, y, icon.y)
-
-	    // const iconX = icon.gy * scale * Math.min(w, h) + translateX;
-	    // const iconY = icon.gx * scale * Math.min(w, h) + translateY;
-
 	                const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
 	                
-	                // If icon is in the viewport
-	                if (iconX > -iconWidth && iconX < w && iconY > -iconWidth && iconY < h) {
+	                const requestedID = id;
+	                // If icon is in the viewport 
+	                // probably don't need this anymore
+	                // if (iconX > -iconWidth && iconX < w && iconY > -iconWidth && iconY < h) {
+	                {
 	                  
-	                  // We want to draw a box before the icon has loaded so there isn't just whiteness.
+	                  // We want to draw a box so there isn't just whiteness.
 	                  if (classHeatmap > -1) {
 	                    context.globalAlpha = 0.75;
 	                    context.strokeStyle = strokeColor;
@@ -8754,9 +8752,10 @@
 	                  }
 
 	                  load$1(icon.url).then(response => {
-	                    // check that we're still on the right layer/zoom
-	                    const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
-	                    if(currentZoomIndex == layerIndex) {
+	                    // check that we're still on the right layer/zoom/id
+	                    const {id, visibleLayers, iconCrop, showLabels, textShadow} = this.get();
+	                    // console.log(requestedID, id)
+	                    if(visibleLayers.indexOf(layerIndex) > -1 && requestedID === id) {
 	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
 	                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
@@ -9334,6 +9333,7 @@
 		if ('w' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'w'");
 		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'h'");
 		if ('currentZoomIndex' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentZoomIndex'");
+		if ('visibleLayers' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'visibleLayers'");
 		if ('currentLayerData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentLayerData'");
 		if ('hoverIconData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconData'");
 		if ('showHover' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'showHover'");
@@ -9358,6 +9358,10 @@
 
 		if (changed.scale || changed.gridSize || changed.config || changed.classHeatmap || changed.viewWidth || changed.viewHeight || changed.autoGridSizeMultiplier) {
 			if (this._differs(state.currentZoomIndex, (state.currentZoomIndex = currentZoomIndex(state)))) changed.currentZoomIndex = true;
+		}
+
+		if (changed.currentZoomIndex) {
+			if (this._differs(state.visibleLayers, (state.visibleLayers = visibleLayers(state)))) changed.visibleLayers = true;
 		}
 
 		if (changed.currentZoomIndex || changed.layers) {
