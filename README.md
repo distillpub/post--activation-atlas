@@ -12,6 +12,8 @@ spread operator in object literals
 
 format numbers in toolip
 
+add hover state for notebooklink
+
 # Tweaks
 
 add "reset" to layer tour (and possible zoom buttons)

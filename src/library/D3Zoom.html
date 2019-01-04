@@ -68,6 +68,13 @@ export default {
   oncreate() {
     const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
     const that = this; // needed because d3 gives "this" as the node, not component.
+    z.wheelDelta(() => {
+      let d = -d3Event.deltaY * (d3Event.deltaMode ? 120 : 1) / 500;
+      if (d3Event.ctrlKey) {
+        d = d * 10;
+      }
+      return d;
+    });
     z.scaleExtent(scaleExtent);
     const selection = d3Select(this.refs.root);
     this.set({
@@ -107,10 +114,14 @@ export default {
     tween,
     zoomEventFilter: function() {
       const {scrollWheel} = this.get();
+      console.log(d3Event);
+      // If we want to suppress scroll wheel events...
       if (!scrollWheel) {
-        return d3Event.type !== "wheel" && !d3Event.button;
+        // ... return false for scroll wheel events + button = 1 events
+        return !(d3Event.type === "wheel" && d3Event.ctrlKey === false) && d3Event.button == 0;
       } else {
-        return !d3Event.button;
+        //... just return false for button = 1 events
+        return d3Event.button == 0;
       }
     },
     mouseMove: function(event) {
@@ -138,18 +149,32 @@ export default {
       console.log("onzoom")
       that.update();
     },
-    transformTo: function(x, y, scale) {
-
-    },
-    translateTo: function() {
-
-    },
-    home: function(duration=0) {
-      const {selection, z} = this.get();
+    zoomTo: function(x, y, scale = 1, duration = 1000) {
+      const {selection, z, minSize, clientWidth, clientHeight} = this.get();
 
       selection.transition()
         .duration(duration)
-        .call(z.transform, d3ZoomIdentity);
+        .call(z.transform, 
+          d3ZoomIdentity
+            .translate(clientWidth / 2, clientHeight / 2)
+            .scale(scale)
+            .translate(- x * minSize, - y * minSize));
+    },
+    translateTo: function(x, y) {
+      const {z, selection, minSize} = this.get();
+      z.transform(selection, x * minSize, y * minSize)
+    },
+    home: function(duration = 0) {
+
+      const {homeX, homeY, homeScale} = this.get();
+      this.zoomTo(homeX, homeY, homeScale)
+
+      // selection.transition()
+      //   .duration(duration)
+      //   .call(z.transform, 
+      //     d3ZoomIdentity
+      //       .translate(clientWidth / 2, clientHeight / 2)
+      //       .translate(- 0.5 * minSize, - 0.5 * minSize));
     },
     scaleTo: function(scale, duration=0) {
       console.log("scaleTo", duration)

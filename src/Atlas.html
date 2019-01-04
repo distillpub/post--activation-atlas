@@ -214,7 +214,7 @@ export default {
     transitionTo(x, y, scale, duration=0) {
       this.refs.d3Zoom.transformTo(x, y, scale, duration);
     },
-    zoomit(multiplier) {
+    scaleBy(multiplier) {
       const { scale } = this.get();
       this.refs.d3Zoom.scaleTo(scale * multiplier, 300);
     },

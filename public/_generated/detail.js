@@ -8153,10 +8153,14 @@
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel} = this.get();
+	    console.log(event);
+	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
-	      return event.type !== "wheel" && !event.button;
+	      // ... return false for scroll wheel events + button = 1 events
+	      return !(event.type === "wheel" && event.ctrlKey === false) && event.button == 0;
 	    } else {
-	      return !event.button;
+	      //... just return false for button = 1 events
+	      return event.button == 0;
 	    }
 	  },
 	  mouseMove: function(event$$1) {
@@ -8184,18 +8188,32 @@
 	    console.log("onzoom");
 	    that.update();
 	  },
-	  transformTo: function(x, y, scale) {
-
-	  },
-	  translateTo: function() {
-
-	  },
-	  home: function(duration=0) {
-	    const {selection: selection$$1, z} = this.get();
+	  zoomTo: function(x, y, scale = 1, duration = 1000) {
+	    const {selection: selection$$1, z, minSize, clientWidth, clientHeight} = this.get();
 
 	    selection$$1.transition()
 	      .duration(duration)
-	      .call(z.transform, identity$3);
+	      .call(z.transform, 
+	        identity$3
+	          .translate(clientWidth / 2, clientHeight / 2)
+	          .scale(scale)
+	          .translate(- x * minSize, - y * minSize));
+	  },
+	  translateTo: function(x, y) {
+	    const {z, selection: selection$$1, minSize} = this.get();
+	    z.transform(selection$$1, x * minSize, y * minSize);
+	  },
+	  home: function(duration = 0) {
+
+	    const {homeX, homeY, homeScale} = this.get();
+	    this.zoomTo(homeX, homeY, homeScale);
+
+	    // selection.transition()
+	    //   .duration(duration)
+	    //   .call(z.transform, 
+	    //     d3ZoomIdentity
+	    //       .translate(clientWidth / 2, clientHeight / 2)
+	    //       .translate(- 0.5 * minSize, - 0.5 * minSize));
 	  },
 	  scaleTo: function(scale, duration=0) {
 	    console.log("scaleTo", duration);
@@ -8209,6 +8227,13 @@
 	function oncreate$2() {
 	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
 	  const that = this; // needed because d3 gives "this" as the node, not component.
+	  z.wheelDelta(() => {
+	    let d = -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
+	    if (event.ctrlKey) {
+	      d = d * 10;
+	    }
+	    return d;
+	  });
 	  z.scaleExtent(scaleExtent);
 	  const selection$$1 = select(this.refs.root);
 	  this.set({
@@ -8639,7 +8664,7 @@
 	  transitionTo(x, y, scale, duration=0) {
 	    this.refs.d3Zoom.transformTo(x, y, scale, duration);
 	  },
-	  zoomit(multiplier) {
+	  scaleBy(multiplier) {
 	    const { scale } = this.get();
 	    this.refs.d3Zoom.scaleTo(scale * multiplier, 300);
 	  },
@@ -9737,7 +9762,7 @@
 		});
 
 		button1.on("click", function(event) {
-			component.refs.atlas.zoomit(2);
+			component.refs.atlas.scaleBy(2);
 		});
 
 		var navigation2_initial_data = { name: "remove", color: "white" };
@@ -9754,7 +9779,7 @@
 		});
 
 		button2.on("click", function(event) {
-			component.refs.atlas.zoomit(0.5);
+			component.refs.atlas.scaleBy(0.5);
 		});
 
 		function input0_change_handler() {
@@ -10004,14 +10029,14 @@
 				addLoc(div6, file$g, 49, 10, 1289);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$g, 67, 19, 2075);
-				addLoc(label0, file$g, 67, 12, 2068);
-				addLoc(br0, file$g, 68, 12, 2155);
+				addLoc(input0, file$g, 67, 19, 2077);
+				addLoc(label0, file$g, 67, 12, 2070);
+				addLoc(br0, file$g, 68, 12, 2157);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "checkbox");
-				addLoc(input1, file$g, 69, 19, 2179);
-				addLoc(label1, file$g, 69, 12, 2172);
-				addLoc(div7, file$g, 66, 10, 2050);
+				addLoc(input1, file$g, 69, 19, 2181);
+				addLoc(label1, file$g, 69, 12, 2174);
+				addLoc(div7, file$g, 66, 10, 2052);
 				div8.className = "svelte-10yshsn svelte-ref-controls";
 				addLoc(div8, file$g, 48, 8, 1260);
 				div9.className = "atlas svelte-10yshsn";
@@ -10019,137 +10044,137 @@
 				div10.className = "main svelte-10yshsn";
 				addLoc(div10, file$g, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$g, 76, 6, 2390);
-				addLoc(div11, file$g, 80, 10, 2489);
-				addLoc(div12, file$g, 81, 10, 2539);
-				addLoc(div13, file$g, 82, 10, 2583);
-				addLoc(div14, file$g, 83, 10, 2627);
+				addLoc(h22, file$g, 76, 6, 2392);
+				addLoc(div11, file$g, 80, 10, 2491);
+				addLoc(div12, file$g, 81, 10, 2541);
+				addLoc(div13, file$g, 82, 10, 2585);
+				addLoc(div14, file$g, 83, 10, 2629);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "checkbox");
-				addLoc(input2, file$g, 84, 17, 2684);
+				addLoc(input2, file$g, 84, 17, 2686);
 				label2.className = "svelte-10yshsn";
-				addLoc(label2, file$g, 84, 10, 2677);
-				addLoc(div15, file$g, 79, 8, 2473);
-				addLoc(h30, file$g, 87, 8, 2789);
+				addLoc(label2, file$g, 84, 10, 2679);
+				addLoc(div15, file$g, 79, 8, 2475);
+				addLoc(h30, file$g, 87, 8, 2791);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "checkbox");
-				addLoc(input3, file$g, 88, 17, 2827);
+				addLoc(input3, file$g, 88, 17, 2829);
 				label3.className = "svelte-10yshsn";
-				addLoc(label3, file$g, 88, 10, 2820);
-				addLoc(div16, file$g, 86, 8, 2775);
-				addLoc(h31, file$g, 91, 10, 2950);
+				addLoc(label3, file$g, 88, 10, 2822);
+				addLoc(div16, file$g, 86, 8, 2777);
+				addLoc(h31, file$g, 91, 10, 2952);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 0;
 				input4.value = input4.__value;
-				addLoc(input4, file$g, 92, 17, 2986);
+				addLoc(input4, file$g, 92, 17, 2988);
 				label4.className = "svelte-10yshsn";
-				addLoc(label4, file$g, 92, 10, 2979);
+				addLoc(label4, file$g, 92, 10, 2981);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 1;
 				input5.value = input5.__value;
-				addLoc(input5, file$g, 93, 17, 3066);
+				addLoc(input5, file$g, 93, 17, 3068);
 				label5.className = "svelte-10yshsn";
-				addLoc(label5, file$g, 93, 10, 3059);
+				addLoc(label5, file$g, 93, 10, 3061);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
 				setAttribute(input6, "type", "radio");
 				input6.__value = 2;
 				input6.value = input6.__value;
-				addLoc(input6, file$g, 94, 17, 3146);
+				addLoc(input6, file$g, 94, 17, 3148);
 				label6.className = "svelte-10yshsn";
-				addLoc(label6, file$g, 94, 10, 3139);
+				addLoc(label6, file$g, 94, 10, 3141);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
 				setAttribute(input7, "type", "radio");
 				input7.__value = 3;
 				input7.value = input7.__value;
-				addLoc(input7, file$g, 95, 17, 3226);
+				addLoc(input7, file$g, 95, 17, 3228);
 				label7.className = "svelte-10yshsn";
-				addLoc(label7, file$g, 95, 10, 3219);
+				addLoc(label7, file$g, 95, 10, 3221);
 				component._bindingGroups[0].push(input8);
 				addListener(input8, "change", input8_change_handler);
 				setAttribute(input8, "type", "radio");
 				input8.__value = 4;
 				input8.value = input8.__value;
-				addLoc(input8, file$g, 96, 17, 3308);
+				addLoc(input8, file$g, 96, 17, 3310);
 				label8.className = "svelte-10yshsn";
-				addLoc(label8, file$g, 96, 10, 3301);
+				addLoc(label8, file$g, 96, 10, 3303);
 				component._bindingGroups[0].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = -1;
 				input9.value = input9.__value;
-				addLoc(input9, file$g, 97, 17, 3390);
+				addLoc(input9, file$g, 97, 17, 3392);
 				label9.className = "svelte-10yshsn";
-				addLoc(label9, file$g, 97, 10, 3383);
-				addLoc(div17, file$g, 99, 12, 3534);
+				addLoc(label9, file$g, 97, 10, 3385);
+				addLoc(div17, file$g, 99, 12, 3536);
 				addListener(input10, "change", input10_change_input_handler);
 				addListener(input10, "input", input10_change_input_handler);
 				setAttribute(input10, "type", "range");
 				input10.min = 0.6;
 				input10.max = 1.4;
 				input10.step = 0.01;
-				addLoc(input10, file$g, 100, 12, 3604);
+				addLoc(input10, file$g, 100, 12, 3606);
 				setStyle(div18, "display", (ctx.gridSize == -1 ? 'block': 'none'));
-				addLoc(div18, file$g, 98, 10, 3463);
+				addLoc(div18, file$g, 98, 10, 3465);
 				div19.className = "grid-size";
-				addLoc(div19, file$g, 90, 8, 2916);
-				addLoc(h32, file$g, 104, 10, 3747);
-				addLoc(div20, file$g, 105, 10, 3772);
+				addLoc(div19, file$g, 90, 8, 2918);
+				addLoc(h32, file$g, 104, 10, 3749);
+				addLoc(div20, file$g, 105, 10, 3774);
 				addListener(input11, "change", input11_change_input_handler);
 				addListener(input11, "input", input11_change_input_handler);
 				setAttribute(input11, "type", "range");
 				input11.min = 0.2;
 				input11.max = 8;
 				input11.step = 0.01;
-				addLoc(input11, file$g, 106, 10, 3818);
-				addLoc(br1, file$g, 107, 10, 3898);
-				addLoc(div21, file$g, 108, 10, 3913);
+				addLoc(input11, file$g, 106, 10, 3820);
+				addLoc(br1, file$g, 107, 10, 3900);
+				addLoc(div21, file$g, 108, 10, 3915);
 				addListener(input12, "change", input12_change_input_handler);
 				addListener(input12, "input", input12_change_input_handler);
 				setAttribute(input12, "type", "range");
 				input12.min = 0;
 				input12.max = 0.5;
 				input12.step = 0.01;
-				addLoc(input12, file$g, 109, 10, 3957);
-				addLoc(div22, file$g, 103, 8, 3731);
-				addLoc(h33, file$g, 112, 10, 4123);
-				addLoc(div23, file$g, 113, 10, 4155);
+				addLoc(input12, file$g, 109, 10, 3959);
+				addLoc(div22, file$g, 103, 8, 3733);
+				addLoc(h33, file$g, 112, 10, 4125);
+				addLoc(div23, file$g, 113, 10, 4157);
 				addListener(input13, "change", input13_change_input_handler);
 				addListener(input13, "input", input13_change_input_handler);
 				setAttribute(input13, "type", "range");
 				input13.min = "0.5";
 				input13.max = "2";
 				input13.step = "0.1";
-				addLoc(input13, file$g, 114, 10, 4218);
+				addLoc(input13, file$g, 114, 10, 4220);
 				component._bindingGroups[1].push(input14);
 				addListener(input14, "change", input14_change_handler);
 				setAttribute(input14, "type", "radio");
 				input14.__value = 1;
 				input14.value = input14.__value;
-				addLoc(input14, file$g, 115, 17, 4313);
+				addLoc(input14, file$g, 115, 17, 4315);
 				label10.className = "svelte-10yshsn";
-				addLoc(label10, file$g, 115, 10, 4306);
+				addLoc(label10, file$g, 115, 10, 4308);
 				component._bindingGroups[1].push(input15);
 				addListener(input15, "change", input15_change_handler);
 				setAttribute(input15, "type", "radio");
 				input15.__value = -1;
 				input15.value = input15.__value;
-				addLoc(input15, file$g, 116, 17, 4418);
+				addLoc(input15, file$g, 116, 17, 4420);
 				label11.className = "svelte-10yshsn";
-				addLoc(label11, file$g, 116, 10, 4411);
+				addLoc(label11, file$g, 116, 10, 4413);
 				setStyle(div24, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div24, file$g, 111, 8, 4051);
+				addLoc(div24, file$g, 111, 8, 4053);
 				setAttribute(div25, "slot", "body");
 				div25.className = "options-body svelte-10yshsn";
-				addLoc(div25, file$g, 77, 6, 2425);
+				addLoc(div25, file$g, 77, 6, 2427);
 				div26.className = "options svelte-10yshsn";
 				setStyle(div26, "display", (ctx.showOptions ? 'block' : 'none'));
-				addLoc(div26, file$g, 74, 2, 2299);
+				addLoc(div26, file$g, 74, 2, 2301);
 				div27.className = "container svelte-10yshsn";
 				addLoc(div27, file$g, 0, 0, 0);
 			},
