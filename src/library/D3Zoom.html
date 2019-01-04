@@ -114,7 +114,7 @@ export default {
     tween,
     zoomEventFilter: function() {
       const {scrollWheel} = this.get();
-      console.log(d3Event);
+      // console.log(d3Event);
       // If we want to suppress scroll wheel events...
       if (!scrollWheel) {
         // ... return false for scroll wheel events + button = 1 events
@@ -136,7 +136,7 @@ export default {
       
       const {clientWidth, clientHeight, minSize, el, z} = this.get();
       const transform = d3ZoomTransform(el);
-      console.log("update", transform.k)
+      // console.log("update", transform.k)
       const scale = transform.k;
       this.set({
         scale,
@@ -146,7 +146,7 @@ export default {
       });
     },
     onzoom: function(that) {
-      console.log("onzoom")
+      // console.log("onzoom")
       that.update();
     },
     zoomTo: function(x, y, scale = 1, duration = 1000) {
@@ -177,7 +177,7 @@ export default {
       //       .translate(- 0.5 * minSize, - 0.5 * minSize));
     },
     scaleTo: function(scale, duration=0) {
-      console.log("scaleTo", duration)
+      // console.log("scaleTo", duration)
       const {z, selection} = this.get();
       selection.transition()
         .duration(duration)

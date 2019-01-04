@@ -9469,7 +9469,7 @@
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel} = this.get();
-	    console.log(event);
+	    // console.log(d3Event);
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
@@ -9491,7 +9491,7 @@
 	    
 	    const {clientWidth, clientHeight, minSize, el, z} = this.get();
 	    const transform$$1 = transform(el);
-	    console.log("update", transform$$1.k);
+	    // console.log("update", transform.k)
 	    const scale = transform$$1.k;
 	    this.set({
 	      scale,
@@ -9501,7 +9501,7 @@
 	    });
 	  },
 	  onzoom: function(that) {
-	    console.log("onzoom");
+	    // console.log("onzoom")
 	    that.update();
 	  },
 	  zoomTo: function(x, y, scale = 1, duration = 1000) {
@@ -9532,7 +9532,7 @@
 	    //       .translate(- 0.5 * minSize, - 0.5 * minSize));
 	  },
 	  scaleTo: function(scale, duration=0) {
-	    console.log("scaleTo", duration);
+	    // console.log("scaleTo", duration)
 	    const {z, selection: selection$$1} = this.get();
 	    selection$$1.transition()
 	      .duration(duration)
@@ -9911,90 +9911,109 @@
 	  },
 	  render() {
 
-	    const {imageSmoothing,viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
 	    // context.imageSmoothingQuality = "low";
 	    context.imageSmoothingEnabled = imageSmoothing;
 
 	    if (config && layers) {
+
 	      layers.forEach((icons, layerIndex) => {
 	        const visibleLayers = [currentZoomIndex];
-
 	        if (visibleLayers.indexOf(layerIndex) > -1) {
+	          
 
-	          icons.forEach((columns, x) => {
-	            columns.forEach((icon, y) => {
+	          const minSize = Math.min(w, h);
+	          
+	          const minX = Math.max(0, Math.floor(-(translateX / scale / minSize) * icons.length));
+	          const maxX = minX + Math.ceil(( w / scale / minSize) * icons.length);
+	          const minY = Math.max(0, Math.floor(-(translateY / scale / minSize) * icons.length));
+	          const maxY = minY + Math.ceil(( h / scale / minSize) * icons.length);
 
-	              const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+	          for (let y = minY; y <= maxY; y++) {
+	            for (let x = minX; x <= maxX; x++) {
 	              
-	              // If icon is in the viewport
-	              if (iconX > -iconWidth && iconX < viewWidth && iconY > -iconWidth && iconY < viewHeight) {
+	              if (icons[y] && icons[y][x]) {
+	                const icon = icons[y][x];
+
+	          // icons.forEach((columns, x) => {
+	            // columns.forEach((icon, y) => {
+	              // console.log(x, icon.x, y, icon.y)
+
+	    // const iconX = icon.gy * scale * Math.min(w, h) + translateX;
+	    // const iconY = icon.gx * scale * Math.min(w, h) + translateY;
+
+	                const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
 	                
-	                // We want to draw a box before the icon has loaded so there isn't just whiteness.
-	                if (classHeatmap > -1) {
-	                  context.globalAlpha = 0.75;
-	                  context.strokeStyle = strokeColor;
-	                  context.lineWidth = strokeThickness;
-	                  context.fillStyle = "white";
-	                  context.beginPath();
-	                  context.rect(iconX, iconY, iconWidth, iconWidth);
-	                  context.stroke();
-	                  context.fill();
-	                  context.closePath();
-	                }
-
-	                load$1(icon.url).then(response => {
-	                  // check that we're still on the right layer/zoom
-	                  const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
-	                  if(currentZoomIndex == layerIndex) {
-	                    const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
-
-	                    const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
-
-	                    // If we have a class heatmap active, calculate the transparency for the current icon
-	                    let a = 1;
-	                    if (classHeatmap > -1) {
-	                      let i = icon.full_class_indices.indexOf(classHeatmap);
-	                      if (i > -1) {
-	                        a = icon.full_class_values[i] / maxAttributionValue;
-	                        a = a * classHeatmapPositive;
-	                        a = Math.max(0, a) * classHeatmapMultiplier;
-	                      } else {
-	                        a = 0.0;
-	                      }
-	                    }
-
-	                    // draw the icon
-	                    context.globalAlpha = a;
-	                    const iconOffset = (iconCrop * config.icon_size) / 2;
-	                    context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
-	                    context.drawImage(response,
-	                      //source
-	                      sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
-	                      //destination
-	                      iconX, iconY, iconWidth, iconWidth
-	                    );
-	                    context.globalAlpha = 1;
-
-	                    if (showLabels && labels) {
-	                      context.globalAlpha = 1;
-	                      context.font=fontSize + "px Helvetica";
-	                      if (textShadow) {
-	                        context.lineWidth = 2;
-	                        context.strokeStyle = textShadowColor;
-	                        context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
-	                      }
-	                      context.fillStyle = textColor;
-	                      context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
-	                    }
-
+	                // If icon is in the viewport
+	                if (iconX > -iconWidth && iconX < w && iconY > -iconWidth && iconY < h) {
+	                  
+	                  // We want to draw a box before the icon has loaded so there isn't just whiteness.
+	                  if (classHeatmap > -1) {
+	                    context.globalAlpha = 0.75;
+	                    context.strokeStyle = strokeColor;
+	                    context.lineWidth = strokeThickness;
+	                    context.fillStyle = "white";
+	                    context.beginPath();
+	                    context.rect(iconX, iconY, iconWidth, iconWidth);
+	                    context.stroke();
+	                    context.fill();
+	                    context.closePath();
 	                  }
 
-	                });
+	                  load$1(icon.url).then(response => {
+	                    // check that we're still on the right layer/zoom
+	                    const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
+	                    if(currentZoomIndex == layerIndex) {
+	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
+
+	                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+
+	                      // If we have a class heatmap active, calculate the transparency for the current icon
+	                      let a = 1;
+	                      if (classHeatmap > -1) {
+	                        let i = icon.full_class_indices.indexOf(classHeatmap);
+	                        if (i > -1) {
+	                          a = icon.full_class_values[i] / maxAttributionValue;
+	                          a = a * classHeatmapPositive;
+	                          a = Math.max(0, a) * classHeatmapMultiplier;
+	                        } else {
+	                          a = 0.0;
+	                        }
+	                      }
+
+	                      // draw the icon
+	                      context.globalAlpha = a;
+	                      const iconOffset = (iconCrop * config.icon_size) / 2;
+	                      context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
+	                      context.drawImage(response,
+	                        //source
+	                        sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+	                        //destination
+	                        iconX, iconY, iconWidth, iconWidth
+	                      );
+	                      context.globalAlpha = 1;
+
+	                      if (showLabels && labels) {
+	                        context.globalAlpha = 1;
+	                        context.font=fontSize + "px Helvetica";
+	                        if (textShadow) {
+	                          context.lineWidth = 2;
+	                          context.strokeStyle = textShadowColor;
+	                          context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
+	                        }
+	                        context.fillStyle = textColor;
+	                        context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
+	                      }
+
+	                    }
+
+	                  });
+	                }
 	              }
-	            });
-	          });
+	            }
+	          }
 	        }
 	      });
 	    }
@@ -11108,7 +11127,7 @@
 				text13 = createText("\n            ");
 				label1 = createElement("label");
 				input1 = createElement("input");
-				text14 = createText(" show labels");
+				text14 = createText(" attribution labels");
 				text15 = createText("\n  ");
 				div26 = createElement("div");
 				h22 = createElement("h2");
@@ -11253,137 +11272,137 @@
 				div10.className = "main svelte-10yshsn";
 				addLoc(div10, file$m, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$m, 76, 6, 2392);
-				addLoc(div11, file$m, 80, 10, 2491);
-				addLoc(div12, file$m, 81, 10, 2541);
-				addLoc(div13, file$m, 82, 10, 2585);
-				addLoc(div14, file$m, 83, 10, 2629);
+				addLoc(h22, file$m, 76, 6, 2399);
+				addLoc(div11, file$m, 80, 10, 2498);
+				addLoc(div12, file$m, 81, 10, 2548);
+				addLoc(div13, file$m, 82, 10, 2592);
+				addLoc(div14, file$m, 83, 10, 2636);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "checkbox");
-				addLoc(input2, file$m, 84, 17, 2686);
+				addLoc(input2, file$m, 84, 17, 2693);
 				label2.className = "svelte-10yshsn";
-				addLoc(label2, file$m, 84, 10, 2679);
-				addLoc(div15, file$m, 79, 8, 2475);
-				addLoc(h30, file$m, 87, 8, 2791);
+				addLoc(label2, file$m, 84, 10, 2686);
+				addLoc(div15, file$m, 79, 8, 2482);
+				addLoc(h30, file$m, 87, 8, 2798);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "checkbox");
-				addLoc(input3, file$m, 88, 17, 2829);
+				addLoc(input3, file$m, 88, 17, 2836);
 				label3.className = "svelte-10yshsn";
-				addLoc(label3, file$m, 88, 10, 2822);
-				addLoc(div16, file$m, 86, 8, 2777);
-				addLoc(h31, file$m, 91, 10, 2952);
+				addLoc(label3, file$m, 88, 10, 2829);
+				addLoc(div16, file$m, 86, 8, 2784);
+				addLoc(h31, file$m, 91, 10, 2959);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 0;
 				input4.value = input4.__value;
-				addLoc(input4, file$m, 92, 17, 2988);
+				addLoc(input4, file$m, 92, 17, 2995);
 				label4.className = "svelte-10yshsn";
-				addLoc(label4, file$m, 92, 10, 2981);
+				addLoc(label4, file$m, 92, 10, 2988);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 1;
 				input5.value = input5.__value;
-				addLoc(input5, file$m, 93, 17, 3068);
+				addLoc(input5, file$m, 93, 17, 3075);
 				label5.className = "svelte-10yshsn";
-				addLoc(label5, file$m, 93, 10, 3061);
+				addLoc(label5, file$m, 93, 10, 3068);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
 				setAttribute(input6, "type", "radio");
 				input6.__value = 2;
 				input6.value = input6.__value;
-				addLoc(input6, file$m, 94, 17, 3148);
+				addLoc(input6, file$m, 94, 17, 3155);
 				label6.className = "svelte-10yshsn";
-				addLoc(label6, file$m, 94, 10, 3141);
+				addLoc(label6, file$m, 94, 10, 3148);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
 				setAttribute(input7, "type", "radio");
 				input7.__value = 3;
 				input7.value = input7.__value;
-				addLoc(input7, file$m, 95, 17, 3228);
+				addLoc(input7, file$m, 95, 17, 3235);
 				label7.className = "svelte-10yshsn";
-				addLoc(label7, file$m, 95, 10, 3221);
+				addLoc(label7, file$m, 95, 10, 3228);
 				component._bindingGroups[0].push(input8);
 				addListener(input8, "change", input8_change_handler);
 				setAttribute(input8, "type", "radio");
 				input8.__value = 4;
 				input8.value = input8.__value;
-				addLoc(input8, file$m, 96, 17, 3310);
+				addLoc(input8, file$m, 96, 17, 3317);
 				label8.className = "svelte-10yshsn";
-				addLoc(label8, file$m, 96, 10, 3303);
+				addLoc(label8, file$m, 96, 10, 3310);
 				component._bindingGroups[0].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = -1;
 				input9.value = input9.__value;
-				addLoc(input9, file$m, 97, 17, 3392);
+				addLoc(input9, file$m, 97, 17, 3399);
 				label9.className = "svelte-10yshsn";
-				addLoc(label9, file$m, 97, 10, 3385);
-				addLoc(div17, file$m, 99, 12, 3536);
+				addLoc(label9, file$m, 97, 10, 3392);
+				addLoc(div17, file$m, 99, 12, 3543);
 				addListener(input10, "change", input10_change_input_handler);
 				addListener(input10, "input", input10_change_input_handler);
 				setAttribute(input10, "type", "range");
 				input10.min = 0.6;
 				input10.max = 1.4;
 				input10.step = 0.01;
-				addLoc(input10, file$m, 100, 12, 3606);
+				addLoc(input10, file$m, 100, 12, 3613);
 				setStyle(div18, "display", (ctx.gridSize == -1 ? 'block': 'none'));
-				addLoc(div18, file$m, 98, 10, 3465);
+				addLoc(div18, file$m, 98, 10, 3472);
 				div19.className = "grid-size";
-				addLoc(div19, file$m, 90, 8, 2918);
-				addLoc(h32, file$m, 104, 10, 3749);
-				addLoc(div20, file$m, 105, 10, 3774);
+				addLoc(div19, file$m, 90, 8, 2925);
+				addLoc(h32, file$m, 104, 10, 3756);
+				addLoc(div20, file$m, 105, 10, 3781);
 				addListener(input11, "change", input11_change_input_handler);
 				addListener(input11, "input", input11_change_input_handler);
 				setAttribute(input11, "type", "range");
 				input11.min = 0.2;
 				input11.max = 8;
 				input11.step = 0.01;
-				addLoc(input11, file$m, 106, 10, 3820);
-				addLoc(br1, file$m, 107, 10, 3900);
-				addLoc(div21, file$m, 108, 10, 3915);
+				addLoc(input11, file$m, 106, 10, 3827);
+				addLoc(br1, file$m, 107, 10, 3907);
+				addLoc(div21, file$m, 108, 10, 3922);
 				addListener(input12, "change", input12_change_input_handler);
 				addListener(input12, "input", input12_change_input_handler);
 				setAttribute(input12, "type", "range");
 				input12.min = 0;
 				input12.max = 0.5;
 				input12.step = 0.01;
-				addLoc(input12, file$m, 109, 10, 3959);
-				addLoc(div22, file$m, 103, 8, 3733);
-				addLoc(h33, file$m, 112, 10, 4125);
-				addLoc(div23, file$m, 113, 10, 4157);
+				addLoc(input12, file$m, 109, 10, 3966);
+				addLoc(div22, file$m, 103, 8, 3740);
+				addLoc(h33, file$m, 112, 10, 4132);
+				addLoc(div23, file$m, 113, 10, 4164);
 				addListener(input13, "change", input13_change_input_handler);
 				addListener(input13, "input", input13_change_input_handler);
 				setAttribute(input13, "type", "range");
 				input13.min = "0.5";
 				input13.max = "2";
 				input13.step = "0.1";
-				addLoc(input13, file$m, 114, 10, 4220);
+				addLoc(input13, file$m, 114, 10, 4227);
 				component._bindingGroups[1].push(input14);
 				addListener(input14, "change", input14_change_handler);
 				setAttribute(input14, "type", "radio");
 				input14.__value = 1;
 				input14.value = input14.__value;
-				addLoc(input14, file$m, 115, 17, 4315);
+				addLoc(input14, file$m, 115, 17, 4322);
 				label10.className = "svelte-10yshsn";
-				addLoc(label10, file$m, 115, 10, 4308);
+				addLoc(label10, file$m, 115, 10, 4315);
 				component._bindingGroups[1].push(input15);
 				addListener(input15, "change", input15_change_handler);
 				setAttribute(input15, "type", "radio");
 				input15.__value = -1;
 				input15.value = input15.__value;
-				addLoc(input15, file$m, 116, 17, 4420);
+				addLoc(input15, file$m, 116, 17, 4427);
 				label11.className = "svelte-10yshsn";
-				addLoc(label11, file$m, 116, 10, 4413);
+				addLoc(label11, file$m, 116, 10, 4420);
 				setStyle(div24, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div24, file$m, 111, 8, 4053);
+				addLoc(div24, file$m, 111, 8, 4060);
 				setAttribute(div25, "slot", "body");
 				div25.className = "options-body svelte-10yshsn";
-				addLoc(div25, file$m, 77, 6, 2427);
+				addLoc(div25, file$m, 77, 6, 2434);
 				div26.className = "options svelte-10yshsn";
 				setStyle(div26, "display", (ctx.showOptions ? 'block' : 'none'));
-				addLoc(div26, file$m, 74, 2, 2301);
+				addLoc(div26, file$m, 74, 2, 2308);
 				div27.className = "container svelte-10yshsn";
 				addLoc(div27, file$m, 0, 0, 0);
 			},

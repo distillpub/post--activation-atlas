@@ -252,90 +252,109 @@ export default {
     },
     render() {
 
-      const {imageSmoothing,viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+      const {imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
       this.clear();
       // context.imageSmoothingQuality = "low";
       context.imageSmoothingEnabled = imageSmoothing;
 
       if (config && layers) {
+
         layers.forEach((icons, layerIndex) => {
           const visibleLayers = [currentZoomIndex]
-
           if (visibleLayers.indexOf(layerIndex) > -1) {
+            
 
-            icons.forEach((columns, x) => {
-              columns.forEach((icon, y) => {
+            const minSize = Math.min(w, h);
+            
+            const minX = Math.max(0, Math.floor(-(translateX / scale / minSize) * icons.length));
+            const maxX = minX + Math.ceil(( w / scale / minSize) * icons.length);
+            const minY = Math.max(0, Math.floor(-(translateY / scale / minSize) * icons.length));
+            const maxY = minY + Math.ceil(( h / scale / minSize) * icons.length);
 
-                const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+            for (let y = minY; y <= maxY; y++) {
+              for (let x = minX; x <= maxX; x++) {
                 
-                // If icon is in the viewport
-                if (iconX > -iconWidth && iconX < viewWidth && iconY > -iconWidth && iconY < viewHeight) {
+                if (icons[y] && icons[y][x]) {
+                  const icon = icons[y][x];
+
+            // icons.forEach((columns, x) => {
+              // columns.forEach((icon, y) => {
+                // console.log(x, icon.x, y, icon.y)
+
+      // const iconX = icon.gy * scale * Math.min(w, h) + translateX;
+      // const iconY = icon.gx * scale * Math.min(w, h) + translateY;
+
+                  const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
                   
-                  // We want to draw a box before the icon has loaded so there isn't just whiteness.
-                  if (classHeatmap > -1) {
-                    context.globalAlpha = 0.75;
-                    context.strokeStyle = strokeColor;
-                    context.lineWidth = strokeThickness;
-                    context.fillStyle = "white";
-                    context.beginPath();
-                    context.rect(iconX, iconY, iconWidth, iconWidth);
-                    context.stroke();
-                    context.fill();
-                    context.closePath();
-                  }
-
-                  load(icon.url).then(response => {
-                    // check that we're still on the right layer/zoom
-                    const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
-                    if(currentZoomIndex == layerIndex) {
-                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
-
-                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
-
-                      // If we have a class heatmap active, calculate the transparency for the current icon
-                      let a = 1;
-                      if (classHeatmap > -1) {
-                        let i = icon.full_class_indices.indexOf(classHeatmap);
-                        if (i > -1) {
-                          a = icon.full_class_values[i] / maxAttributionValue;
-                          a = a * classHeatmapPositive;
-                          a = Math.max(0, a) * classHeatmapMultiplier;
-                        } else {
-                          a = 0.0;
-                        }
-                      }
-
-                      // draw the icon
-                      context.globalAlpha = a;
-                      const iconOffset = (iconCrop * config.icon_size) / 2;
-                      context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
-                      context.drawImage(response,
-                        //source
-                        sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
-                        //destination
-                        iconX, iconY, iconWidth, iconWidth
-                      );
-                      context.globalAlpha = 1;
-
-                      if (showLabels && labels) {
-                        context.globalAlpha = 1;
-                        context.font=fontSize + "px Helvetica";
-                        if (textShadow) {
-                          context.lineWidth = 2;
-                          context.strokeStyle = textShadowColor;
-                          context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
-                        }
-                        context.fillStyle = textColor;
-                        context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
-                      }
-
+                  // If icon is in the viewport
+                  if (iconX > -iconWidth && iconX < w && iconY > -iconWidth && iconY < h) {
+                    
+                    // We want to draw a box before the icon has loaded so there isn't just whiteness.
+                    if (classHeatmap > -1) {
+                      context.globalAlpha = 0.75;
+                      context.strokeStyle = strokeColor;
+                      context.lineWidth = strokeThickness;
+                      context.fillStyle = "white";
+                      context.beginPath();
+                      context.rect(iconX, iconY, iconWidth, iconWidth);
+                      context.stroke();
+                      context.fill();
+                      context.closePath();
                     }
 
-                  })
+                    load(icon.url).then(response => {
+                      // check that we're still on the right layer/zoom
+                      const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
+                      if(currentZoomIndex == layerIndex) {
+                        const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
+
+                        const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+
+                        // If we have a class heatmap active, calculate the transparency for the current icon
+                        let a = 1;
+                        if (classHeatmap > -1) {
+                          let i = icon.full_class_indices.indexOf(classHeatmap);
+                          if (i > -1) {
+                            a = icon.full_class_values[i] / maxAttributionValue;
+                            a = a * classHeatmapPositive;
+                            a = Math.max(0, a) * classHeatmapMultiplier;
+                          } else {
+                            a = 0.0;
+                          }
+                        }
+
+                        // draw the icon
+                        context.globalAlpha = a;
+                        const iconOffset = (iconCrop * config.icon_size) / 2;
+                        context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
+                        context.drawImage(response,
+                          //source
+                          sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+                          //destination
+                          iconX, iconY, iconWidth, iconWidth
+                        );
+                        context.globalAlpha = 1;
+
+                        if (showLabels && labels) {
+                          context.globalAlpha = 1;
+                          context.font=fontSize + "px Helvetica";
+                          if (textShadow) {
+                            context.lineWidth = 2;
+                            context.strokeStyle = textShadowColor;
+                            context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
+                          }
+                          context.fillStyle = textColor;
+                          context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
+                        }
+
+                      }
+
+                    })
+                  }
                 }
-              })
-            })
+              }
+            }
           }
         })
       }
