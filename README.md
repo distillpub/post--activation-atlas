@@ -10,7 +10,7 @@ smooth zoom between gridsizes
 
 spread operator in object literals
 
-turn off scroll wheel
+format numbers in toolip
 
 # Tweaks
 
@@ -31,6 +31,7 @@ add different filtering strategies in playground
 by rank, by magnitude -- this might not be possible due to averaging
 
 ## Done
+turn off scroll wheel
 one-layer initializes with animation. Others do too...
 Colab notebooks
 in options restrict gridsize to relevant levels.

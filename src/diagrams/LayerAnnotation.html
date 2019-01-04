@@ -10,8 +10,7 @@
       bind:homeScale
       bind:aspectRatio
       bind:scale
-      bind:gcx
-      bind:gcy
+      bind:extent
       bind:showLabels
       textShadow={true}
       backgroundColor="#dfdfdf"
@@ -20,10 +19,7 @@
   <div class="atlas">
     <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
     <AtlasReticle
-      bind:aspectRatio
-      bind:scale
-      bind:gcx
-      bind:gcy
+      bind:extent
     />
   </div>
 </div>

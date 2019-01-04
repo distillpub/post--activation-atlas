@@ -25,6 +25,9 @@
     bind:mouseGlobalPosition
     bind:extent
     bind:scrollWheel
+    {homeX}
+    {homeY}
+    {homeScale}
   >
     <canvas ref:canvas
       width={viewWidth * screenResolution}
@@ -197,7 +200,7 @@ export default {
 
   },
   oncreate() {
-    this.home();
+    // this.home(0);
   },
   methods: {
     fullscreen() {
@@ -206,15 +209,14 @@ export default {
     home(duration=0) {
       // const {homeX, homeY, homeScale} = this.get();
       // this.transitionTo(homeX, homeY, homeScale, duration);
-      this.refs.d3Zoom.home();
+      this.refs.d3Zoom.home(duration);
     },
     transitionTo(x, y, scale, duration=0) {
       this.refs.d3Zoom.transformTo(x, y, scale, duration);
     },
     zoomit(multiplier) {
       const { scale } = this.get();
-      this.refs.d3Zoom.zoomTo(scale * multiplier, 500);
-      // this.refs.zoom.scaleTo(scale * multiplier, 500)
+      this.refs.d3Zoom.scaleTo(scale * multiplier, 300);
     },
     iconToGlobalPosition(icon, layerIndex) {
       const {density, scale, translateX, translateY, config, w, h} = this.get();

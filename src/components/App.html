@@ -47,22 +47,28 @@
           {homeScale}
         />
         <div ref:controls>
-          <div class="map" style="display: {scale > 1.0 ? 'block' : 'block'};">
-            <AppMiniMap 
-              id="inceptionv1_{layerName}"
-              {layerName}
-              bind:extent
-              enableDragging={true}
-              {classHeatmap}
-              {scaleCountFactor}
-            />
+          <div class="nav">
+            <div class="map" style="display: {scale > 1.0 ? 'block' : 'block'};">
+              <AppMiniMap 
+                id="inceptionv1_{layerName}"
+                {layerName}
+                bind:extent
+                enableDragging={true}
+                {classHeatmap}
+                {scaleCountFactor}
+              />
+            </div>
+            <div class="buttons">
+              <Button on:click="refs.atlas.home(1000)"><Navigation name="home" color="white"/></Button>
+              <Button on:click="refs.atlas.zoomit(2)"><Navigation name="add" color="white"/></Button>
+              <Button on:click="refs.atlas.zoomit(0.5)"><Navigation name="remove" color="white"/></Button>
+            </div>
           </div>
-          <div class="buttons">
-            <Button on:click="refs.atlas.home()"><Navigation name="home" color="white"/></Button>
-            <Button on:click="refs.atlas.zoomit(2)"><Navigation name="add" color="white"/></Button>
-            <Button on:click="refs.atlas.zoomit(0.5)"><Navigation name="remove" color="white"/></Button>
+          <div>
+            <label><input type=checkbox bind:checked=scrollWheel> scroll to zoom</label>
+            <br>
+            <label><input type=checkbox bind:checked=showLabels> show labels</label>
           </div>
-          <!-- <label><input type=checkbox bind:checked=showLabels> show labels</label> -->
         </div>
     </div>
   </div>
@@ -72,6 +78,7 @@
       <div slot="body" class="options-body">
 
         <div>
+          <div>homeScale: {@html homeScale}</div>
           <div>x: {@html format(gcx)}</div>
           <div>y: {@html format(gcy)}</div>
           <div>scale: {@html format(scale)}</div>
@@ -196,11 +203,16 @@ export default {
     position: absolute;
     right: 16px;
     top: 16px;
-    display: flex;
     padding: 8px;
     background-color: white;
     border-radius: 6px;
     border: solid 1px rgba(0, 0, 0, 0.2);
+  }
+  ref:controls .nav {
+    display: flex;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+    padding-bottom: 12px;
   }
   ref:controls .map {
     width: 104px;

@@ -25,14 +25,17 @@ export default {
       transform: null, // the d3 transform
       scaleExtent: [1, 32], //
       scrollWheel: false,
-      scale: 1,
-      translateX: 0,
-      translateY: 0,
-      msx: null,
-      msy: null,
+      homeScale: 1,
+      homeX: 0.5,
+      homeY: 0.5,
+      scale: null,
+      translateX: null,
+      translateY: null,
       k: 1,
       x: 0,
-      y: 0
+      y: 0,
+      msx: null,
+      msy: null,
     };
   },
   computed: {
@@ -41,8 +44,8 @@ export default {
     mouseGlobalPosition: ({transform, msx, msy, clientHeight, clientWidth, minSize}) => {
       if (transform && msx != undefined && msy != undefined) {
         return [
-          transform.invertX(msx) - (clientWidth - minSize) / 2,
-          transform.invertY(msy) - (clientHeight - minSize) / 2,
+          transform.invertX(msx),// - (clientWidth - minSize) / 2,
+          transform.invertY(msy),// - (clientHeight - minSize) / 2,
         ];
       } else {
         return null;
@@ -58,22 +61,24 @@ export default {
         [y0 / minSize, y1 / minSize],
       ]
     },
+    gcx: ({extent}) => (extent[0][0] + extent[1][0]) / 2,
+    gcy: ({extent}) => (extent[0][1] + extent[1][1]) / 2,
   },
   
   oncreate() {
-    const {z, scaleExtent, clientWidth, clientHeight} = this.get();
+    const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
     const that = this; // needed because d3 gives "this" as the node, not component.
     z.scaleExtent(scaleExtent);
     const selection = d3Select(this.refs.root);
-    z(selection);
-    z.translateTo(selection, Math.min(clientWidth, clientHeight) / 2, Math.min(clientWidth, clientHeight) / 2)
     this.set({
       selection,
       el: this.refs.root,
     });
+    z(selection);
+    z.filter(this.zoomEventFilter.bind(this));
     z.on("zoom", () => { this.onzoom(that); });
-    z.filter(this.zoomEventFilter.bind(this))
-    this.update();
+    z.translateTo(selection, homeX * minSize, homeY * minSize)
+    z.scaleTo(selection, homeScale);
   },
   onstate({changed, current, previous}) {
     if (previous != undefined) {
@@ -83,18 +88,18 @@ export default {
     }
     // console.log("update", changed, current.scale)
     const {z, selection, el, x, y} = this.get();
-    if (changed.scaleExtent && current.scaleExtent) { z.scaleExtent(current.scaleExtent) } 
+    // if (changed.scaleExtent && current.scaleExtent) { z.scaleExtent(current.scaleExtent) } 
     if (selection) {
 
-      if (changed.x || changed.y) {
-        z.translateTo(selection, current.x, current.y);
-      }
+      // if (changed.x || changed.y) {
+      //   z.translateTo(selection, current.x, current.y);
+      // }
 
-      if (changed.scale) { this.set({k: current.scale}); }
-      if (changed.k) { z.scaleTo(selection, current.k); } 
+      // if (changed.scale) { this.set({k: current.scale}); }
+      // if (changed.k) { z.scaleTo(selection, current.k); } 
 
-      if (changed.translateX) { this.set({x: current.translateX}); }
-      if (changed.translateY) { this.set({x: current.translateY}); }
+      // if (changed.translateX) { this.set({x: current.translateX}); }
+      // if (changed.translateY) { this.set({x: current.translateY}); }
 
     }
   },
@@ -117,17 +122,20 @@ export default {
       const {mouseGlobalPosition} = this.get();
     },
     update: function() {
+      
       const {clientWidth, clientHeight, minSize, el, z} = this.get();
       const transform = d3ZoomTransform(el);
+      console.log("update", transform.k)
       const scale = transform.k;
       this.set({
         scale,
         transform,
-        translateX: transform.x + scale * (clientWidth - minSize) / 2,
-        translateY: transform.y + scale * (clientHeight - minSize) / 2,
+        translateX: transform.x, // + scale * (clientWidth - minSize) / 2,
+        translateY: transform.y, // + scale * (clientHeight - minSize) / 2,
       });
     },
     onzoom: function(that) {
+      console.log("onzoom")
       that.update();
     },
     transformTo: function(x, y, scale) {
@@ -136,24 +144,19 @@ export default {
     translateTo: function() {
 
     },
-    home: function() {
+    home: function(duration=0) {
       const {selection, z} = this.get();
 
       selection.transition()
-        .duration(1500)
+        .duration(duration)
         .call(z.transform, d3ZoomIdentity);
     },
-    zoomTo: function(scale, duration) {
-      const {scaleExtent} = this.get()
-      scale = Math.min(scale, scaleExtent[1]);
-      scale = Math.max(scale, scaleExtent[0]);
-      if (duration) {
-        this.tween('k', scale, {
-          duration, easing: eases.cubicInOut
-        });
-      } else {
-        this.set({k: scale});
-      }
+    scaleTo: function(scale, duration=0) {
+      console.log("scaleTo", duration)
+      const {z, selection} = this.get();
+      selection.transition()
+        .duration(duration)
+        .call(z.scaleTo, scale);
     }
   }
 }
