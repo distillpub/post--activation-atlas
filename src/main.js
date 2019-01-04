@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			target: document.body,
 			store,
 			data: {
-				width: 300,
+				width: 250,
 				component: AtlasTooltip
 			}
 		})

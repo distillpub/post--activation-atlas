@@ -46,7 +46,7 @@
           {homeY}
           {homeScale}
         />
-        <div ref:controls>
+        <div ref:controls class="{showOptions ? 'open' : 'closed'}">
           <div class="nav">
             <div class="map" style="display: {scale > 1.0 ? 'block' : 'block'};">
               <AppMiniMap 
@@ -64,15 +64,51 @@
               <Button on:click="refs.atlas.scaleBy(0.5)"><Navigation name="remove" color="white"/></Button>
             </div>
           </div>
-          <div>
-            <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
-            <br>
-            <label><input type=checkbox bind:checked=showLabels> attribution labels</label>
+          <div class="options">
+            <div class="essential">
+              <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
+              <label><input type=checkbox bind:checked=showLabels> attribution labels</label>
+            </div>
+            <div ref:expand class="expand">
+              <div class="grid-size">
+                <div class="section" >
+                  <h3>Grid size</h3>
+                  <label><input type=radio bind:group=gridSize value={0}> 20x20</label>
+                  <label><input type=radio bind:group=gridSize value={1}> 40x40</label>
+                  <label><input type=radio bind:group=gridSize value={2}> 80x80</label>
+                  <label><input type=radio bind:group=gridSize value={3}> 160x160</label>
+                  <label><input type=radio bind:group=gridSize value={4}> 320x320</label>
+                  <label><input type=radio bind:group=gridSize value={-1}> auto</label>
+                  <div style="display: {gridSize == -1 ? 'block': 'none'};">
+                    <div>auto threshold: {@html autoGridSizeMultiplier}</div>
+                    <input type="range" min={0.6} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
+                  </div>
+                  </div>
+                <div class="section" >
+                  <h3>Icons</h3>
+                  <div>density: {@html density}</div>
+                  <input type="range" min={0.2} max={8} step={0.01} bind:value=density>
+                  <br>
+                  <div>crop: {@html iconCrop}</div>
+                  <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
+                </div>
+                <div class="section"  style="display: {classHeatmap > -1 ? 'block' : 'none'}">
+                  <h3>Class filter</h3>
+                  <div>Intensity: {@html classHeatmapMultiplier}</div>
+                  <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
+                  <label><input type=radio bind:group=classHeatmapPositive value={1}> positive influence</label>
+                  <label><input type=radio bind:group=classHeatmapPositive value={-1}> negative influence</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="expand-toggle">
+            <button on:click="toggle()">{showOptions ? 'fewer options' : 'more options'}</button>
           </div>
         </div>
     </div>
   </div>
-  <div class="options" style="display: {showOptions ? 'block' : 'none'};">
+  <div class="options" style="display: none;">
     <Panel>
       <h2 slot="head">Options</h2>
       <div slot="body" class="options-body">
@@ -101,21 +137,7 @@
             <input type="range" min={0.6} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
           </div>
         </div>
-        <div>
-          <h3>Icons</h3>
-          <div>density: {@html density}</div>
-          <input type="range" min={0.2} max={8} step={0.01} bind:value=density>
-          <br>
-          <div>crop: {@html iconCrop}</div>
-          <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
-        </div>
-        <div style="display: {classHeatmap > -1 ? 'block' : 'none'}">
-          <h3>Class filter</h3>
-          <div>Intensity: {@html classHeatmapMultiplier}</div>
-          <input type="range" min=0.5 max=2 step=0.1 bind:value=classHeatmapMultiplier>
-          <label><input type=radio bind:group=classHeatmapPositive value={1}> positive influence</label>
-          <label><input type=radio bind:group=classHeatmapPositive value={-1}> negative influence</label>
-        </div>
+        
       </div>
     </Panel>
   </div>
@@ -154,6 +176,14 @@ export default {
     realGridSize: ({gridSize}) => (gridSize + 1) * 20,
     scaleCountFactor: ({iconScaleFactor, realGridSize}) =>  1000000 / (realGridSize * realGridSize * iconScaleFactor)
   },
+  methods: {
+    toggle() {
+      const {showOptions} = this.get();
+      this.set({
+        showOptions: !showOptions
+      });
+    }
+  },
   helpers: {
     format: f(".3f")
   }
@@ -189,45 +219,96 @@ export default {
     box-sizing: border-box;
     height: 100%;
   }
-  .options {
-    width: 170px;
-    border-left: solid 1px rgba(0, 0, 0, 0.2);
-    line-height: 1.5em;
-  }
-  .options-body {
-    padding: 16px;
-  }
-  /*  */
-  ref:controls {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-    padding: 8px;
-    background-color: white;
-    border-radius: 6px;
-    border: solid 1px rgba(0, 0, 0, 0.2);
-  }
-  ref:controls .nav {
-    display: flex;
-    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
-    margin-bottom: 8px;
-    padding-bottom: 12px;
-  }
-  ref:controls .map {
-    width: 104px;
-    margin-right: 8px;
-  }
-  ref:controls .buttons {
-    width: 32px;
-    display: grid;
-    grid-gap: 4px;
-
-  }
-  .options label {
-    display: block;
-  }
   .atlas {
     height: calc(100%);
     position: relative;
   }
+  /*  */
+
+
+  /*  */
+  ref:controls {
+    position: absolute;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    right: 16px;
+    top: 16px;
+    width: 160px;
+    padding: 8px;
+    background-color: white;
+    border-radius: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    line-height: 1.7em;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100% - 48px);
+  }
+
+  ref:controls label {
+    display: block;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  ref:controls .nav {
+    flex: 0 0 auto;
+    display: flex;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    padding-bottom: 8px;
+    height: 104px;
+  }
+  ref:controls .nav .map {
+    width: 104px;
+    margin-right: 8px;
+  }
+  ref:controls .nav .buttons {
+    width: 32px;
+    display: grid;
+    grid-gap: 4px;
+  }
+  ref:controls .expand-toggle {
+    flex: 0 0 auto;
+    /* border-top: solid 1px rgba(0, 0, 0, 0.1); */
+    /* padding-top: 8px; */
+  }
+  ref:controls .expand-toggle button {
+    display: block;
+    width: 100%;
+    line-height: 1.5em;
+  }
+
+  ref:controls .section {
+    margin-top: 8px;
+    border-top: solid 1px rgba(0, 0, 0, 0.1);
+    padding-top: 8px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  ref:controls .section h3 {
+    color: rgba(0, 0, 0, 1);
+    margin: 0 0 4px 0;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  ref:controls .options {
+    flex: 1 1;
+    overflow-y: scroll;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  ref:controls.closed .expand {
+    height: 0;
+    overflow: hidden;
+  }
+  ref:controls.open .expand {
+    height: auto;
+  }
+  ref:controls.open .options {
+    margin-bottom: 8px;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  }
+
+
 </style>
