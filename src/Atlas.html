@@ -23,6 +23,8 @@
     bind:translateY
     bind:mouseOver
     bind:mouseGlobalPosition
+    bind:extent
+    bind:scrollWheel
   >
     <canvas ref:canvas
       width={viewWidth * screenResolution}
@@ -202,8 +204,9 @@ export default {
       this.refs.root.webkitRequestFullscreen();
     },
     home(duration=0) {
-      const {homeX, homeY, homeScale} = this.get();
-      this.transitionTo(homeX, homeY, homeScale, duration);
+      // const {homeX, homeY, homeScale} = this.get();
+      // this.transitionTo(homeX, homeY, homeScale, duration);
+      this.refs.d3Zoom.home();
     },
     transitionTo(x, y, scale, duration=0) {
       this.refs.d3Zoom.transformTo(x, y, scale, duration);
@@ -347,6 +350,7 @@ export default {
     width: 100%;
     height: 100%;
     contain: layout;
+    overflow: hidden;
   }
   ref:stage {
     position: absolute;

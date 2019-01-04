@@ -24,6 +24,7 @@ export default {
       selection: null, //the d3 selection of the root
       transform: null, // the d3 transform
       scaleExtent: [1, 32], //
+      scrollWheel: false,
       scale: 1,
       translateX: 0,
       translateY: 0,
@@ -39,7 +40,6 @@ export default {
     mouseOver: ({msx, msy}) => msx != undefined && msy != undefined,
     mouseGlobalPosition: ({transform, msx, msy, clientHeight, clientWidth, minSize}) => {
       if (transform && msx != undefined && msy != undefined) {
-        const scale = transform.k;
         return [
           transform.invertX(msx) - (clientWidth - minSize) / 2,
           transform.invertY(msy) - (clientHeight - minSize) / 2,
@@ -48,18 +48,31 @@ export default {
         return null;
       }
     },
+    extent: ({scale, translateX, translateY, minSize, clientWidth, clientHeight}) => {
+      const x0 = - translateX / scale;
+      const y0 = - translateY / scale;
+      const x1 = x0 + clientWidth / scale;
+      const y1 = y0 + clientHeight / scale;
+      return [
+        [x0 / minSize, x1 / minSize],
+        [y0 / minSize, y1 / minSize],
+      ]
+    },
   },
+  
   oncreate() {
     const {z, scaleExtent, clientWidth, clientHeight} = this.get();
     const that = this; // needed because d3 gives "this" as the node, not component.
     z.scaleExtent(scaleExtent);
     const selection = d3Select(this.refs.root);
     z(selection);
+    z.translateTo(selection, Math.min(clientWidth, clientHeight) / 2, Math.min(clientWidth, clientHeight) / 2)
     this.set({
       selection,
       el: this.refs.root,
     });
     z.on("zoom", () => { this.onzoom(that); });
+    z.filter(this.zoomEventFilter.bind(this))
     this.update();
   },
   onstate({changed, current, previous}) {
@@ -87,6 +100,14 @@ export default {
   },
   methods: {
     tween,
+    zoomEventFilter: function() {
+      const {scrollWheel} = this.get();
+      if (!scrollWheel) {
+        return d3Event.type !== "wheel" && !d3Event.button;
+      } else {
+        return !d3Event.button;
+      }
+    },
     mouseMove: function(event) {
       const msx = event.offsetX;
       const msy = event.offsetY;
@@ -96,7 +117,7 @@ export default {
       const {mouseGlobalPosition} = this.get();
     },
     update: function() {
-      const {clientWidth, clientHeight, minSize, el} = this.get();
+      const {clientWidth, clientHeight, minSize, el, z} = this.get();
       const transform = d3ZoomTransform(el);
       const scale = transform.k;
       this.set({
@@ -109,11 +130,18 @@ export default {
     onzoom: function(that) {
       that.update();
     },
-    transformTo: function() {
+    transformTo: function(x, y, scale) {
 
     },
     translateTo: function() {
 
+    },
+    home: function() {
+      const {selection, z} = this.get();
+
+      selection.transition()
+        .duration(1500)
+        .call(z.transform, d3ZoomIdentity);
     },
     zoomTo: function(scale, duration) {
       const {scaleExtent} = this.get()

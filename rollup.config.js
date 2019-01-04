@@ -34,7 +34,7 @@ export default [
 			}),
 			resolve(),
 			commonjs(),
-			production && compiler()
+			production //&& compiler()
 		]
 	},
 	{
@@ -55,7 +55,7 @@ export default [
 			}),
 			resolve(),
 			commonjs(),
-			production && compiler()
+			production //&& compiler()
 		]
 	},
 	{

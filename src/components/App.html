@@ -40,19 +40,18 @@
           bind:aspectRatio
           bind:gcx
           bind:gcy
+          bind:extent
+          bind:scrollWheel
           {homeX}
           {homeY}
           {homeScale}
         />
         <div ref:controls>
-          <div class="map" style="display: {scale > 1.0 ? 'block' : 'none'};">
+          <div class="map" style="display: {scale > 1.0 ? 'block' : 'block'};">
             <AppMiniMap 
               id="inceptionv1_{layerName}"
               {layerName}
-              bind:aspectRatio
-              bind:scale
-              bind:gcx
-              bind:gcy
+              bind:extent
               enableDragging={true}
               {classHeatmap}
               {scaleCountFactor}
@@ -76,6 +75,7 @@
           <div>x: {@html format(gcx)}</div>
           <div>y: {@html format(gcy)}</div>
           <div>scale: {@html format(scale)}</div>
+          <label><input type=checkbox bind:checked=scrollWheel> scroll to zoom</label>
         </div>
         <div>
         <h3>Attribution</h3>
@@ -141,6 +141,7 @@ export default {
       homeX: .5,
       homeY: .5,
       homeScale: 1,
+      scrollWheel: true,
     }
   },
   computed: {

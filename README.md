@@ -8,6 +8,10 @@ Make minimap a little bigger
 
 smooth zoom between gridsizes
 
+spread operator in object literals
+
+turn off scroll wheel
+
 # Tweaks
 
 add "reset" to layer tour (and possible zoom buttons)
