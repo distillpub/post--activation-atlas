@@ -1734,6 +1734,7 @@
 	  return {
 	    display: "block", // "inline", "inline-block", "block"
 	    ready: false,
+	    height: "",
 	    onscreen: false,
 	    offscreen: true
 	  }
@@ -1760,6 +1761,7 @@
 			c: function create() {
 				d_figure = createElement("d-figure");
 				setStyle(d_figure, "display", ctx.display);
+				setStyle(d_figure, "height", ctx.height);
 				addLoc(d_figure, file$7, 6, 0, 173);
 			},
 
@@ -1776,6 +1778,10 @@
 			p: function update(changed, ctx) {
 				if (changed.display) {
 					setStyle(d_figure, "display", ctx.display);
+				}
+
+				if (changed.height) {
+					setStyle(d_figure, "height", ctx.height);
 				}
 			},
 
@@ -1803,6 +1809,7 @@
 		this.refs = {};
 		this._state = assign(data$3(), options.data);
 		if (!('display' in this._state)) console.warn("<Radar> was created without expected data property 'display'");
+		if (!('height' in this._state)) console.warn("<Radar> was created without expected data property 'height'");
 		this._intro = true;
 
 		this._slotted = options.slots || {};

@@ -2287,14 +2287,14 @@
 				text1 = createText("Average of ");
 				text2 = createText(ctx.num_activations);
 				text3 = createText(" activations");
-				table.className = "svelte-15uzduw";
+				table.className = "svelte-1b6k7p4";
 				addLoc(table, file$1, 1, 2, 22);
 				setStyle(div0, "font-size", "10px");
 				setStyle(div0, "margin-top", "4px");
 				setStyle(div0, "color", "#999");
 				setStyle(div0, "text-align", "right");
 				addLoc(div0, file$1, 12, 2, 395);
-				div1.className = "hover svelte-15uzduw";
+				div1.className = "hover svelte-1b6k7p4";
 				addLoc(div1, file$1, 0, 0, 0);
 			},
 
@@ -2419,12 +2419,12 @@
 				setStyle(td0, "width", "10px");
 				setStyle(td0, "text-align", "right");
 				setStyle(td0, "padding-right", "4px");
-				td0.className = "svelte-15uzduw";
+				td0.className = "svelte-1b6k7p4";
 				addLoc(td0, file$1, 5, 8, 126);
-				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-15uzduw";
+				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-1b6k7p4";
 				addLoc(td1, file$1, 6, 8, 212);
 				setStyle(td2, "text-align", "right");
-				td2.className = "svelte-15uzduw";
+				td2.className = "svelte-1b6k7p4";
 				addLoc(td2, file$1, 7, 8, 284);
 				addLoc(tr, file$1, 4, 6, 113);
 			},
@@ -2500,6 +2500,7 @@
 	  return {
 	    display: "block", // "inline", "inline-block", "block"
 	    ready: false,
+	    height: "",
 	    onscreen: false,
 	    offscreen: true
 	  }
@@ -2526,6 +2527,7 @@
 			c: function create() {
 				d_figure = createElement("d-figure");
 				setStyle(d_figure, "display", ctx.display);
+				setStyle(d_figure, "height", ctx.height);
 				addLoc(d_figure, file$2, 6, 0, 173);
 			},
 
@@ -2542,6 +2544,10 @@
 			p: function update(changed, ctx) {
 				if (changed.display) {
 					setStyle(d_figure, "display", ctx.display);
+				}
+
+				if (changed.height) {
+					setStyle(d_figure, "height", ctx.height);
 				}
 			},
 
@@ -2569,6 +2575,7 @@
 		this.refs = {};
 		this._state = assign(data$1(), options.data);
 		if (!('display' in this._state)) console.warn("<Radar> was created without expected data property 'display'");
+		if (!('height' in this._state)) console.warn("<Radar> was created without expected data property 'height'");
 		this._intro = true;
 
 		this._slotted = options.slots || {};
@@ -2657,16 +2664,26 @@
 		return (radarReady && component) ? true : false;
 	}
 
-	function finalHeight({width, height, aspectRatio, minHeight}) {
-	  if (height) {
-	    return height;
-	  } else if (aspectRatio) {
-	    let h = width / aspectRatio;
+	function finalWidth({width}) {
+	  if (width) {
+	    if (typeof width == "number") { return width + "px" }
+	    if (typeof width == "string") { return width }
+	  } else {
+	    return "100%"
+	  }
+	}
+
+	function finalHeight({clientWidth, height, aspectRatio, minHeight}) {
+	  if (aspectRatio) {
+	    let h = clientWidth / aspectRatio;
 	    if (minHeight) {
-	      return Math.min(minHeight, h);
+	      return Math.min(minHeight, h) + "px";
 	    } else {
-	      return h;
+	      return h + "px";
 	    }
+	  } else if (height) {
+	    if (typeof height == "number") { return height + "px" }    if (typeof height == "string") { return height }  } else {
+	    return "100%";
 	  }
 	}
 
@@ -2678,7 +2695,7 @@
 	    radarReady: false,
 	    onscreen: false,
 	    offsreen: true,
-	    height: false,
+	    height: null,
 	    width: null,
 	    aspectRatio: null,
 	    minHeight: null
@@ -2712,12 +2729,13 @@
 		var if_block = current_block_type(component, ctx);
 
 		function div_resize_handler() {
-			component.set({ width: div.clientWidth });
+			component.set({ clientWidth: div.clientWidth });
 		}
 
 		var radar_initial_data = {
 		 	offscreen: ctx.offscreen,
-		 	onscreen: ctx.onscreen
+		 	onscreen: ctx.onscreen,
+		 	height: "100%"
 		 };
 		if (ctx.radarReady !== void 0) {
 			radar_initial_data.ready = ctx.radarReady;
@@ -2748,9 +2766,10 @@
 				if_block.c();
 				radar._fragment.c();
 				component.root._beforecreate.push(div_resize_handler);
-				setStyle(div, "height", "" + ctx.finalHeight + "px");
-				div.className = "svelte-1texnz1 svelte-ref-container";
-				addLoc(div, file$4, 20, 2, 755);
+				setStyle(div, "width", ctx.finalWidth);
+				setStyle(div, "height", ctx.finalHeight);
+				div.className = "svelte-15vhi6w svelte-ref-container";
+				addLoc(div, file$4, 25, 0, 1198);
 			},
 
 			m: function mount(target, anchor) {
@@ -2772,8 +2791,12 @@
 					if_block.m(div, null);
 				}
 
+				if (changed.finalWidth) {
+					setStyle(div, "width", ctx.finalWidth);
+				}
+
 				if (changed.finalHeight) {
-					setStyle(div, "height", "" + ctx.finalHeight + "px");
+					setStyle(div, "height", ctx.finalHeight);
 				}
 
 				var radar_changes = {};
@@ -2796,7 +2819,7 @@
 		};
 	}
 
-	// (24:4) {:else}
+	// (29:2) {:else}
 	function create_else_block(component, ctx) {
 
 		var loading = new Loading({
@@ -2821,7 +2844,7 @@
 		};
 	}
 
-	// (22:4) {#if ready}
+	// (27:2) {#if ready}
 	function create_if_block$2(component, ctx) {
 		var switch_instance_anchor;
 
@@ -2907,15 +2930,17 @@
 		this.refs = {};
 		this._state = assign(data$2(), options.data);
 
-		this._recompute({ radarReady: 1, component: 1, width: 1, height: 1, aspectRatio: 1, minHeight: 1 }, this._state);
+		this._recompute({ radarReady: 1, component: 1, width: 1, clientWidth: 1, height: 1, aspectRatio: 1, minHeight: 1 }, this._state);
 		if (!('radarReady' in this._state)) console.warn("<LazyComponent> was created without expected data property 'radarReady'");
 		if (!('component' in this._state)) console.warn("<LazyComponent> was created without expected data property 'component'");
 		if (!('width' in this._state)) console.warn("<LazyComponent> was created without expected data property 'width'");
+		if (!('clientWidth' in this._state)) console.warn("<LazyComponent> was created without expected data property 'clientWidth'");
 		if (!('height' in this._state)) console.warn("<LazyComponent> was created without expected data property 'height'");
 		if (!('aspectRatio' in this._state)) console.warn("<LazyComponent> was created without expected data property 'aspectRatio'");
 		if (!('minHeight' in this._state)) console.warn("<LazyComponent> was created without expected data property 'minHeight'");
 		if (!('offscreen' in this._state)) console.warn("<LazyComponent> was created without expected data property 'offscreen'");
 		if (!('onscreen' in this._state)) console.warn("<LazyComponent> was created without expected data property 'onscreen'");
+
 
 
 		if (!('componentData' in this._state)) console.warn("<LazyComponent> was created without expected data property 'componentData'");
@@ -2941,6 +2966,7 @@
 
 	LazyComponent.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('ready' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'ready'");
+		if ('finalWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'finalWidth'");
 		if ('finalHeight' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'finalHeight'");
 	};
 
@@ -2949,7 +2975,11 @@
 			if (this._differs(state.ready, (state.ready = ready(state)))) changed.ready = true;
 		}
 
-		if (changed.width || changed.height || changed.aspectRatio || changed.minHeight) {
+		if (changed.width) {
+			if (this._differs(state.finalWidth, (state.finalWidth = finalWidth(state)))) changed.finalWidth = true;
+		}
+
+		if (changed.clientWidth || changed.height || changed.aspectRatio || changed.minHeight) {
 			if (this._differs(state.finalHeight, (state.finalHeight = finalHeight(state)))) changed.finalHeight = true;
 		}
 	};
@@ -16472,12 +16502,12 @@
 		// Components
 		// 
 
-		const cover = document.querySelector("#cover");
-		cover.addEventListener("ready", e => {
-			new App({
-				target: cover,
-				store,
-				data: {
+		new LazyComponent({
+			target: document.querySelector("#cover"),
+			store: store,
+			data: {
+				component: App,
+				componentData: {
 					showClassFilter: false,
 					layerName: "mixed4d",
 					showLabels: false,
@@ -16487,8 +16517,26 @@
 					homeScale: 4,
 					gridSize: 2
 				}
-			});
+			}
 		});
+
+		// const cover = document.querySelector("#cover");
+		// cover.addEventListener("ready", e => {
+		// 	new App({
+		// 		target: cover,
+		// 		store,
+		// 		data: {
+		// 			showClassFilter: false,
+		// 			layerName: "mixed4d",
+		// 			showLabels: false,
+		// 			showOptions: false,
+		// 			homeX: 0.55,
+		// 			homeY: 0.7,
+		// 			homeScale: 4,
+		// 			gridSize: 2
+		// 		}
+		// 	});
+		// });
 
 		new Overview({ target: document.querySelector("#overview") });
 
@@ -16788,26 +16836,28 @@
 			});
 		});
 
+		// const allLayerComparisonElement = document.querySelector("#all-layer-comparison")
+		// allLayerComparisonElement.addEventListener("ready", () => {
+		// 	new App({
+		// 		target: allLayerComparisonElement,
+		// 		store: store,
+		// 		data: {
+		// 			showClassFilter: false
+		// 		}
+		// 	});
+		// });
 
-		let layerComparison = new App({
+
+		new LazyComponent({
 			target: document.querySelector("#all-layer-comparison"),
 			store: store,
 			data: {
-				showClassFilter: false
+				component: App,
+				componentData: {
+					showClassFilter: false,
+				}
 			}
 		});
-
-		// new LazyComponent({
-		// 	target: document.querySelector("#all-layer-comparison"),
-		// 	store: store,
-		// 	data: {
-		// 		aspectRatio: 2,
-		// 		component: App,
-		// 		componentData: {
-		// 			showClassFilter: false,
-		// 		}
-		// 	}
-		// });
 
 
 		const poiLinks = document.querySelectorAll("[data-poi]");
@@ -16843,15 +16893,29 @@
 			store: store,
 		});
 
-		new App({
+		// const focusPlaygroundElement = document.querySelector("#focus-playground");
+		// focusPlaygroundElement.addEventListener("ready", () => {
+		// 	new App({
+		// 		target: focusPlaygroundElement,
+		// 		store: store,
+		// 		data: {
+		// 			classHeatmap: 235,
+		// 			layerName: "mixed4d"
+		// 		}
+		// 	});
+		// });
+
+		new LazyComponent({
 			target: document.querySelector("#focus-playground"),
 			store: store,
 			data: {
-				classHeatmap: 235,
-				layerName: "mixed4d"
+				component: App,
+				componentData: {
+					classHeatmap: 235,
+					layerName: "mixed4d"
+				}
 			}
 		});
-
 
 		// Further Isolating Classes
 
