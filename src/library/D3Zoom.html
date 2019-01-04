@@ -1,0 +1,197 @@
+<div 
+  ref:root 
+  class="d3zoom" 
+  bind:clientWidth
+  bind:clientHeight
+  on:mousemove="mouseMove(event)"
+  on:mousedown="set({msx: null, msy: null})"
+  on:mouseout="set({msx: null, msy: null})"
+>
+  <slot />
+</div>
+
+<script>
+import {zoomIdentity as d3ZoomIdentity, zoom as d3Zoom, zoomTransform as d3ZoomTransform} from "d3-zoom";
+import {event as d3Event, select as d3Select} from "d3-selection";
+import { tween } from 'svelte-extras';
+import * as eases from 'eases-jsnext';
+
+export default {
+  data() {
+    return {
+      z: d3Zoom(), //d3 zoom object
+      el: null,
+      selection: null, //the d3 selection of the root
+      transform: null, // the d3 transform
+      scaleExtent: [1, 32], //
+      scrollWheel: false,
+      homeScale: 1,
+      homeX: 0.5,
+      homeY: 0.5,
+      scale: null,
+      translateX: null,
+      translateY: null,
+      k: 1,
+      x: 0,
+      y: 0,
+      msx: null,
+      msy: null,
+    };
+  },
+  computed: {
+    minSize: ({clientWidth, clientHeight}) => Math.min(clientWidth, clientHeight),
+    mouseOver: ({msx, msy}) => msx != undefined && msy != undefined,
+    mouseGlobalPosition: ({transform, msx, msy, clientHeight, clientWidth, minSize}) => {
+      if (transform && msx != undefined && msy != undefined) {
+        return [
+          transform.invertX(msx),// - (clientWidth - minSize) / 2,
+          transform.invertY(msy),// - (clientHeight - minSize) / 2,
+        ];
+      } else {
+        return null;
+      }
+    },
+    extent: ({scale, translateX, translateY, minSize, clientWidth, clientHeight}) => {
+      const x0 = - translateX / scale;
+      const y0 = - translateY / scale;
+      const x1 = x0 + clientWidth / scale;
+      const y1 = y0 + clientHeight / scale;
+      return [
+        [x0 / minSize, x1 / minSize],
+        [y0 / minSize, y1 / minSize],
+      ]
+    },
+    gcx: ({extent}) => (extent[0][0] + extent[1][0]) / 2,
+    gcy: ({extent}) => (extent[0][1] + extent[1][1]) / 2,
+  },
+  
+  oncreate() {
+    const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
+    const that = this; // needed because d3 gives "this" as the node, not component.
+    z.wheelDelta(() => {
+      let d = -d3Event.deltaY * (d3Event.deltaMode ? 120 : 1) / 500;
+      if (d3Event.ctrlKey) {
+        d = d * 10;
+      }
+      return d;
+    });
+    z.scaleExtent(scaleExtent);
+    const selection = d3Select(this.refs.root);
+    this.set({
+      selection,
+      el: this.refs.root,
+    });
+    z(selection);
+    z.filter(this.zoomEventFilter.bind(this));
+    z.on("zoom", () => { this.onzoom(that); });
+    z.translateTo(selection, homeX * minSize, homeY * minSize)
+    z.scaleTo(selection, homeScale);
+  },
+  onstate({changed, current, previous}) {
+    if (previous != undefined) {
+      if ((changed.clientWidth || changed.clientHeight) && current.el) {
+        this.update();
+      }
+    }
+    // console.log("update", changed, current.scale)
+    const {z, selection, el, x, y} = this.get();
+    // if (changed.scaleExtent && current.scaleExtent) { z.scaleExtent(current.scaleExtent) } 
+    if (selection) {
+
+      // if (changed.x || changed.y) {
+      //   z.translateTo(selection, current.x, current.y);
+      // }
+
+      // if (changed.scale) { this.set({k: current.scale}); }
+      // if (changed.k) { z.scaleTo(selection, current.k); } 
+
+      // if (changed.translateX) { this.set({x: current.translateX}); }
+      // if (changed.translateY) { this.set({x: current.translateY}); }
+
+    }
+  },
+  methods: {
+    tween,
+    zoomEventFilter: function() {
+      const {scrollWheel} = this.get();
+      // console.log(d3Event);
+      // If we want to suppress scroll wheel events...
+      if (!scrollWheel) {
+        // ... return false for scroll wheel events + button = 1 events
+        return !(d3Event.type === "wheel" && d3Event.ctrlKey === false) && d3Event.button == 0;
+      } else {
+        //... just return false for button = 1 events
+        return d3Event.button == 0;
+      }
+    },
+    mouseMove: function(event) {
+      const msx = event.offsetX;
+      const msy = event.offsetY;
+      this.set({
+        msx, msy
+      });
+      const {mouseGlobalPosition} = this.get();
+    },
+    update: function() {
+      
+      const {clientWidth, clientHeight, minSize, el, z} = this.get();
+      const transform = d3ZoomTransform(el);
+      // console.log("update", transform.k)
+      const scale = transform.k;
+      this.set({
+        scale,
+        transform,
+        translateX: transform.x, // + scale * (clientWidth - minSize) / 2,
+        translateY: transform.y, // + scale * (clientHeight - minSize) / 2,
+      });
+    },
+    onzoom: function(that) {
+      // console.log("onzoom")
+      that.update();
+    },
+    zoomTo: function(x, y, scale = 1, duration = 1000) {
+      const {selection, z, minSize, clientWidth, clientHeight} = this.get();
+
+      selection.transition()
+        .duration(duration)
+        .call(z.transform, 
+          d3ZoomIdentity
+            .translate(clientWidth / 2, clientHeight / 2)
+            .scale(scale)
+            .translate(- x * minSize, - y * minSize));
+    },
+    translateTo: function(x, y) {
+      const {z, selection, minSize} = this.get();
+      z.transform(selection, x * minSize, y * minSize)
+    },
+    home: function(duration = 0) {
+
+      const {homeX, homeY, homeScale} = this.get();
+      this.zoomTo(homeX, homeY, homeScale)
+
+      // selection.transition()
+      //   .duration(duration)
+      //   .call(z.transform, 
+      //     d3ZoomIdentity
+      //       .translate(clientWidth / 2, clientHeight / 2)
+      //       .translate(- 0.5 * minSize, - 0.5 * minSize));
+    },
+    scaleTo: function(scale, duration=0) {
+      // console.log("scaleTo", duration)
+      const {z, selection} = this.get();
+      selection.transition()
+        .duration(duration)
+        .call(z.scaleTo, scale);
+    }
+  }
+}
+</script>
+
+<style>
+ref:root {
+  position: relative;
+  background: white;
+  width: 100%;
+  height: 100%;
+}
+</style>

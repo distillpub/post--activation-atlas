@@ -1,12 +1,12 @@
 <script>
-import { default as load } from './load.js';
+import { default as load } from './library/load.js';
 import classesToKeep from './classesToKeep.js';
 
 export default {
   data() {
     return {
       fingerprint: Math.random() + Date.now(),
-      // root: "assets",
+    // root: "assets",
       root: "https://storage.googleapis.com/activation-atlas/build",
       id: "inceptionv1",
       layer: 0,
@@ -72,8 +72,12 @@ export default {
                   gd.full_class_values = gd.f 
                   gd.full_class_indices = classesToKeep
                 }
+                
                 let x = gd.grid_x;
                 let y = gd.grid_y;
+                gd.gx = x / gridSize;
+                gd.gy = y / gridSize;
+                gd.gw = 1 / gridSize;
                 let tileX = Math.floor(x / tileSize);
                 let tileY = Math.floor(y / tileSize);
                 gd.localX = x % tileSize;

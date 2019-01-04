@@ -1,7 +1,8 @@
 import store from "./Store.js";
 import Atlas from "./Atlas.html";
 import AtlasThumbnail from "./AtlasThumbnail.html";
-
+import Tooltip from "./library/Tooltip.html";
+import AtlasTooltip from "./components/AtlasTooltip.html";
 
 function download(filename, url) {
   let a = document.createElement("a");
@@ -11,6 +12,19 @@ function download(filename, url) {
   a.style["display"] = "none";
   a.click();
 }
+
+
+// A global tooltip
+store.set({
+  tooltip: new Tooltip({
+    target: document.body,
+    store,
+    data: {
+      width: 300,
+      component: AtlasTooltip
+    }
+  })
+});
 
 let app = document.querySelector("#app")
 

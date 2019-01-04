@@ -1,6 +1,6 @@
 <div ref:root>
   <Placeholder>
-    <Atlas 
+    <!-- <AtlasThumbnail
       ref:overview
       {id}
       {classHeatmap}
@@ -8,15 +8,13 @@
       iconCrop={0.6} 
       {scaleCountFactor}
       backgroundColor="#f0f0f0"
-    />
+    /> -->
     <!-- <AtlasThumbnail 
       {layerName}
     /> -->
+    <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
     <AtlasReticle
-      bind:aspectRatio
-      bind:scale
-      bind:gcx
-      bind:gcy
+      bind:extent
       enableDragging={true}
     />
   </Placeholder>
@@ -25,7 +23,7 @@
 <script>
   export default {
     components: {
-      Atlas: "../Atlas.html",
+      // AtlasThumbnail: "../AtlasThumbnail.html",
       AtlasReticle: "../AtlasReticle.html",
       Placeholder: "../library/Placeholder.html"
     },
@@ -40,7 +38,14 @@
 <style>
 ref:root {
   position: relative;
-  overflow: hidden;
+  width: 100%; 
+  height: 100%;
   box-sizing: border-box;
+  padding: 1px;
+}
+img {
+  display: block;
+  width: 100%;
+  opacity: 0.4;
 }
 </style>

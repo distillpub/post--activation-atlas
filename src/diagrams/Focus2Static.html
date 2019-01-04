@@ -5,6 +5,12 @@
     <AtlasReticle
       aspectRatio=1
       annotationValue="3"
+      extent={
+        [
+          [$focusHighlights[0].x, $focusHighlights[0].y],
+          [$focusHighlights[0].x + 0.1, $focusHighlights[0].y + 0.1]
+        ]
+      }
       scale={$focusHighlights[0].scale}
       gcx={$focusHighlights[0].x}
       gcy={$focusHighlights[0].y}
@@ -51,7 +57,7 @@
   export default {
     components: {
       LazyImage: "../library/LazyImage.html",
-      AtlasReticle: "../AtlasReticle.html",
+      AtlasReticle: "../AtlasStaticReticle.html",
     Loupe: "../components/Loupe.html"
     }
   }

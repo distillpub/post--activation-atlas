@@ -28,41 +28,47 @@
           strokeColor="#666"
           backgroundColor="#dfdfdf"
           showHoverImage={false}
-          {scaleCountFactor}
+          bind:density
           {classHeatmap}
           bind:iconCrop 
           bind:classHeatmapMultiplier
           bind:classHeatmapPositive
+          bind:autoGridSizeMultiplier
           bind:gridSize
           bind:showLabels
-          bind:aspectRatio
           bind:scale
+          bind:aspectRatio
           bind:gcx
           bind:gcy
+          bind:extent
+          bind:scrollWheel="$scroll"
           {homeX}
           {homeY}
           {homeScale}
         />
         <div ref:controls>
-          <div class="map" style="display: {scale > 1.0 ? 'block' : 'none'};">
-            <AppMiniMap 
-              id="inceptionv1_{layerName}"
-              {layerName}
-              bind:aspectRatio
-              bind:scale
-              bind:gcx
-              bind:gcy
-              enableDragging={true}
-              {classHeatmap}
-              {scaleCountFactor}
-            />
+          <div class="nav">
+            <div class="map" style="display: {scale > 1.0 ? 'block' : 'block'};">
+              <AppMiniMap 
+                id="inceptionv1_{layerName}"
+                {layerName}
+                bind:extent
+                enableDragging={true}
+                {classHeatmap}
+                {scaleCountFactor}
+              />
+            </div>
+            <div class="buttons">
+              <Button on:click="refs.atlas.home(1000)"><Navigation name="home" color="white"/></Button>
+              <Button on:click="refs.atlas.scaleBy(2)"><Navigation name="add" color="white"/></Button>
+              <Button on:click="refs.atlas.scaleBy(0.5)"><Navigation name="remove" color="white"/></Button>
+            </div>
           </div>
-          <div class="buttons">
-            <Button on:click="refs.atlas.home()"><Navigation name="home" color="white"/></Button>
-            <Button on:click="refs.atlas.zoomit(2)"><Navigation name="add" color="white"/></Button>
-            <Button on:click="refs.atlas.zoomit(0.5)"><Navigation name="remove" color="white"/></Button>
+          <div>
+            <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
+            <br>
+            <label><input type=checkbox bind:checked=showLabels> attribution labels</label>
           </div>
-          <!-- <label><input type=checkbox bind:checked=showLabels> show labels</label> -->
         </div>
     </div>
   </div>
@@ -72,9 +78,11 @@
       <div slot="body" class="options-body">
 
         <div>
+          <div>homeScale: {@html homeScale}</div>
           <div>x: {@html format(gcx)}</div>
           <div>y: {@html format(gcy)}</div>
           <div>scale: {@html format(scale)}</div>
+          <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
         </div>
         <div>
         <h3>Attribution</h3>
@@ -87,11 +95,16 @@
           <label><input type=radio bind:group=gridSize value={2}> 80x80</label>
           <label><input type=radio bind:group=gridSize value={3}> 160x160</label>
           <label><input type=radio bind:group=gridSize value={4}> 320x320</label>
+          <label><input type=radio bind:group=gridSize value={-1}> auto</label>
+          <div style="display: {gridSize == -1 ? 'block': 'none'};">
+            <div>auto threshold: {@html autoGridSizeMultiplier}</div>
+            <input type="range" min={0.6} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
+          </div>
         </div>
         <div>
           <h3>Icons</h3>
-          <div>density: {@html iconScaleFactor}</div>
-          <input type="range" min={0.2} max={10} step={0.1} bind:value=iconScaleFactor>
+          <div>density: {@html density}</div>
+          <input type="range" min={0.2} max={8} step={0.01} bind:value=density>
           <br>
           <div>crop: {@html iconCrop}</div>
           <input type="range" min={0} max={0.5} step={0.01} bind:value=iconCrop>
@@ -134,7 +147,7 @@ export default {
       showOptions: true,
       homeX: .5,
       homeY: .5,
-      homeScale: 1,
+      homeScale: 1
     }
   },
   computed: {
@@ -189,11 +202,16 @@ export default {
     position: absolute;
     right: 16px;
     top: 16px;
-    display: flex;
     padding: 8px;
     background-color: white;
     border-radius: 6px;
     border: solid 1px rgba(0, 0, 0, 0.2);
+  }
+  ref:controls .nav {
+    display: flex;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+    padding-bottom: 12px;
   }
   ref:controls .map {
     width: 104px;

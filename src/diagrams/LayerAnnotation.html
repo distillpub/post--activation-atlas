@@ -1,6 +1,6 @@
 
 
-<div style="display: grid; grid-template-columns: 1fr 200px;">
+<div style="display: grid; grid-gap: 20px; grid-template-columns: 1fr 120px;">
   <div class="detail">
     <Atlas 
       id="inceptionv1_{layerName}" 
@@ -10,8 +10,7 @@
       bind:homeScale
       bind:aspectRatio
       bind:scale
-      bind:gcx
-      bind:gcy
+      bind:extent
       bind:showLabels
       textShadow={true}
       backgroundColor="#dfdfdf"
@@ -20,10 +19,7 @@
   <div class="atlas">
     <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
     <AtlasReticle
-      bind:aspectRatio
-      bind:scale
-      bind:gcx
-      bind:gcy
+      bind:extent
     />
   </div>
 </div>
@@ -47,7 +43,6 @@ export default {
 <style>
   .atlas {
     position: relative;
-    margin: 20px;
     width: 120px;
     height: 120px;
   }

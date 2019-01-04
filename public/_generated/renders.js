@@ -35,6 +35,16 @@
 		while (parent.firstChild) target.appendChild(parent.firstChild);
 	}
 
+	function destroyEach(iterations, detach) {
+		for (var i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) iterations[i].d(detach);
+		}
+	}
+
+	function createFragment() {
+		return document.createDocumentFragment();
+	}
+
 	function createElement(name) {
 		return document.createElement(name);
 	}
@@ -43,12 +53,20 @@
 		return document.createTextNode(data);
 	}
 
+	function createComment() {
+		return document.createComment('');
+	}
+
 	function addListener(node, event, handler, options) {
 		node.addEventListener(event, handler, options);
 	}
 
 	function removeListener(node, event, handler, options) {
 		node.removeEventListener(event, handler, options);
+	}
+
+	function setData(text, data) {
+		text.data = '' + data;
 	}
 
 	function setStyle(node, key, value) {
@@ -227,6 +245,10 @@
 
 	function _mount(target, anchor) {
 		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	function removeFromStore() {
+		this.store._remove(this);
 	}
 
 	var protoDev = {
@@ -1414,6 +1436,7 @@
 	class MyStore extends Store { }
 
 	const store = new MyStore({
+	  scroll: false,
 	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
@@ -2031,7 +2054,7 @@
 	function data() {
 	  return {
 	    fingerprint: Math.random() + Date.now(),
-	    // root: "assets",
+	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
 	    layer: 0,
@@ -2097,8 +2120,12 @@
 	                gd.full_class_values = gd.f; 
 	                gd.full_class_indices = classesToKeep;
 	              }
+	              
 	              let x = gd.grid_x;
 	              let y = gd.grid_y;
+	              gd.gx = x / gridSize;
+	              gd.gy = y / gridSize;
+	              gd.gw = 1 / gridSize;
 	              let tileX = Math.floor(x / tileSize);
 	              let tileY = Math.floor(y / tileSize);
 	              gd.localX = x % tileSize;
@@ -2163,6 +2190,3228 @@
 	AtlasDataLoader.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
+	var noop$1 = {value: function() {}};
+
+	function dispatch() {
+	  for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+	    if (!(t = arguments[i] + "") || (t in _)) throw new Error("illegal type: " + t);
+	    _[t] = [];
+	  }
+	  return new Dispatch(_);
+	}
+
+	function Dispatch(_) {
+	  this._ = _;
+	}
+
+	function parseTypenames(typenames, types) {
+	  return typenames.trim().split(/^|\s+/).map(function(t) {
+	    var name = "", i = t.indexOf(".");
+	    if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+	    if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+	    return {type: t, name: name};
+	  });
+	}
+
+	Dispatch.prototype = dispatch.prototype = {
+	  constructor: Dispatch,
+	  on: function(typename, callback) {
+	    var _ = this._,
+	        T = parseTypenames(typename + "", _),
+	        t,
+	        i = -1,
+	        n = T.length;
+
+	    // If no callback was specified, return the callback of the given type and name.
+	    if (arguments.length < 2) {
+	      while (++i < n) if ((t = (typename = T[i]).type) && (t = get$1(_[t], typename.name))) return t;
+	      return;
+	    }
+
+	    // If a type was specified, set the callback for the given type and name.
+	    // Otherwise, if a null callback was specified, remove callbacks of the given name.
+	    if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
+	    while (++i < n) {
+	      if (t = (typename = T[i]).type) _[t] = set$1(_[t], typename.name, callback);
+	      else if (callback == null) for (t in _) _[t] = set$1(_[t], typename.name, null);
+	    }
+
+	    return this;
+	  },
+	  copy: function() {
+	    var copy = {}, _ = this._;
+	    for (var t in _) copy[t] = _[t].slice();
+	    return new Dispatch(copy);
+	  },
+	  call: function(type, that) {
+	    if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
+	    if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+	    for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+	  },
+	  apply: function(type, that, args) {
+	    if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+	    for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+	  }
+	};
+
+	function get$1(type, name) {
+	  for (var i = 0, n = type.length, c; i < n; ++i) {
+	    if ((c = type[i]).name === name) {
+	      return c.value;
+	    }
+	  }
+	}
+
+	function set$1(type, name, callback) {
+	  for (var i = 0, n = type.length; i < n; ++i) {
+	    if (type[i].name === name) {
+	      type[i] = noop$1, type = type.slice(0, i).concat(type.slice(i + 1));
+	      break;
+	    }
+	  }
+	  if (callback != null) type.push({name: name, value: callback});
+	  return type;
+	}
+
+	var xhtml = "http://www.w3.org/1999/xhtml";
+
+	var namespaces$1 = {
+	  svg: "http://www.w3.org/2000/svg",
+	  xhtml: xhtml,
+	  xlink: "http://www.w3.org/1999/xlink",
+	  xml: "http://www.w3.org/XML/1998/namespace",
+	  xmlns: "http://www.w3.org/2000/xmlns/"
+	};
+
+	function namespace(name) {
+	  var prefix = name += "", i = prefix.indexOf(":");
+	  if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+	  return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
+	}
+
+	function creatorInherit(name) {
+	  return function() {
+	    var document = this.ownerDocument,
+	        uri = this.namespaceURI;
+	    return uri === xhtml && document.documentElement.namespaceURI === xhtml
+	        ? document.createElement(name)
+	        : document.createElementNS(uri, name);
+	  };
+	}
+
+	function creatorFixed(fullname) {
+	  return function() {
+	    return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+	  };
+	}
+
+	function creator(name) {
+	  var fullname = namespace(name);
+	  return (fullname.local
+	      ? creatorFixed
+	      : creatorInherit)(fullname);
+	}
+
+	function none() {}
+
+	function selector(selector) {
+	  return selector == null ? none : function() {
+	    return this.querySelector(selector);
+	  };
+	}
+
+	function selection_select(select) {
+	  if (typeof select !== "function") select = selector(select);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+	        if ("__data__" in node) subnode.__data__ = node.__data__;
+	        subgroup[i] = subnode;
+	      }
+	    }
+	  }
+
+	  return new Selection(subgroups, this._parents);
+	}
+
+	function empty() {
+	  return [];
+	}
+
+	function selectorAll(selector) {
+	  return selector == null ? empty : function() {
+	    return this.querySelectorAll(selector);
+	  };
+	}
+
+	function selection_selectAll(select) {
+	  if (typeof select !== "function") select = selectorAll(select);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        subgroups.push(select.call(node, node.__data__, i, group));
+	        parents.push(node);
+	      }
+	    }
+	  }
+
+	  return new Selection(subgroups, parents);
+	}
+
+	var matcher = function(selector) {
+	  return function() {
+	    return this.matches(selector);
+	  };
+	};
+
+	if (typeof document !== "undefined") {
+	  var element = document.documentElement;
+	  if (!element.matches) {
+	    var vendorMatches = element.webkitMatchesSelector
+	        || element.msMatchesSelector
+	        || element.mozMatchesSelector
+	        || element.oMatchesSelector;
+	    matcher = function(selector) {
+	      return function() {
+	        return vendorMatches.call(this, selector);
+	      };
+	    };
+	  }
+	}
+
+	var matcher$1 = matcher;
+
+	function selection_filter(match) {
+	  if (typeof match !== "function") match = matcher$1(match);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+	        subgroup.push(node);
+	      }
+	    }
+	  }
+
+	  return new Selection(subgroups, this._parents);
+	}
+
+	function sparse(update) {
+	  return new Array(update.length);
+	}
+
+	function selection_enter() {
+	  return new Selection(this._enter || this._groups.map(sparse), this._parents);
+	}
+
+	function EnterNode(parent, datum) {
+	  this.ownerDocument = parent.ownerDocument;
+	  this.namespaceURI = parent.namespaceURI;
+	  this._next = null;
+	  this._parent = parent;
+	  this.__data__ = datum;
+	}
+
+	EnterNode.prototype = {
+	  constructor: EnterNode,
+	  appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+	  insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+	  querySelector: function(selector) { return this._parent.querySelector(selector); },
+	  querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+	};
+
+	function constant$1(x) {
+	  return function() {
+	    return x;
+	  };
+	}
+
+	var keyPrefix = "$"; // Protect against keys like “__proto__”.
+
+	function bindIndex(parent, group, enter, update, exit, data) {
+	  var i = 0,
+	      node,
+	      groupLength = group.length,
+	      dataLength = data.length;
+
+	  // Put any non-null nodes that fit into update.
+	  // Put any null nodes into enter.
+	  // Put any remaining data into enter.
+	  for (; i < dataLength; ++i) {
+	    if (node = group[i]) {
+	      node.__data__ = data[i];
+	      update[i] = node;
+	    } else {
+	      enter[i] = new EnterNode(parent, data[i]);
+	    }
+	  }
+
+	  // Put any non-null nodes that don’t fit into exit.
+	  for (; i < groupLength; ++i) {
+	    if (node = group[i]) {
+	      exit[i] = node;
+	    }
+	  }
+	}
+
+	function bindKey(parent, group, enter, update, exit, data, key) {
+	  var i,
+	      node,
+	      nodeByKeyValue = {},
+	      groupLength = group.length,
+	      dataLength = data.length,
+	      keyValues = new Array(groupLength),
+	      keyValue;
+
+	  // Compute the key for each node.
+	  // If multiple nodes have the same key, the duplicates are added to exit.
+	  for (i = 0; i < groupLength; ++i) {
+	    if (node = group[i]) {
+	      keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+	      if (keyValue in nodeByKeyValue) {
+	        exit[i] = node;
+	      } else {
+	        nodeByKeyValue[keyValue] = node;
+	      }
+	    }
+	  }
+
+	  // Compute the key for each datum.
+	  // If there a node associated with this key, join and add it to update.
+	  // If there is not (or the key is a duplicate), add it to enter.
+	  for (i = 0; i < dataLength; ++i) {
+	    keyValue = keyPrefix + key.call(parent, data[i], i, data);
+	    if (node = nodeByKeyValue[keyValue]) {
+	      update[i] = node;
+	      node.__data__ = data[i];
+	      nodeByKeyValue[keyValue] = null;
+	    } else {
+	      enter[i] = new EnterNode(parent, data[i]);
+	    }
+	  }
+
+	  // Add any remaining nodes that were not bound to data to exit.
+	  for (i = 0; i < groupLength; ++i) {
+	    if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+	      exit[i] = node;
+	    }
+	  }
+	}
+
+	function selection_data(value, key) {
+	  if (!value) {
+	    data = new Array(this.size()), j = -1;
+	    this.each(function(d) { data[++j] = d; });
+	    return data;
+	  }
+
+	  var bind = key ? bindKey : bindIndex,
+	      parents = this._parents,
+	      groups = this._groups;
+
+	  if (typeof value !== "function") value = constant$1(value);
+
+	  for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+	    var parent = parents[j],
+	        group = groups[j],
+	        groupLength = group.length,
+	        data = value.call(parent, parent && parent.__data__, j, parents),
+	        dataLength = data.length,
+	        enterGroup = enter[j] = new Array(dataLength),
+	        updateGroup = update[j] = new Array(dataLength),
+	        exitGroup = exit[j] = new Array(groupLength);
+
+	    bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+	    // Now connect the enter nodes to their following update node, such that
+	    // appendChild can insert the materialized enter node before this node,
+	    // rather than at the end of the parent node.
+	    for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+	      if (previous = enterGroup[i0]) {
+	        if (i0 >= i1) i1 = i0 + 1;
+	        while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+	        previous._next = next || null;
+	      }
+	    }
+	  }
+
+	  update = new Selection(update, parents);
+	  update._enter = enter;
+	  update._exit = exit;
+	  return update;
+	}
+
+	function selection_exit() {
+	  return new Selection(this._exit || this._groups.map(sparse), this._parents);
+	}
+
+	function selection_merge(selection$$1) {
+
+	  for (var groups0 = this._groups, groups1 = selection$$1._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+	    for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+	      if (node = group0[i] || group1[i]) {
+	        merge[i] = node;
+	      }
+	    }
+	  }
+
+	  for (; j < m0; ++j) {
+	    merges[j] = groups0[j];
+	  }
+
+	  return new Selection(merges, this._parents);
+	}
+
+	function selection_order() {
+
+	  for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+	    for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+	      if (node = group[i]) {
+	        if (next && next !== node.nextSibling) next.parentNode.insertBefore(node, next);
+	        next = node;
+	      }
+	    }
+	  }
+
+	  return this;
+	}
+
+	function selection_sort(compare) {
+	  if (!compare) compare = ascending$1;
+
+	  function compareNode(a, b) {
+	    return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+	  }
+
+	  for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        sortgroup[i] = node;
+	      }
+	    }
+	    sortgroup.sort(compareNode);
+	  }
+
+	  return new Selection(sortgroups, this._parents).order();
+	}
+
+	function ascending$1(a, b) {
+	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+	}
+
+	function selection_call() {
+	  var callback = arguments[0];
+	  arguments[0] = this;
+	  callback.apply(null, arguments);
+	  return this;
+	}
+
+	function selection_nodes() {
+	  var nodes = new Array(this.size()), i = -1;
+	  this.each(function() { nodes[++i] = this; });
+	  return nodes;
+	}
+
+	function selection_node() {
+
+	  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+	    for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+	      var node = group[i];
+	      if (node) return node;
+	    }
+	  }
+
+	  return null;
+	}
+
+	function selection_size() {
+	  var size = 0;
+	  this.each(function() { ++size; });
+	  return size;
+	}
+
+	function selection_empty() {
+	  return !this.node();
+	}
+
+	function selection_each(callback) {
+
+	  for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+	    for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+	      if (node = group[i]) callback.call(node, node.__data__, i, group);
+	    }
+	  }
+
+	  return this;
+	}
+
+	function attrRemove(name) {
+	  return function() {
+	    this.removeAttribute(name);
+	  };
+	}
+
+	function attrRemoveNS(fullname) {
+	  return function() {
+	    this.removeAttributeNS(fullname.space, fullname.local);
+	  };
+	}
+
+	function attrConstant(name, value) {
+	  return function() {
+	    this.setAttribute(name, value);
+	  };
+	}
+
+	function attrConstantNS(fullname, value) {
+	  return function() {
+	    this.setAttributeNS(fullname.space, fullname.local, value);
+	  };
+	}
+
+	function attrFunction(name, value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) this.removeAttribute(name);
+	    else this.setAttribute(name, v);
+	  };
+	}
+
+	function attrFunctionNS(fullname, value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+	    else this.setAttributeNS(fullname.space, fullname.local, v);
+	  };
+	}
+
+	function selection_attr(name, value) {
+	  var fullname = namespace(name);
+
+	  if (arguments.length < 2) {
+	    var node = this.node();
+	    return fullname.local
+	        ? node.getAttributeNS(fullname.space, fullname.local)
+	        : node.getAttribute(fullname);
+	  }
+
+	  return this.each((value == null
+	      ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
+	      ? (fullname.local ? attrFunctionNS : attrFunction)
+	      : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
+	}
+
+	function defaultView(node) {
+	  return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+	      || (node.document && node) // node is a Window
+	      || node.defaultView; // node is a Document
+	}
+
+	function styleRemove(name) {
+	  return function() {
+	    this.style.removeProperty(name);
+	  };
+	}
+
+	function styleConstant(name, value, priority) {
+	  return function() {
+	    this.style.setProperty(name, value, priority);
+	  };
+	}
+
+	function styleFunction(name, value, priority) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) this.style.removeProperty(name);
+	    else this.style.setProperty(name, v, priority);
+	  };
+	}
+
+	function selection_style(name, value, priority) {
+	  return arguments.length > 1
+	      ? this.each((value == null
+	            ? styleRemove : typeof value === "function"
+	            ? styleFunction
+	            : styleConstant)(name, value, priority == null ? "" : priority))
+	      : styleValue(this.node(), name);
+	}
+
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
+
+	function propertyRemove(name) {
+	  return function() {
+	    delete this[name];
+	  };
+	}
+
+	function propertyConstant(name, value) {
+	  return function() {
+	    this[name] = value;
+	  };
+	}
+
+	function propertyFunction(name, value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    if (v == null) delete this[name];
+	    else this[name] = v;
+	  };
+	}
+
+	function selection_property(name, value) {
+	  return arguments.length > 1
+	      ? this.each((value == null
+	          ? propertyRemove : typeof value === "function"
+	          ? propertyFunction
+	          : propertyConstant)(name, value))
+	      : this.node()[name];
+	}
+
+	function classArray(string) {
+	  return string.trim().split(/^|\s+/);
+	}
+
+	function classList(node) {
+	  return node.classList || new ClassList(node);
+	}
+
+	function ClassList(node) {
+	  this._node = node;
+	  this._names = classArray(node.getAttribute("class") || "");
+	}
+
+	ClassList.prototype = {
+	  add: function(name) {
+	    var i = this._names.indexOf(name);
+	    if (i < 0) {
+	      this._names.push(name);
+	      this._node.setAttribute("class", this._names.join(" "));
+	    }
+	  },
+	  remove: function(name) {
+	    var i = this._names.indexOf(name);
+	    if (i >= 0) {
+	      this._names.splice(i, 1);
+	      this._node.setAttribute("class", this._names.join(" "));
+	    }
+	  },
+	  contains: function(name) {
+	    return this._names.indexOf(name) >= 0;
+	  }
+	};
+
+	function classedAdd(node, names) {
+	  var list = classList(node), i = -1, n = names.length;
+	  while (++i < n) list.add(names[i]);
+	}
+
+	function classedRemove(node, names) {
+	  var list = classList(node), i = -1, n = names.length;
+	  while (++i < n) list.remove(names[i]);
+	}
+
+	function classedTrue(names) {
+	  return function() {
+	    classedAdd(this, names);
+	  };
+	}
+
+	function classedFalse(names) {
+	  return function() {
+	    classedRemove(this, names);
+	  };
+	}
+
+	function classedFunction(names, value) {
+	  return function() {
+	    (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
+	  };
+	}
+
+	function selection_classed(name, value) {
+	  var names = classArray(name + "");
+
+	  if (arguments.length < 2) {
+	    var list = classList(this.node()), i = -1, n = names.length;
+	    while (++i < n) if (!list.contains(names[i])) return false;
+	    return true;
+	  }
+
+	  return this.each((typeof value === "function"
+	      ? classedFunction : value
+	      ? classedTrue
+	      : classedFalse)(names, value));
+	}
+
+	function textRemove() {
+	  this.textContent = "";
+	}
+
+	function textConstant(value) {
+	  return function() {
+	    this.textContent = value;
+	  };
+	}
+
+	function textFunction(value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    this.textContent = v == null ? "" : v;
+	  };
+	}
+
+	function selection_text(value) {
+	  return arguments.length
+	      ? this.each(value == null
+	          ? textRemove : (typeof value === "function"
+	          ? textFunction
+	          : textConstant)(value))
+	      : this.node().textContent;
+	}
+
+	function htmlRemove() {
+	  this.innerHTML = "";
+	}
+
+	function htmlConstant(value) {
+	  return function() {
+	    this.innerHTML = value;
+	  };
+	}
+
+	function htmlFunction(value) {
+	  return function() {
+	    var v = value.apply(this, arguments);
+	    this.innerHTML = v == null ? "" : v;
+	  };
+	}
+
+	function selection_html(value) {
+	  return arguments.length
+	      ? this.each(value == null
+	          ? htmlRemove : (typeof value === "function"
+	          ? htmlFunction
+	          : htmlConstant)(value))
+	      : this.node().innerHTML;
+	}
+
+	function raise() {
+	  if (this.nextSibling) this.parentNode.appendChild(this);
+	}
+
+	function selection_raise() {
+	  return this.each(raise);
+	}
+
+	function lower() {
+	  if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+	}
+
+	function selection_lower() {
+	  return this.each(lower);
+	}
+
+	function selection_append(name) {
+	  var create = typeof name === "function" ? name : creator(name);
+	  return this.select(function() {
+	    return this.appendChild(create.apply(this, arguments));
+	  });
+	}
+
+	function constantNull() {
+	  return null;
+	}
+
+	function selection_insert(name, before) {
+	  var create = typeof name === "function" ? name : creator(name),
+	      select = before == null ? constantNull : typeof before === "function" ? before : selector(before);
+	  return this.select(function() {
+	    return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+	  });
+	}
+
+	function remove() {
+	  var parent = this.parentNode;
+	  if (parent) parent.removeChild(this);
+	}
+
+	function selection_remove() {
+	  return this.each(remove);
+	}
+
+	function selection_cloneShallow() {
+	  return this.parentNode.insertBefore(this.cloneNode(false), this.nextSibling);
+	}
+
+	function selection_cloneDeep() {
+	  return this.parentNode.insertBefore(this.cloneNode(true), this.nextSibling);
+	}
+
+	function selection_clone(deep) {
+	  return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
+	}
+
+	function selection_datum(value) {
+	  return arguments.length
+	      ? this.property("__data__", value)
+	      : this.node().__data__;
+	}
+
+	var filterEvents = {};
+
+	var event = null;
+
+	if (typeof document !== "undefined") {
+	  var element$1 = document.documentElement;
+	  if (!("onmouseenter" in element$1)) {
+	    filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
+	  }
+	}
+
+	function filterContextListener(listener, index, group) {
+	  listener = contextListener(listener, index, group);
+	  return function(event) {
+	    var related = event.relatedTarget;
+	    if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+	      listener.call(this, event);
+	    }
+	  };
+	}
+
+	function contextListener(listener, index, group) {
+	  return function(event1) {
+	    var event0 = event; // Events can be reentrant (e.g., focus).
+	    event = event1;
+	    try {
+	      listener.call(this, this.__data__, index, group);
+	    } finally {
+	      event = event0;
+	    }
+	  };
+	}
+
+	function parseTypenames$1(typenames) {
+	  return typenames.trim().split(/^|\s+/).map(function(t) {
+	    var name = "", i = t.indexOf(".");
+	    if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+	    return {type: t, name: name};
+	  });
+	}
+
+	function onRemove(typename) {
+	  return function() {
+	    var on = this.__on;
+	    if (!on) return;
+	    for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+	      if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+	        this.removeEventListener(o.type, o.listener, o.capture);
+	      } else {
+	        on[++i] = o;
+	      }
+	    }
+	    if (++i) on.length = i;
+	    else delete this.__on;
+	  };
+	}
+
+	function onAdd(typename, value, capture) {
+	  var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener;
+	  return function(d, i, group) {
+	    var on = this.__on, o, listener = wrap(value, i, group);
+	    if (on) for (var j = 0, m = on.length; j < m; ++j) {
+	      if ((o = on[j]).type === typename.type && o.name === typename.name) {
+	        this.removeEventListener(o.type, o.listener, o.capture);
+	        this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+	        o.value = value;
+	        return;
+	      }
+	    }
+	    this.addEventListener(typename.type, listener, capture);
+	    o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+	    if (!on) this.__on = [o];
+	    else on.push(o);
+	  };
+	}
+
+	function selection_on(typename, value, capture) {
+	  var typenames = parseTypenames$1(typename + ""), i, n = typenames.length, t;
+
+	  if (arguments.length < 2) {
+	    var on = this.node().__on;
+	    if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+	      for (i = 0, o = on[j]; i < n; ++i) {
+	        if ((t = typenames[i]).type === o.type && t.name === o.name) {
+	          return o.value;
+	        }
+	      }
+	    }
+	    return;
+	  }
+
+	  on = value ? onAdd : onRemove;
+	  if (capture == null) capture = false;
+	  for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+	  return this;
+	}
+
+	function customEvent(event1, listener, that, args) {
+	  var event0 = event;
+	  event1.sourceEvent = event;
+	  event = event1;
+	  try {
+	    return listener.apply(that, args);
+	  } finally {
+	    event = event0;
+	  }
+	}
+
+	function dispatchEvent(node, type, params) {
+	  var window = defaultView(node),
+	      event = window.CustomEvent;
+
+	  if (typeof event === "function") {
+	    event = new event(type, params);
+	  } else {
+	    event = window.document.createEvent("Event");
+	    if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+	    else event.initEvent(type, false, false);
+	  }
+
+	  node.dispatchEvent(event);
+	}
+
+	function dispatchConstant(type, params) {
+	  return function() {
+	    return dispatchEvent(this, type, params);
+	  };
+	}
+
+	function dispatchFunction(type, params) {
+	  return function() {
+	    return dispatchEvent(this, type, params.apply(this, arguments));
+	  };
+	}
+
+	function selection_dispatch(type, params) {
+	  return this.each((typeof params === "function"
+	      ? dispatchFunction
+	      : dispatchConstant)(type, params));
+	}
+
+	var root = [null];
+
+	function Selection(groups, parents) {
+	  this._groups = groups;
+	  this._parents = parents;
+	}
+
+	function selection() {
+	  return new Selection([[document.documentElement]], root);
+	}
+
+	Selection.prototype = selection.prototype = {
+	  constructor: Selection,
+	  select: selection_select,
+	  selectAll: selection_selectAll,
+	  filter: selection_filter,
+	  data: selection_data,
+	  enter: selection_enter,
+	  exit: selection_exit,
+	  merge: selection_merge,
+	  order: selection_order,
+	  sort: selection_sort,
+	  call: selection_call,
+	  nodes: selection_nodes,
+	  node: selection_node,
+	  size: selection_size,
+	  empty: selection_empty,
+	  each: selection_each,
+	  attr: selection_attr,
+	  style: selection_style,
+	  property: selection_property,
+	  classed: selection_classed,
+	  text: selection_text,
+	  html: selection_html,
+	  raise: selection_raise,
+	  lower: selection_lower,
+	  append: selection_append,
+	  insert: selection_insert,
+	  remove: selection_remove,
+	  clone: selection_clone,
+	  datum: selection_datum,
+	  on: selection_on,
+	  dispatch: selection_dispatch
+	};
+
+	function select(selector) {
+	  return typeof selector === "string"
+	      ? new Selection([[document.querySelector(selector)]], [document.documentElement])
+	      : new Selection([[selector]], root);
+	}
+
+	function sourceEvent() {
+	  var current = event, source;
+	  while (source = current.sourceEvent) current = source;
+	  return current;
+	}
+
+	function point(node, event) {
+	  var svg = node.ownerSVGElement || node;
+
+	  if (svg.createSVGPoint) {
+	    var point = svg.createSVGPoint();
+	    point.x = event.clientX, point.y = event.clientY;
+	    point = point.matrixTransform(node.getScreenCTM().inverse());
+	    return [point.x, point.y];
+	  }
+
+	  var rect = node.getBoundingClientRect();
+	  return [event.clientX - rect.left - node.clientLeft, event.clientY - rect.top - node.clientTop];
+	}
+
+	function mouse(node) {
+	  var event = sourceEvent();
+	  if (event.changedTouches) event = event.changedTouches[0];
+	  return point(node, event);
+	}
+
+	function touch(node, touches, identifier) {
+	  if (arguments.length < 3) identifier = touches, touches = sourceEvent().changedTouches;
+
+	  for (var i = 0, n = touches ? touches.length : 0, touch; i < n; ++i) {
+	    if ((touch = touches[i]).identifier === identifier) {
+	      return point(node, touch);
+	    }
+	  }
+
+	  return null;
+	}
+
+	function noevent() {
+	  event.preventDefault();
+	  event.stopImmediatePropagation();
+	}
+
+	function nodrag(view) {
+	  var root = view.document.documentElement,
+	      selection$$1 = select(view).on("dragstart.drag", noevent, true);
+	  if ("onselectstart" in root) {
+	    selection$$1.on("selectstart.drag", noevent, true);
+	  } else {
+	    root.__noselect = root.style.MozUserSelect;
+	    root.style.MozUserSelect = "none";
+	  }
+	}
+
+	function yesdrag(view, noclick) {
+	  var root = view.document.documentElement,
+	      selection$$1 = select(view).on("dragstart.drag", null);
+	  if (noclick) {
+	    selection$$1.on("click.drag", noevent, true);
+	    setTimeout(function() { selection$$1.on("click.drag", null); }, 0);
+	  }
+	  if ("onselectstart" in root) {
+	    selection$$1.on("selectstart.drag", null);
+	  } else {
+	    root.style.MozUserSelect = root.__noselect;
+	    delete root.__noselect;
+	  }
+	}
+
+	function define(constructor, factory, prototype) {
+	  constructor.prototype = factory.prototype = prototype;
+	  prototype.constructor = constructor;
+	}
+
+	function extend(parent, definition) {
+	  var prototype = Object.create(parent.prototype);
+	  for (var key in definition) prototype[key] = definition[key];
+	  return prototype;
+	}
+
+	function Color() {}
+
+	var darker = 0.7;
+	var brighter = 1 / darker;
+
+	var reI = "\\s*([+-]?\\d+)\\s*",
+	    reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+	    reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+	    reHex3 = /^#([0-9a-f]{3})$/,
+	    reHex6 = /^#([0-9a-f]{6})$/,
+	    reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+	    reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+	    reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+	    reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+	    reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+	    reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+	var named = {
+	  aliceblue: 0xf0f8ff,
+	  antiquewhite: 0xfaebd7,
+	  aqua: 0x00ffff,
+	  aquamarine: 0x7fffd4,
+	  azure: 0xf0ffff,
+	  beige: 0xf5f5dc,
+	  bisque: 0xffe4c4,
+	  black: 0x000000,
+	  blanchedalmond: 0xffebcd,
+	  blue: 0x0000ff,
+	  blueviolet: 0x8a2be2,
+	  brown: 0xa52a2a,
+	  burlywood: 0xdeb887,
+	  cadetblue: 0x5f9ea0,
+	  chartreuse: 0x7fff00,
+	  chocolate: 0xd2691e,
+	  coral: 0xff7f50,
+	  cornflowerblue: 0x6495ed,
+	  cornsilk: 0xfff8dc,
+	  crimson: 0xdc143c,
+	  cyan: 0x00ffff,
+	  darkblue: 0x00008b,
+	  darkcyan: 0x008b8b,
+	  darkgoldenrod: 0xb8860b,
+	  darkgray: 0xa9a9a9,
+	  darkgreen: 0x006400,
+	  darkgrey: 0xa9a9a9,
+	  darkkhaki: 0xbdb76b,
+	  darkmagenta: 0x8b008b,
+	  darkolivegreen: 0x556b2f,
+	  darkorange: 0xff8c00,
+	  darkorchid: 0x9932cc,
+	  darkred: 0x8b0000,
+	  darksalmon: 0xe9967a,
+	  darkseagreen: 0x8fbc8f,
+	  darkslateblue: 0x483d8b,
+	  darkslategray: 0x2f4f4f,
+	  darkslategrey: 0x2f4f4f,
+	  darkturquoise: 0x00ced1,
+	  darkviolet: 0x9400d3,
+	  deeppink: 0xff1493,
+	  deepskyblue: 0x00bfff,
+	  dimgray: 0x696969,
+	  dimgrey: 0x696969,
+	  dodgerblue: 0x1e90ff,
+	  firebrick: 0xb22222,
+	  floralwhite: 0xfffaf0,
+	  forestgreen: 0x228b22,
+	  fuchsia: 0xff00ff,
+	  gainsboro: 0xdcdcdc,
+	  ghostwhite: 0xf8f8ff,
+	  gold: 0xffd700,
+	  goldenrod: 0xdaa520,
+	  gray: 0x808080,
+	  green: 0x008000,
+	  greenyellow: 0xadff2f,
+	  grey: 0x808080,
+	  honeydew: 0xf0fff0,
+	  hotpink: 0xff69b4,
+	  indianred: 0xcd5c5c,
+	  indigo: 0x4b0082,
+	  ivory: 0xfffff0,
+	  khaki: 0xf0e68c,
+	  lavender: 0xe6e6fa,
+	  lavenderblush: 0xfff0f5,
+	  lawngreen: 0x7cfc00,
+	  lemonchiffon: 0xfffacd,
+	  lightblue: 0xadd8e6,
+	  lightcoral: 0xf08080,
+	  lightcyan: 0xe0ffff,
+	  lightgoldenrodyellow: 0xfafad2,
+	  lightgray: 0xd3d3d3,
+	  lightgreen: 0x90ee90,
+	  lightgrey: 0xd3d3d3,
+	  lightpink: 0xffb6c1,
+	  lightsalmon: 0xffa07a,
+	  lightseagreen: 0x20b2aa,
+	  lightskyblue: 0x87cefa,
+	  lightslategray: 0x778899,
+	  lightslategrey: 0x778899,
+	  lightsteelblue: 0xb0c4de,
+	  lightyellow: 0xffffe0,
+	  lime: 0x00ff00,
+	  limegreen: 0x32cd32,
+	  linen: 0xfaf0e6,
+	  magenta: 0xff00ff,
+	  maroon: 0x800000,
+	  mediumaquamarine: 0x66cdaa,
+	  mediumblue: 0x0000cd,
+	  mediumorchid: 0xba55d3,
+	  mediumpurple: 0x9370db,
+	  mediumseagreen: 0x3cb371,
+	  mediumslateblue: 0x7b68ee,
+	  mediumspringgreen: 0x00fa9a,
+	  mediumturquoise: 0x48d1cc,
+	  mediumvioletred: 0xc71585,
+	  midnightblue: 0x191970,
+	  mintcream: 0xf5fffa,
+	  mistyrose: 0xffe4e1,
+	  moccasin: 0xffe4b5,
+	  navajowhite: 0xffdead,
+	  navy: 0x000080,
+	  oldlace: 0xfdf5e6,
+	  olive: 0x808000,
+	  olivedrab: 0x6b8e23,
+	  orange: 0xffa500,
+	  orangered: 0xff4500,
+	  orchid: 0xda70d6,
+	  palegoldenrod: 0xeee8aa,
+	  palegreen: 0x98fb98,
+	  paleturquoise: 0xafeeee,
+	  palevioletred: 0xdb7093,
+	  papayawhip: 0xffefd5,
+	  peachpuff: 0xffdab9,
+	  peru: 0xcd853f,
+	  pink: 0xffc0cb,
+	  plum: 0xdda0dd,
+	  powderblue: 0xb0e0e6,
+	  purple: 0x800080,
+	  rebeccapurple: 0x663399,
+	  red: 0xff0000,
+	  rosybrown: 0xbc8f8f,
+	  royalblue: 0x4169e1,
+	  saddlebrown: 0x8b4513,
+	  salmon: 0xfa8072,
+	  sandybrown: 0xf4a460,
+	  seagreen: 0x2e8b57,
+	  seashell: 0xfff5ee,
+	  sienna: 0xa0522d,
+	  silver: 0xc0c0c0,
+	  skyblue: 0x87ceeb,
+	  slateblue: 0x6a5acd,
+	  slategray: 0x708090,
+	  slategrey: 0x708090,
+	  snow: 0xfffafa,
+	  springgreen: 0x00ff7f,
+	  steelblue: 0x4682b4,
+	  tan: 0xd2b48c,
+	  teal: 0x008080,
+	  thistle: 0xd8bfd8,
+	  tomato: 0xff6347,
+	  turquoise: 0x40e0d0,
+	  violet: 0xee82ee,
+	  wheat: 0xf5deb3,
+	  white: 0xffffff,
+	  whitesmoke: 0xf5f5f5,
+	  yellow: 0xffff00,
+	  yellowgreen: 0x9acd32
+	};
+
+	define(Color, color, {
+	  displayable: function() {
+	    return this.rgb().displayable();
+	  },
+	  hex: function() {
+	    return this.rgb().hex();
+	  },
+	  toString: function() {
+	    return this.rgb() + "";
+	  }
+	});
+
+	function color(format) {
+	  var m;
+	  format = (format + "").trim().toLowerCase();
+	  return (m = reHex3.exec(format)) ? (m = parseInt(m[1], 16), new Rgb((m >> 8 & 0xf) | (m >> 4 & 0x0f0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1)) // #f00
+	      : (m = reHex6.exec(format)) ? rgbn(parseInt(m[1], 16)) // #ff0000
+	      : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+	      : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+	      : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+	      : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+	      : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+	      : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+	      : named.hasOwnProperty(format) ? rgbn(named[format])
+	      : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+	      : null;
+	}
+
+	function rgbn(n) {
+	  return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+	}
+
+	function rgba(r, g, b, a) {
+	  if (a <= 0) r = g = b = NaN;
+	  return new Rgb(r, g, b, a);
+	}
+
+	function rgbConvert(o) {
+	  if (!(o instanceof Color)) o = color(o);
+	  if (!o) return new Rgb;
+	  o = o.rgb();
+	  return new Rgb(o.r, o.g, o.b, o.opacity);
+	}
+
+	function rgb(r, g, b, opacity) {
+	  return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+	}
+
+	function Rgb(r, g, b, opacity) {
+	  this.r = +r;
+	  this.g = +g;
+	  this.b = +b;
+	  this.opacity = +opacity;
+	}
+
+	define(Rgb, rgb, extend(Color, {
+	  brighter: function(k) {
+	    k = k == null ? brighter : Math.pow(brighter, k);
+	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+	  },
+	  darker: function(k) {
+	    k = k == null ? darker : Math.pow(darker, k);
+	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+	  },
+	  rgb: function() {
+	    return this;
+	  },
+	  displayable: function() {
+	    return (0 <= this.r && this.r <= 255)
+	        && (0 <= this.g && this.g <= 255)
+	        && (0 <= this.b && this.b <= 255)
+	        && (0 <= this.opacity && this.opacity <= 1);
+	  },
+	  hex: function() {
+	    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+	  },
+	  toString: function() {
+	    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+	    return (a === 1 ? "rgb(" : "rgba(")
+	        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+	        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+	        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+	        + (a === 1 ? ")" : ", " + a + ")");
+	  }
+	}));
+
+	function hex(value) {
+	  value = Math.max(0, Math.min(255, Math.round(value) || 0));
+	  return (value < 16 ? "0" : "") + value.toString(16);
+	}
+
+	function hsla(h, s, l, a) {
+	  if (a <= 0) h = s = l = NaN;
+	  else if (l <= 0 || l >= 1) h = s = NaN;
+	  else if (s <= 0) h = NaN;
+	  return new Hsl(h, s, l, a);
+	}
+
+	function hslConvert(o) {
+	  if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+	  if (!(o instanceof Color)) o = color(o);
+	  if (!o) return new Hsl;
+	  if (o instanceof Hsl) return o;
+	  o = o.rgb();
+	  var r = o.r / 255,
+	      g = o.g / 255,
+	      b = o.b / 255,
+	      min = Math.min(r, g, b),
+	      max = Math.max(r, g, b),
+	      h = NaN,
+	      s = max - min,
+	      l = (max + min) / 2;
+	  if (s) {
+	    if (r === max) h = (g - b) / s + (g < b) * 6;
+	    else if (g === max) h = (b - r) / s + 2;
+	    else h = (r - g) / s + 4;
+	    s /= l < 0.5 ? max + min : 2 - max - min;
+	    h *= 60;
+	  } else {
+	    s = l > 0 && l < 1 ? 0 : h;
+	  }
+	  return new Hsl(h, s, l, o.opacity);
+	}
+
+	function hsl(h, s, l, opacity) {
+	  return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+	}
+
+	function Hsl(h, s, l, opacity) {
+	  this.h = +h;
+	  this.s = +s;
+	  this.l = +l;
+	  this.opacity = +opacity;
+	}
+
+	define(Hsl, hsl, extend(Color, {
+	  brighter: function(k) {
+	    k = k == null ? brighter : Math.pow(brighter, k);
+	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  darker: function(k) {
+	    k = k == null ? darker : Math.pow(darker, k);
+	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  rgb: function() {
+	    var h = this.h % 360 + (this.h < 0) * 360,
+	        s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+	        l = this.l,
+	        m2 = l + (l < 0.5 ? l : 1 - l) * s,
+	        m1 = 2 * l - m2;
+	    return new Rgb(
+	      hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+	      hsl2rgb(h, m1, m2),
+	      hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+	      this.opacity
+	    );
+	  },
+	  displayable: function() {
+	    return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+	        && (0 <= this.l && this.l <= 1)
+	        && (0 <= this.opacity && this.opacity <= 1);
+	  }
+	}));
+
+	/* From FvD 13.37, CSS Color Module Level 3 */
+	function hsl2rgb(h, m1, m2) {
+	  return (h < 60 ? m1 + (m2 - m1) * h / 60
+	      : h < 180 ? m2
+	      : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+	      : m1) * 255;
+	}
+
+	var deg2rad = Math.PI / 180;
+	var rad2deg = 180 / Math.PI;
+
+	// https://beta.observablehq.com/@mbostock/lab-and-rgb
+	var K = 18,
+	    Xn = 0.96422,
+	    Yn = 1,
+	    Zn = 0.82521,
+	    t0 = 4 / 29,
+	    t1 = 6 / 29,
+	    t2 = 3 * t1 * t1,
+	    t3 = t1 * t1 * t1;
+
+	function labConvert(o) {
+	  if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
+	  if (o instanceof Hcl) {
+	    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+	    var h = o.h * deg2rad;
+	    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+	  }
+	  if (!(o instanceof Rgb)) o = rgbConvert(o);
+	  var r = rgb2lrgb(o.r),
+	      g = rgb2lrgb(o.g),
+	      b = rgb2lrgb(o.b),
+	      y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
+	  if (r === g && g === b) x = z = y; else {
+	    x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
+	    z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
+	  }
+	  return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+	}
+
+	function lab(l, a, b, opacity) {
+	  return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+	}
+
+	function Lab(l, a, b, opacity) {
+	  this.l = +l;
+	  this.a = +a;
+	  this.b = +b;
+	  this.opacity = +opacity;
+	}
+
+	define(Lab, lab, extend(Color, {
+	  brighter: function(k) {
+	    return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+	  },
+	  darker: function(k) {
+	    return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+	  },
+	  rgb: function() {
+	    var y = (this.l + 16) / 116,
+	        x = isNaN(this.a) ? y : y + this.a / 500,
+	        z = isNaN(this.b) ? y : y - this.b / 200;
+	    x = Xn * lab2xyz(x);
+	    y = Yn * lab2xyz(y);
+	    z = Zn * lab2xyz(z);
+	    return new Rgb(
+	      lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
+	      lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
+	      lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
+	      this.opacity
+	    );
+	  }
+	}));
+
+	function xyz2lab(t) {
+	  return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+	}
+
+	function lab2xyz(t) {
+	  return t > t1 ? t * t * t : t2 * (t - t0);
+	}
+
+	function lrgb2rgb(x) {
+	  return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+	}
+
+	function rgb2lrgb(x) {
+	  return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+	}
+
+	function hclConvert(o) {
+	  if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
+	  if (!(o instanceof Lab)) o = labConvert(o);
+	  if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0, o.l, o.opacity);
+	  var h = Math.atan2(o.b, o.a) * rad2deg;
+	  return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+	}
+
+	function hcl(h, c, l, opacity) {
+	  return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+	}
+
+	function Hcl(h, c, l, opacity) {
+	  this.h = +h;
+	  this.c = +c;
+	  this.l = +l;
+	  this.opacity = +opacity;
+	}
+
+	define(Hcl, hcl, extend(Color, {
+	  brighter: function(k) {
+	    return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+	  },
+	  darker: function(k) {
+	    return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
+	  },
+	  rgb: function() {
+	    return labConvert(this).rgb();
+	  }
+	}));
+
+	var A = -0.14861,
+	    B = +1.78277,
+	    C = -0.29227,
+	    D = -0.90649,
+	    E = +1.97294,
+	    ED = E * D,
+	    EB = E * B,
+	    BC_DA = B * C - D * A;
+
+	function cubehelixConvert(o) {
+	  if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
+	  if (!(o instanceof Rgb)) o = rgbConvert(o);
+	  var r = o.r / 255,
+	      g = o.g / 255,
+	      b = o.b / 255,
+	      l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
+	      bl = b - l,
+	      k = (E * (g - l) - C * bl) / D,
+	      s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
+	      h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
+	  return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
+	}
+
+	function cubehelix(h, s, l, opacity) {
+	  return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
+	}
+
+	function Cubehelix(h, s, l, opacity) {
+	  this.h = +h;
+	  this.s = +s;
+	  this.l = +l;
+	  this.opacity = +opacity;
+	}
+
+	define(Cubehelix, cubehelix, extend(Color, {
+	  brighter: function(k) {
+	    k = k == null ? brighter : Math.pow(brighter, k);
+	    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  darker: function(k) {
+	    k = k == null ? darker : Math.pow(darker, k);
+	    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+	  },
+	  rgb: function() {
+	    var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
+	        l = +this.l,
+	        a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
+	        cosh = Math.cos(h),
+	        sinh = Math.sin(h);
+	    return new Rgb(
+	      255 * (l + a * (A * cosh + B * sinh)),
+	      255 * (l + a * (C * cosh + D * sinh)),
+	      255 * (l + a * (E * cosh)),
+	      this.opacity
+	    );
+	  }
+	}));
+
+	function constant$3(x) {
+	  return function() {
+	    return x;
+	  };
+	}
+
+	function linear$1(a, d) {
+	  return function(t) {
+	    return a + t * d;
+	  };
+	}
+
+	function exponential(a, b, y) {
+	  return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+	    return Math.pow(a + t * b, y);
+	  };
+	}
+
+	function gamma(y) {
+	  return (y = +y) === 1 ? nogamma : function(a, b) {
+	    return b - a ? exponential(a, b, y) : constant$3(isNaN(a) ? b : a);
+	  };
+	}
+
+	function nogamma(a, b) {
+	  var d = b - a;
+	  return d ? linear$1(a, d) : constant$3(isNaN(a) ? b : a);
+	}
+
+	var interpolateRgb = (function rgbGamma(y) {
+	  var color$$1 = gamma(y);
+
+	  function rgb$$1(start, end) {
+	    var r = color$$1((start = rgb(start)).r, (end = rgb(end)).r),
+	        g = color$$1(start.g, end.g),
+	        b = color$$1(start.b, end.b),
+	        opacity = nogamma(start.opacity, end.opacity);
+	    return function(t) {
+	      start.r = r(t);
+	      start.g = g(t);
+	      start.b = b(t);
+	      start.opacity = opacity(t);
+	      return start + "";
+	    };
+	  }
+
+	  rgb$$1.gamma = rgbGamma;
+
+	  return rgb$$1;
+	})(1);
+
+	function interpolateNumber(a, b) {
+	  return a = +a, b -= a, function(t) {
+	    return a + b * t;
+	  };
+	}
+
+	var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+	    reB = new RegExp(reA.source, "g");
+
+	function zero(b) {
+	  return function() {
+	    return b;
+	  };
+	}
+
+	function one(b) {
+	  return function(t) {
+	    return b(t) + "";
+	  };
+	}
+
+	function interpolateString(a, b) {
+	  var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
+	      am, // current match in a
+	      bm, // current match in b
+	      bs, // string preceding current number in b, if any
+	      i = -1, // index in s
+	      s = [], // string constants and placeholders
+	      q = []; // number interpolators
+
+	  // Coerce inputs to strings.
+	  a = a + "", b = b + "";
+
+	  // Interpolate pairs of numbers in a & b.
+	  while ((am = reA.exec(a))
+	      && (bm = reB.exec(b))) {
+	    if ((bs = bm.index) > bi) { // a string precedes the next number in b
+	      bs = b.slice(bi, bs);
+	      if (s[i]) s[i] += bs; // coalesce with previous string
+	      else s[++i] = bs;
+	    }
+	    if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+	      if (s[i]) s[i] += bm; // coalesce with previous string
+	      else s[++i] = bm;
+	    } else { // interpolate non-matching numbers
+	      s[++i] = null;
+	      q.push({i: i, x: interpolateNumber(am, bm)});
+	    }
+	    bi = reB.lastIndex;
+	  }
+
+	  // Add remains of b.
+	  if (bi < b.length) {
+	    bs = b.slice(bi);
+	    if (s[i]) s[i] += bs; // coalesce with previous string
+	    else s[++i] = bs;
+	  }
+
+	  // Special optimization for only a single match.
+	  // Otherwise, interpolate each of the numbers and rejoin the string.
+	  return s.length < 2 ? (q[0]
+	      ? one(q[0].x)
+	      : zero(b))
+	      : (b = q.length, function(t) {
+	          for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+	          return s.join("");
+	        });
+	}
+
+	var degrees = 180 / Math.PI;
+
+	var identity$1 = {
+	  translateX: 0,
+	  translateY: 0,
+	  rotate: 0,
+	  skewX: 0,
+	  scaleX: 1,
+	  scaleY: 1
+	};
+
+	function decompose(a, b, c, d, e, f) {
+	  var scaleX, scaleY, skewX;
+	  if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
+	  if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
+	  if (scaleY = Math.sqrt(c * c + d * d)) c /= scaleY, d /= scaleY, skewX /= scaleY;
+	  if (a * d < b * c) a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
+	  return {
+	    translateX: e,
+	    translateY: f,
+	    rotate: Math.atan2(b, a) * degrees,
+	    skewX: Math.atan(skewX) * degrees,
+	    scaleX: scaleX,
+	    scaleY: scaleY
+	  };
+	}
+
+	var cssNode,
+	    cssRoot,
+	    cssView,
+	    svgNode;
+
+	function parseCss(value) {
+	  if (value === "none") return identity$1;
+	  if (!cssNode) cssNode = document.createElement("DIV"), cssRoot = document.documentElement, cssView = document.defaultView;
+	  cssNode.style.transform = value;
+	  value = cssView.getComputedStyle(cssRoot.appendChild(cssNode), null).getPropertyValue("transform");
+	  cssRoot.removeChild(cssNode);
+	  value = value.slice(7, -1).split(",");
+	  return decompose(+value[0], +value[1], +value[2], +value[3], +value[4], +value[5]);
+	}
+
+	function parseSvg(value) {
+	  if (value == null) return identity$1;
+	  if (!svgNode) svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
+	  svgNode.setAttribute("transform", value);
+	  if (!(value = svgNode.transform.baseVal.consolidate())) return identity$1;
+	  value = value.matrix;
+	  return decompose(value.a, value.b, value.c, value.d, value.e, value.f);
+	}
+
+	function interpolateTransform(parse, pxComma, pxParen, degParen) {
+
+	  function pop(s) {
+	    return s.length ? s.pop() + " " : "";
+	  }
+
+	  function translate(xa, ya, xb, yb, s, q) {
+	    if (xa !== xb || ya !== yb) {
+	      var i = s.push("translate(", null, pxComma, null, pxParen);
+	      q.push({i: i - 4, x: interpolateNumber(xa, xb)}, {i: i - 2, x: interpolateNumber(ya, yb)});
+	    } else if (xb || yb) {
+	      s.push("translate(" + xb + pxComma + yb + pxParen);
+	    }
+	  }
+
+	  function rotate(a, b, s, q) {
+	    if (a !== b) {
+	      if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
+	      q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber(a, b)});
+	    } else if (b) {
+	      s.push(pop(s) + "rotate(" + b + degParen);
+	    }
+	  }
+
+	  function skewX(a, b, s, q) {
+	    if (a !== b) {
+	      q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber(a, b)});
+	    } else if (b) {
+	      s.push(pop(s) + "skewX(" + b + degParen);
+	    }
+	  }
+
+	  function scale(xa, ya, xb, yb, s, q) {
+	    if (xa !== xb || ya !== yb) {
+	      var i = s.push(pop(s) + "scale(", null, ",", null, ")");
+	      q.push({i: i - 4, x: interpolateNumber(xa, xb)}, {i: i - 2, x: interpolateNumber(ya, yb)});
+	    } else if (xb !== 1 || yb !== 1) {
+	      s.push(pop(s) + "scale(" + xb + "," + yb + ")");
+	    }
+	  }
+
+	  return function(a, b) {
+	    var s = [], // string constants and placeholders
+	        q = []; // number interpolators
+	    a = parse(a), b = parse(b);
+	    translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
+	    rotate(a.rotate, b.rotate, s, q);
+	    skewX(a.skewX, b.skewX, s, q);
+	    scale(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
+	    a = b = null; // gc
+	    return function(t) {
+	      var i = -1, n = q.length, o;
+	      while (++i < n) s[(o = q[i]).i] = o.x(t);
+	      return s.join("");
+	    };
+	  };
+	}
+
+	var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
+	var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
+
+	var rho = Math.SQRT2,
+	    rho2 = 2,
+	    rho4 = 4,
+	    epsilon2 = 1e-12;
+
+	function cosh(x) {
+	  return ((x = Math.exp(x)) + 1 / x) / 2;
+	}
+
+	function sinh(x) {
+	  return ((x = Math.exp(x)) - 1 / x) / 2;
+	}
+
+	function tanh(x) {
+	  return ((x = Math.exp(2 * x)) - 1) / (x + 1);
+	}
+
+	// p0 = [ux0, uy0, w0]
+	// p1 = [ux1, uy1, w1]
+	function interpolateZoom(p0, p1) {
+	  var ux0 = p0[0], uy0 = p0[1], w0 = p0[2],
+	      ux1 = p1[0], uy1 = p1[1], w1 = p1[2],
+	      dx = ux1 - ux0,
+	      dy = uy1 - uy0,
+	      d2 = dx * dx + dy * dy,
+	      i,
+	      S;
+
+	  // Special case for u0 ≅ u1.
+	  if (d2 < epsilon2) {
+	    S = Math.log(w1 / w0) / rho;
+	    i = function(t) {
+	      return [
+	        ux0 + t * dx,
+	        uy0 + t * dy,
+	        w0 * Math.exp(rho * t * S)
+	      ];
+	    };
+	  }
+
+	  // General case.
+	  else {
+	    var d1 = Math.sqrt(d2),
+	        b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1),
+	        b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1),
+	        r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0),
+	        r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+	    S = (r1 - r0) / rho;
+	    i = function(t) {
+	      var s = t * S,
+	          coshr0 = cosh(r0),
+	          u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
+	      return [
+	        ux0 + u * dx,
+	        uy0 + u * dy,
+	        w0 * coshr0 / cosh(rho * s + r0)
+	      ];
+	    };
+	  }
+
+	  i.duration = S * 1000;
+
+	  return i;
+	}
+
+	var frame = 0, // is an animation frame pending?
+	    timeout = 0, // is a timeout pending?
+	    interval = 0, // are any timers active?
+	    pokeDelay = 1000, // how frequently we check for clock skew
+	    taskHead,
+	    taskTail,
+	    clockLast = 0,
+	    clockNow = 0,
+	    clockSkew = 0,
+	    clock = typeof performance === "object" && performance.now ? performance : Date,
+	    setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
+
+	function now() {
+	  return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
+	}
+
+	function clearNow() {
+	  clockNow = 0;
+	}
+
+	function Timer() {
+	  this._call =
+	  this._time =
+	  this._next = null;
+	}
+
+	Timer.prototype = timer.prototype = {
+	  constructor: Timer,
+	  restart: function(callback, delay, time) {
+	    if (typeof callback !== "function") throw new TypeError("callback is not a function");
+	    time = (time == null ? now() : +time) + (delay == null ? 0 : +delay);
+	    if (!this._next && taskTail !== this) {
+	      if (taskTail) taskTail._next = this;
+	      else taskHead = this;
+	      taskTail = this;
+	    }
+	    this._call = callback;
+	    this._time = time;
+	    sleep();
+	  },
+	  stop: function() {
+	    if (this._call) {
+	      this._call = null;
+	      this._time = Infinity;
+	      sleep();
+	    }
+	  }
+	};
+
+	function timer(callback, delay, time) {
+	  var t = new Timer;
+	  t.restart(callback, delay, time);
+	  return t;
+	}
+
+	function timerFlush() {
+	  now(); // Get the current time, if not already set.
+	  ++frame; // Pretend we’ve set an alarm, if we haven’t already.
+	  var t = taskHead, e;
+	  while (t) {
+	    if ((e = clockNow - t._time) >= 0) t._call.call(null, e);
+	    t = t._next;
+	  }
+	  --frame;
+	}
+
+	function wake() {
+	  clockNow = (clockLast = clock.now()) + clockSkew;
+	  frame = timeout = 0;
+	  try {
+	    timerFlush();
+	  } finally {
+	    frame = 0;
+	    nap();
+	    clockNow = 0;
+	  }
+	}
+
+	function poke() {
+	  var now = clock.now(), delay = now - clockLast;
+	  if (delay > pokeDelay) clockSkew -= delay, clockLast = now;
+	}
+
+	function nap() {
+	  var t0, t1 = taskHead, t2, time = Infinity;
+	  while (t1) {
+	    if (t1._call) {
+	      if (time > t1._time) time = t1._time;
+	      t0 = t1, t1 = t1._next;
+	    } else {
+	      t2 = t1._next, t1._next = null;
+	      t1 = t0 ? t0._next = t2 : taskHead = t2;
+	    }
+	  }
+	  taskTail = t0;
+	  sleep(time);
+	}
+
+	function sleep(time) {
+	  if (frame) return; // Soonest alarm already set, or will be.
+	  if (timeout) timeout = clearTimeout(timeout);
+	  var delay = time - clockNow; // Strictly less than if we recomputed clockNow.
+	  if (delay > 24) {
+	    if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
+	    if (interval) interval = clearInterval(interval);
+	  } else {
+	    if (!interval) clockLast = clock.now(), interval = setInterval(poke, pokeDelay);
+	    frame = 1, setFrame(wake);
+	  }
+	}
+
+	function timeout$1(callback, delay, time) {
+	  var t = new Timer;
+	  delay = delay == null ? 0 : +delay;
+	  t.restart(function(elapsed) {
+	    t.stop();
+	    callback(elapsed + delay);
+	  }, delay, time);
+	  return t;
+	}
+
+	var emptyOn = dispatch("start", "end", "interrupt");
+	var emptyTween = [];
+
+	var CREATED = 0;
+	var SCHEDULED = 1;
+	var STARTING = 2;
+	var STARTED = 3;
+	var RUNNING = 4;
+	var ENDING = 5;
+	var ENDED = 6;
+
+	function schedule(node, name, id, index, group, timing) {
+	  var schedules = node.__transition;
+	  if (!schedules) node.__transition = {};
+	  else if (id in schedules) return;
+	  create$1(node, id, {
+	    name: name,
+	    index: index, // For context during callback.
+	    group: group, // For context during callback.
+	    on: emptyOn,
+	    tween: emptyTween,
+	    time: timing.time,
+	    delay: timing.delay,
+	    duration: timing.duration,
+	    ease: timing.ease,
+	    timer: null,
+	    state: CREATED
+	  });
+	}
+
+	function init$1(node, id) {
+	  var schedule = get$2(node, id);
+	  if (schedule.state > CREATED) throw new Error("too late; already scheduled");
+	  return schedule;
+	}
+
+	function set$2(node, id) {
+	  var schedule = get$2(node, id);
+	  if (schedule.state > STARTING) throw new Error("too late; already started");
+	  return schedule;
+	}
+
+	function get$2(node, id) {
+	  var schedule = node.__transition;
+	  if (!schedule || !(schedule = schedule[id])) throw new Error("transition not found");
+	  return schedule;
+	}
+
+	function create$1(node, id, self) {
+	  var schedules = node.__transition,
+	      tween;
+
+	  // Initialize the self timer when the transition is created.
+	  // Note the actual delay is not known until the first callback!
+	  schedules[id] = self;
+	  self.timer = timer(schedule, 0, self.time);
+
+	  function schedule(elapsed) {
+	    self.state = SCHEDULED;
+	    self.timer.restart(start, self.delay, self.time);
+
+	    // If the elapsed delay is less than our first sleep, start immediately.
+	    if (self.delay <= elapsed) start(elapsed - self.delay);
+	  }
+
+	  function start(elapsed) {
+	    var i, j, n, o;
+
+	    // If the state is not SCHEDULED, then we previously errored on start.
+	    if (self.state !== SCHEDULED) return stop();
+
+	    for (i in schedules) {
+	      o = schedules[i];
+	      if (o.name !== self.name) continue;
+
+	      // While this element already has a starting transition during this frame,
+	      // defer starting an interrupting transition until that transition has a
+	      // chance to tick (and possibly end); see d3/d3-transition#54!
+	      if (o.state === STARTED) return timeout$1(start);
+
+	      // Interrupt the active transition, if any.
+	      // Dispatch the interrupt event.
+	      if (o.state === RUNNING) {
+	        o.state = ENDED;
+	        o.timer.stop();
+	        o.on.call("interrupt", node, node.__data__, o.index, o.group);
+	        delete schedules[i];
+	      }
+
+	      // Cancel any pre-empted transitions. No interrupt event is dispatched
+	      // because the cancelled transitions never started. Note that this also
+	      // removes this transition from the pending list!
+	      else if (+i < id) {
+	        o.state = ENDED;
+	        o.timer.stop();
+	        delete schedules[i];
+	      }
+	    }
+
+	    // Defer the first tick to end of the current frame; see d3/d3#1576.
+	    // Note the transition may be canceled after start and before the first tick!
+	    // Note this must be scheduled before the start event; see d3/d3-transition#16!
+	    // Assuming this is successful, subsequent callbacks go straight to tick.
+	    timeout$1(function() {
+	      if (self.state === STARTED) {
+	        self.state = RUNNING;
+	        self.timer.restart(tick, self.delay, self.time);
+	        tick(elapsed);
+	      }
+	    });
+
+	    // Dispatch the start event.
+	    // Note this must be done before the tween are initialized.
+	    self.state = STARTING;
+	    self.on.call("start", node, node.__data__, self.index, self.group);
+	    if (self.state !== STARTING) return; // interrupted
+	    self.state = STARTED;
+
+	    // Initialize the tween, deleting null tween.
+	    tween = new Array(n = self.tween.length);
+	    for (i = 0, j = -1; i < n; ++i) {
+	      if (o = self.tween[i].value.call(node, node.__data__, self.index, self.group)) {
+	        tween[++j] = o;
+	      }
+	    }
+	    tween.length = j + 1;
+	  }
+
+	  function tick(elapsed) {
+	    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING, 1),
+	        i = -1,
+	        n = tween.length;
+
+	    while (++i < n) {
+	      tween[i].call(null, t);
+	    }
+
+	    // Dispatch the end event.
+	    if (self.state === ENDING) {
+	      self.on.call("end", node, node.__data__, self.index, self.group);
+	      stop();
+	    }
+	  }
+
+	  function stop() {
+	    self.state = ENDED;
+	    self.timer.stop();
+	    delete schedules[id];
+	    for (var i in schedules) return; // eslint-disable-line no-unused-vars
+	    delete node.__transition;
+	  }
+	}
+
+	function interrupt(node, name) {
+	  var schedules = node.__transition,
+	      schedule$$1,
+	      active,
+	      empty = true,
+	      i;
+
+	  if (!schedules) return;
+
+	  name = name == null ? null : name + "";
+
+	  for (i in schedules) {
+	    if ((schedule$$1 = schedules[i]).name !== name) { empty = false; continue; }
+	    active = schedule$$1.state > STARTING && schedule$$1.state < ENDING;
+	    schedule$$1.state = ENDED;
+	    schedule$$1.timer.stop();
+	    if (active) schedule$$1.on.call("interrupt", node, node.__data__, schedule$$1.index, schedule$$1.group);
+	    delete schedules[i];
+	  }
+
+	  if (empty) delete node.__transition;
+	}
+
+	function selection_interrupt(name) {
+	  return this.each(function() {
+	    interrupt(this, name);
+	  });
+	}
+
+	function tweenRemove(id, name) {
+	  var tween0, tween1;
+	  return function() {
+	    var schedule$$1 = set$2(this, id),
+	        tween = schedule$$1.tween;
+
+	    // If this node shared tween with the previous node,
+	    // just assign the updated shared tween and we’re done!
+	    // Otherwise, copy-on-write.
+	    if (tween !== tween0) {
+	      tween1 = tween0 = tween;
+	      for (var i = 0, n = tween1.length; i < n; ++i) {
+	        if (tween1[i].name === name) {
+	          tween1 = tween1.slice();
+	          tween1.splice(i, 1);
+	          break;
+	        }
+	      }
+	    }
+
+	    schedule$$1.tween = tween1;
+	  };
+	}
+
+	function tweenFunction(id, name, value) {
+	  var tween0, tween1;
+	  if (typeof value !== "function") throw new Error;
+	  return function() {
+	    var schedule$$1 = set$2(this, id),
+	        tween = schedule$$1.tween;
+
+	    // If this node shared tween with the previous node,
+	    // just assign the updated shared tween and we’re done!
+	    // Otherwise, copy-on-write.
+	    if (tween !== tween0) {
+	      tween1 = (tween0 = tween).slice();
+	      for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+	        if (tween1[i].name === name) {
+	          tween1[i] = t;
+	          break;
+	        }
+	      }
+	      if (i === n) tween1.push(t);
+	    }
+
+	    schedule$$1.tween = tween1;
+	  };
+	}
+
+	function transition_tween(name, value) {
+	  var id = this._id;
+
+	  name += "";
+
+	  if (arguments.length < 2) {
+	    var tween = get$2(this.node(), id).tween;
+	    for (var i = 0, n = tween.length, t; i < n; ++i) {
+	      if ((t = tween[i]).name === name) {
+	        return t.value;
+	      }
+	    }
+	    return null;
+	  }
+
+	  return this.each((value == null ? tweenRemove : tweenFunction)(id, name, value));
+	}
+
+	function tweenValue(transition, name, value) {
+	  var id = transition._id;
+
+	  transition.each(function() {
+	    var schedule$$1 = set$2(this, id);
+	    (schedule$$1.value || (schedule$$1.value = {}))[name] = value.apply(this, arguments);
+	  });
+
+	  return function(node) {
+	    return get$2(node, id).value[name];
+	  };
+	}
+
+	function interpolate(a, b) {
+	  var c;
+	  return (typeof b === "number" ? interpolateNumber
+	      : b instanceof color ? interpolateRgb
+	      : (c = color(b)) ? (b = c, interpolateRgb)
+	      : interpolateString)(a, b);
+	}
+
+	function attrRemove$1(name) {
+	  return function() {
+	    this.removeAttribute(name);
+	  };
+	}
+
+	function attrRemoveNS$1(fullname) {
+	  return function() {
+	    this.removeAttributeNS(fullname.space, fullname.local);
+	  };
+	}
+
+	function attrConstant$1(name, interpolate$$1, value1) {
+	  var value00,
+	      interpolate0;
+	  return function() {
+	    var value0 = this.getAttribute(name);
+	    return value0 === value1 ? null
+	        : value0 === value00 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value1);
+	  };
+	}
+
+	function attrConstantNS$1(fullname, interpolate$$1, value1) {
+	  var value00,
+	      interpolate0;
+	  return function() {
+	    var value0 = this.getAttributeNS(fullname.space, fullname.local);
+	    return value0 === value1 ? null
+	        : value0 === value00 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value1);
+	  };
+	}
+
+	function attrFunction$1(name, interpolate$$1, value$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0, value1 = value$$1(this);
+	    if (value1 == null) return void this.removeAttribute(name);
+	    value0 = this.getAttribute(name);
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function attrFunctionNS$1(fullname, interpolate$$1, value$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0, value1 = value$$1(this);
+	    if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
+	    value0 = this.getAttributeNS(fullname.space, fullname.local);
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function transition_attr(name, value$$1) {
+	  var fullname = namespace(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate;
+	  return this.attrTween(name, typeof value$$1 === "function"
+	      ? (fullname.local ? attrFunctionNS$1 : attrFunction$1)(fullname, i, tweenValue(this, "attr." + name, value$$1))
+	      : value$$1 == null ? (fullname.local ? attrRemoveNS$1 : attrRemove$1)(fullname)
+	      : (fullname.local ? attrConstantNS$1 : attrConstant$1)(fullname, i, value$$1 + ""));
+	}
+
+	function attrTweenNS(fullname, value) {
+	  function tween() {
+	    var node = this, i = value.apply(node, arguments);
+	    return i && function(t) {
+	      node.setAttributeNS(fullname.space, fullname.local, i(t));
+	    };
+	  }
+	  tween._value = value;
+	  return tween;
+	}
+
+	function attrTween(name, value) {
+	  function tween() {
+	    var node = this, i = value.apply(node, arguments);
+	    return i && function(t) {
+	      node.setAttribute(name, i(t));
+	    };
+	  }
+	  tween._value = value;
+	  return tween;
+	}
+
+	function transition_attrTween(name, value) {
+	  var key = "attr." + name;
+	  if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+	  if (value == null) return this.tween(key, null);
+	  if (typeof value !== "function") throw new Error;
+	  var fullname = namespace(name);
+	  return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
+	}
+
+	function delayFunction(id, value) {
+	  return function() {
+	    init$1(this, id).delay = +value.apply(this, arguments);
+	  };
+	}
+
+	function delayConstant(id, value) {
+	  return value = +value, function() {
+	    init$1(this, id).delay = value;
+	  };
+	}
+
+	function transition_delay(value) {
+	  var id = this._id;
+
+	  return arguments.length
+	      ? this.each((typeof value === "function"
+	          ? delayFunction
+	          : delayConstant)(id, value))
+	      : get$2(this.node(), id).delay;
+	}
+
+	function durationFunction(id, value) {
+	  return function() {
+	    set$2(this, id).duration = +value.apply(this, arguments);
+	  };
+	}
+
+	function durationConstant(id, value) {
+	  return value = +value, function() {
+	    set$2(this, id).duration = value;
+	  };
+	}
+
+	function transition_duration(value) {
+	  var id = this._id;
+
+	  return arguments.length
+	      ? this.each((typeof value === "function"
+	          ? durationFunction
+	          : durationConstant)(id, value))
+	      : get$2(this.node(), id).duration;
+	}
+
+	function easeConstant(id, value) {
+	  if (typeof value !== "function") throw new Error;
+	  return function() {
+	    set$2(this, id).ease = value;
+	  };
+	}
+
+	function transition_ease(value) {
+	  var id = this._id;
+
+	  return arguments.length
+	      ? this.each(easeConstant(id, value))
+	      : get$2(this.node(), id).ease;
+	}
+
+	function transition_filter(match) {
+	  if (typeof match !== "function") match = matcher$1(match);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+	        subgroup.push(node);
+	      }
+	    }
+	  }
+
+	  return new Transition(subgroups, this._parents, this._name, this._id);
+	}
+
+	function transition_merge(transition$$1) {
+	  if (transition$$1._id !== this._id) throw new Error;
+
+	  for (var groups0 = this._groups, groups1 = transition$$1._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+	    for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+	      if (node = group0[i] || group1[i]) {
+	        merge[i] = node;
+	      }
+	    }
+	  }
+
+	  for (; j < m0; ++j) {
+	    merges[j] = groups0[j];
+	  }
+
+	  return new Transition(merges, this._parents, this._name, this._id);
+	}
+
+	function start(name) {
+	  return (name + "").trim().split(/^|\s+/).every(function(t) {
+	    var i = t.indexOf(".");
+	    if (i >= 0) t = t.slice(0, i);
+	    return !t || t === "start";
+	  });
+	}
+
+	function onFunction(id, name, listener) {
+	  var on0, on1, sit = start(name) ? init$1 : set$2;
+	  return function() {
+	    var schedule$$1 = sit(this, id),
+	        on = schedule$$1.on;
+
+	    // If this node shared a dispatch with the previous node,
+	    // just assign the updated shared dispatch and we’re done!
+	    // Otherwise, copy-on-write.
+	    if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
+
+	    schedule$$1.on = on1;
+	  };
+	}
+
+	function transition_on(name, listener) {
+	  var id = this._id;
+
+	  return arguments.length < 2
+	      ? get$2(this.node(), id).on.on(name)
+	      : this.each(onFunction(id, name, listener));
+	}
+
+	function removeFunction(id) {
+	  return function() {
+	    var parent = this.parentNode;
+	    for (var i in this.__transition) if (+i !== id) return;
+	    if (parent) parent.removeChild(this);
+	  };
+	}
+
+	function transition_remove() {
+	  return this.on("end.remove", removeFunction(this._id));
+	}
+
+	function transition_select(select$$1) {
+	  var name = this._name,
+	      id = this._id;
+
+	  if (typeof select$$1 !== "function") select$$1 = selector(select$$1);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+	      if ((node = group[i]) && (subnode = select$$1.call(node, node.__data__, i, group))) {
+	        if ("__data__" in node) subnode.__data__ = node.__data__;
+	        subgroup[i] = subnode;
+	        schedule(subgroup[i], name, id, i, subgroup, get$2(node, id));
+	      }
+	    }
+	  }
+
+	  return new Transition(subgroups, this._parents, name, id);
+	}
+
+	function transition_selectAll(select$$1) {
+	  var name = this._name,
+	      id = this._id;
+
+	  if (typeof select$$1 !== "function") select$$1 = selectorAll(select$$1);
+
+	  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        for (var children = select$$1.call(node, node.__data__, i, group), child, inherit = get$2(node, id), k = 0, l = children.length; k < l; ++k) {
+	          if (child = children[k]) {
+	            schedule(child, name, id, k, children, inherit);
+	          }
+	        }
+	        subgroups.push(children);
+	        parents.push(node);
+	      }
+	    }
+	  }
+
+	  return new Transition(subgroups, parents, name, id);
+	}
+
+	var Selection$1 = selection.prototype.constructor;
+
+	function transition_selection() {
+	  return new Selection$1(this._groups, this._parents);
+	}
+
+	function styleRemove$1(name, interpolate$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0 = styleValue(this, name),
+	        value1 = (this.style.removeProperty(name), styleValue(this, name));
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function styleRemoveEnd(name) {
+	  return function() {
+	    this.style.removeProperty(name);
+	  };
+	}
+
+	function styleConstant$1(name, interpolate$$1, value1) {
+	  var value00,
+	      interpolate0;
+	  return function() {
+	    var value0 = styleValue(this, name);
+	    return value0 === value1 ? null
+	        : value0 === value00 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value1);
+	  };
+	}
+
+	function styleFunction$1(name, interpolate$$1, value$$1) {
+	  var value00,
+	      value10,
+	      interpolate0;
+	  return function() {
+	    var value0 = styleValue(this, name),
+	        value1 = value$$1(this);
+	    if (value1 == null) value1 = (this.style.removeProperty(name), styleValue(this, name));
+	    return value0 === value1 ? null
+	        : value0 === value00 && value1 === value10 ? interpolate0
+	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
+	  };
+	}
+
+	function transition_style(name, value$$1, priority) {
+	  var i = (name += "") === "transform" ? interpolateTransformCss : interpolate;
+	  return value$$1 == null ? this
+	          .styleTween(name, styleRemove$1(name, i))
+	          .on("end.style." + name, styleRemoveEnd(name))
+	      : this.styleTween(name, typeof value$$1 === "function"
+	          ? styleFunction$1(name, i, tweenValue(this, "style." + name, value$$1))
+	          : styleConstant$1(name, i, value$$1 + ""), priority);
+	}
+
+	function styleTween(name, value, priority) {
+	  function tween() {
+	    var node = this, i = value.apply(node, arguments);
+	    return i && function(t) {
+	      node.style.setProperty(name, i(t), priority);
+	    };
+	  }
+	  tween._value = value;
+	  return tween;
+	}
+
+	function transition_styleTween(name, value, priority) {
+	  var key = "style." + (name += "");
+	  if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+	  if (value == null) return this.tween(key, null);
+	  if (typeof value !== "function") throw new Error;
+	  return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+	}
+
+	function textConstant$1(value) {
+	  return function() {
+	    this.textContent = value;
+	  };
+	}
+
+	function textFunction$1(value) {
+	  return function() {
+	    var value1 = value(this);
+	    this.textContent = value1 == null ? "" : value1;
+	  };
+	}
+
+	function transition_text(value) {
+	  return this.tween("text", typeof value === "function"
+	      ? textFunction$1(tweenValue(this, "text", value))
+	      : textConstant$1(value == null ? "" : value + ""));
+	}
+
+	function transition_transition() {
+	  var name = this._name,
+	      id0 = this._id,
+	      id1 = newId();
+
+	  for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        var inherit = get$2(node, id0);
+	        schedule(node, name, id1, i, group, {
+	          time: inherit.time + inherit.delay + inherit.duration,
+	          delay: 0,
+	          duration: inherit.duration,
+	          ease: inherit.ease
+	        });
+	      }
+	    }
+	  }
+
+	  return new Transition(groups, this._parents, name, id1);
+	}
+
+	var id = 0;
+
+	function Transition(groups, parents, name, id) {
+	  this._groups = groups;
+	  this._parents = parents;
+	  this._name = name;
+	  this._id = id;
+	}
+
+	function transition(name) {
+	  return selection().transition(name);
+	}
+
+	function newId() {
+	  return ++id;
+	}
+
+	var selection_prototype = selection.prototype;
+
+	Transition.prototype = transition.prototype = {
+	  constructor: Transition,
+	  select: transition_select,
+	  selectAll: transition_selectAll,
+	  filter: transition_filter,
+	  merge: transition_merge,
+	  selection: transition_selection,
+	  transition: transition_transition,
+	  call: selection_prototype.call,
+	  nodes: selection_prototype.nodes,
+	  node: selection_prototype.node,
+	  size: selection_prototype.size,
+	  empty: selection_prototype.empty,
+	  each: selection_prototype.each,
+	  on: transition_on,
+	  attr: transition_attr,
+	  attrTween: transition_attrTween,
+	  style: transition_style,
+	  styleTween: transition_styleTween,
+	  text: transition_text,
+	  remove: transition_remove,
+	  tween: transition_tween,
+	  delay: transition_delay,
+	  duration: transition_duration,
+	  ease: transition_ease
+	};
+
+	function cubicInOut(t) {
+	  return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+	}
+
+	var pi = Math.PI;
+
+	var tau = 2 * Math.PI;
+
+	var defaultTiming = {
+	  time: null, // Set on use.
+	  delay: 0,
+	  duration: 250,
+	  ease: cubicInOut
+	};
+
+	function inherit(node, id) {
+	  var timing;
+	  while (!(timing = node.__transition) || !(timing = timing[id])) {
+	    if (!(node = node.parentNode)) {
+	      return defaultTiming.time = now(), defaultTiming;
+	    }
+	  }
+	  return timing;
+	}
+
+	function selection_transition(name) {
+	  var id,
+	      timing;
+
+	  if (name instanceof Transition) {
+	    id = name._id, name = name._name;
+	  } else {
+	    id = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+	  }
+
+	  for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+	      if (node = group[i]) {
+	        schedule(node, name, id, i, group, timing || inherit(node, id));
+	      }
+	    }
+	  }
+
+	  return new Transition(groups, this._parents, name, id);
+	}
+
+	selection.prototype.interrupt = selection_interrupt;
+	selection.prototype.transition = selection_transition;
+
+	function constant$4(x) {
+	  return function() {
+	    return x;
+	  };
+	}
+
+	function ZoomEvent(target, type, transform) {
+	  this.target = target;
+	  this.type = type;
+	  this.transform = transform;
+	}
+
+	function Transform(k, x, y) {
+	  this.k = k;
+	  this.x = x;
+	  this.y = y;
+	}
+
+	Transform.prototype = {
+	  constructor: Transform,
+	  scale: function(k) {
+	    return k === 1 ? this : new Transform(this.k * k, this.x, this.y);
+	  },
+	  translate: function(x, y) {
+	    return x === 0 & y === 0 ? this : new Transform(this.k, this.x + this.k * x, this.y + this.k * y);
+	  },
+	  apply: function(point) {
+	    return [point[0] * this.k + this.x, point[1] * this.k + this.y];
+	  },
+	  applyX: function(x) {
+	    return x * this.k + this.x;
+	  },
+	  applyY: function(y) {
+	    return y * this.k + this.y;
+	  },
+	  invert: function(location) {
+	    return [(location[0] - this.x) / this.k, (location[1] - this.y) / this.k];
+	  },
+	  invertX: function(x) {
+	    return (x - this.x) / this.k;
+	  },
+	  invertY: function(y) {
+	    return (y - this.y) / this.k;
+	  },
+	  rescaleX: function(x) {
+	    return x.copy().domain(x.range().map(this.invertX, this).map(x.invert, x));
+	  },
+	  rescaleY: function(y) {
+	    return y.copy().domain(y.range().map(this.invertY, this).map(y.invert, y));
+	  },
+	  toString: function() {
+	    return "translate(" + this.x + "," + this.y + ") scale(" + this.k + ")";
+	  }
+	};
+
+	var identity$2 = new Transform(1, 0, 0);
+
+	transform.prototype = Transform.prototype;
+
+	function transform(node) {
+	  return node.__zoom || identity$2;
+	}
+
+	function nopropagation$1() {
+	  event.stopImmediatePropagation();
+	}
+
+	function noevent$1() {
+	  event.preventDefault();
+	  event.stopImmediatePropagation();
+	}
+
+	// Ignore right-click, since that should open the context menu.
+	function defaultFilter$1() {
+	  return !event.button;
+	}
+
+	function defaultExtent() {
+	  var e = this, w, h;
+	  if (e instanceof SVGElement) {
+	    e = e.ownerSVGElement || e;
+	    w = e.width.baseVal.value;
+	    h = e.height.baseVal.value;
+	  } else {
+	    w = e.clientWidth;
+	    h = e.clientHeight;
+	  }
+	  return [[0, 0], [w, h]];
+	}
+
+	function defaultTransform() {
+	  return this.__zoom || identity$2;
+	}
+
+	function defaultWheelDelta() {
+	  return -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
+	}
+
+	function defaultTouchable$1() {
+	  return "ontouchstart" in this;
+	}
+
+	function defaultConstrain(transform$$1, extent, translateExtent) {
+	  var dx0 = transform$$1.invertX(extent[0][0]) - translateExtent[0][0],
+	      dx1 = transform$$1.invertX(extent[1][0]) - translateExtent[1][0],
+	      dy0 = transform$$1.invertY(extent[0][1]) - translateExtent[0][1],
+	      dy1 = transform$$1.invertY(extent[1][1]) - translateExtent[1][1];
+	  return transform$$1.translate(
+	    dx1 > dx0 ? (dx0 + dx1) / 2 : Math.min(0, dx0) || Math.max(0, dx1),
+	    dy1 > dy0 ? (dy0 + dy1) / 2 : Math.min(0, dy0) || Math.max(0, dy1)
+	  );
+	}
+
+	function d3Zoom() {
+	  var filter = defaultFilter$1,
+	      extent = defaultExtent,
+	      constrain = defaultConstrain,
+	      wheelDelta = defaultWheelDelta,
+	      touchable = defaultTouchable$1,
+	      scaleExtent = [0, Infinity],
+	      translateExtent = [[-Infinity, -Infinity], [Infinity, Infinity]],
+	      duration = 250,
+	      interpolate = interpolateZoom,
+	      gestures = [],
+	      listeners = dispatch("start", "zoom", "end"),
+	      touchstarting,
+	      touchending,
+	      touchDelay = 500,
+	      wheelDelay = 150,
+	      clickDistance2 = 0;
+
+	  function zoom(selection$$1) {
+	    selection$$1
+	        .property("__zoom", defaultTransform)
+	        .on("wheel.zoom", wheeled)
+	        .on("mousedown.zoom", mousedowned)
+	        .on("dblclick.zoom", dblclicked)
+	      .filter(touchable)
+	        .on("touchstart.zoom", touchstarted)
+	        .on("touchmove.zoom", touchmoved)
+	        .on("touchend.zoom touchcancel.zoom", touchended)
+	        .style("touch-action", "none")
+	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)");
+	  }
+
+	  zoom.transform = function(collection, transform$$1) {
+	    var selection$$1 = collection.selection ? collection.selection() : collection;
+	    selection$$1.property("__zoom", defaultTransform);
+	    if (collection !== selection$$1) {
+	      schedule(collection, transform$$1);
+	    } else {
+	      selection$$1.interrupt().each(function() {
+	        gesture(this, arguments)
+	            .start()
+	            .zoom(null, typeof transform$$1 === "function" ? transform$$1.apply(this, arguments) : transform$$1)
+	            .end();
+	      });
+	    }
+	  };
+
+	  zoom.scaleBy = function(selection$$1, k) {
+	    zoom.scaleTo(selection$$1, function() {
+	      var k0 = this.__zoom.k,
+	          k1 = typeof k === "function" ? k.apply(this, arguments) : k;
+	      return k0 * k1;
+	    });
+	  };
+
+	  zoom.scaleTo = function(selection$$1, k) {
+	    zoom.transform(selection$$1, function() {
+	      var e = extent.apply(this, arguments),
+	          t0 = this.__zoom,
+	          p0 = centroid(e),
+	          p1 = t0.invert(p0),
+	          k1 = typeof k === "function" ? k.apply(this, arguments) : k;
+	      return constrain(translate(scale(t0, k1), p0, p1), e, translateExtent);
+	    });
+	  };
+
+	  zoom.translateBy = function(selection$$1, x, y) {
+	    zoom.transform(selection$$1, function() {
+	      return constrain(this.__zoom.translate(
+	        typeof x === "function" ? x.apply(this, arguments) : x,
+	        typeof y === "function" ? y.apply(this, arguments) : y
+	      ), extent.apply(this, arguments), translateExtent);
+	    });
+	  };
+
+	  zoom.translateTo = function(selection$$1, x, y) {
+	    zoom.transform(selection$$1, function() {
+	      var e = extent.apply(this, arguments),
+	          t = this.__zoom,
+	          p = centroid(e);
+	      return constrain(identity$2.translate(p[0], p[1]).scale(t.k).translate(
+	        typeof x === "function" ? -x.apply(this, arguments) : -x,
+	        typeof y === "function" ? -y.apply(this, arguments) : -y
+	      ), e, translateExtent);
+	    });
+	  };
+
+	  function scale(transform$$1, k) {
+	    k = Math.max(scaleExtent[0], Math.min(scaleExtent[1], k));
+	    return k === transform$$1.k ? transform$$1 : new Transform(k, transform$$1.x, transform$$1.y);
+	  }
+
+	  function translate(transform$$1, p0, p1) {
+	    var x = p0[0] - p1[0] * transform$$1.k, y = p0[1] - p1[1] * transform$$1.k;
+	    return x === transform$$1.x && y === transform$$1.y ? transform$$1 : new Transform(transform$$1.k, x, y);
+	  }
+
+	  function centroid(extent) {
+	    return [(+extent[0][0] + +extent[1][0]) / 2, (+extent[0][1] + +extent[1][1]) / 2];
+	  }
+
+	  function schedule(transition$$1, transform$$1, center) {
+	    transition$$1
+	        .on("start.zoom", function() { gesture(this, arguments).start(); })
+	        .on("interrupt.zoom end.zoom", function() { gesture(this, arguments).end(); })
+	        .tween("zoom", function() {
+	          var that = this,
+	              args = arguments,
+	              g = gesture(that, args),
+	              e = extent.apply(that, args),
+	              p = center || centroid(e),
+	              w = Math.max(e[1][0] - e[0][0], e[1][1] - e[0][1]),
+	              a = that.__zoom,
+	              b = typeof transform$$1 === "function" ? transform$$1.apply(that, args) : transform$$1,
+	              i = interpolate(a.invert(p).concat(w / a.k), b.invert(p).concat(w / b.k));
+	          return function(t) {
+	            if (t === 1) t = b; // Avoid rounding error on end.
+	            else { var l = i(t), k = w / l[2]; t = new Transform(k, p[0] - l[0] * k, p[1] - l[1] * k); }
+	            g.zoom(null, t);
+	          };
+	        });
+	  }
+
+	  function gesture(that, args) {
+	    for (var i = 0, n = gestures.length, g; i < n; ++i) {
+	      if ((g = gestures[i]).that === that) {
+	        return g;
+	      }
+	    }
+	    return new Gesture(that, args);
+	  }
+
+	  function Gesture(that, args) {
+	    this.that = that;
+	    this.args = args;
+	    this.index = -1;
+	    this.active = 0;
+	    this.extent = extent.apply(that, args);
+	  }
+
+	  Gesture.prototype = {
+	    start: function() {
+	      if (++this.active === 1) {
+	        this.index = gestures.push(this) - 1;
+	        this.emit("start");
+	      }
+	      return this;
+	    },
+	    zoom: function(key, transform$$1) {
+	      if (this.mouse && key !== "mouse") this.mouse[1] = transform$$1.invert(this.mouse[0]);
+	      if (this.touch0 && key !== "touch") this.touch0[1] = transform$$1.invert(this.touch0[0]);
+	      if (this.touch1 && key !== "touch") this.touch1[1] = transform$$1.invert(this.touch1[0]);
+	      this.that.__zoom = transform$$1;
+	      this.emit("zoom");
+	      return this;
+	    },
+	    end: function() {
+	      if (--this.active === 0) {
+	        gestures.splice(this.index, 1);
+	        this.index = -1;
+	        this.emit("end");
+	      }
+	      return this;
+	    },
+	    emit: function(type) {
+	      customEvent(new ZoomEvent(zoom, type, this.that.__zoom), listeners.apply, listeners, [type, this.that, this.args]);
+	    }
+	  };
+
+	  function wheeled() {
+	    if (!filter.apply(this, arguments)) return;
+	    var g = gesture(this, arguments),
+	        t = this.__zoom,
+	        k = Math.max(scaleExtent[0], Math.min(scaleExtent[1], t.k * Math.pow(2, wheelDelta.apply(this, arguments)))),
+	        p = mouse(this);
+
+	    // If the mouse is in the same location as before, reuse it.
+	    // If there were recent wheel events, reset the wheel idle timeout.
+	    if (g.wheel) {
+	      if (g.mouse[0][0] !== p[0] || g.mouse[0][1] !== p[1]) {
+	        g.mouse[1] = t.invert(g.mouse[0] = p);
+	      }
+	      clearTimeout(g.wheel);
+	    }
+
+	    // If this wheel event won’t trigger a transform change, ignore it.
+	    else if (t.k === k) return;
+
+	    // Otherwise, capture the mouse point and location at the start.
+	    else {
+	      g.mouse = [p, t.invert(p)];
+	      interrupt(this);
+	      g.start();
+	    }
+
+	    noevent$1();
+	    g.wheel = setTimeout(wheelidled, wheelDelay);
+	    g.zoom("mouse", constrain(translate(scale(t, k), g.mouse[0], g.mouse[1]), g.extent, translateExtent));
+
+	    function wheelidled() {
+	      g.wheel = null;
+	      g.end();
+	    }
+	  }
+
+	  function mousedowned() {
+	    if (touchending || !filter.apply(this, arguments)) return;
+	    var g = gesture(this, arguments),
+	        v = select(event.view).on("mousemove.zoom", mousemoved, true).on("mouseup.zoom", mouseupped, true),
+	        p = mouse(this),
+	        x0 = event.clientX,
+	        y0 = event.clientY;
+
+	    nodrag(event.view);
+	    nopropagation$1();
+	    g.mouse = [p, this.__zoom.invert(p)];
+	    interrupt(this);
+	    g.start();
+
+	    function mousemoved() {
+	      noevent$1();
+	      if (!g.moved) {
+	        var dx = event.clientX - x0, dy = event.clientY - y0;
+	        g.moved = dx * dx + dy * dy > clickDistance2;
+	      }
+	      g.zoom("mouse", constrain(translate(g.that.__zoom, g.mouse[0] = mouse(g.that), g.mouse[1]), g.extent, translateExtent));
+	    }
+
+	    function mouseupped() {
+	      v.on("mousemove.zoom mouseup.zoom", null);
+	      yesdrag(event.view, g.moved);
+	      noevent$1();
+	      g.end();
+	    }
+	  }
+
+	  function dblclicked() {
+	    if (!filter.apply(this, arguments)) return;
+	    var t0 = this.__zoom,
+	        p0 = mouse(this),
+	        p1 = t0.invert(p0),
+	        k1 = t0.k * (event.shiftKey ? 0.5 : 2),
+	        t1 = constrain(translate(scale(t0, k1), p0, p1), extent.apply(this, arguments), translateExtent);
+
+	    noevent$1();
+	    if (duration > 0) select(this).transition().duration(duration).call(schedule, t1, p0);
+	    else select(this).call(zoom.transform, t1);
+	  }
+
+	  function touchstarted() {
+	    if (!filter.apply(this, arguments)) return;
+	    var g = gesture(this, arguments),
+	        touches$$1 = event.changedTouches,
+	        started,
+	        n = touches$$1.length, i, t, p;
+
+	    nopropagation$1();
+	    for (i = 0; i < n; ++i) {
+	      t = touches$$1[i], p = touch(this, touches$$1, t.identifier);
+	      p = [p, this.__zoom.invert(p), t.identifier];
+	      if (!g.touch0) g.touch0 = p, started = true;
+	      else if (!g.touch1) g.touch1 = p;
+	    }
+
+	    // If this is a dbltap, reroute to the (optional) dblclick.zoom handler.
+	    if (touchstarting) {
+	      touchstarting = clearTimeout(touchstarting);
+	      if (!g.touch1) {
+	        g.end();
+	        p = select(this).on("dblclick.zoom");
+	        if (p) p.apply(this, arguments);
+	        return;
+	      }
+	    }
+
+	    if (started) {
+	      touchstarting = setTimeout(function() { touchstarting = null; }, touchDelay);
+	      interrupt(this);
+	      g.start();
+	    }
+	  }
+
+	  function touchmoved() {
+	    var g = gesture(this, arguments),
+	        touches$$1 = event.changedTouches,
+	        n = touches$$1.length, i, t, p, l;
+
+	    noevent$1();
+	    if (touchstarting) touchstarting = clearTimeout(touchstarting);
+	    for (i = 0; i < n; ++i) {
+	      t = touches$$1[i], p = touch(this, touches$$1, t.identifier);
+	      if (g.touch0 && g.touch0[2] === t.identifier) g.touch0[0] = p;
+	      else if (g.touch1 && g.touch1[2] === t.identifier) g.touch1[0] = p;
+	    }
+	    t = g.that.__zoom;
+	    if (g.touch1) {
+	      var p0 = g.touch0[0], l0 = g.touch0[1],
+	          p1 = g.touch1[0], l1 = g.touch1[1],
+	          dp = (dp = p1[0] - p0[0]) * dp + (dp = p1[1] - p0[1]) * dp,
+	          dl = (dl = l1[0] - l0[0]) * dl + (dl = l1[1] - l0[1]) * dl;
+	      t = scale(t, Math.sqrt(dp / dl));
+	      p = [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2];
+	      l = [(l0[0] + l1[0]) / 2, (l0[1] + l1[1]) / 2];
+	    }
+	    else if (g.touch0) p = g.touch0[0], l = g.touch0[1];
+	    else return;
+	    g.zoom("touch", constrain(translate(t, p, l), g.extent, translateExtent));
+	  }
+
+	  function touchended() {
+	    var g = gesture(this, arguments),
+	        touches$$1 = event.changedTouches,
+	        n = touches$$1.length, i, t;
+
+	    nopropagation$1();
+	    if (touchending) clearTimeout(touchending);
+	    touchending = setTimeout(function() { touchending = null; }, touchDelay);
+	    for (i = 0; i < n; ++i) {
+	      t = touches$$1[i];
+	      if (g.touch0 && g.touch0[2] === t.identifier) delete g.touch0;
+	      else if (g.touch1 && g.touch1[2] === t.identifier) delete g.touch1;
+	    }
+	    if (g.touch1 && !g.touch0) g.touch0 = g.touch1, delete g.touch1;
+	    if (g.touch0) g.touch0[1] = this.__zoom.invert(g.touch0[0]);
+	    else g.end();
+	  }
+
+	  zoom.wheelDelta = function(_) {
+	    return arguments.length ? (wheelDelta = typeof _ === "function" ? _ : constant$4(+_), zoom) : wheelDelta;
+	  };
+
+	  zoom.filter = function(_) {
+	    return arguments.length ? (filter = typeof _ === "function" ? _ : constant$4(!!_), zoom) : filter;
+	  };
+
+	  zoom.touchable = function(_) {
+	    return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$4(!!_), zoom) : touchable;
+	  };
+
+	  zoom.extent = function(_) {
+	    return arguments.length ? (extent = typeof _ === "function" ? _ : constant$4([[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]]), zoom) : extent;
+	  };
+
+	  zoom.scaleExtent = function(_) {
+	    return arguments.length ? (scaleExtent[0] = +_[0], scaleExtent[1] = +_[1], zoom) : [scaleExtent[0], scaleExtent[1]];
+	  };
+
+	  zoom.translateExtent = function(_) {
+	    return arguments.length ? (translateExtent[0][0] = +_[0][0], translateExtent[1][0] = +_[1][0], translateExtent[0][1] = +_[0][1], translateExtent[1][1] = +_[1][1], zoom) : [[translateExtent[0][0], translateExtent[0][1]], [translateExtent[1][0], translateExtent[1][1]]];
+	  };
+
+	  zoom.constrain = function(_) {
+	    return arguments.length ? (constrain = _, zoom) : constrain;
+	  };
+
+	  zoom.duration = function(_) {
+	    return arguments.length ? (duration = +_, zoom) : duration;
+	  };
+
+	  zoom.interpolate = function(_) {
+	    return arguments.length ? (interpolate = _, zoom) : interpolate;
+	  };
+
+	  zoom.on = function() {
+	    var value$$1 = listeners.on.apply(listeners, arguments);
+	    return value$$1 === listeners ? zoom : value$$1;
+	  };
+
+	  zoom.clickDistance = function(_) {
+	    return arguments.length ? (clickDistance2 = (_ = +_) * _, zoom) : Math.sqrt(clickDistance2);
+	  };
+
+	  return zoom;
+	}
+
 	function isDate(obj) {
 	    return Object.prototype.toString.call(obj) === '[object Date]';
 	}
@@ -2220,7 +5469,7 @@
 	function snap(to) {
 	    return function () { return to; };
 	}
-	function interpolate(a, b) {
+	function interpolate$1(a, b) {
 	    if (a === b || a !== a)
 	        return snap(a);
 	    var type = typeof a;
@@ -2229,7 +5478,7 @@
 	    }
 	    if (Array.isArray(a)) {
 	        var arr_1 = b.map(function (bi, i) {
-	            return interpolate(a[i], bi);
+	            return interpolate$1(a[i], bi);
 	        });
 	        return function (t) {
 	            return arr_1.map(function (fn) { return fn(t); });
@@ -2250,7 +5499,7 @@
 	        var interpolators_1 = {};
 	        var result_1 = {};
 	        keys_1.forEach(function (key) {
-	            interpolators_1[key] = interpolate(a[key], b[key]);
+	            interpolators_1[key] = interpolate$1(a[key], b[key]);
 	        });
 	        return function (t) {
 	            keys_1.forEach(function (key) {
@@ -2267,7 +5516,7 @@
 	    }
 	    throw new Error("Cannot interpolate " + type + " values");
 	}
-	function linear$1(x) {
+	function linear$3(x) {
 	    return x;
 	}
 	function tween(key, to, options) {
@@ -2294,12 +5543,12 @@
 	    var end = start + duration;
 	    var t = {
 	        key: key,
-	        value: (options.interpolate || interpolate)(this.get()[key], to),
+	        value: (options.interpolate || interpolate$1)(this.get()[key], to),
 	        to: to,
 	        start: start,
 	        end: end,
 	        duration: duration,
-	        ease: options.easing || linear$1,
+	        ease: options.easing || linear$3,
 	        running: true,
 	        abort: function () {
 	            t.running = false;
@@ -2315,89 +5564,223 @@
 	    return promise;
 	}
 
-	function cubicInOut(t) {
-	  return t < 0.5
-	    ? 4.0 * t * t * t
-	    : 0.5 * Math.pow(2.0 * t - 2.0, 3.0) + 1.0
+	/* src/library/D3Zoom.html generated by Svelte v2.15.3 */
+
+
+
+	function minSize({clientWidth, clientHeight}) {
+		return Math.min(clientWidth, clientHeight);
 	}
 
-	/* src/Zoom.html generated by Svelte v2.15.3 */
+	function mouseOver({msx, msy}) {
+		return msx != undefined && msy != undefined;
+	}
 
+	function mouseGlobalPosition({transform: transform$$1, msx, msy, clientHeight, clientWidth, minSize}) {
+	  if (transform$$1 && msx != undefined && msy != undefined) {
+	    return [
+	      transform$$1.invertX(msx),// - (clientWidth - minSize) / 2,
+	      transform$$1.invertY(msy),// - (clientHeight - minSize) / 2,
+	    ];
+	  } else {
+	    return null;
+	  }
+	}
 
+	function extent$1({scale, translateX, translateY, minSize, clientWidth, clientHeight}) {
+	  const x0 = - translateX / scale;
+	  const y0 = - translateY / scale;
+	  const x1 = x0 + clientWidth / scale;
+	  const y1 = y0 + clientHeight / scale;
+	  return [
+	    [x0 / minSize, x1 / minSize],
+	    [y0 / minSize, y1 / minSize],
+	  ]
+	}
 
-	function scale({width, unit}) {
-	  return width / unit
+	function gcx({extent}) {
+		return (extent[0][0] + extent[1][0]) / 2;
+	}
+
+	function gcy({extent}) {
+		return (extent[0][1] + extent[1][1]) / 2;
 	}
 
 	function data$1() {
 	  return {
-	    width: 100,
-	    height: 100,
-	    gcx: 0.5,
-	    gcy: 0.5,
-	    scx: 0.5,
-	    scy: 0.5,
-	    unit: 100,
-
-	    //tweenTarget: {
-	    //  scale: null, gcx: null, gcy: null
-	    //}
-	  }
+	    z: d3Zoom(), //d3 zoom object
+	    el: null,
+	    selection: null, //the d3 selection of the root
+	    transform: null, // the d3 transform
+	    scaleExtent: [1, 32], //
+	    scrollWheel: false,
+	    homeScale: 1,
+	    homeX: 0.5,
+	    homeY: 0.5,
+	    scale: null,
+	    translateX: null,
+	    translateY: null,
+	    k: 1,
+	    x: 0,
+	    y: 0,
+	    msx: null,
+	    msy: null,
+	  };
 	}
 	var methods = {
 	  tween,
-	  setScale(scale) {
-	    const {width} = this.get();
-	    this.set({'unit': width / scale});
-	  },
-	  panTo(newgcx, newgcy, duration) {
-	    if (duration === undefined) duration = 1000;
-	    if(duration == 0) {
-	      this.set({gcx: newgcx, gcy: newgcy});
+	  zoomEventFilter: function() {
+	    const {scrollWheel} = this.get();
+	    // console.log(d3Event);
+	    // If we want to suppress scroll wheel events...
+	    if (!scrollWheel) {
+	      // ... return false for scroll wheel events + button = 1 events
+	      return !(event.type === "wheel" && event.ctrlKey === false) && event.button == 0;
 	    } else {
-	      this.tween('gcx', newgcx, {duration, easing: cubicInOut});
-	      this.tween('gcy', newgcy, {duration, easing: cubicInOut});
+	      //... just return false for button = 1 events
+	      return event.button == 0;
 	    }
 	  },
-	  scaleTo(newScale, duration) {
-	    if (duration === undefined) duration = 1000;
-	    const {width} = this.get();
-	    this.tween('unit', width / newScale, {duration, easing: cubicInOut});
+	  mouseMove: function(event$$1) {
+	    const msx = event$$1.offsetX;
+	    const msy = event$$1.offsetY;
+	    this.set({
+	      msx, msy
+	    });
+	    const {mouseGlobalPosition} = this.get();
 	  },
-	  transitionTo(newgcx, newgcy, newScale, duration) {
-	    if (duration === undefined) duration = 1000;
-	    const {width} = this.get();
-	    const newUnit = width / newScale;
-	    this.tween('unit', newUnit, {duration, easing: cubicInOut});
-	    this.tween('gcx', newgcx, {duration, easing: cubicInOut});
-	    this.tween('gcy', newgcy, {duration, easing: cubicInOut});
+	  update: function() {
+	    
+	    const {clientWidth, clientHeight, minSize, el, z} = this.get();
+	    const transform$$1 = transform(el);
+	    // console.log("update", transform.k)
+	    const scale = transform$$1.k;
+	    this.set({
+	      scale,
+	      transform: transform$$1,
+	      translateX: transform$$1.x, // + scale * (clientWidth - minSize) / 2,
+	      translateY: transform$$1.y, // + scale * (clientHeight - minSize) / 2,
+	    });
 	  },
+	  onzoom: function(that) {
+	    // console.log("onzoom")
+	    that.update();
+	  },
+	  zoomTo: function(x, y, scale = 1, duration = 1000) {
+	    const {selection: selection$$1, z, minSize, clientWidth, clientHeight} = this.get();
+
+	    selection$$1.transition()
+	      .duration(duration)
+	      .call(z.transform, 
+	        identity$2
+	          .translate(clientWidth / 2, clientHeight / 2)
+	          .scale(scale)
+	          .translate(- x * minSize, - y * minSize));
+	  },
+	  translateTo: function(x, y) {
+	    const {z, selection: selection$$1, minSize} = this.get();
+	    z.transform(selection$$1, x * minSize, y * minSize);
+	  },
+	  home: function(duration = 0) {
+
+	    const {homeX, homeY, homeScale} = this.get();
+	    this.zoomTo(homeX, homeY, homeScale);
+
+	    // selection.transition()
+	    //   .duration(duration)
+	    //   .call(z.transform, 
+	    //     d3ZoomIdentity
+	    //       .translate(clientWidth / 2, clientHeight / 2)
+	    //       .translate(- 0.5 * minSize, - 0.5 * minSize));
+	  },
+	  scaleTo: function(scale, duration=0) {
+	    // console.log("scaleTo", duration)
+	    const {z, selection: selection$$1} = this.get();
+	    selection$$1.transition()
+	      .duration(duration)
+	      .call(z.scaleTo, scale);
+	  }
 	};
 
 	function oncreate() {
+	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
+	  const that = this; // needed because d3 gives "this" as the node, not component.
+	  z.wheelDelta(() => {
+	    let d = -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
+	    if (event.ctrlKey) {
+	      d = d * 10;
+	    }
+	    return d;
+	  });
+	  z.scaleExtent(scaleExtent);
+	  const selection$$1 = select(this.refs.root);
+	  this.set({
+	    selection: selection$$1,
+	    el: this.refs.root,
+	  });
+	  z(selection$$1);
+	  z.filter(this.zoomEventFilter.bind(this));
+	  z.on("zoom", () => { this.onzoom(that); });
+	  z.translateTo(selection$$1, homeX * minSize, homeY * minSize);
+	  z.scaleTo(selection$$1, homeScale);
 	}
-	const file$1 = "src/Zoom.html";
+	function onstate({changed, current, previous}) {
+	  if (previous != undefined) {
+	    if ((changed.clientWidth || changed.clientHeight) && current.el) {
+	      this.update();
+	    }
+	  }
+	  // console.log("update", changed, current.scale)
+	  const {z, selection: selection$$1, el, x, y} = this.get();
+	}
+	const file$1 = "src/library/D3Zoom.html";
 
 	function add_css() {
 		var style = createElement("style");
-		style.id = 'svelte-16epbqg-style';
-		style.textContent = ".svelte-ref-capture.svelte-16epbqg{position:relative;width:100%;height:100%;background:rgba(0, 0, 0, 0);box-sizing:border-box}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiWm9vbS5odG1sIiwic291cmNlcyI6WyJab29tLmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiPGRpdiByZWY6Y2FwdHVyZT5cbjwhLS0gPHAgc3R5bGU9XCJwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDA7IHJpZ2h0OiAwO1wiPng6IHt4fSB5OiB7eX0gc2NhbGU6IHtzY2FsZX08L3A+IC0tPlxuXG48L2Rpdj5cblxuXG48c2NyaXB0PlxuLy8gaW1wb3J0IHt6b29tIGFzIGQzem9vbX0gZnJvbSAnZDMtem9vbSc7XG4vLyBpbXBvcnQge2V2ZW50IGFzIGQzZXZlbnQsIHNlbGVjdCBhcyBkM3NlbGVjdH0gZnJvbSAnZDMtc2VsZWN0aW9uJztcbmltcG9ydCB7IHR3ZWVuIH0gZnJvbSAnc3ZlbHRlLWV4dHJhcyc7XG5pbXBvcnQgKiBhcyBlYXNlcyBmcm9tICdlYXNlcy1qc25leHQnO1xuXG5leHBvcnQgZGVmYXVsdCB7XG4gIGRhdGEoKSB7XG4gICAgcmV0dXJuIHtcbiAgICAgIHdpZHRoOiAxMDAsXG4gICAgICBoZWlnaHQ6IDEwMCxcbiAgICAgIGdjeDogMC41LFxuICAgICAgZ2N5OiAwLjUsXG4gICAgICBzY3g6IDAuNSxcbiAgICAgIHNjeTogMC41LFxuICAgICAgdW5pdDogMTAwLFxuXG4gICAgICAvL3R3ZWVuVGFyZ2V0OiB7XG4gICAgICAvLyAgc2NhbGU6IG51bGwsIGdjeDogbnVsbCwgZ2N5OiBudWxsXG4gICAgICAvL31cbiAgICB9XG4gIH0sXG4gIGNvbXB1dGVkOiB7XG4gICAgLy90cmFuc2xhdGVYOiAoe2djeCwgc2N4LCBzY2FsZSwgd2lkdGh9KSA9PiAgc2N4ICogd2lkdGggLSBnY3ggKiBzY2FsZSAqIHdpZHRoLFxuICAgIC8vdHJhbnNsYXRlWTogKHtnY3ksIHNjeSwgc2NhbGUsIGhlaWdodH0pID0+IHNjeSAqIGhlaWdodCAtIGdjeSAqIHNjYWxlICogaGVpZ2h0LFxuICAgIC8vdHJhbnNmb3JtU3RyaW5nOiAoe3RyYW5zbGF0ZVgsIHRyYW5zbGF0ZVksIHNjYWxlfSkgPT4gYHRyYW5zbGF0ZSgke3RyYW5zbGF0ZVh9LCR7dHJhbnNsYXRlWX0pc2NhbGUoJHtzY2FsZX0pYCxcbiAgICBzY2FsZTogKHt3aWR0aCwgdW5pdH0pID0+IHtcbiAgICAgIHJldHVybiB3aWR0aCAvIHVuaXRcbiAgICB9XG4gIH0sXG4gIG9uY3JlYXRlKCkge1xuICB9LFxuICBtZXRob2RzOiB7XG4gICAgdHdlZW4sXG4gICAgc2V0U2NhbGUoc2NhbGUpIHtcbiAgICAgIGNvbnN0IHt3aWR0aH0gPSB0aGlzLmdldCgpO1xuICAgICAgdGhpcy5zZXQoeyd1bml0Jzogd2lkdGggLyBzY2FsZX0pXG4gICAgfSxcbiAgICBwYW5UbyhuZXdnY3gsIG5ld2djeSwgZHVyYXRpb24pIHtcbiAgICAgIGlmIChkdXJhdGlvbiA9PT0gdW5kZWZpbmVkKSBkdXJhdGlvbiA9IDEwMDA7XG4gICAgICBpZihkdXJhdGlvbiA9PSAwKSB7XG4gICAgICAgIHRoaXMuc2V0KHtnY3g6IG5ld2djeCwgZ2N5OiBuZXdnY3l9KVxuICAgICAgfSBlbHNlIHtcbiAgICAgICAgdGhpcy50d2VlbignZ2N4JywgbmV3Z2N4LCB7ZHVyYXRpb24sIGVhc2luZzogZWFzZXMuY3ViaWNJbk91dH0pXG4gICAgICAgIHRoaXMudHdlZW4oJ2djeScsIG5ld2djeSwge2R1cmF0aW9uLCBlYXNpbmc6IGVhc2VzLmN1YmljSW5PdXR9KVxuICAgICAgfVxuICAgIH0sXG4gICAgc2NhbGVUbyhuZXdTY2FsZSwgZHVyYXRpb24pIHtcbiAgICAgIGlmIChkdXJhdGlvbiA9PT0gdW5kZWZpbmVkKSBkdXJhdGlvbiA9IDEwMDA7XG4gICAgICBjb25zdCB7d2lkdGh9ID0gdGhpcy5nZXQoKTtcbiAgICAgIHRoaXMudHdlZW4oJ3VuaXQnLCB3aWR0aCAvIG5ld1NjYWxlLCB7ZHVyYXRpb24sIGVhc2luZzogZWFzZXMuY3ViaWNJbk91dH0pXG4gICAgfSxcbiAgICB0cmFuc2l0aW9uVG8obmV3Z2N4LCBuZXdnY3ksIG5ld1NjYWxlLCBkdXJhdGlvbikge1xuICAgICAgaWYgKGR1cmF0aW9uID09PSB1bmRlZmluZWQpIGR1cmF0aW9uID0gMTAwMDtcbiAgICAgIGNvbnN0IHt3aWR0aH0gPSB0aGlzLmdldCgpO1xuICAgICAgY29uc3QgbmV3VW5pdCA9IHdpZHRoIC8gbmV3U2NhbGU7XG4gICAgICB0aGlzLnR3ZWVuKCd1bml0JywgbmV3VW5pdCwge2R1cmF0aW9uLCBlYXNpbmc6IGVhc2VzLmN1YmljSW5PdXR9KVxuICAgICAgdGhpcy50d2VlbignZ2N4JywgbmV3Z2N4LCB7ZHVyYXRpb24sIGVhc2luZzogZWFzZXMuY3ViaWNJbk91dH0pXG4gICAgICB0aGlzLnR3ZWVuKCdnY3knLCBuZXdnY3ksIHtkdXJhdGlvbiwgZWFzaW5nOiBlYXNlcy5jdWJpY0luT3V0fSlcbiAgICB9LFxuICB9XG59XG48L3NjcmlwdD5cblxuPHN0eWxlPlxucmVmOmNhcHR1cmUge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG4gIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMCk7XG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG59XG48L3N0eWxlPiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUF1RUEsa0NBQVksQ0FBQyxBQUNYLFFBQVEsQ0FBRSxRQUFRLENBQ2xCLEtBQUssQ0FBRSxJQUFJLENBQ1gsTUFBTSxDQUFFLElBQUksQ0FDWixVQUFVLENBQUUsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FDNUIsVUFBVSxDQUFFLFVBQVUsQUFDeEIsQ0FBQyJ9 */";
+		style.id = 'svelte-kaete3-style';
+		style.textContent = ".svelte-ref-root.svelte-kaete3{position:relative;background:white;width:100%;height:100%}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRDNab29tLmh0bWwiLCJzb3VyY2VzIjpbIkQzWm9vbS5odG1sIl0sInNvdXJjZXNDb250ZW50IjpbIjxkaXYgXG4gIHJlZjpyb290IFxuICBjbGFzcz1cImQzem9vbVwiIFxuICBiaW5kOmNsaWVudFdpZHRoXG4gIGJpbmQ6Y2xpZW50SGVpZ2h0XG4gIG9uOm1vdXNlbW92ZT1cIm1vdXNlTW92ZShldmVudClcIlxuICBvbjptb3VzZWRvd249XCJzZXQoe21zeDogbnVsbCwgbXN5OiBudWxsfSlcIlxuICBvbjptb3VzZW91dD1cInNldCh7bXN4OiBudWxsLCBtc3k6IG51bGx9KVwiXG4+XG4gIDxzbG90IC8+XG48L2Rpdj5cblxuPHNjcmlwdD5cbmltcG9ydCB7em9vbUlkZW50aXR5IGFzIGQzWm9vbUlkZW50aXR5LCB6b29tIGFzIGQzWm9vbSwgem9vbVRyYW5zZm9ybSBhcyBkM1pvb21UcmFuc2Zvcm19IGZyb20gXCJkMy16b29tXCI7XG5pbXBvcnQge2V2ZW50IGFzIGQzRXZlbnQsIHNlbGVjdCBhcyBkM1NlbGVjdH0gZnJvbSBcImQzLXNlbGVjdGlvblwiO1xuaW1wb3J0IHsgdHdlZW4gfSBmcm9tICdzdmVsdGUtZXh0cmFzJztcbmltcG9ydCAqIGFzIGVhc2VzIGZyb20gJ2Vhc2VzLWpzbmV4dCc7XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgZGF0YSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgejogZDNab29tKCksIC8vZDMgem9vbSBvYmplY3RcbiAgICAgIGVsOiBudWxsLFxuICAgICAgc2VsZWN0aW9uOiBudWxsLCAvL3RoZSBkMyBzZWxlY3Rpb24gb2YgdGhlIHJvb3RcbiAgICAgIHRyYW5zZm9ybTogbnVsbCwgLy8gdGhlIGQzIHRyYW5zZm9ybVxuICAgICAgc2NhbGVFeHRlbnQ6IFsxLCAzMl0sIC8vXG4gICAgICBzY3JvbGxXaGVlbDogZmFsc2UsXG4gICAgICBob21lU2NhbGU6IDEsXG4gICAgICBob21lWDogMC41LFxuICAgICAgaG9tZVk6IDAuNSxcbiAgICAgIHNjYWxlOiBudWxsLFxuICAgICAgdHJhbnNsYXRlWDogbnVsbCxcbiAgICAgIHRyYW5zbGF0ZVk6IG51bGwsXG4gICAgICBrOiAxLFxuICAgICAgeDogMCxcbiAgICAgIHk6IDAsXG4gICAgICBtc3g6IG51bGwsXG4gICAgICBtc3k6IG51bGwsXG4gICAgfTtcbiAgfSxcbiAgY29tcHV0ZWQ6IHtcbiAgICBtaW5TaXplOiAoe2NsaWVudFdpZHRoLCBjbGllbnRIZWlnaHR9KSA9PiBNYXRoLm1pbihjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0KSxcbiAgICBtb3VzZU92ZXI6ICh7bXN4LCBtc3l9KSA9PiBtc3ggIT0gdW5kZWZpbmVkICYmIG1zeSAhPSB1bmRlZmluZWQsXG4gICAgbW91c2VHbG9iYWxQb3NpdGlvbjogKHt0cmFuc2Zvcm0sIG1zeCwgbXN5LCBjbGllbnRIZWlnaHQsIGNsaWVudFdpZHRoLCBtaW5TaXplfSkgPT4ge1xuICAgICAgaWYgKHRyYW5zZm9ybSAmJiBtc3ggIT0gdW5kZWZpbmVkICYmIG1zeSAhPSB1bmRlZmluZWQpIHtcbiAgICAgICAgcmV0dXJuIFtcbiAgICAgICAgICB0cmFuc2Zvcm0uaW52ZXJ0WChtc3gpLC8vIC0gKGNsaWVudFdpZHRoIC0gbWluU2l6ZSkgLyAyLFxuICAgICAgICAgIHRyYW5zZm9ybS5pbnZlcnRZKG1zeSksLy8gLSAoY2xpZW50SGVpZ2h0IC0gbWluU2l6ZSkgLyAyLFxuICAgICAgICBdO1xuICAgICAgfSBlbHNlIHtcbiAgICAgICAgcmV0dXJuIG51bGw7XG4gICAgICB9XG4gICAgfSxcbiAgICBleHRlbnQ6ICh7c2NhbGUsIHRyYW5zbGF0ZVgsIHRyYW5zbGF0ZVksIG1pblNpemUsIGNsaWVudFdpZHRoLCBjbGllbnRIZWlnaHR9KSA9PiB7XG4gICAgICBjb25zdCB4MCA9IC0gdHJhbnNsYXRlWCAvIHNjYWxlO1xuICAgICAgY29uc3QgeTAgPSAtIHRyYW5zbGF0ZVkgLyBzY2FsZTtcbiAgICAgIGNvbnN0IHgxID0geDAgKyBjbGllbnRXaWR0aCAvIHNjYWxlO1xuICAgICAgY29uc3QgeTEgPSB5MCArIGNsaWVudEhlaWdodCAvIHNjYWxlO1xuICAgICAgcmV0dXJuIFtcbiAgICAgICAgW3gwIC8gbWluU2l6ZSwgeDEgLyBtaW5TaXplXSxcbiAgICAgICAgW3kwIC8gbWluU2l6ZSwgeTEgLyBtaW5TaXplXSxcbiAgICAgIF1cbiAgICB9LFxuICAgIGdjeDogKHtleHRlbnR9KSA9PiAoZXh0ZW50WzBdWzBdICsgZXh0ZW50WzFdWzBdKSAvIDIsXG4gICAgZ2N5OiAoe2V4dGVudH0pID0+IChleHRlbnRbMF1bMV0gKyBleHRlbnRbMV1bMV0pIC8gMixcbiAgfSxcbiAgXG4gIG9uY3JlYXRlKCkge1xuICAgIGNvbnN0IHt6LCBzY2FsZUV4dGVudCwgbWluU2l6ZSwgY2xpZW50V2lkdGgsIGNsaWVudEhlaWdodCwgaG9tZVNjYWxlLCBob21lWCwgaG9tZVl9ID0gdGhpcy5nZXQoKTtcbiAgICBjb25zdCB0aGF0ID0gdGhpczsgLy8gbmVlZGVkIGJlY2F1c2UgZDMgZ2l2ZXMgXCJ0aGlzXCIgYXMgdGhlIG5vZGUsIG5vdCBjb21wb25lbnQuXG4gICAgei53aGVlbERlbHRhKCgpID0+IHtcbiAgICAgIGxldCBkID0gLWQzRXZlbnQuZGVsdGFZICogKGQzRXZlbnQuZGVsdGFNb2RlID8gMTIwIDogMSkgLyA1MDA7XG4gICAgICBpZiAoZDNFdmVudC5jdHJsS2V5KSB7XG4gICAgICAgIGQgPSBkICogMTA7XG4gICAgICB9XG4gICAgICByZXR1cm4gZDtcbiAgICB9KTtcbiAgICB6LnNjYWxlRXh0ZW50KHNjYWxlRXh0ZW50KTtcbiAgICBjb25zdCBzZWxlY3Rpb24gPSBkM1NlbGVjdCh0aGlzLnJlZnMucm9vdCk7XG4gICAgdGhpcy5zZXQoe1xuICAgICAgc2VsZWN0aW9uLFxuICAgICAgZWw6IHRoaXMucmVmcy5yb290LFxuICAgIH0pO1xuICAgIHooc2VsZWN0aW9uKTtcbiAgICB6LmZpbHRlcih0aGlzLnpvb21FdmVudEZpbHRlci5iaW5kKHRoaXMpKTtcbiAgICB6Lm9uKFwiem9vbVwiLCAoKSA9PiB7IHRoaXMub256b29tKHRoYXQpOyB9KTtcbiAgICB6LnRyYW5zbGF0ZVRvKHNlbGVjdGlvbiwgaG9tZVggKiBtaW5TaXplLCBob21lWSAqIG1pblNpemUpXG4gICAgei5zY2FsZVRvKHNlbGVjdGlvbiwgaG9tZVNjYWxlKTtcbiAgfSxcbiAgb25zdGF0ZSh7Y2hhbmdlZCwgY3VycmVudCwgcHJldmlvdXN9KSB7XG4gICAgaWYgKHByZXZpb3VzICE9IHVuZGVmaW5lZCkge1xuICAgICAgaWYgKChjaGFuZ2VkLmNsaWVudFdpZHRoIHx8IGNoYW5nZWQuY2xpZW50SGVpZ2h0KSAmJiBjdXJyZW50LmVsKSB7XG4gICAgICAgIHRoaXMudXBkYXRlKCk7XG4gICAgICB9XG4gICAgfVxuICAgIC8vIGNvbnNvbGUubG9nKFwidXBkYXRlXCIsIGNoYW5nZWQsIGN1cnJlbnQuc2NhbGUpXG4gICAgY29uc3Qge3osIHNlbGVjdGlvbiwgZWwsIHgsIHl9ID0gdGhpcy5nZXQoKTtcbiAgICAvLyBpZiAoY2hhbmdlZC5zY2FsZUV4dGVudCAmJiBjdXJyZW50LnNjYWxlRXh0ZW50KSB7IHouc2NhbGVFeHRlbnQoY3VycmVudC5zY2FsZUV4dGVudCkgfSBcbiAgICBpZiAoc2VsZWN0aW9uKSB7XG5cbiAgICAgIC8vIGlmIChjaGFuZ2VkLnggfHwgY2hhbmdlZC55KSB7XG4gICAgICAvLyAgIHoudHJhbnNsYXRlVG8oc2VsZWN0aW9uLCBjdXJyZW50LngsIGN1cnJlbnQueSk7XG4gICAgICAvLyB9XG5cbiAgICAgIC8vIGlmIChjaGFuZ2VkLnNjYWxlKSB7IHRoaXMuc2V0KHtrOiBjdXJyZW50LnNjYWxlfSk7IH1cbiAgICAgIC8vIGlmIChjaGFuZ2VkLmspIHsgei5zY2FsZVRvKHNlbGVjdGlvbiwgY3VycmVudC5rKTsgfSBcblxuICAgICAgLy8gaWYgKGNoYW5nZWQudHJhbnNsYXRlWCkgeyB0aGlzLnNldCh7eDogY3VycmVudC50cmFuc2xhdGVYfSk7IH1cbiAgICAgIC8vIGlmIChjaGFuZ2VkLnRyYW5zbGF0ZVkpIHsgdGhpcy5zZXQoe3g6IGN1cnJlbnQudHJhbnNsYXRlWX0pOyB9XG5cbiAgICB9XG4gIH0sXG4gIG1ldGhvZHM6IHtcbiAgICB0d2VlbixcbiAgICB6b29tRXZlbnRGaWx0ZXI6IGZ1bmN0aW9uKCkge1xuICAgICAgY29uc3Qge3Njcm9sbFdoZWVsfSA9IHRoaXMuZ2V0KCk7XG4gICAgICAvLyBjb25zb2xlLmxvZyhkM0V2ZW50KTtcbiAgICAgIC8vIElmIHdlIHdhbnQgdG8gc3VwcHJlc3Mgc2Nyb2xsIHdoZWVsIGV2ZW50cy4uLlxuICAgICAgaWYgKCFzY3JvbGxXaGVlbCkge1xuICAgICAgICAvLyAuLi4gcmV0dXJuIGZhbHNlIGZvciBzY3JvbGwgd2hlZWwgZXZlbnRzICsgYnV0dG9uID0gMSBldmVudHNcbiAgICAgICAgcmV0dXJuICEoZDNFdmVudC50eXBlID09PSBcIndoZWVsXCIgJiYgZDNFdmVudC5jdHJsS2V5ID09PSBmYWxzZSkgJiYgZDNFdmVudC5idXR0b24gPT0gMDtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIC8vLi4uIGp1c3QgcmV0dXJuIGZhbHNlIGZvciBidXR0b24gPSAxIGV2ZW50c1xuICAgICAgICByZXR1cm4gZDNFdmVudC5idXR0b24gPT0gMDtcbiAgICAgIH1cbiAgICB9LFxuICAgIG1vdXNlTW92ZTogZnVuY3Rpb24oZXZlbnQpIHtcbiAgICAgIGNvbnN0IG1zeCA9IGV2ZW50Lm9mZnNldFg7XG4gICAgICBjb25zdCBtc3kgPSBldmVudC5vZmZzZXRZO1xuICAgICAgdGhpcy5zZXQoe1xuICAgICAgICBtc3gsIG1zeVxuICAgICAgfSk7XG4gICAgICBjb25zdCB7bW91c2VHbG9iYWxQb3NpdGlvbn0gPSB0aGlzLmdldCgpO1xuICAgIH0sXG4gICAgdXBkYXRlOiBmdW5jdGlvbigpIHtcbiAgICAgIFxuICAgICAgY29uc3Qge2NsaWVudFdpZHRoLCBjbGllbnRIZWlnaHQsIG1pblNpemUsIGVsLCB6fSA9IHRoaXMuZ2V0KCk7XG4gICAgICBjb25zdCB0cmFuc2Zvcm0gPSBkM1pvb21UcmFuc2Zvcm0oZWwpO1xuICAgICAgLy8gY29uc29sZS5sb2coXCJ1cGRhdGVcIiwgdHJhbnNmb3JtLmspXG4gICAgICBjb25zdCBzY2FsZSA9IHRyYW5zZm9ybS5rO1xuICAgICAgdGhpcy5zZXQoe1xuICAgICAgICBzY2FsZSxcbiAgICAgICAgdHJhbnNmb3JtLFxuICAgICAgICB0cmFuc2xhdGVYOiB0cmFuc2Zvcm0ueCwgLy8gKyBzY2FsZSAqIChjbGllbnRXaWR0aCAtIG1pblNpemUpIC8gMixcbiAgICAgICAgdHJhbnNsYXRlWTogdHJhbnNmb3JtLnksIC8vICsgc2NhbGUgKiAoY2xpZW50SGVpZ2h0IC0gbWluU2l6ZSkgLyAyLFxuICAgICAgfSk7XG4gICAgfSxcbiAgICBvbnpvb206IGZ1bmN0aW9uKHRoYXQpIHtcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwib256b29tXCIpXG4gICAgICB0aGF0LnVwZGF0ZSgpO1xuICAgIH0sXG4gICAgem9vbVRvOiBmdW5jdGlvbih4LCB5LCBzY2FsZSA9IDEsIGR1cmF0aW9uID0gMTAwMCkge1xuICAgICAgY29uc3Qge3NlbGVjdGlvbiwgeiwgbWluU2l6ZSwgY2xpZW50V2lkdGgsIGNsaWVudEhlaWdodH0gPSB0aGlzLmdldCgpO1xuXG4gICAgICBzZWxlY3Rpb24udHJhbnNpdGlvbigpXG4gICAgICAgIC5kdXJhdGlvbihkdXJhdGlvbilcbiAgICAgICAgLmNhbGwoei50cmFuc2Zvcm0sIFxuICAgICAgICAgIGQzWm9vbUlkZW50aXR5XG4gICAgICAgICAgICAudHJhbnNsYXRlKGNsaWVudFdpZHRoIC8gMiwgY2xpZW50SGVpZ2h0IC8gMilcbiAgICAgICAgICAgIC5zY2FsZShzY2FsZSlcbiAgICAgICAgICAgIC50cmFuc2xhdGUoLSB4ICogbWluU2l6ZSwgLSB5ICogbWluU2l6ZSkpO1xuICAgIH0sXG4gICAgdHJhbnNsYXRlVG86IGZ1bmN0aW9uKHgsIHkpIHtcbiAgICAgIGNvbnN0IHt6LCBzZWxlY3Rpb24sIG1pblNpemV9ID0gdGhpcy5nZXQoKTtcbiAgICAgIHoudHJhbnNmb3JtKHNlbGVjdGlvbiwgeCAqIG1pblNpemUsIHkgKiBtaW5TaXplKVxuICAgIH0sXG4gICAgaG9tZTogZnVuY3Rpb24oZHVyYXRpb24gPSAwKSB7XG5cbiAgICAgIGNvbnN0IHtob21lWCwgaG9tZVksIGhvbWVTY2FsZX0gPSB0aGlzLmdldCgpO1xuICAgICAgdGhpcy56b29tVG8oaG9tZVgsIGhvbWVZLCBob21lU2NhbGUpXG5cbiAgICAgIC8vIHNlbGVjdGlvbi50cmFuc2l0aW9uKClcbiAgICAgIC8vICAgLmR1cmF0aW9uKGR1cmF0aW9uKVxuICAgICAgLy8gICAuY2FsbCh6LnRyYW5zZm9ybSwgXG4gICAgICAvLyAgICAgZDNab29tSWRlbnRpdHlcbiAgICAgIC8vICAgICAgIC50cmFuc2xhdGUoY2xpZW50V2lkdGggLyAyLCBjbGllbnRIZWlnaHQgLyAyKVxuICAgICAgLy8gICAgICAgLnRyYW5zbGF0ZSgtIDAuNSAqIG1pblNpemUsIC0gMC41ICogbWluU2l6ZSkpO1xuICAgIH0sXG4gICAgc2NhbGVUbzogZnVuY3Rpb24oc2NhbGUsIGR1cmF0aW9uPTApIHtcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwic2NhbGVUb1wiLCBkdXJhdGlvbilcbiAgICAgIGNvbnN0IHt6LCBzZWxlY3Rpb259ID0gdGhpcy5nZXQoKTtcbiAgICAgIHNlbGVjdGlvbi50cmFuc2l0aW9uKClcbiAgICAgICAgLmR1cmF0aW9uKGR1cmF0aW9uKVxuICAgICAgICAuY2FsbCh6LnNjYWxlVG8sIHNjYWxlKTtcbiAgICB9XG4gIH1cbn1cbjwvc2NyaXB0PlxuXG48c3R5bGU+XG5yZWY6cm9vdCB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgYmFja2dyb3VuZDogd2hpdGU7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG59XG48L3N0eWxlPiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUE4TEEsOEJBQVMsQ0FBQyxBQUNSLFFBQVEsQ0FBRSxRQUFRLENBQ2xCLFVBQVUsQ0FBRSxLQUFLLENBQ2pCLEtBQUssQ0FBRSxJQUFJLENBQ1gsTUFBTSxDQUFFLElBQUksQUFDZCxDQUFDIn0= */";
 		append(document.head, style);
 	}
 
 	function create_main_fragment$1(component, ctx) {
-		var div;
+		var div, slot_content_default = component._slotted.default, div_resize_listener;
+
+		function div_resize_handler() {
+			component.set({ clientWidth: div.clientWidth, clientHeight: div.clientHeight });
+		}
+
+		function mousemove_handler(event$$1) {
+			component.mouseMove(event$$1);
+		}
+
+		function mousedown_handler(event$$1) {
+			component.set({msx: null, msy: null});
+		}
+
+		function mouseout_handler(event$$1) {
+			component.set({msx: null, msy: null});
+		}
 
 		return {
-			c: function create() {
+			c: function create$$1() {
 				div = createElement("div");
-				div.className = "svelte-16epbqg svelte-ref-capture";
+				component.root._beforecreate.push(div_resize_handler);
+				addListener(div, "mousemove", mousemove_handler);
+				addListener(div, "mousedown", mousedown_handler);
+				addListener(div, "mouseout", mouseout_handler);
+				div.className = "d3zoom svelte-kaete3 svelte-ref-root";
 				addLoc(div, file$1, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
-				component.refs.capture = div;
+
+				if (slot_content_default) {
+					append(div, slot_content_default);
+				}
+
+				div_resize_listener = addResizeListener(div, div_resize_handler);
+				component.refs.root = div;
 			},
 
 			p: noop,
@@ -2407,13 +5790,21 @@
 					detachNode(div);
 				}
 
-				if (component.refs.capture === div) component.refs.capture = null;
+				if (slot_content_default) {
+					reinsertChildren(div, slot_content_default);
+				}
+
+				div_resize_listener.cancel();
+				removeListener(div, "mousemove", mousemove_handler);
+				removeListener(div, "mousedown", mousedown_handler);
+				removeListener(div, "mouseout", mouseout_handler);
+				if (component.refs.root === div) component.refs.root = null;
 			}
 		};
 	}
 
-	function Zoom(options) {
-		this._debugName = '<Zoom>';
+	function D3Zoom(options) {
+		this._debugName = '<D3Zoom>';
 		if (!options || (!options.target && !options.root)) {
 			throw new Error("'target' is a required option");
 		}
@@ -2422,12 +5813,25 @@
 		this.refs = {};
 		this._state = assign(data$1(), options.data);
 
-		this._recompute({ width: 1, unit: 1 }, this._state);
-		if (!('width' in this._state)) console.warn("<Zoom> was created without expected data property 'width'");
-		if (!('unit' in this._state)) console.warn("<Zoom> was created without expected data property 'unit'");
+		this._recompute({ clientWidth: 1, clientHeight: 1, msx: 1, msy: 1, transform: 1, minSize: 1, scale: 1, translateX: 1, translateY: 1, extent: 1 }, this._state);
+		if (!('clientWidth' in this._state)) console.warn("<D3Zoom> was created without expected data property 'clientWidth'");
+		if (!('clientHeight' in this._state)) console.warn("<D3Zoom> was created without expected data property 'clientHeight'");
+		if (!('msx' in this._state)) console.warn("<D3Zoom> was created without expected data property 'msx'");
+		if (!('msy' in this._state)) console.warn("<D3Zoom> was created without expected data property 'msy'");
+		if (!('transform' in this._state)) console.warn("<D3Zoom> was created without expected data property 'transform'");
+
+		if (!('scale' in this._state)) console.warn("<D3Zoom> was created without expected data property 'scale'");
+		if (!('translateX' in this._state)) console.warn("<D3Zoom> was created without expected data property 'translateX'");
+		if (!('translateY' in this._state)) console.warn("<D3Zoom> was created without expected data property 'translateY'");
 		this._intro = true;
 
-		if (!document.getElementById("svelte-16epbqg-style")) add_css();
+		this._handlers.state = [onstate];
+
+		this._slotted = options.slots || {};
+
+		if (!document.getElementById("svelte-kaete3-style")) add_css();
+
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
 
 		this._fragment = create_main_fragment$1(this, this._state);
 
@@ -2445,16 +5849,38 @@
 		}
 	}
 
-	assign(Zoom.prototype, protoDev);
-	assign(Zoom.prototype, methods);
+	assign(D3Zoom.prototype, protoDev);
+	assign(D3Zoom.prototype, methods);
 
-	Zoom.prototype._checkReadOnly = function _checkReadOnly(newState) {
-		if ('scale' in newState && !this._updatingReadonlyProperty) throw new Error("<Zoom>: Cannot set read-only property 'scale'");
+	D3Zoom.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('minSize' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'minSize'");
+		if ('mouseOver' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'mouseOver'");
+		if ('mouseGlobalPosition' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'mouseGlobalPosition'");
+		if ('extent' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'extent'");
+		if ('gcx' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'gcx'");
+		if ('gcy' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'gcy'");
 	};
 
-	Zoom.prototype._recompute = function _recompute(changed, state) {
-		if (changed.width || changed.unit) {
-			if (this._differs(state.scale, (state.scale = scale(state)))) changed.scale = true;
+	D3Zoom.prototype._recompute = function _recompute(changed, state) {
+		if (changed.clientWidth || changed.clientHeight) {
+			if (this._differs(state.minSize, (state.minSize = minSize(state)))) changed.minSize = true;
+		}
+
+		if (changed.msx || changed.msy) {
+			if (this._differs(state.mouseOver, (state.mouseOver = mouseOver(state)))) changed.mouseOver = true;
+		}
+
+		if (changed.transform || changed.msx || changed.msy || changed.clientHeight || changed.clientWidth || changed.minSize) {
+			if (this._differs(state.mouseGlobalPosition, (state.mouseGlobalPosition = mouseGlobalPosition(state)))) changed.mouseGlobalPosition = true;
+		}
+
+		if (changed.scale || changed.translateX || changed.translateY || changed.minSize || changed.clientWidth || changed.clientHeight) {
+			if (this._differs(state.extent, (state.extent = extent$1(state)))) changed.extent = true;
+		}
+
+		if (changed.extent) {
+			if (this._differs(state.gcx, (state.gcx = gcx(state)))) changed.gcx = true;
+			if (this._differs(state.gcy, (state.gcy = gcy(state)))) changed.gcy = true;
 		}
 	};
 
@@ -2570,7 +5996,6 @@
 
 
 	function maxAttributionValue({layers, layer}) {
-	  // return 0.25;
 	  if (layers == null) return 0;
 	  const l = layers[layer];
 	  let max$$1 = 0;
@@ -2583,87 +6008,89 @@
 	    });
 	  });
 	  return max$$1;
-	  // return layers ? max(l, d => d ? max(d, dd => dd ? (dd.n > 50 ? (dd.top_class_values[dd.top_class_indices.indexOf(classHeatmap)]) : 0) : 0): 0) : 0;
-	  }
-
-	function aspectRatio({viewWidth, viewHeight}) {
-		return viewWidth / viewHeight;
 	}
 
-	function minViewDimInPx({viewWidth, viewHeight}) {
-		return Math.min(viewWidth, viewHeight);
+	function w({viewWidth, screenResolution}) {
+		return viewWidth * screenResolution;
 	}
 
-	function topLeft({gcx, gcy, scale, viewWidth, viewHeight, minViewDimInPx}) {
-	  return {
-	    x: viewWidth / 2 - gcx * minViewDimInPx * scale,
-	    y: viewHeight / 2 - gcy * minViewDimInPx * scale} 
+	function h({viewHeight, screenResolution}) {
+		return viewHeight * screenResolution;
 	}
 
-	function currentZoomIndex({scale, gridSize}) {
+	function currentZoomIndex({scale, gridSize, config, classHeatmap, viewWidth, viewHeight, autoGridSizeMultiplier}) {
 	  let s = 0;
-	  if (gridSize != null) {
-	    s = gridSize;
+	  if (gridSize > -1) {
+	    s = +gridSize;
 	  } else {
-	    if (scale > 1) s = 0;
-	    if (scale > 2) s = 1;
-	    if (scale > 4) s = 2;
-	    if (scale > 8) s = 3;
-	    if (scale > 16) s = 4;
+	    const size = Math.min(viewWidth, viewHeight);
+	    s = Math.floor(size * scale / 80 / 20 / autoGridSizeMultiplier);
+	    console.log("s", s);
+	    // if (scale > 1 * 0.5) s = 0;
+	    // if (scale > 2 * 0.5) s = 1;
+	    // if (scale > 4 * 0.5) s = 2;
+	    // if (scale > 8 * 0.5) s = 3;
+	    // if (scale > 16 * 0.5) s = 4;
 	  }
-	  return +s;
-	}
-
-	function numIconsWide({currentZoomIndex, layers}) {
-	  if(layers && currentZoomIndex){
-	    return layers[currentZoomIndex].length
+	  // Make sure we don't overrun our data
+	  if (config) {
+	    s = Math.min(config.grid_size.length - 1 , s);
 	  }
-	}
-
-	function iconSizeInPixels({config, minViewDimInPx, currentZoomIndex, scale}) {
-	  if(config){
-	    return minViewDimInPx / (config.grid_size[currentZoomIndex]) * scale;
+	  // Class heatmap only has data up to level 2
+	  if (classHeatmap > -1) {
+	    s = Math.min(2, s);
 	  }
+	  return s;
+
 	}
 
-	function showHoverIcon({mouseMoveMode, onCanvas, currentIconInfo, enableHover}) {
-	  return enableHover && onCanvas && (mouseMoveMode == 'hover') && currentIconInfo
+	function visibleLayers({currentZoomIndex}) {
+	  return [currentZoomIndex];
 	}
 
-	function layerScale({minViewDimInPx, config, currentZoomIndex, scale}) {
-	  if(config){
-	    return (minViewDimInPx / (config.icon_size * config.grid_size[currentZoomIndex])) * scale
-	  }
+	function currentLayerData({currentZoomIndex, layers}) {
+	  return layers ? layers[currentZoomIndex] : [[]]
 	}
 
-	function gridSelected({lastRecordedCanvasPos, topLeft, layerScale, config}) {
-	  if(config){
-	    return {
-	      x: Math.floor((lastRecordedCanvasPos.x - topLeft.x) / (layerScale * config.icon_size)),
-	      y: Math.floor((lastRecordedCanvasPos.y - topLeft.y) / (layerScale * config.icon_size))
-	    }        
-	  }
+	function showHover({hoverIconData, mouseGlobalPosition}) {
+		return mouseGlobalPosition && hoverIconData && hoverIconData.gcx;
 	}
 
-	function topLeftCornerHover({config, layerScale, topLeft, gridSelected}) {
-	  if(config){
-	    return {
-	      x: gridSelected.x * config.icon_size * layerScale + topLeft.x - 1,
-	      y: gridSelected.y * config.icon_size * layerScale + topLeft.y - 1
-	    }
-	  }
-	}
-
-	function currentIconInfo({layers, currentZoomIndex, gridSelected, classHeatmap}) {
-	  if(layers && layers[currentZoomIndex] && 
-	     layers[currentZoomIndex][gridSelected.y] && 
-	     layers[currentZoomIndex][gridSelected.y][gridSelected.x]
-	     ){
-	      const iconInfo = layers[currentZoomIndex][gridSelected.y][gridSelected.x];
-	      if(iconInfo.num_activations > 0){
-	        return iconInfo
+	function hoverIconData({currentLayerData, config, mouseGlobalPosition, w, h, translateX, translateY}) {
+	  // const msx = mouseGlobalPosition[0]
+	  // const msy = mouseGlobalPosition[1]
+	  if (currentLayerData) {
+	    const numGridRows = currentLayerData.length;
+	    if (mouseGlobalPosition) {
+	      const gx = Math.floor(mouseGlobalPosition[0] / Math.min(w, h) * numGridRows);
+	      const gy = Math.floor(mouseGlobalPosition[1] / Math.min(w, h) * numGridRows);
+	      if (currentLayerData[gy] && currentLayerData[gy][gx]) {
+	        return currentLayerData[gy][gx];
+	      } else {
+	        return {};
 	      }
+	    } else {
+	      return {};
+	    }
+	  } else {
+	    return {};
 	  }
+	}
+
+	function hoverIconX({hoverIconData, scale, w, h, translateX}) {
+		return hoverIconData.gy * scale * Math.min(w, h) + translateX;
+	}
+
+	function hoverIconY({hoverIconData, scale, w, h, translateY}) {
+		return hoverIconData.gx * scale * Math.min(w, h) + translateY;
+	}
+
+	function hoverIconW({hoverIconData, scale, w, h}) {
+		return hoverIconData.gw * scale * Math.min(w, h);
+	}
+
+	function showHoverIcon({mouseGlobalPosition, hoverIconData, enableHover}) {
+	  return enableHover && mouseGlobalPosition && hoverIconData && hoverIconData.gw
 	}
 
 	function data$3() {
@@ -2680,39 +6107,29 @@
 	    classFilter: 0,
 	    filter: 0,
 
-	    minActivations: 1,
-
-	    showLabels: false,
-	    textShadow: false,
-	    showHoverImage: false,
-
 	    context: null,
 
 	    alphaAttributionFactor: 0.02,
-	    scaleCountFactor: 1,
+	    density: 1.0,
 	    classHeatmap: -1,
 	    classHeatmapMultiplier: 1,
 	    classHeatmapPositive: 1,
+	    iconCrop: 0.02,
+	    autoGridSizeMultiplier: 0.8,
 
 	    gridSize: null,
-	    showGrid: false,
 
 	    // for initial state, and going back to "home"
 	    homeX: .5,
 	    homeY: .5,
 	    homeScale: 1,
 
-	    iconCrop: 0.02,
-
-	    // zoom factor
-	    zoomFactors: {out: 0.5, in: 2},
-
 	    // turn off features
 	    enableClickToZoom: true,
 	    enableHover: true,
 	    enableDragToPan: true,
 
-
+	    // Styling
 	    backgroundColor: "white",
 	    strokeColor: "rgb(220, 220, 220)",
 	    strokeThickness: 1,
@@ -2720,178 +6137,52 @@
 	    fontSize: 10,
 	    textColor: "white",
 	    textShadowColor: "rgba(0, 0, 0, 0.8)",
-
-	    // for positioning the hover icon
-	    lastRecordedCanvasPos: {x: -100, y: -100},
-
-	    // for managing panning off the screen
-	    mouseDownScreenPos: {x: 0, y: 0},
-
-	    // can be "hover" or "pan"
-	    mouseMoveMode: 'hover',
-	    onCanvas: false,
+	    showLabels: false,
+	    textShadow: false,
 
 	    screenResolution: 1,
-
-	    mouseDownTimer: 0,
-	    mouseMoveFunction: function(){},
-	    mouseUpFunction: function(){},
-
 	  }
 	}
 	var methods$1 = {
 	  fullscreen() {
 	    this.refs.root.webkitRequestFullscreen();
 	  },
-	  mouseEnter() {
-	    this.set({onCanvas: true});
+	  home(duration=0) {
+	    // const {homeX, homeY, homeScale} = this.get();
+	    // this.transitionTo(homeX, homeY, homeScale, duration);
+	    this.refs.d3Zoom.home(duration);
 	  },
-	  mouseDown(event) {
-	    // should this be set once, somewhere else? oncreate? 
-	    this.set({mouseMoveFunction: this.mouseMove.bind(this), mouseUpFunction: this.mouseUp.bind(this)});
-
-	    const {mouseMoveFunction, mouseUpFunction} = this.get();
-
-	    event.preventDefault();
-
-	    // set event listeners on window
-	    window.addEventListener("mousemove", mouseMoveFunction);
-	    window.addEventListener("mouseup",mouseUpFunction);
-	    // do I need to unset local listener? 
-
-	    this.set({mouseMoveMode: 'pan'});
-	    this.set({mouseDownTimer: Date.now()});
-
-	    // canvas position
-	    this.set({lastRecordedCanvasPos: {x: event.offsetX, y: event.offsetY}});
-
-	    // screenPosition at mousedown
-	    this.set({mouseDownScreenPos: {x: event.screenX, y: event.screenY}});
-
+	  transitionTo(x, y, scale, duration=0) {
+	    this.refs.d3Zoom.transformTo(x, y, scale, duration);
 	  },
-	  mouseMove(event) {
-	    const { mouseMoveMode } = this.get();
-
-	    this.set({lastRecordedCanvasPos: {x: event.offsetX, y: event.offsetY}});
-
-	    if (mouseMoveMode == 'pan') {
-	      const {mouseDownScreenPos, gcx, gcy, enableDragToPan} = this.get();
-
-	      // update gcx, gcy, mouseDownScreenPos
-	      this.set({
-	        mouseDownScreenPos: {x: event.screenX, y: event.screenY}
-	      });
-
-	      if(enableDragToPan){
-	        this.refs.zoom.panTo(
-	          this.toPercent(mouseDownScreenPos.x - event.screenX) + gcx,
-	          this.toPercent(mouseDownScreenPos.y - event.screenY) + gcy,
-	          0
-	        );
-	      } 
-	    }
-
-	  },
-	  mouseOut(event) {
-	    this.set({
-	      onCanvas: false
-	    });
-	  },
-	  mouseUp(event) {
-	    const {mouseDownTimer, mouseMoveMode, scale, zoomFactors, mouseMoveFunction, mouseUpFunction, lastRecordedCanvasPos, topLeft, gcx, gcy, enableClickToZoom} = this.get();
-
-	    // reset mode to hover
-	    this.set({mouseMoveMode: 'hover'});
-
-	    // remove body event listeners
-	    window.removeEventListener("mousemove", mouseMoveFunction);
-	    window.removeEventListener("mouseup", mouseUpFunction);
-
-	    // calculate offsets to determine to zoom or not
-	    const clickDiff = (Date.now() - mouseDownTimer);
-	    const clickDistance = Math.sqrt(
-	      Math.pow(event.offsetX - lastRecordedCanvasPos.x, 2) + 
-	      Math.pow(event.offsetY - lastRecordedCanvasPos.y, 2)
-	      );
-
-
-	    // 200ms and 5 pixels distance is fairly arbitrary
-	    if(clickDiff < 200 && clickDistance < 5) {
-	      // ZOOM!
-	      if(enableClickToZoom){
-	        // use shift key to determine to zoom in or zoom out
-	        let zoomBy = zoomFactors.in;
-	        if(event.shiftKey){
-	          zoomBy = zoomFactors.out;
-	        }
-
-	        let newCenter = {x: 0.5, y: 0.5};
-
-	        // go home if scale < 1
-	        let newScale = zoomBy * scale;
-	        if(newScale > 1){
-	          // use current mouse position to find new center position
-	          const fixedPoint = {
-	            x: this.toPercent(event.offsetX - topLeft.x),
-	            y: this.toPercent(event.offsetY - topLeft.y)
-	          };
-	          newCenter = {
-	            x: fixedPoint.x - ((fixedPoint.x - gcx)/zoomBy),
-	            y: fixedPoint.y - ((fixedPoint.y - gcy)/zoomBy)
-	          };
-	        } else {
-	          newScale = 1;
-	        }
-	        this.transitionTo(newCenter.x, newCenter.y, newScale, 500);
-	      }
-	    }
-	  },
-	  home() {
-	    const {homeX, homeY, homeScale} = this.get();
-	    this.transitionTo(homeX,homeY,homeScale,800);
-	  },
-	  transitionTo(x, y, scale, duration) {
-	    this.refs.zoom.transitionTo(x,y,scale,duration);
-	  },
-	  zoomit(multiplier) {
+	  scaleBy(multiplier) {
 	    const { scale } = this.get();
-	    this.refs.zoom.scaleTo(scale * multiplier, 500);
+	    this.refs.d3Zoom.scaleTo(scale * multiplier, 300);
 	  },
-	  iconToCanvasPosition(icon, layerIndex) {
-	    const {config, scaleCountFactor, topLeft, layerScale, currentZoomIndex} = this.get();
+	  iconToGlobalPosition(icon, layerIndex) {
+	    const {density, scale, translateX, translateY, config, w, h} = this.get();
+	    const gridSize = config.grid_size[layerIndex];
+	    const gridWidth = config.icon_size * gridSize;
 
-	    const proportionalScaleCountFactor = scaleCountFactor / (currentZoomIndex + 1);
-	    const scaleModifier = (Math.sqrt(Math.min(proportionalScaleCountFactor, icon.num_activations) / proportionalScaleCountFactor)); 
-	    const iconWidth = config.icon_size * layerScale * scaleModifier;
+	    const iconWidth = icon.gw * scale * Math.min(w, h);
 
-	    const sx = icon.localX * config.icon_size;
-	    const sy = icon.localY * config.icon_size;
+	    // x, y swapped intentionally
+	    const iconX = icon.gy * scale * Math.min(w, h) + translateX;
+	    const iconY = icon.gx * scale * Math.min(w, h) + translateY;
 
-	    const tilePos_x = icon.grid_y * config.icon_size;
-	    const tilePos_y = icon.grid_x * config.icon_size;
+	    const sourceX = icon.localX * config.icon_size;
+	    const sourceY = icon.localY * config.icon_size;
 
-	    // pixel coordinate in the global coordinate space
-	    const globalPixelPos_x = tilePos_x * layerScale;
-	    const globalPixelPos_y = tilePos_y * layerScale;
+	    const totalSamples = (typeof config.filter[0] == "number" ? config.filter[0] : config.sample_images);
+	    const avgSamples = totalSamples / (gridSize * gridSize);
 
-	    const canvasPos_x = globalPixelPos_x + topLeft.x;
-	    const canvasPos_y = globalPixelPos_y + topLeft.y;      
+	    // Resize based on density
+	    const relativeDensity = Math.min(1, Math.sqrt(density * icon.num_activations / avgSamples));
+	    const adjustedIconWidth = iconWidth * relativeDensity;
+	    const adjustedIconX = iconX + (iconWidth - adjustedIconWidth) / 2;
+	    const adjustedIconY = iconY + (iconWidth - adjustedIconWidth) / 2;
 
-	    // calc scale adjust factor to center the image for the icon in it's box
-	    const scaleAdjustFactor =  (1 - scaleModifier) * config.icon_size * layerScale  / 2;
-
-	    const dx = canvasPos_x + scaleAdjustFactor;
-	    const dy = canvasPos_y + scaleAdjustFactor;
-
-	    return {sx, sy, dx, dy, iconWidth}
-	  },
-	  toPercent(p) {
-	    const {scale, minViewDimInPx} = this.get();
-	    return p / (scale * minViewDimInPx);
-	  },
-	  toPixels(p) {
-	    const {scale, minViewDimInPx} = this.get();
-	    return p * scale * minViewDimInPx;
+	    return {sourceX, sourceY, iconX: adjustedIconX, iconY: adjustedIconY, iconWidth: adjustedIconWidth}
 	  },
 	  clear() {
 	    const {viewHeight, viewWidth, context, backgroundColor} = this.get();
@@ -2900,64 +6191,63 @@
 	    context.clearRect(0, 0, viewWidth, viewHeight);
 	    context.fillRect(0, 0, viewWidth, viewHeight);
 	  },
-	  updateIconHoverImage() {
-	    const {currentIconInfo, currentZoomIndex, iconCrop, config, showHoverImage} = this.get();
-	    if(currentIconInfo && showHoverImage){
-	      load(currentIconInfo.url).then(response => {
-	        const hoverImageContext = this.refs.hoverImage.getContext('2d');
-	        const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(currentIconInfo, currentZoomIndex);
-	        const iconOffset = (iconCrop * config.icon_size) / 2;
-	        const edgeLength = Math.min(this.refs.hoverImage.height, this.refs.hoverImage.width);
-	        hoverImageContext.drawImage(response,
-	                        //source
-	                        sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
-	                        //destination
-	                        0, 0, edgeLength, edgeLength
-	                      );
-	      });
-	    }
-	  },
 	  render() {
 
-	    const {imageSmoothing, minActivations, viewHeight, viewWidth, context, backgroundColor, config, layers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {id, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
 	    // context.imageSmoothingQuality = "low";
 	    context.imageSmoothingEnabled = imageSmoothing;
 
 	    if (config && layers) {
+
 	      layers.forEach((icons, layerIndex) => {
-	        const visibleLayers = [currentZoomIndex];
-
 	        if (visibleLayers.indexOf(layerIndex) > -1) {
+	          
+	          // Calculating min and max indices for icon render loop
+	          const minSize = Math.min(w, h);
+	          const minX = Math.max(0, Math.floor(-(translateX / scale / minSize) * icons.length));
+	          const maxX = minX + Math.ceil(( w / scale / minSize) * icons.length);
+	          const minY = Math.max(0, Math.floor(-(translateY / scale / minSize) * icons.length));
+	          const maxY = minY + Math.ceil(( h / scale / minSize) * icons.length);
 
-	          icons.forEach((columns, x) => {
-	            columns.forEach((icon, y) => {
-	              if (icon.num_activations >= minActivations) {
+	          for (let y = minY; y <= maxY; y++) {
+	            for (let x = minX; x <= maxX; x++) {
+	              
+	              if (icons[y] && icons[y][x]) {
+	                const icon = icons[y][x];
 
-	                const {dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
-
-	                // If icon is in the viewport
-	                if (dx > -iconWidth && dx < viewWidth && dy > -iconWidth && dy < viewHeight) {
+	                const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+	                
+	                const requestedID = id;
+	                // If icon is in the viewport 
+	                // probably don't need this anymore
+	                // if (iconX > -iconWidth && iconX < w && iconY > -iconWidth && iconY < h) {
+	                {
 	                  
-	                  // We want to draw a box before the icon has loaded so there isn't just whiteness.
-	                  const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
-	                  context.globalAlpha = 0.75;
-	                  context.strokeStyle = strokeColor;
-	                  context.lineWidth = strokeThickness;
-	                  context.fillStyle = "white";
-	                  context.beginPath();
-	                  context.rect(dx, dy, iconWidth, iconWidth);
-	                  context.stroke();
-	                  context.fill();
-	                  context.closePath();
+	                  // We want to draw a box so there isn't just whiteness.
+	                  if (classHeatmap > -1) {
+	                    context.globalAlpha = 0.75;
+	                    context.strokeStyle = strokeColor;
+	                    context.lineWidth = strokeThickness;
+	                    context.fillStyle = "white";
+	                    context.beginPath();
+	                    context.rect(iconX, iconY, iconWidth, iconWidth);
+	                    context.stroke();
+	                    context.fill();
+	                    context.closePath();
+	                  }
 
 	                  load(icon.url).then(response => {
-	                    // check that we're still on the right layer/zoom
-	                    const {currentZoomIndex, iconCrop, showLabels, textShadow} = this.get();
-	                    if(currentZoomIndex == layerIndex) {
+	                    // check that we're still on the right layer/zoom/id
+	                    const {id, visibleLayers, iconCrop, showLabels, textShadow} = this.get();
+	                    // console.log(requestedID, id)
+	                    if(visibleLayers.indexOf(layerIndex) > -1 && requestedID === id) {
 	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
+	                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+
+	                      // If we have a class heatmap active, calculate the transparency for the current icon
 	                      let a = 1;
 	                      if (classHeatmap > -1) {
 	                        let i = icon.full_class_indices.indexOf(classHeatmap);
@@ -2969,22 +6259,16 @@
 	                          a = 0.0;
 	                        }
 	                      }
-	                      // let a = Math.min(1,
-	                      //   Math.max(0.2, Math.pow(icon.top_class_values[0], 2) * 
-	                      //   1000 * alphaAttributionFactor));
-
-	                      // get current values in case they changed while loading
-	                      const {sx, sy, dx, dy, iconWidth} = this.iconToCanvasPosition(icon, layerIndex);
 
 	                      // draw the icon
 	                      context.globalAlpha = a;
 	                      const iconOffset = (iconCrop * config.icon_size) / 2;
-	                      context.clearRect(dx + 1, dy + 1, iconWidth - 2, iconWidth - 2);
+	                      context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
 	                      context.drawImage(response,
 	                        //source
-	                        sy + iconOffset, sx + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
+	                        sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
 	                        //destination
-	                        dx, dy, iconWidth, iconWidth
+	                        iconX, iconY, iconWidth, iconWidth
 	                      );
 	                      context.globalAlpha = 1;
 
@@ -2994,10 +6278,10 @@
 	                        if (textShadow) {
 	                          context.lineWidth = 2;
 	                          context.strokeStyle = textShadowColor;
-	                          context.strokeText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+	                          context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
 	                        }
 	                        context.fillStyle = textColor;
-	                        context.fillText(labels[icon.top_class_indices[0]], dx + 4, dy + iconWidth - 4, iconWidth - 8);
+	                        context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
 	                      }
 
 	                    }
@@ -3005,8 +6289,8 @@
 	                  });
 	                }
 	              }
-	            });
-	          });
+	            }
+	          }
 	        }
 	      });
 	    }
@@ -3014,18 +6298,21 @@
 	  };
 
 	function oncreate$2() {
-	  this.home();
+	  // this.home(0);
 	}
 	function onupdate$1({changed, current, previous}) {
-	  this.set({context: this.refs.canvas.getContext('2d')});
-	  if (changed.maxAttributionValue || changed.minActivations || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.labels || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.iconCrop || changed.currentZoomIndex || changed.layers || changed.alphaAttributionFactor || changed.scaleCountFactor || changed.gcx || changed.gcy) {
+	  // console.log("atlas", changed, current.scale)
+	  if (!current.context || changed.viewWidth || changed.viewHeight) {
+	    this.set({context: this.refs.canvas.getContext('2d')});
+	  }
+	  if (changed.autoGridSizeMultiplier || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
 	    this.render();
 	  }
-	  if (changed.currentIconInfo) {
+	  if (changed.hoverIconData) {
 	    const {tooltip} = this.store.get();
 	    const {showHoverIcon} = this.get();
 	    if (showHoverIcon) {
-	      tooltip.show(current.currentIconInfo);
+	      tooltip.show(current.hoverIconData);
 	    } else {
 	      tooltip.hide();
 	    }
@@ -3042,13 +6329,13 @@
 
 	function add_css$1() {
 		var style = createElement("style");
-		style.id = 'svelte-ptap6b-style';
-		style.textContent = ".svelte-ref-root.svelte-ptap6b{position:relative;width:100%;height:100%;contain:layout}.svelte-ref-stage.svelte-ptap6b{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}.svelte-ref-stage.panning.svelte-ptap6b{cursor:move}.svelte-ref-canvas.svelte-ptap6b{position:absolute;top:0;left:0;border-radius:8px}.icon.svelte-ptap6b{display:block;position:absolute;top:0;left:0;border-radius:4px;border:solid 3px black;pointer-events:none;box-sizing:border-box}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXRsYXMuaHRtbCIsInNvdXJjZXMiOlsiQXRsYXMuaHRtbCJdLCJzb3VyY2VzQ29udGVudCI6WyI8UmFkYXIgYmluZDpyZWFkeSAvPlxuXG57I2lmIHJlYWR5fVxuICA8QXRsYXNEYXRhTG9hZGVyIFxuICAgIHtpZH0gXG4gICAge2xheWVyfSBcbiAgICB7bGF5b3V0fVxuICAgIHtjbGFzc0ZpbHRlcn1cbiAgICB7ZmlsdGVyfVxuICAgIGJpbmQ6Y29uZmlnXG4gICAgYmluZDpsYXllcnMgXG4gICAgYmluZDpsYWJlbHMgXG4gIC8+XG57L2lmfVxuXG4gIDxkaXZcbiAgICByZWY6cm9vdFxuICAgIGJpbmQ6Y2xpZW50V2lkdGg9dmlld1dpZHRoXG4gICAgYmluZDpjbGllbnRIZWlnaHQ9dmlld0hlaWdodFxuICA+XG4gICAgPGRpdlxuICAgICAgcmVmOnN0YWdlXG4gICAgICBjbGFzcz1cInsobW91c2VNb3ZlTW9kZSA9PSAncGFuJyAmIGVuYWJsZURyYWdUb1BhbikgPyAncGFubmluZycgOiAnJ31cIlxuICAgICAgb246bW91c2Vkb3duPVwibW91c2VEb3duKGV2ZW50KVwiIG9uOm1vdXNlbW92ZT1cIm1vdXNlTW92ZShldmVudClcIiBcbiAgICAgIG9uOm1vdXNlZW50ZXI9XCJtb3VzZUVudGVyKGV2ZW50KVwiIG9uOm1vdXNlb3V0PVwibW91c2VPdXQoZXZlbnQpXCJcbiAgICA+XG4gICAgICA8Wm9vbVxuICAgICAgICByZWY6em9vbVxuICAgICAgICBiaW5kOnNjYWxlXG4gICAgICAgIGJpbmQ6dW5pdFxuICAgICAgICBiaW5kOmdjeFxuICAgICAgICBiaW5kOmdjeVxuICAgICAgICB3aWR0aD17dmlld1dpZHRofVxuICAgICAgICBoZWlnaHQ9e3ZpZXdIZWlnaHR9XG4gICAgICAvPlxuICAgICAgPGNhbnZhc1xuICAgICAgICByZWY6Y2FudmFzXG4gICAgICAgIHdpZHRoPXt2aWV3V2lkdGggKiBzY3JlZW5SZXNvbHV0aW9ufVxuICAgICAgICBoZWlnaHQ9e3ZpZXdIZWlnaHQgKiBzY3JlZW5SZXNvbHV0aW9ufVxuICAgICAgICBzdHlsZT1cIndpZHRoOiB7dmlld1dpZHRofXB4OyBoZWlnaHQ6IHt2aWV3SGVpZ2h0fXB4O1wiXG4gICAgICA+PC9jYW52YXM+XG4gICAgICB7I2lmIHNob3dIb3Zlckljb259XG4gICAgICAgIDxkaXYgY2xhc3M9XCJpY29uXCIgc3R5bGU9XCJ3aWR0aDp7aWNvblNpemVJblBpeGVscyArIDIgKyAncHgnfTsgaGVpZ2h0OntpY29uU2l6ZUluUGl4ZWxzICsgMiArICdweCd9OyBsZWZ0Ont0b3BMZWZ0Q29ybmVySG92ZXIueCArICdweCd9OyB0b3A6e3RvcExlZnRDb3JuZXJIb3Zlci55ICsgJ3B4J31cIj48L2Rpdj5cbiAgICAgIHsvaWZ9XG4gICAgPC9kaXY+XG4gIDwvZGl2PlxuXG48c2NyaXB0PlxuaW1wb3J0IHsgZGVmYXVsdCBhcyBsb2FkIH0gZnJvbSAnLi9sb2FkLmpzJztcbmltcG9ydCB7IG1heCB9IGZyb20gJ2QzLWFycmF5JztcblxuZXhwb3J0IGRlZmF1bHQge1xuICBjb21wb25lbnRzOiB7IFxuICAgIEF0bGFzRGF0YUxvYWRlcjogJy4vQXRsYXNEYXRhTG9hZGVyLmh0bWwnLCBcbiAgICBab29tOiAnLi9ab29tLmh0bWwnLFxuICAgIFJhZGFyOiAnLi9saWJyYXJ5L1JhZGFyLmh0bWwnXG4gIH0sXG4gIGRhdGEoKSB7XG4gICAgcmV0dXJuIHtcbiAgICAgIHJlYWR5OiB0cnVlLFxuICAgICAgaWQ6IFwiaW5jZXB0aW9udjFfbWl4ZWQ0Y1wiLFxuICAgICAgXG4gICAgICBjb25maWc6IG51bGwsXG4gICAgICBsYXllcnM6IG51bGwsXG4gICAgICBsYWJlbHM6IG51bGwsXG5cbiAgICAgIGxheWVyOiAwLFxuICAgICAgbGF5b3V0OiAwLFxuICAgICAgY2xhc3NGaWx0ZXI6IDAsXG4gICAgICBmaWx0ZXI6IDAsXG5cbiAgICAgIG1pbkFjdGl2YXRpb25zOiAxLFxuXG4gICAgICBzaG93TGFiZWxzOiBmYWxzZSxcbiAgICAgIHRleHRTaGFkb3c6IGZhbHNlLFxuICAgICAgc2hvd0hvdmVySW1hZ2U6IGZhbHNlLFxuXG4gICAgICBjb250ZXh0OiBudWxsLFxuXG4gICAgICBhbHBoYUF0dHJpYnV0aW9uRmFjdG9yOiAwLjAyLFxuICAgICAgc2NhbGVDb3VudEZhY3RvcjogMSxcbiAgICAgIGNsYXNzSGVhdG1hcDogLTEsXG4gICAgICBjbGFzc0hlYXRtYXBNdWx0aXBsaWVyOiAxLFxuICAgICAgY2xhc3NIZWF0bWFwUG9zaXRpdmU6IDEsXG5cbiAgICAgIGdyaWRTaXplOiBudWxsLFxuICAgICAgc2hvd0dyaWQ6IGZhbHNlLFxuXG4gICAgICAvLyBmb3IgaW5pdGlhbCBzdGF0ZSwgYW5kIGdvaW5nIGJhY2sgdG8gXCJob21lXCJcbiAgICAgIGhvbWVYOiAuNSxcbiAgICAgIGhvbWVZOiAuNSxcbiAgICAgIGhvbWVTY2FsZTogMSxcblxuICAgICAgaWNvbkNyb3A6IDAuMDIsXG5cbiAgICAgIC8vIHpvb20gZmFjdG9yXG4gICAgICB6b29tRmFjdG9yczoge291dDogMC41LCBpbjogMn0sXG5cbiAgICAgIC8vIHR1cm4gb2ZmIGZlYXR1cmVzXG4gICAgICBlbmFibGVDbGlja1RvWm9vbTogdHJ1ZSxcbiAgICAgIGVuYWJsZUhvdmVyOiB0cnVlLFxuICAgICAgZW5hYmxlRHJhZ1RvUGFuOiB0cnVlLFxuXG5cbiAgICAgIGJhY2tncm91bmRDb2xvcjogXCJ3aGl0ZVwiLFxuICAgICAgc3Ryb2tlQ29sb3I6IFwicmdiKDIyMCwgMjIwLCAyMjApXCIsXG4gICAgICBzdHJva2VUaGlja25lc3M6IDEsXG4gICAgICBpbWFnZVNtb290aGluZzogZmFsc2UsXG4gICAgICBmb250U2l6ZTogMTAsXG4gICAgICB0ZXh0Q29sb3I6IFwid2hpdGVcIixcbiAgICAgIHRleHRTaGFkb3dDb2xvcjogXCJyZ2JhKDAsIDAsIDAsIDAuOClcIixcblxuICAgICAgLy8gZm9yIHBvc2l0aW9uaW5nIHRoZSBob3ZlciBpY29uXG4gICAgICBsYXN0UmVjb3JkZWRDYW52YXNQb3M6IHt4OiAtMTAwLCB5OiAtMTAwfSxcblxuICAgICAgLy8gZm9yIG1hbmFnaW5nIHBhbm5pbmcgb2ZmIHRoZSBzY3JlZW5cbiAgICAgIG1vdXNlRG93blNjcmVlblBvczoge3g6IDAsIHk6IDB9LFxuXG4gICAgICAvLyBjYW4gYmUgXCJob3ZlclwiIG9yIFwicGFuXCJcbiAgICAgIG1vdXNlTW92ZU1vZGU6ICdob3ZlcicsXG4gICAgICBvbkNhbnZhczogZmFsc2UsXG5cbiAgICAgIHNjcmVlblJlc29sdXRpb246IDEsXG5cbiAgICAgIG1vdXNlRG93blRpbWVyOiAwLFxuICAgICAgbW91c2VNb3ZlRnVuY3Rpb246IGZ1bmN0aW9uKCl7fSxcbiAgICAgIG1vdXNlVXBGdW5jdGlvbjogZnVuY3Rpb24oKXt9LFxuXG4gICAgfVxuICB9LFxuICBjb21wdXRlZDoge1xuICAgIG1heEF0dHJpYnV0aW9uVmFsdWU6ICh7bGF5ZXJzLCBsYXllcn0pID0+IHtcbiAgICAgIC8vIHJldHVybiAwLjI1O1xuICAgICAgaWYgKGxheWVycyA9PSBudWxsKSByZXR1cm4gMDtcbiAgICAgIGNvbnN0IGwgPSBsYXllcnNbbGF5ZXJdO1xuICAgICAgbGV0IG1heCA9IDA7XG4gICAgICBsLmZvckVhY2goeCA9PiB7XG4gICAgICAgIHguZm9yRWFjaCh5ID0+IHtcbiAgICAgICAgICBpZiAoeSAmJiB5Lm51bV9hY3RpdmF0aW9ucyA+IDUwMCkge1xuICAgICAgICAgICAgY29uc3QgdiA9IHkuZnVsbF9jbGFzc192YWx1ZXNbMF07XG4gICAgICAgICAgICBpZiAodiA+IG1heCkgbWF4ID0gdjtcbiAgICAgICAgICB9XG4gICAgICAgIH0pXG4gICAgICB9KVxuICAgICAgcmV0dXJuIG1heDtcbiAgICAgIC8vIHJldHVybiBsYXllcnMgPyBtYXgobCwgZCA9PiBkID8gbWF4KGQsIGRkID0+IGRkID8gKGRkLm4gPiA1MCA/IChkZC50b3BfY2xhc3NfdmFsdWVzW2RkLnRvcF9jbGFzc19pbmRpY2VzLmluZGV4T2YoY2xhc3NIZWF0bWFwKV0pIDogMCkgOiAwKTogMCkgOiAwO1xuICAgICAgfSxcbiAgICBhc3BlY3RSYXRpbzogKHt2aWV3V2lkdGgsIHZpZXdIZWlnaHR9KSA9PiB2aWV3V2lkdGggLyB2aWV3SGVpZ2h0LFxuICAgIC8vIHZpZXdIZWlnaHQ6ICh7dmlld1dpZHRofSkgPT4gdmlld1dpZHRoIC8gMS41LFxuICAgIC8vIE1hdGgubWluIG9mIHZpZXdIZWlnaHQvdmlld1dpZHRoIHRvIG1ha2Ugc3VyZSBpdCBmaXRzIGluc2lkZSB3aGVuIHNjYWxlID0gMVxuICAgIG1pblZpZXdEaW1JblB4OiAoe3ZpZXdXaWR0aCwgdmlld0hlaWdodH0pID0+IE1hdGgubWluKHZpZXdXaWR0aCwgdmlld0hlaWdodCksIFxuICAgIC8vIGRlZmluZXMgdG9wIGxlZnQgY29ybmVyIG9mIGdsb2JhbCBpbiBwaXhlbHMsIHJlbGF0aXZlIHRvIHRoZSB1cHBlciBsZWZ0IGNvcm5lciBvZiB0aGUgY2FudmFzIGFzIDAsMFxuICAgIHRvcExlZnQ6ICh7Z2N4LCBnY3ksIHNjYWxlLCB2aWV3V2lkdGgsIHZpZXdIZWlnaHQsIG1pblZpZXdEaW1JblB4fSkgPT4ge1xuICAgICAgcmV0dXJuIHtcbiAgICAgICAgeDogdmlld1dpZHRoIC8gMiAtIGdjeCAqIG1pblZpZXdEaW1JblB4ICogc2NhbGUsXG4gICAgICAgIHk6IHZpZXdIZWlnaHQgLyAyIC0gZ2N5ICogbWluVmlld0RpbUluUHggKiBzY2FsZX0gXG4gICAgfSxcbiAgICBjdXJyZW50Wm9vbUluZGV4OiAoe3NjYWxlLCBncmlkU2l6ZX0pID0+IHtcbiAgICAgIGxldCBzID0gMDtcbiAgICAgIGlmIChncmlkU2l6ZSAhPSBudWxsKSB7XG4gICAgICAgIHMgPSBncmlkU2l6ZTtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIGlmIChzY2FsZSA+IDEpIHMgPSAwO1xuICAgICAgICBpZiAoc2NhbGUgPiAyKSBzID0gMTtcbiAgICAgICAgaWYgKHNjYWxlID4gNCkgcyA9IDI7XG4gICAgICAgIGlmIChzY2FsZSA+IDgpIHMgPSAzO1xuICAgICAgICBpZiAoc2NhbGUgPiAxNikgcyA9IDQ7XG4gICAgICB9XG4gICAgICByZXR1cm4gK3M7XG4gICAgfSxcbiAgICBudW1JY29uc1dpZGU6ICh7Y3VycmVudFpvb21JbmRleCwgbGF5ZXJzfSkgPT4ge1xuICAgICAgaWYobGF5ZXJzICYmIGN1cnJlbnRab29tSW5kZXgpe1xuICAgICAgICByZXR1cm4gbGF5ZXJzW2N1cnJlbnRab29tSW5kZXhdLmxlbmd0aFxuICAgICAgfVxuICAgIH0sXG4gICAgaWNvblNpemVJblBpeGVsczogKHtjb25maWcsIG1pblZpZXdEaW1JblB4LCBjdXJyZW50Wm9vbUluZGV4LCBzY2FsZX0pID0+IHtcbiAgICAgIGlmKGNvbmZpZyl7XG4gICAgICAgIHJldHVybiBtaW5WaWV3RGltSW5QeCAvIChjb25maWcuZ3JpZF9zaXplW2N1cnJlbnRab29tSW5kZXhdKSAqIHNjYWxlO1xuICAgICAgfVxuICAgIH0sXG4gICAgc2hvd0hvdmVySWNvbjogKHttb3VzZU1vdmVNb2RlLCBvbkNhbnZhcywgY3VycmVudEljb25JbmZvLCBlbmFibGVIb3Zlcn0pID0+IHtcbiAgICAgIHJldHVybiBlbmFibGVIb3ZlciAmJiBvbkNhbnZhcyAmJiAobW91c2VNb3ZlTW9kZSA9PSAnaG92ZXInKSAmJiBjdXJyZW50SWNvbkluZm9cbiAgICB9LFxuICAgIGxheWVyU2NhbGU6ICh7bWluVmlld0RpbUluUHgsIGNvbmZpZywgY3VycmVudFpvb21JbmRleCwgc2NhbGV9KSA9PiB7XG4gICAgICBpZihjb25maWcpe1xuICAgICAgICByZXR1cm4gKG1pblZpZXdEaW1JblB4IC8gKGNvbmZpZy5pY29uX3NpemUgKiBjb25maWcuZ3JpZF9zaXplW2N1cnJlbnRab29tSW5kZXhdKSkgKiBzY2FsZVxuICAgICAgfVxuICAgIH0sIFxuICAgIGdyaWRTZWxlY3RlZDogKHtsYXN0UmVjb3JkZWRDYW52YXNQb3MsIHRvcExlZnQsIGxheWVyU2NhbGUsIGNvbmZpZ30pID0+IHtcbiAgICAgIGlmKGNvbmZpZyl7XG4gICAgICAgIHJldHVybiB7XG4gICAgICAgICAgeDogTWF0aC5mbG9vcigobGFzdFJlY29yZGVkQ2FudmFzUG9zLnggLSB0b3BMZWZ0LngpIC8gKGxheWVyU2NhbGUgKiBjb25maWcuaWNvbl9zaXplKSksXG4gICAgICAgICAgeTogTWF0aC5mbG9vcigobGFzdFJlY29yZGVkQ2FudmFzUG9zLnkgLSB0b3BMZWZ0LnkpIC8gKGxheWVyU2NhbGUgKiBjb25maWcuaWNvbl9zaXplKSlcbiAgICAgICAgfSAgICAgICAgXG4gICAgICB9XG4gICAgfSwgXG4gICAgdG9wTGVmdENvcm5lckhvdmVyOiAoe2NvbmZpZywgbGF5ZXJTY2FsZSwgdG9wTGVmdCwgZ3JpZFNlbGVjdGVkfSkgPT4ge1xuICAgICAgaWYoY29uZmlnKXtcbiAgICAgICAgcmV0dXJuIHtcbiAgICAgICAgICB4OiBncmlkU2VsZWN0ZWQueCAqIGNvbmZpZy5pY29uX3NpemUgKiBsYXllclNjYWxlICsgdG9wTGVmdC54IC0gMSxcbiAgICAgICAgICB5OiBncmlkU2VsZWN0ZWQueSAqIGNvbmZpZy5pY29uX3NpemUgKiBsYXllclNjYWxlICsgdG9wTGVmdC55IC0gMVxuICAgICAgICB9XG4gICAgICB9XG4gICAgfSxcbiAgICBjdXJyZW50SWNvbkluZm86ICh7bGF5ZXJzLCBjdXJyZW50Wm9vbUluZGV4LCBncmlkU2VsZWN0ZWQsIGNsYXNzSGVhdG1hcH0pID0+IHtcbiAgICAgIGlmKGxheWVycyAmJiBsYXllcnNbY3VycmVudFpvb21JbmRleF0gJiYgXG4gICAgICAgICBsYXllcnNbY3VycmVudFpvb21JbmRleF1bZ3JpZFNlbGVjdGVkLnldICYmIFxuICAgICAgICAgbGF5ZXJzW2N1cnJlbnRab29tSW5kZXhdW2dyaWRTZWxlY3RlZC55XVtncmlkU2VsZWN0ZWQueF1cbiAgICAgICAgICl7XG4gICAgICAgICAgY29uc3QgaWNvbkluZm8gPSBsYXllcnNbY3VycmVudFpvb21JbmRleF1bZ3JpZFNlbGVjdGVkLnldW2dyaWRTZWxlY3RlZC54XTtcbiAgICAgICAgICBpZihpY29uSW5mby5udW1fYWN0aXZhdGlvbnMgPiAwKXtcbiAgICAgICAgICAgIHJldHVybiBpY29uSW5mb1xuICAgICAgICAgIH1cbiAgICAgIH1cbiAgICB9XG4gIH0sXG4gIG9udXBkYXRlKHtjaGFuZ2VkLCBjdXJyZW50LCBwcmV2aW91c30pIHtcbiAgICB0aGlzLnNldCh7Y29udGV4dDogdGhpcy5yZWZzLmNhbnZhcy5nZXRDb250ZXh0KCcyZCcpfSk7XG4gICAgaWYgKGNoYW5nZWQubWF4QXR0cmlidXRpb25WYWx1ZSB8fCBjaGFuZ2VkLm1pbkFjdGl2YXRpb25zIHx8IGNoYW5nZWQuY2xhc3NIZWF0bWFwIHx8IGNoYW5nZWQuY2xhc3NIZWF0bWFwTXVsdGlwbGllciB8fCBjaGFuZ2VkLmNsYXNzSGVhdG1hcFBvc2l0aXZlIHx8IGNoYW5nZWQubGFiZWxzIHx8IGNoYW5nZWQuc2hvd0xhYmVscyB8fCBjaGFuZ2VkLnZpZXdXaWR0aCB8fCBjaGFuZ2VkLnZpZXdIZWlnaHQgfHwgY2hhbmdlZC5zY2FsZSB8fCBjaGFuZ2VkLmljb25Dcm9wIHx8IGNoYW5nZWQuY3VycmVudFpvb21JbmRleCB8fCBjaGFuZ2VkLmxheWVycyB8fCBjaGFuZ2VkLmFscGhhQXR0cmlidXRpb25GYWN0b3IgfHwgY2hhbmdlZC5zY2FsZUNvdW50RmFjdG9yIHx8IGNoYW5nZWQuZ2N4IHx8IGNoYW5nZWQuZ2N5KSB7XG4gICAgICB0aGlzLnJlbmRlcigpO1xuICAgIH1cbiAgICBpZiAoY2hhbmdlZC5jdXJyZW50SWNvbkluZm8pIHtcbiAgICAgIGNvbnN0IHt0b29sdGlwfSA9IHRoaXMuc3RvcmUuZ2V0KCk7XG4gICAgICBjb25zdCB7c2hvd0hvdmVySWNvbn0gPSB0aGlzLmdldCgpO1xuICAgICAgaWYgKHNob3dIb3Zlckljb24pIHtcbiAgICAgICAgdG9vbHRpcC5zaG93KGN1cnJlbnQuY3VycmVudEljb25JbmZvKTtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIHRvb2x0aXAuaGlkZSgpO1xuICAgICAgfVxuICAgIH1cbiAgICBpZiAoY2hhbmdlZC5zaG93SG92ZXJJY29uKSB7XG4gICAgICBpZiAoY3VycmVudC5zaG93SG92ZXJJY29uID09IGZhbHNlKSB7XG4gICAgICAgIGNvbnN0IHsgdG9vbHRpcCB9ID0gdGhpcy5zdG9yZS5nZXQoKTtcbiAgICAgICAgdG9vbHRpcC5oaWRlKCk7XG4gICAgICB9XG4gICAgfVxuXG4gIH0sXG4gIG9uY3JlYXRlKCkge1xuICAgIHRoaXMuaG9tZSgpO1xuICB9LFxuICBtZXRob2RzOiB7XG4gICAgZnVsbHNjcmVlbigpIHtcbiAgICAgIHRoaXMucmVmcy5yb290LndlYmtpdFJlcXVlc3RGdWxsc2NyZWVuKCk7XG4gICAgfSxcbiAgICBtb3VzZUVudGVyKCkge1xuICAgICAgdGhpcy5zZXQoe29uQ2FudmFzOiB0cnVlfSlcbiAgICB9LFxuICAgIG1vdXNlRG93bihldmVudCkge1xuICAgICAgLy8gc2hvdWxkIHRoaXMgYmUgc2V0IG9uY2UsIHNvbWV3aGVyZSBlbHNlPyBvbmNyZWF0ZT8gXG4gICAgICB0aGlzLnNldCh7bW91c2VNb3ZlRnVuY3Rpb246IHRoaXMubW91c2VNb3ZlLmJpbmQodGhpcyksIG1vdXNlVXBGdW5jdGlvbjogdGhpcy5tb3VzZVVwLmJpbmQodGhpcyl9KTtcblxuICAgICAgY29uc3Qge21vdXNlTW92ZUZ1bmN0aW9uLCBtb3VzZVVwRnVuY3Rpb259ID0gdGhpcy5nZXQoKTtcblxuICAgICAgZXZlbnQucHJldmVudERlZmF1bHQoKTtcblxuICAgICAgLy8gc2V0IGV2ZW50IGxpc3RlbmVycyBvbiB3aW5kb3dcbiAgICAgIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKFwibW91c2Vtb3ZlXCIsIG1vdXNlTW92ZUZ1bmN0aW9uKTtcbiAgICAgIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKFwibW91c2V1cFwiLG1vdXNlVXBGdW5jdGlvbik7XG4gICAgICAvLyBkbyBJIG5lZWQgdG8gdW5zZXQgbG9jYWwgbGlzdGVuZXI/IFxuXG4gICAgICB0aGlzLnNldCh7bW91c2VNb3ZlTW9kZTogJ3Bhbid9KVxuICAgICAgdGhpcy5zZXQoe21vdXNlRG93blRpbWVyOiBEYXRlLm5vdygpfSlcblxuICAgICAgLy8gY2FudmFzIHBvc2l0aW9uXG4gICAgICB0aGlzLnNldCh7bGFzdFJlY29yZGVkQ2FudmFzUG9zOiB7eDogZXZlbnQub2Zmc2V0WCwgeTogZXZlbnQub2Zmc2V0WX19KVxuXG4gICAgICAvLyBzY3JlZW5Qb3NpdGlvbiBhdCBtb3VzZWRvd25cbiAgICAgIHRoaXMuc2V0KHttb3VzZURvd25TY3JlZW5Qb3M6IHt4OiBldmVudC5zY3JlZW5YLCB5OiBldmVudC5zY3JlZW5ZfX0pXG5cbiAgICB9LFxuICAgIG1vdXNlTW92ZShldmVudCkge1xuICAgICAgY29uc3QgeyBtb3VzZU1vdmVNb2RlIH0gPSB0aGlzLmdldCgpO1xuXG4gICAgICB0aGlzLnNldCh7bGFzdFJlY29yZGVkQ2FudmFzUG9zOiB7eDogZXZlbnQub2Zmc2V0WCwgeTogZXZlbnQub2Zmc2V0WX19KTtcblxuICAgICAgaWYgKG1vdXNlTW92ZU1vZGUgPT0gJ3BhbicpIHtcbiAgICAgICAgY29uc3Qge21vdXNlRG93blNjcmVlblBvcywgZ2N4LCBnY3ksIGVuYWJsZURyYWdUb1Bhbn0gPSB0aGlzLmdldCgpO1xuXG4gICAgICAgIC8vIHVwZGF0ZSBnY3gsIGdjeSwgbW91c2VEb3duU2NyZWVuUG9zXG4gICAgICAgIHRoaXMuc2V0KHtcbiAgICAgICAgICBtb3VzZURvd25TY3JlZW5Qb3M6IHt4OiBldmVudC5zY3JlZW5YLCB5OiBldmVudC5zY3JlZW5ZfVxuICAgICAgICB9KVxuXG4gICAgICAgIGlmKGVuYWJsZURyYWdUb1Bhbil7XG4gICAgICAgICAgdGhpcy5yZWZzLnpvb20ucGFuVG8oXG4gICAgICAgICAgICB0aGlzLnRvUGVyY2VudChtb3VzZURvd25TY3JlZW5Qb3MueCAtIGV2ZW50LnNjcmVlblgpICsgZ2N4LFxuICAgICAgICAgICAgdGhpcy50b1BlcmNlbnQobW91c2VEb3duU2NyZWVuUG9zLnkgLSBldmVudC5zY3JlZW5ZKSArIGdjeSxcbiAgICAgICAgICAgIDBcbiAgICAgICAgICApXG4gICAgICAgIH0gXG4gICAgICB9XG5cbiAgICB9LFxuICAgIG1vdXNlT3V0KGV2ZW50KSB7XG4gICAgICB0aGlzLnNldCh7XG4gICAgICAgIG9uQ2FudmFzOiBmYWxzZVxuICAgICAgfSk7XG4gICAgfSxcbiAgICBtb3VzZVVwKGV2ZW50KSB7XG4gICAgICBjb25zdCB7bW91c2VEb3duVGltZXIsIG1vdXNlTW92ZU1vZGUsIHNjYWxlLCB6b29tRmFjdG9ycywgbW91c2VNb3ZlRnVuY3Rpb24sIG1vdXNlVXBGdW5jdGlvbiwgbGFzdFJlY29yZGVkQ2FudmFzUG9zLCB0b3BMZWZ0LCBnY3gsIGdjeSwgZW5hYmxlQ2xpY2tUb1pvb219ID0gdGhpcy5nZXQoKTtcblxuICAgICAgLy8gcmVzZXQgbW9kZSB0byBob3ZlclxuICAgICAgdGhpcy5zZXQoe21vdXNlTW92ZU1vZGU6ICdob3Zlcid9KVxuXG4gICAgICAvLyByZW1vdmUgYm9keSBldmVudCBsaXN0ZW5lcnNcbiAgICAgIHdpbmRvdy5yZW1vdmVFdmVudExpc3RlbmVyKFwibW91c2Vtb3ZlXCIsIG1vdXNlTW92ZUZ1bmN0aW9uKTtcbiAgICAgIHdpbmRvdy5yZW1vdmVFdmVudExpc3RlbmVyKFwibW91c2V1cFwiLCBtb3VzZVVwRnVuY3Rpb24pO1xuXG4gICAgICAvLyBjYWxjdWxhdGUgb2Zmc2V0cyB0byBkZXRlcm1pbmUgdG8gem9vbSBvciBub3RcbiAgICAgIGNvbnN0IGNsaWNrRGlmZiA9IChEYXRlLm5vdygpIC0gbW91c2VEb3duVGltZXIpO1xuICAgICAgY29uc3QgY2xpY2tEaXN0YW5jZSA9IE1hdGguc3FydChcbiAgICAgICAgTWF0aC5wb3coZXZlbnQub2Zmc2V0WCAtIGxhc3RSZWNvcmRlZENhbnZhc1Bvcy54LCAyKSArIFxuICAgICAgICBNYXRoLnBvdyhldmVudC5vZmZzZXRZIC0gbGFzdFJlY29yZGVkQ2FudmFzUG9zLnksIDIpXG4gICAgICAgICk7XG5cblxuICAgICAgLy8gMjAwbXMgYW5kIDUgcGl4ZWxzIGRpc3RhbmNlIGlzIGZhaXJseSBhcmJpdHJhcnlcbiAgICAgIGlmKGNsaWNrRGlmZiA8IDIwMCAmJiBjbGlja0Rpc3RhbmNlIDwgNSkge1xuICAgICAgICAvLyBaT09NIVxuICAgICAgICBpZihlbmFibGVDbGlja1RvWm9vbSl7XG4gICAgICAgICAgLy8gdXNlIHNoaWZ0IGtleSB0byBkZXRlcm1pbmUgdG8gem9vbSBpbiBvciB6b29tIG91dFxuICAgICAgICAgIGxldCB6b29tQnkgPSB6b29tRmFjdG9ycy5pbjtcbiAgICAgICAgICBpZihldmVudC5zaGlmdEtleSl7XG4gICAgICAgICAgICB6b29tQnkgPSB6b29tRmFjdG9ycy5vdXQ7XG4gICAgICAgICAgfVxuXG4gICAgICAgICAgbGV0IG5ld0NlbnRlciA9IHt4OiAwLjUsIHk6IDAuNX1cblxuICAgICAgICAgIC8vIGdvIGhvbWUgaWYgc2NhbGUgPCAxXG4gICAgICAgICAgbGV0IG5ld1NjYWxlID0gem9vbUJ5ICogc2NhbGU7XG4gICAgICAgICAgaWYobmV3U2NhbGUgPiAxKXtcbiAgICAgICAgICAgIC8vIHVzZSBjdXJyZW50IG1vdXNlIHBvc2l0aW9uIHRvIGZpbmQgbmV3IGNlbnRlciBwb3NpdGlvblxuICAgICAgICAgICAgY29uc3QgZml4ZWRQb2ludCA9IHtcbiAgICAgICAgICAgICAgeDogdGhpcy50b1BlcmNlbnQoZXZlbnQub2Zmc2V0WCAtIHRvcExlZnQueCksXG4gICAgICAgICAgICAgIHk6IHRoaXMudG9QZXJjZW50KGV2ZW50Lm9mZnNldFkgLSB0b3BMZWZ0LnkpXG4gICAgICAgICAgICB9XG4gICAgICAgICAgICBuZXdDZW50ZXIgPSB7XG4gICAgICAgICAgICAgIHg6IGZpeGVkUG9pbnQueCAtICgoZml4ZWRQb2ludC54IC0gZ2N4KS96b29tQnkpLFxuICAgICAgICAgICAgICB5OiBmaXhlZFBvaW50LnkgLSAoKGZpeGVkUG9pbnQueSAtIGdjeSkvem9vbUJ5KVxuICAgICAgICAgICAgfVxuICAgICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgICBuZXdTY2FsZSA9IDE7XG4gICAgICAgICAgfVxuICAgICAgICAgIHRoaXMudHJhbnNpdGlvblRvKG5ld0NlbnRlci54LCBuZXdDZW50ZXIueSwgbmV3U2NhbGUsIDUwMClcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH0sXG4gICAgaG9tZSgpIHtcbiAgICAgIGNvbnN0IHtob21lWCwgaG9tZVksIGhvbWVTY2FsZX0gPSB0aGlzLmdldCgpO1xuICAgICAgdGhpcy50cmFuc2l0aW9uVG8oaG9tZVgsaG9tZVksaG9tZVNjYWxlLDgwMClcbiAgICB9LFxuICAgIHRyYW5zaXRpb25Ubyh4LCB5LCBzY2FsZSwgZHVyYXRpb24pIHtcbiAgICAgIHRoaXMucmVmcy56b29tLnRyYW5zaXRpb25Ubyh4LHksc2NhbGUsZHVyYXRpb24pO1xuICAgIH0sXG4gICAgem9vbWl0KG11bHRpcGxpZXIpIHtcbiAgICAgIGNvbnN0IHsgc2NhbGUgfSA9IHRoaXMuZ2V0KCk7XG4gICAgICB0aGlzLnJlZnMuem9vbS5zY2FsZVRvKHNjYWxlICogbXVsdGlwbGllciwgNTAwKVxuICAgIH0sXG4gICAgaWNvblRvQ2FudmFzUG9zaXRpb24oaWNvbiwgbGF5ZXJJbmRleCkge1xuICAgICAgY29uc3Qge2NvbmZpZywgc2NhbGVDb3VudEZhY3RvciwgdG9wTGVmdCwgbGF5ZXJTY2FsZSwgY3VycmVudFpvb21JbmRleH0gPSB0aGlzLmdldCgpO1xuXG4gICAgICBjb25zdCBwcm9wb3J0aW9uYWxTY2FsZUNvdW50RmFjdG9yID0gc2NhbGVDb3VudEZhY3RvciAvIChjdXJyZW50Wm9vbUluZGV4ICsgMSlcbiAgICAgIGNvbnN0IHNjYWxlTW9kaWZpZXIgPSAoTWF0aC5zcXJ0KE1hdGgubWluKHByb3BvcnRpb25hbFNjYWxlQ291bnRGYWN0b3IsIGljb24ubnVtX2FjdGl2YXRpb25zKSAvIHByb3BvcnRpb25hbFNjYWxlQ291bnRGYWN0b3IpKSBcbiAgICAgIGNvbnN0IGljb25XaWR0aCA9IGNvbmZpZy5pY29uX3NpemUgKiBsYXllclNjYWxlICogc2NhbGVNb2RpZmllcjtcblxuICAgICAgY29uc3Qgc3ggPSBpY29uLmxvY2FsWCAqIGNvbmZpZy5pY29uX3NpemU7XG4gICAgICBjb25zdCBzeSA9IGljb24ubG9jYWxZICogY29uZmlnLmljb25fc2l6ZTtcblxuICAgICAgY29uc3QgdGlsZVBvc194ID0gaWNvbi5ncmlkX3kgKiBjb25maWcuaWNvbl9zaXplO1xuICAgICAgY29uc3QgdGlsZVBvc195ID0gaWNvbi5ncmlkX3ggKiBjb25maWcuaWNvbl9zaXplO1xuXG4gICAgICAvLyBwaXhlbCBjb29yZGluYXRlIGluIHRoZSBnbG9iYWwgY29vcmRpbmF0ZSBzcGFjZVxuICAgICAgY29uc3QgZ2xvYmFsUGl4ZWxQb3NfeCA9IHRpbGVQb3NfeCAqIGxheWVyU2NhbGU7XG4gICAgICBjb25zdCBnbG9iYWxQaXhlbFBvc195ID0gdGlsZVBvc195ICogbGF5ZXJTY2FsZTtcblxuICAgICAgY29uc3QgY2FudmFzUG9zX3ggPSBnbG9iYWxQaXhlbFBvc194ICsgdG9wTGVmdC54O1xuICAgICAgY29uc3QgY2FudmFzUG9zX3kgPSBnbG9iYWxQaXhlbFBvc195ICsgdG9wTGVmdC55OyAgICAgIFxuXG4gICAgICAvLyBjYWxjIHNjYWxlIGFkanVzdCBmYWN0b3IgdG8gY2VudGVyIHRoZSBpbWFnZSBmb3IgdGhlIGljb24gaW4gaXQncyBib3hcbiAgICAgIGNvbnN0IHNjYWxlQWRqdXN0RmFjdG9yID0gICgxIC0gc2NhbGVNb2RpZmllcikgKiBjb25maWcuaWNvbl9zaXplICogbGF5ZXJTY2FsZSAgLyAyO1xuXG4gICAgICBjb25zdCBkeCA9IGNhbnZhc1Bvc194ICsgc2NhbGVBZGp1c3RGYWN0b3I7XG4gICAgICBjb25zdCBkeSA9IGNhbnZhc1Bvc195ICsgc2NhbGVBZGp1c3RGYWN0b3I7XG5cbiAgICAgIHJldHVybiB7c3gsIHN5LCBkeCwgZHksIGljb25XaWR0aH1cbiAgICB9LFxuICAgIHRvUGVyY2VudChwKSB7XG4gICAgICBjb25zdCB7c2NhbGUsIG1pblZpZXdEaW1JblB4fSA9IHRoaXMuZ2V0KCk7XG4gICAgICByZXR1cm4gcCAvIChzY2FsZSAqIG1pblZpZXdEaW1JblB4KTtcbiAgICB9LFxuICAgIHRvUGl4ZWxzKHApIHtcbiAgICAgIGNvbnN0IHtzY2FsZSwgbWluVmlld0RpbUluUHh9ID0gdGhpcy5nZXQoKTtcbiAgICAgIHJldHVybiBwICogc2NhbGUgKiBtaW5WaWV3RGltSW5QeDtcbiAgICB9LFxuICAgIGNsZWFyKCkge1xuICAgICAgY29uc3Qge3ZpZXdIZWlnaHQsIHZpZXdXaWR0aCwgY29udGV4dCwgYmFja2dyb3VuZENvbG9yfSA9IHRoaXMuZ2V0KCk7XG4gICAgICBjb250ZXh0Lmdsb2JhbEFscGhhID0gMTtcbiAgICAgIGNvbnRleHQuZmlsbFN0eWxlPSBiYWNrZ3JvdW5kQ29sb3I7XG4gICAgICBjb250ZXh0LmNsZWFyUmVjdCgwLCAwLCB2aWV3V2lkdGgsIHZpZXdIZWlnaHQpO1xuICAgICAgY29udGV4dC5maWxsUmVjdCgwLCAwLCB2aWV3V2lkdGgsIHZpZXdIZWlnaHQpO1xuICAgIH0sXG4gICAgdXBkYXRlSWNvbkhvdmVySW1hZ2UoKSB7XG4gICAgICBjb25zdCB7Y3VycmVudEljb25JbmZvLCBjdXJyZW50Wm9vbUluZGV4LCBpY29uQ3JvcCwgY29uZmlnLCBzaG93SG92ZXJJbWFnZX0gPSB0aGlzLmdldCgpO1xuICAgICAgaWYoY3VycmVudEljb25JbmZvICYmIHNob3dIb3ZlckltYWdlKXtcbiAgICAgICAgbG9hZChjdXJyZW50SWNvbkluZm8udXJsKS50aGVuKHJlc3BvbnNlID0+IHtcbiAgICAgICAgICBjb25zdCBob3ZlckltYWdlQ29udGV4dCA9IHRoaXMucmVmcy5ob3ZlckltYWdlLmdldENvbnRleHQoJzJkJyk7XG4gICAgICAgICAgY29uc3Qge3N4LCBzeSwgZHgsIGR5LCBpY29uV2lkdGh9ID0gdGhpcy5pY29uVG9DYW52YXNQb3NpdGlvbihjdXJyZW50SWNvbkluZm8sIGN1cnJlbnRab29tSW5kZXgpXG4gICAgICAgICAgY29uc3QgaWNvbk9mZnNldCA9IChpY29uQ3JvcCAqIGNvbmZpZy5pY29uX3NpemUpIC8gMjtcbiAgICAgICAgICBjb25zdCBlZGdlTGVuZ3RoID0gTWF0aC5taW4odGhpcy5yZWZzLmhvdmVySW1hZ2UuaGVpZ2h0LCB0aGlzLnJlZnMuaG92ZXJJbWFnZS53aWR0aClcbiAgICAgICAgICBob3ZlckltYWdlQ29udGV4dC5kcmF3SW1hZ2UocmVzcG9uc2UsXG4gICAgICAgICAgICAgICAgICAgICAgICAgIC8vc291cmNlXG4gICAgICAgICAgICAgICAgICAgICAgICAgIHN5ICsgaWNvbk9mZnNldCwgc3ggKyBpY29uT2Zmc2V0LCBjb25maWcuaWNvbl9zaXplIC0gaWNvbk9mZnNldCAqIDIsIGNvbmZpZy5pY29uX3NpemUgLSBpY29uT2Zmc2V0ICogMixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgLy9kZXN0aW5hdGlvblxuICAgICAgICAgICAgICAgICAgICAgICAgICAwLCAwLCBlZGdlTGVuZ3RoLCBlZGdlTGVuZ3RoXG4gICAgICAgICAgICAgICAgICAgICAgICApO1xuICAgICAgICB9KVxuICAgICAgfVxuICAgIH0sXG4gICAgcmVuZGVyKCkge1xuXG4gICAgICBjb25zdCB7aW1hZ2VTbW9vdGhpbmcsIG1pbkFjdGl2YXRpb25zLCB2aWV3SGVpZ2h0LCB2aWV3V2lkdGgsIGNvbnRleHQsIGJhY2tncm91bmRDb2xvciwgY29uZmlnLCBsYXllcnMsIGN1cnJlbnRab29tSW5kZXgsIHN0cm9rZUNvbG9yLCBzdHJva2VUaGlja25lc3MsIGZvbnRTaXplLHRleHRTaGFkb3dDb2xvciwgdGV4dENvbG9yLCBtYXhBdHRyaWJ1dGlvblZhbHVlLCBjbGFzc0hlYXRtYXBNdWx0aXBsaWVyfSA9IHRoaXMuZ2V0KCk7XG5cbiAgICAgIHRoaXMuY2xlYXIoKTtcbiAgICAgIC8vIGNvbnRleHQuaW1hZ2VTbW9vdGhpbmdRdWFsaXR5ID0gXCJsb3dcIjtcbiAgICAgIGNvbnRleHQuaW1hZ2VTbW9vdGhpbmdFbmFibGVkID0gaW1hZ2VTbW9vdGhpbmc7XG5cbiAgICAgIGlmIChjb25maWcgJiYgbGF5ZXJzKSB7XG4gICAgICAgIGxheWVycy5mb3JFYWNoKChpY29ucywgbGF5ZXJJbmRleCkgPT4ge1xuICAgICAgICAgIGNvbnN0IHZpc2libGVMYXllcnMgPSBbY3VycmVudFpvb21JbmRleF1cblxuICAgICAgICAgIGlmICh2aXNpYmxlTGF5ZXJzLmluZGV4T2YobGF5ZXJJbmRleCkgPiAtMSkge1xuXG4gICAgICAgICAgICBpY29ucy5mb3JFYWNoKChjb2x1bW5zLCB4KSA9PiB7XG4gICAgICAgICAgICAgIGNvbHVtbnMuZm9yRWFjaCgoaWNvbiwgeSkgPT4ge1xuICAgICAgICAgICAgICAgIGlmIChpY29uLm51bV9hY3RpdmF0aW9ucyA+PSBtaW5BY3RpdmF0aW9ucykge1xuXG4gICAgICAgICAgICAgICAgICBjb25zdCB7ZHgsIGR5LCBpY29uV2lkdGh9ID0gdGhpcy5pY29uVG9DYW52YXNQb3NpdGlvbihpY29uLCBsYXllckluZGV4KTtcblxuICAgICAgICAgICAgICAgICAgLy8gSWYgaWNvbiBpcyBpbiB0aGUgdmlld3BvcnRcbiAgICAgICAgICAgICAgICAgIGlmIChkeCA+IC1pY29uV2lkdGggJiYgZHggPCB2aWV3V2lkdGggJiYgZHkgPiAtaWNvbldpZHRoICYmIGR5IDwgdmlld0hlaWdodCkge1xuICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgLy8gV2Ugd2FudCB0byBkcmF3IGEgYm94IGJlZm9yZSB0aGUgaWNvbiBoYXMgbG9hZGVkIHNvIHRoZXJlIGlzbid0IGp1c3Qgd2hpdGVuZXNzLlxuICAgICAgICAgICAgICAgICAgICBjb25zdCB7c3gsIHN5LCBkeCwgZHksIGljb25XaWR0aH0gPSB0aGlzLmljb25Ub0NhbnZhc1Bvc2l0aW9uKGljb24sIGxheWVySW5kZXgpXG4gICAgICAgICAgICAgICAgICAgIGNvbnRleHQuZ2xvYmFsQWxwaGEgPSAwLjc1O1xuICAgICAgICAgICAgICAgICAgICBjb250ZXh0LnN0cm9rZVN0eWxlID0gc3Ryb2tlQ29sb3I7XG4gICAgICAgICAgICAgICAgICAgIGNvbnRleHQubGluZVdpZHRoID0gc3Ryb2tlVGhpY2tuZXNzO1xuICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmZpbGxTdHlsZSA9IFwid2hpdGVcIjtcbiAgICAgICAgICAgICAgICAgICAgY29udGV4dC5iZWdpblBhdGgoKTtcbiAgICAgICAgICAgICAgICAgICAgY29udGV4dC5yZWN0KGR4LCBkeSwgaWNvbldpZHRoLCBpY29uV2lkdGgpO1xuICAgICAgICAgICAgICAgICAgICBjb250ZXh0LnN0cm9rZSgpO1xuICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmZpbGwoKTtcbiAgICAgICAgICAgICAgICAgICAgY29udGV4dC5jbG9zZVBhdGgoKTtcblxuICAgICAgICAgICAgICAgICAgICBsb2FkKGljb24udXJsKS50aGVuKHJlc3BvbnNlID0+IHtcbiAgICAgICAgICAgICAgICAgICAgICAvLyBjaGVjayB0aGF0IHdlJ3JlIHN0aWxsIG9uIHRoZSByaWdodCBsYXllci96b29tXG4gICAgICAgICAgICAgICAgICAgICAgY29uc3Qge2N1cnJlbnRab29tSW5kZXgsIGljb25Dcm9wLCBzaG93TGFiZWxzLCB0ZXh0U2hhZG93fSA9IHRoaXMuZ2V0KCk7XG4gICAgICAgICAgICAgICAgICAgICAgaWYoY3VycmVudFpvb21JbmRleCA9PSBsYXllckluZGV4KSB7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb25zdCB7YWxwaGFBdHRyaWJ1dGlvbkZhY3RvciwgbGFiZWxzLCBjb25maWcsIGNsYXNzSGVhdG1hcCwgY2xhc3NIZWF0bWFwTXVsdGlwbGllciwgY2xhc3NIZWF0bWFwUG9zaXRpdmV9ID0gdGhpcy5nZXQoKTtcblxuICAgICAgICAgICAgICAgICAgICAgICAgbGV0IGEgPSAxO1xuICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGNsYXNzSGVhdG1hcCA+IC0xKSB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIGxldCBpID0gaWNvbi5mdWxsX2NsYXNzX2luZGljZXMuaW5kZXhPZihjbGFzc0hlYXRtYXApO1xuICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAoaSA+IC0xKSB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYSA9IGljb24uZnVsbF9jbGFzc192YWx1ZXNbaV0gLyBtYXhBdHRyaWJ1dGlvblZhbHVlO1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGEgPSBhICogY2xhc3NIZWF0bWFwUG9zaXRpdmU7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYSA9IE1hdGgubWF4KDAsIGEpICogY2xhc3NIZWF0bWFwTXVsdGlwbGllcjtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhID0gMC4wO1xuICAgICAgICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgICAgICAgICAvLyBsZXQgYSA9IE1hdGgubWluKDEsXG4gICAgICAgICAgICAgICAgICAgICAgICAvLyAgIE1hdGgubWF4KDAuMiwgTWF0aC5wb3coaWNvbi50b3BfY2xhc3NfdmFsdWVzWzBdLCAyKSAqIFxuICAgICAgICAgICAgICAgICAgICAgICAgLy8gICAxMDAwICogYWxwaGFBdHRyaWJ1dGlvbkZhY3RvcikpO1xuXG4gICAgICAgICAgICAgICAgICAgICAgICAvLyBnZXQgY3VycmVudCB2YWx1ZXMgaW4gY2FzZSB0aGV5IGNoYW5nZWQgd2hpbGUgbG9hZGluZ1xuICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qge3N4LCBzeSwgZHgsIGR5LCBpY29uV2lkdGh9ID0gdGhpcy5pY29uVG9DYW52YXNQb3NpdGlvbihpY29uLCBsYXllckluZGV4KVxuXG4gICAgICAgICAgICAgICAgICAgICAgICAvLyBkcmF3IHRoZSBpY29uXG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0Lmdsb2JhbEFscGhhID0gYTtcbiAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGljb25PZmZzZXQgPSAoaWNvbkNyb3AgKiBjb25maWcuaWNvbl9zaXplKSAvIDI7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNsZWFyUmVjdChkeCArIDEsIGR5ICsgMSwgaWNvbldpZHRoIC0gMiwgaWNvbldpZHRoIC0gMik7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmRyYXdJbWFnZShyZXNwb25zZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgLy9zb3VyY2VcbiAgICAgICAgICAgICAgICAgICAgICAgICAgc3kgKyBpY29uT2Zmc2V0LCBzeCArIGljb25PZmZzZXQsIGNvbmZpZy5pY29uX3NpemUgLSBpY29uT2Zmc2V0ICogMiwgY29uZmlnLmljb25fc2l6ZSAtIGljb25PZmZzZXQgKiAyLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAvL2Rlc3RpbmF0aW9uXG4gICAgICAgICAgICAgICAgICAgICAgICAgIGR4LCBkeSwgaWNvbldpZHRoLCBpY29uV2lkdGhcbiAgICAgICAgICAgICAgICAgICAgICAgICk7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0Lmdsb2JhbEFscGhhID0gMTtcblxuICAgICAgICAgICAgICAgICAgICAgICAgaWYgKHNob3dMYWJlbHMgJiYgbGFiZWxzKSB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQuZ2xvYmFsQWxwaGEgPSAxO1xuICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmZvbnQ9Zm9udFNpemUgKyBcInB4IEhlbHZldGljYVwiO1xuICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAodGV4dFNoYWRvdykge1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQubGluZVdpZHRoID0gMjtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LnN0cm9rZVN0eWxlID0gdGV4dFNoYWRvd0NvbG9yO1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQuc3Ryb2tlVGV4dChsYWJlbHNbaWNvbi50b3BfY2xhc3NfaW5kaWNlc1swXV0sIGR4ICsgNCwgZHkgKyBpY29uV2lkdGggLSA0LCBpY29uV2lkdGggLSA4KTtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmZpbGxTdHlsZSA9IHRleHRDb2xvcjtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5maWxsVGV4dChsYWJlbHNbaWNvbi50b3BfY2xhc3NfaW5kaWNlc1swXV0sIGR4ICsgNCwgZHkgKyBpY29uV2lkdGggLSA0LCBpY29uV2lkdGggLSA4KTtcbiAgICAgICAgICAgICAgICAgICAgICAgIH1cblxuICAgICAgICAgICAgICAgICAgICAgIH1cblxuICAgICAgICAgICAgICAgICAgICB9KVxuICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgfSlcbiAgICAgICAgICAgIH0pXG4gICAgICAgICAgfVxuICAgICAgICB9KVxuICAgICAgfVxuICAgIH1cbiAgICB9XG4gIH1cblxuPC9zY3JpcHQ+XG5cblxuPHN0eWxlPlxuICByZWY6cm9vdCB7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGhlaWdodDogMTAwJTtcbiAgICBjb250YWluOiBsYXlvdXQ7XG4gIH1cbiAgcmVmOnN0YWdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgdG9wOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAxMDAlO1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG4gIH1cbiAgcmVmOnN0YWdlLnBhbm5pbmcge1xuICAgIGN1cnNvcjogbW92ZTtcbiAgfVxuICByZWY6Y2FudmFzIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgdG9wOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYm9yZGVyLXJhZGl1czogOHB4O1xuICB9XG4gIC5ob3ZlciB7XG4gICAgY29sb3I6IHdoaXRlO1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBmb250LXNpemU6IDEycHg7XG4gICAgbGluZS1oZWlnaHQ6IDE0cHg7XG4gICAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjgpO1xuICAgIHBhZGRpbmc6IDZweDtcbiAgICBwb2ludGVyLWV2ZW50czogbm9uZTtcbiAgICBib3JkZXItcmFkaXVzOiAwIDhweCA4cHggOHB4O1xuICAgIGJvcmRlcjogc29saWQgMXB4IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC40KTtcbiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgIGJveC1zaGFkb3c6IDAgMXB4IDhweCByZ2JhKDAsIDAsIDAsIDAuNCk7XG4gICAgd2lkdGg6IDIwMHB4O1xuICAgIHotaW5kZXg6IDEwMDAwO1xuICB9XG4gIC5ob3ZlciB0YWJsZSB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgbWFyZ2luLWJvdHRvbTogMDtcbiAgfVxuICAuaG92ZXIgdGQge1xuICAgIGZvbnQtc2l6ZTogMTJweDtcbiAgICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjIpO1xuICAgIHBhZGRpbmc6IDZweCAwO1xuICAgIG1hcmdpbjogNnB4IDA7XG4gICAgY29sb3I6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC44KTtcbiAgICBvdmVyZmxvdzogZWxsaXBzaXM7XG4gIH1cbiAgLmhvdmVyIHRkLmZpcnN0IHtcbiAgICBjb2xvcjogcmdiYSgyNTUsIDI1NSwgMjU1LCAxLjApO1xuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xuICB9XG5cbiAgLmljb24ge1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB0b3A6IDA7XG4gICAgbGVmdDogMDtcbiAgICBib3JkZXItcmFkaXVzOiA0cHg7XG4gICAgYm9yZGVyOiBzb2xpZCAzcHggYmxhY2s7XG4gICAgcG9pbnRlci1ldmVudHM6IG5vbmU7XG4gICAgYm94LXNpemluZzogYm9yZGVyLWJveDtcbiAgfVxuPC9zdHlsZT4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBd2dCRSw4QkFBUyxDQUFDLEFBQ1IsUUFBUSxDQUFFLFFBQVEsQ0FDbEIsS0FBSyxDQUFFLElBQUksQ0FDWCxNQUFNLENBQUUsSUFBSSxDQUNaLE9BQU8sQ0FBRSxNQUFNLEFBQ2pCLENBQUMsQUFDRCwrQkFBVSxDQUFDLEFBQ1QsUUFBUSxDQUFFLFFBQVEsQ0FDbEIsR0FBRyxDQUFFLENBQUMsQ0FDTixJQUFJLENBQUUsQ0FBQyxDQUNQLEtBQUssQ0FBRSxJQUFJLENBQ1gsTUFBTSxDQUFFLElBQUksQ0FDWixRQUFRLENBQUUsTUFBTSxBQUNsQixDQUFDLEFBQ0QsaUJBQVMsUUFBUSxjQUFDLENBQUMsQUFDakIsTUFBTSxDQUFFLElBQUksQUFDZCxDQUFDLEFBQ0QsZ0NBQVcsQ0FBQyxBQUNWLFFBQVEsQ0FBRSxRQUFRLENBQ2xCLEdBQUcsQ0FBRSxDQUFDLENBQ04sSUFBSSxDQUFFLENBQUMsQ0FDUCxhQUFhLENBQUUsR0FBRyxBQUNwQixDQUFDLEFBaUNELEtBQUssY0FBQyxDQUFDLEFBQ0wsT0FBTyxDQUFFLEtBQUssQ0FDZCxRQUFRLENBQUUsUUFBUSxDQUNsQixHQUFHLENBQUUsQ0FBQyxDQUNOLElBQUksQ0FBRSxDQUFDLENBQ1AsYUFBYSxDQUFFLEdBQUcsQ0FDbEIsTUFBTSxDQUFFLEtBQUssQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUN2QixjQUFjLENBQUUsSUFBSSxDQUNwQixVQUFVLENBQUUsVUFBVSxBQUN4QixDQUFDIn0= */";
+		style.id = 'svelte-lrxg8i-style';
+		style.textContent = ".svelte-ref-root.svelte-lrxg8i{position:relative;width:100%;height:100%;contain:layout;overflow:hidden}.svelte-ref-canvas.svelte-lrxg8i{pointer-events:none;position:absolute;top:0;left:0;border-radius:8px}.svelte-ref-hover.svelte-lrxg8i{position:absolute;top:0;left:0;border-radius:4px;border:solid 3px black;pointer-events:none;box-sizing:border-box}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXRsYXMuaHRtbCIsInNvdXJjZXMiOlsiQXRsYXMuaHRtbCJdLCJzb3VyY2VzQ29udGVudCI6WyI8UmFkYXIgYmluZDpyZWFkeSAvPlxuXG57I2lmIHJlYWR5fVxuICA8QXRsYXNEYXRhTG9hZGVyIFxuICAgIHtpZH0gXG4gICAge2xheWVyfSBcbiAgICB7bGF5b3V0fVxuICAgIHtjbGFzc0ZpbHRlcn1cbiAgICB7ZmlsdGVyfVxuICAgIGJpbmQ6Y29uZmlnXG4gICAgYmluZDpsYXllcnMgXG4gICAgYmluZDpsYWJlbHMgXG4gIC8+XG57L2lmfVxuXG48ZGl2IHJlZjpyb290XG4gIGJpbmQ6Y2xpZW50V2lkdGg9dmlld1dpZHRoXG4gIGJpbmQ6Y2xpZW50SGVpZ2h0PXZpZXdIZWlnaHRcbj5cbiAgPEQzWm9vbSByZWY6ZDNab29tXG4gICAgYmluZDpzY2FsZVxuICAgIGJpbmQ6dHJhbnNsYXRlWFxuICAgIGJpbmQ6dHJhbnNsYXRlWVxuICAgIGJpbmQ6bW91c2VPdmVyXG4gICAgYmluZDptb3VzZUdsb2JhbFBvc2l0aW9uXG4gICAgYmluZDpleHRlbnRcbiAgICBiaW5kOnNjcm9sbFdoZWVsXG4gICAge2hvbWVYfVxuICAgIHtob21lWX1cbiAgICB7aG9tZVNjYWxlfVxuICA+XG4gICAgPGNhbnZhcyByZWY6Y2FudmFzXG4gICAgICB3aWR0aD17dmlld1dpZHRoICogc2NyZWVuUmVzb2x1dGlvbn1cbiAgICAgIGhlaWdodD17dmlld0hlaWdodCAqIHNjcmVlblJlc29sdXRpb259XG4gICAgPjwvY2FudmFzPlxuICAgIHsjaWYgc2hvd0hvdmVySWNvbn1cbiAgICA8ZGl2IHJlZjpob3ZlclxuICAgICAgc3R5bGU9XCJsZWZ0OiB7aG92ZXJJY29uWH1weDsgdG9wOiB7aG92ZXJJY29uWX1weDsgd2lkdGg6IHtob3Zlckljb25XfXB4OyBoZWlnaHQ6IHtob3Zlckljb25XfXB4O1wiXG4gICAgPjwvZGl2PlxuICAgIHsvaWZ9XG4gIDwvRDNab29tPlxuPC9kaXY+XG5cbjxzY3JpcHQ+XG5pbXBvcnQgeyBkZWZhdWx0IGFzIGxvYWQgfSBmcm9tICcuL2xpYnJhcnkvbG9hZC5qcyc7XG5pbXBvcnQgeyBtYXggfSBmcm9tICdkMy1hcnJheSc7XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgY29tcG9uZW50czogeyBcbiAgICBBdGxhc0RhdGFMb2FkZXI6ICcuL0F0bGFzRGF0YUxvYWRlci5odG1sJywgXG4gICAgRDNab29tOiAnLi9saWJyYXJ5L0QzWm9vbS5odG1sJyxcbiAgICBSYWRhcjogJy4vbGlicmFyeS9SYWRhci5odG1sJ1xuICB9LFxuICBkYXRhKCkge1xuICAgIHJldHVybiB7XG4gICAgICByZWFkeTogdHJ1ZSxcbiAgICAgIGlkOiBcImluY2VwdGlvbnYxX21peGVkNGNcIixcbiAgICAgIFxuICAgICAgY29uZmlnOiBudWxsLFxuICAgICAgbGF5ZXJzOiBudWxsLFxuICAgICAgbGFiZWxzOiBudWxsLFxuXG4gICAgICBsYXllcjogMCxcbiAgICAgIGxheW91dDogMCxcbiAgICAgIGNsYXNzRmlsdGVyOiAwLFxuICAgICAgZmlsdGVyOiAwLFxuXG4gICAgICBjb250ZXh0OiBudWxsLFxuXG4gICAgICBhbHBoYUF0dHJpYnV0aW9uRmFjdG9yOiAwLjAyLFxuICAgICAgZGVuc2l0eTogMS4wLFxuICAgICAgY2xhc3NIZWF0bWFwOiAtMSxcbiAgICAgIGNsYXNzSGVhdG1hcE11bHRpcGxpZXI6IDEsXG4gICAgICBjbGFzc0hlYXRtYXBQb3NpdGl2ZTogMSxcbiAgICAgIGljb25Dcm9wOiAwLjAyLFxuICAgICAgYXV0b0dyaWRTaXplTXVsdGlwbGllcjogMC44LFxuXG4gICAgICBncmlkU2l6ZTogbnVsbCxcblxuICAgICAgLy8gZm9yIGluaXRpYWwgc3RhdGUsIGFuZCBnb2luZyBiYWNrIHRvIFwiaG9tZVwiXG4gICAgICBob21lWDogLjUsXG4gICAgICBob21lWTogLjUsXG4gICAgICBob21lU2NhbGU6IDEsXG5cbiAgICAgIC8vIHR1cm4gb2ZmIGZlYXR1cmVzXG4gICAgICBlbmFibGVDbGlja1RvWm9vbTogdHJ1ZSxcbiAgICAgIGVuYWJsZUhvdmVyOiB0cnVlLFxuICAgICAgZW5hYmxlRHJhZ1RvUGFuOiB0cnVlLFxuXG4gICAgICAvLyBTdHlsaW5nXG4gICAgICBiYWNrZ3JvdW5kQ29sb3I6IFwid2hpdGVcIixcbiAgICAgIHN0cm9rZUNvbG9yOiBcInJnYigyMjAsIDIyMCwgMjIwKVwiLFxuICAgICAgc3Ryb2tlVGhpY2tuZXNzOiAxLFxuICAgICAgaW1hZ2VTbW9vdGhpbmc6IGZhbHNlLFxuICAgICAgZm9udFNpemU6IDEwLFxuICAgICAgdGV4dENvbG9yOiBcIndoaXRlXCIsXG4gICAgICB0ZXh0U2hhZG93Q29sb3I6IFwicmdiYSgwLCAwLCAwLCAwLjgpXCIsXG4gICAgICBzaG93TGFiZWxzOiBmYWxzZSxcbiAgICAgIHRleHRTaGFkb3c6IGZhbHNlLFxuXG4gICAgICBzY3JlZW5SZXNvbHV0aW9uOiAxLFxuICAgIH1cbiAgfSxcbiAgY29tcHV0ZWQ6IHtcbiAgICBtYXhBdHRyaWJ1dGlvblZhbHVlOiAoe2xheWVycywgbGF5ZXJ9KSA9PiB7XG4gICAgICBpZiAobGF5ZXJzID09IG51bGwpIHJldHVybiAwO1xuICAgICAgY29uc3QgbCA9IGxheWVyc1tsYXllcl07XG4gICAgICBsZXQgbWF4ID0gMDtcbiAgICAgIGwuZm9yRWFjaCh4ID0+IHtcbiAgICAgICAgeC5mb3JFYWNoKHkgPT4ge1xuICAgICAgICAgIGlmICh5ICYmIHkubnVtX2FjdGl2YXRpb25zID4gNTAwKSB7XG4gICAgICAgICAgICBjb25zdCB2ID0geS5mdWxsX2NsYXNzX3ZhbHVlc1swXTtcbiAgICAgICAgICAgIGlmICh2ID4gbWF4KSBtYXggPSB2O1xuICAgICAgICAgIH1cbiAgICAgICAgfSlcbiAgICAgIH0pXG4gICAgICByZXR1cm4gbWF4O1xuICAgIH0sXG4gICAgdzogKHt2aWV3V2lkdGgsIHNjcmVlblJlc29sdXRpb259KSA9PiB2aWV3V2lkdGggKiBzY3JlZW5SZXNvbHV0aW9uLFxuICAgIGg6ICh7dmlld0hlaWdodCwgc2NyZWVuUmVzb2x1dGlvbn0pID0+IHZpZXdIZWlnaHQgKiBzY3JlZW5SZXNvbHV0aW9uLFxuICAgIGN1cnJlbnRab29tSW5kZXg6ICh7c2NhbGUsIGdyaWRTaXplLCBjb25maWcsIGNsYXNzSGVhdG1hcCwgdmlld1dpZHRoLCB2aWV3SGVpZ2h0LCBhdXRvR3JpZFNpemVNdWx0aXBsaWVyfSkgPT4ge1xuICAgICAgbGV0IHMgPSAwO1xuICAgICAgaWYgKGdyaWRTaXplID4gLTEpIHtcbiAgICAgICAgcyA9ICtncmlkU2l6ZVxuICAgICAgfSBlbHNlIHtcbiAgICAgICAgY29uc3Qgc2l6ZSA9IE1hdGgubWluKHZpZXdXaWR0aCwgdmlld0hlaWdodClcbiAgICAgICAgcyA9IE1hdGguZmxvb3Ioc2l6ZSAqIHNjYWxlIC8gODAgLyAyMCAvIGF1dG9HcmlkU2l6ZU11bHRpcGxpZXIpO1xuICAgICAgICBjb25zb2xlLmxvZyhcInNcIiwgcylcbiAgICAgICAgLy8gaWYgKHNjYWxlID4gMSAqIDAuNSkgcyA9IDA7XG4gICAgICAgIC8vIGlmIChzY2FsZSA+IDIgKiAwLjUpIHMgPSAxO1xuICAgICAgICAvLyBpZiAoc2NhbGUgPiA0ICogMC41KSBzID0gMjtcbiAgICAgICAgLy8gaWYgKHNjYWxlID4gOCAqIDAuNSkgcyA9IDM7XG4gICAgICAgIC8vIGlmIChzY2FsZSA+IDE2ICogMC41KSBzID0gNDtcbiAgICAgIH1cbiAgICAgIC8vIE1ha2Ugc3VyZSB3ZSBkb24ndCBvdmVycnVuIG91ciBkYXRhXG4gICAgICBpZiAoY29uZmlnKSB7XG4gICAgICAgIHMgPSBNYXRoLm1pbihjb25maWcuZ3JpZF9zaXplLmxlbmd0aCAtIDEgLCBzKTtcbiAgICAgIH1cbiAgICAgIC8vIENsYXNzIGhlYXRtYXAgb25seSBoYXMgZGF0YSB1cCB0byBsZXZlbCAyXG4gICAgICBpZiAoY2xhc3NIZWF0bWFwID4gLTEpIHtcbiAgICAgICAgcyA9IE1hdGgubWluKDIsIHMpO1xuICAgICAgfVxuICAgICAgcmV0dXJuIHM7XG5cbiAgICB9LFxuICAgIHZpc2libGVMYXllcnM6ICh7Y3VycmVudFpvb21JbmRleH0pID0+IHtcbiAgICAgIHJldHVybiBbY3VycmVudFpvb21JbmRleF07XG4gICAgfSxcbiAgICBjdXJyZW50TGF5ZXJEYXRhOiAoe2N1cnJlbnRab29tSW5kZXgsIGxheWVyc30pID0+IHtcbiAgICAgIHJldHVybiBsYXllcnMgPyBsYXllcnNbY3VycmVudFpvb21JbmRleF0gOiBbW11dXG4gICAgfSxcbiAgICBzaG93SG92ZXI6ICh7aG92ZXJJY29uRGF0YSwgbW91c2VHbG9iYWxQb3NpdGlvbn0pID0+IG1vdXNlR2xvYmFsUG9zaXRpb24gJiYgaG92ZXJJY29uRGF0YSAmJiBob3Zlckljb25EYXRhLmdjeCxcbiAgICBob3Zlckljb25EYXRhOiAoe2N1cnJlbnRMYXllckRhdGEsIGNvbmZpZywgbW91c2VHbG9iYWxQb3NpdGlvbiwgdywgaCwgdHJhbnNsYXRlWCwgdHJhbnNsYXRlWX0pID0+IHtcbiAgICAgIC8vIGNvbnN0IG1zeCA9IG1vdXNlR2xvYmFsUG9zaXRpb25bMF1cbiAgICAgIC8vIGNvbnN0IG1zeSA9IG1vdXNlR2xvYmFsUG9zaXRpb25bMV1cbiAgICAgIGlmIChjdXJyZW50TGF5ZXJEYXRhKSB7XG4gICAgICAgIGNvbnN0IG51bUdyaWRSb3dzID0gY3VycmVudExheWVyRGF0YS5sZW5ndGg7XG4gICAgICAgIGlmIChtb3VzZUdsb2JhbFBvc2l0aW9uKSB7XG4gICAgICAgICAgY29uc3QgZ3ggPSBNYXRoLmZsb29yKG1vdXNlR2xvYmFsUG9zaXRpb25bMF0gLyBNYXRoLm1pbih3LCBoKSAqIG51bUdyaWRSb3dzKTtcbiAgICAgICAgICBjb25zdCBneSA9IE1hdGguZmxvb3IobW91c2VHbG9iYWxQb3NpdGlvblsxXSAvIE1hdGgubWluKHcsIGgpICogbnVtR3JpZFJvd3MpO1xuICAgICAgICAgIGlmIChjdXJyZW50TGF5ZXJEYXRhW2d5XSAmJiBjdXJyZW50TGF5ZXJEYXRhW2d5XVtneF0pIHtcbiAgICAgICAgICAgIHJldHVybiBjdXJyZW50TGF5ZXJEYXRhW2d5XVtneF07XG4gICAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICAgIHJldHVybiB7fTtcbiAgICAgICAgICB9XG4gICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgcmV0dXJuIHt9O1xuICAgICAgICB9XG4gICAgICB9IGVsc2Uge1xuICAgICAgICByZXR1cm4ge307XG4gICAgICB9XG4gICAgfSxcbiAgICBob3Zlckljb25YOiAoe2hvdmVySWNvbkRhdGEsIHNjYWxlLCB3LCBoLCB0cmFuc2xhdGVYfSkgPT4gaG92ZXJJY29uRGF0YS5neSAqIHNjYWxlICogTWF0aC5taW4odywgaCkgKyB0cmFuc2xhdGVYLFxuICAgIGhvdmVySWNvblk6ICh7aG92ZXJJY29uRGF0YSwgc2NhbGUsIHcsIGgsIHRyYW5zbGF0ZVl9KSA9PiBob3Zlckljb25EYXRhLmd4ICogc2NhbGUgKiBNYXRoLm1pbih3LCBoKSArIHRyYW5zbGF0ZVksXG4gICAgaG92ZXJJY29uVzogKHtob3Zlckljb25EYXRhLCBzY2FsZSwgdywgaH0pID0+IGhvdmVySWNvbkRhdGEuZ3cgKiBzY2FsZSAqIE1hdGgubWluKHcsIGgpLFxuICAgIHNob3dIb3Zlckljb246ICh7bW91c2VHbG9iYWxQb3NpdGlvbiwgaG92ZXJJY29uRGF0YSwgZW5hYmxlSG92ZXJ9KSA9PiB7XG4gICAgICByZXR1cm4gZW5hYmxlSG92ZXIgJiYgbW91c2VHbG9iYWxQb3NpdGlvbiAmJiBob3Zlckljb25EYXRhICYmIGhvdmVySWNvbkRhdGEuZ3dcbiAgICB9LFxuICB9LFxuICBvbnVwZGF0ZSh7Y2hhbmdlZCwgY3VycmVudCwgcHJldmlvdXN9KSB7XG4gICAgLy8gY29uc29sZS5sb2coXCJhdGxhc1wiLCBjaGFuZ2VkLCBjdXJyZW50LnNjYWxlKVxuICAgIGlmICghY3VycmVudC5jb250ZXh0IHx8IGNoYW5nZWQudmlld1dpZHRoIHx8IGNoYW5nZWQudmlld0hlaWdodCkge1xuICAgICAgdGhpcy5zZXQoe2NvbnRleHQ6IHRoaXMucmVmcy5jYW52YXMuZ2V0Q29udGV4dCgnMmQnKX0pO1xuICAgIH1cbiAgICBpZiAoY2hhbmdlZC5hdXRvR3JpZFNpemVNdWx0aXBsaWVyIHx8IGNoYW5nZWQuZGVuc2l0eSB8fCBjaGFuZ2VkLm1heEF0dHJpYnV0aW9uVmFsdWUgfHwgY2hhbmdlZC5jbGFzc0hlYXRtYXAgfHwgY2hhbmdlZC5jbGFzc0hlYXRtYXBNdWx0aXBsaWVyIHx8IGNoYW5nZWQuY2xhc3NIZWF0bWFwUG9zaXRpdmUgfHwgY2hhbmdlZC5zaG93TGFiZWxzIHx8IGNoYW5nZWQudmlld1dpZHRoIHx8IGNoYW5nZWQudmlld0hlaWdodCB8fCBjaGFuZ2VkLnNjYWxlIHx8IGNoYW5nZWQudHJhbnNsYXRlWCB8fCBjaGFuZ2VkLnRyYW5zbGF0ZVkgfHwgY2hhbmdlZC5pY29uQ3JvcCB8fCBjaGFuZ2VkLmdyaWRTaXplIHx8IGNoYW5nZWQubGF5ZXJzKSB7XG4gICAgICB0aGlzLnJlbmRlcigpO1xuICAgIH1cbiAgICBpZiAoY2hhbmdlZC5ob3Zlckljb25EYXRhKSB7XG4gICAgICBjb25zdCB7dG9vbHRpcH0gPSB0aGlzLnN0b3JlLmdldCgpO1xuICAgICAgY29uc3Qge3Nob3dIb3Zlckljb259ID0gdGhpcy5nZXQoKTtcbiAgICAgIGlmIChzaG93SG92ZXJJY29uKSB7XG4gICAgICAgIHRvb2x0aXAuc2hvdyhjdXJyZW50LmhvdmVySWNvbkRhdGEpO1xuICAgICAgfSBlbHNlIHtcbiAgICAgICAgdG9vbHRpcC5oaWRlKCk7XG4gICAgICB9XG4gICAgfVxuICAgIGlmIChjaGFuZ2VkLnNob3dIb3Zlckljb24pIHtcbiAgICAgIGlmIChjdXJyZW50LnNob3dIb3Zlckljb24gPT0gZmFsc2UpIHtcbiAgICAgICAgY29uc3QgeyB0b29sdGlwIH0gPSB0aGlzLnN0b3JlLmdldCgpO1xuICAgICAgICB0b29sdGlwLmhpZGUoKTtcbiAgICAgIH1cbiAgICB9XG5cbiAgfSxcbiAgb25jcmVhdGUoKSB7XG4gICAgLy8gdGhpcy5ob21lKDApO1xuICB9LFxuICBtZXRob2RzOiB7XG4gICAgZnVsbHNjcmVlbigpIHtcbiAgICAgIHRoaXMucmVmcy5yb290LndlYmtpdFJlcXVlc3RGdWxsc2NyZWVuKCk7XG4gICAgfSxcbiAgICBob21lKGR1cmF0aW9uPTApIHtcbiAgICAgIC8vIGNvbnN0IHtob21lWCwgaG9tZVksIGhvbWVTY2FsZX0gPSB0aGlzLmdldCgpO1xuICAgICAgLy8gdGhpcy50cmFuc2l0aW9uVG8oaG9tZVgsIGhvbWVZLCBob21lU2NhbGUsIGR1cmF0aW9uKTtcbiAgICAgIHRoaXMucmVmcy5kM1pvb20uaG9tZShkdXJhdGlvbik7XG4gICAgfSxcbiAgICB0cmFuc2l0aW9uVG8oeCwgeSwgc2NhbGUsIGR1cmF0aW9uPTApIHtcbiAgICAgIHRoaXMucmVmcy5kM1pvb20udHJhbnNmb3JtVG8oeCwgeSwgc2NhbGUsIGR1cmF0aW9uKTtcbiAgICB9LFxuICAgIHNjYWxlQnkobXVsdGlwbGllcikge1xuICAgICAgY29uc3QgeyBzY2FsZSB9ID0gdGhpcy5nZXQoKTtcbiAgICAgIHRoaXMucmVmcy5kM1pvb20uc2NhbGVUbyhzY2FsZSAqIG11bHRpcGxpZXIsIDMwMCk7XG4gICAgfSxcbiAgICBpY29uVG9HbG9iYWxQb3NpdGlvbihpY29uLCBsYXllckluZGV4KSB7XG4gICAgICBjb25zdCB7ZGVuc2l0eSwgc2NhbGUsIHRyYW5zbGF0ZVgsIHRyYW5zbGF0ZVksIGNvbmZpZywgdywgaH0gPSB0aGlzLmdldCgpO1xuICAgICAgY29uc3QgZ3JpZFNpemUgPSBjb25maWcuZ3JpZF9zaXplW2xheWVySW5kZXhdO1xuICAgICAgY29uc3QgZ3JpZFdpZHRoID0gY29uZmlnLmljb25fc2l6ZSAqIGdyaWRTaXplO1xuXG4gICAgICBjb25zdCBpY29uV2lkdGggPSBpY29uLmd3ICogc2NhbGUgKiBNYXRoLm1pbih3LCBoKTtcblxuICAgICAgLy8geCwgeSBzd2FwcGVkIGludGVudGlvbmFsbHlcbiAgICAgIGNvbnN0IGljb25YID0gaWNvbi5neSAqIHNjYWxlICogTWF0aC5taW4odywgaCkgKyB0cmFuc2xhdGVYO1xuICAgICAgY29uc3QgaWNvblkgPSBpY29uLmd4ICogc2NhbGUgKiBNYXRoLm1pbih3LCBoKSArIHRyYW5zbGF0ZVk7XG5cbiAgICAgIGNvbnN0IHNvdXJjZVggPSBpY29uLmxvY2FsWCAqIGNvbmZpZy5pY29uX3NpemU7XG4gICAgICBjb25zdCBzb3VyY2VZID0gaWNvbi5sb2NhbFkgKiBjb25maWcuaWNvbl9zaXplO1xuXG4gICAgICBjb25zdCB0b3RhbFNhbXBsZXMgPSAodHlwZW9mIGNvbmZpZy5maWx0ZXJbMF0gPT0gXCJudW1iZXJcIiA/IGNvbmZpZy5maWx0ZXJbMF0gOiBjb25maWcuc2FtcGxlX2ltYWdlcylcbiAgICAgIGNvbnN0IGF2Z1NhbXBsZXMgPSB0b3RhbFNhbXBsZXMgLyAoZ3JpZFNpemUgKiBncmlkU2l6ZSk7XG5cbiAgICAgIC8vIFJlc2l6ZSBiYXNlZCBvbiBkZW5zaXR5XG4gICAgICBjb25zdCByZWxhdGl2ZURlbnNpdHkgPSBNYXRoLm1pbigxLCBNYXRoLnNxcnQoZGVuc2l0eSAqIGljb24ubnVtX2FjdGl2YXRpb25zIC8gYXZnU2FtcGxlcykpO1xuICAgICAgY29uc3QgYWRqdXN0ZWRJY29uV2lkdGggPSBpY29uV2lkdGggKiByZWxhdGl2ZURlbnNpdHk7XG4gICAgICBjb25zdCBhZGp1c3RlZEljb25YID0gaWNvblggKyAoaWNvbldpZHRoIC0gYWRqdXN0ZWRJY29uV2lkdGgpIC8gMjtcbiAgICAgIGNvbnN0IGFkanVzdGVkSWNvblkgPSBpY29uWSArIChpY29uV2lkdGggLSBhZGp1c3RlZEljb25XaWR0aCkgLyAyXG5cbiAgICAgIHJldHVybiB7c291cmNlWCwgc291cmNlWSwgaWNvblg6IGFkanVzdGVkSWNvblgsIGljb25ZOiBhZGp1c3RlZEljb25ZLCBpY29uV2lkdGg6IGFkanVzdGVkSWNvbldpZHRofVxuICAgIH0sXG4gICAgY2xlYXIoKSB7XG4gICAgICBjb25zdCB7dmlld0hlaWdodCwgdmlld1dpZHRoLCBjb250ZXh0LCBiYWNrZ3JvdW5kQ29sb3J9ID0gdGhpcy5nZXQoKTtcbiAgICAgIGNvbnRleHQuZ2xvYmFsQWxwaGEgPSAxO1xuICAgICAgY29udGV4dC5maWxsU3R5bGU9IGJhY2tncm91bmRDb2xvcjtcbiAgICAgIGNvbnRleHQuY2xlYXJSZWN0KDAsIDAsIHZpZXdXaWR0aCwgdmlld0hlaWdodCk7XG4gICAgICBjb250ZXh0LmZpbGxSZWN0KDAsIDAsIHZpZXdXaWR0aCwgdmlld0hlaWdodCk7XG4gICAgfSxcbiAgICByZW5kZXIoKSB7XG5cbiAgICAgIGNvbnN0IHtpZCwgaW1hZ2VTbW9vdGhpbmcsIHNjYWxlLCB3LCBoLCB0cmFuc2xhdGVYLCB0cmFuc2xhdGVZLCBjb250ZXh0LCBiYWNrZ3JvdW5kQ29sb3IsIGNvbmZpZywgbGF5ZXJzLCB2aXNpYmxlTGF5ZXJzLCBjdXJyZW50Wm9vbUluZGV4LCBzdHJva2VDb2xvciwgc3Ryb2tlVGhpY2tuZXNzLCBmb250U2l6ZSx0ZXh0U2hhZG93Q29sb3IsIHRleHRDb2xvciwgbWF4QXR0cmlidXRpb25WYWx1ZSwgY2xhc3NIZWF0bWFwTXVsdGlwbGllcn0gPSB0aGlzLmdldCgpO1xuXG4gICAgICB0aGlzLmNsZWFyKCk7XG4gICAgICAvLyBjb250ZXh0LmltYWdlU21vb3RoaW5nUXVhbGl0eSA9IFwibG93XCI7XG4gICAgICBjb250ZXh0LmltYWdlU21vb3RoaW5nRW5hYmxlZCA9IGltYWdlU21vb3RoaW5nO1xuXG4gICAgICBpZiAoY29uZmlnICYmIGxheWVycykge1xuXG4gICAgICAgIGxheWVycy5mb3JFYWNoKChpY29ucywgbGF5ZXJJbmRleCkgPT4ge1xuICAgICAgICAgIGlmICh2aXNpYmxlTGF5ZXJzLmluZGV4T2YobGF5ZXJJbmRleCkgPiAtMSkge1xuICAgICAgICAgICAgXG4gICAgICAgICAgICAvLyBDYWxjdWxhdGluZyBtaW4gYW5kIG1heCBpbmRpY2VzIGZvciBpY29uIHJlbmRlciBsb29wXG4gICAgICAgICAgICBjb25zdCBtaW5TaXplID0gTWF0aC5taW4odywgaCk7XG4gICAgICAgICAgICBjb25zdCBtaW5YID0gTWF0aC5tYXgoMCwgTWF0aC5mbG9vcigtKHRyYW5zbGF0ZVggLyBzY2FsZSAvIG1pblNpemUpICogaWNvbnMubGVuZ3RoKSk7XG4gICAgICAgICAgICBjb25zdCBtYXhYID0gbWluWCArIE1hdGguY2VpbCgoIHcgLyBzY2FsZSAvIG1pblNpemUpICogaWNvbnMubGVuZ3RoKTtcbiAgICAgICAgICAgIGNvbnN0IG1pblkgPSBNYXRoLm1heCgwLCBNYXRoLmZsb29yKC0odHJhbnNsYXRlWSAvIHNjYWxlIC8gbWluU2l6ZSkgKiBpY29ucy5sZW5ndGgpKTtcbiAgICAgICAgICAgIGNvbnN0IG1heFkgPSBtaW5ZICsgTWF0aC5jZWlsKCggaCAvIHNjYWxlIC8gbWluU2l6ZSkgKiBpY29ucy5sZW5ndGgpO1xuXG4gICAgICAgICAgICBmb3IgKGxldCB5ID0gbWluWTsgeSA8PSBtYXhZOyB5KyspIHtcbiAgICAgICAgICAgICAgZm9yIChsZXQgeCA9IG1pblg7IHggPD0gbWF4WDsgeCsrKSB7XG4gICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgaWYgKGljb25zW3ldICYmIGljb25zW3ldW3hdKSB7XG4gICAgICAgICAgICAgICAgICBjb25zdCBpY29uID0gaWNvbnNbeV1beF07XG5cbiAgICAgICAgICAgICAgICAgIGNvbnN0IHtjbGFzc0hlYXRtYXAsIHNvdXJjZVgsIHNvdXJjZVksIGljb25YLCBpY29uWSwgaWNvbldpZHRofSA9IHRoaXMuaWNvblRvR2xvYmFsUG9zaXRpb24oaWNvbiwgbGF5ZXJJbmRleCk7XG4gICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgIGNvbnN0IHJlcXVlc3RlZElEID0gaWQ7XG4gICAgICAgICAgICAgICAgICAvLyBJZiBpY29uIGlzIGluIHRoZSB2aWV3cG9ydCBcbiAgICAgICAgICAgICAgICAgIC8vIHByb2JhYmx5IGRvbid0IG5lZWQgdGhpcyBhbnltb3JlXG4gICAgICAgICAgICAgICAgICAvLyBpZiAoaWNvblggPiAtaWNvbldpZHRoICYmIGljb25YIDwgdyAmJiBpY29uWSA+IC1pY29uV2lkdGggJiYgaWNvblkgPCBoKSB7XG4gICAgICAgICAgICAgICAgICBpZiAodHJ1ZSkge1xuICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgLy8gV2Ugd2FudCB0byBkcmF3IGEgYm94IHNvIHRoZXJlIGlzbid0IGp1c3Qgd2hpdGVuZXNzLlxuICAgICAgICAgICAgICAgICAgICBpZiAoY2xhc3NIZWF0bWFwID4gLTEpIHtcbiAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0Lmdsb2JhbEFscGhhID0gMC43NTtcbiAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LnN0cm9rZVN0eWxlID0gc3Ryb2tlQ29sb3I7XG4gICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5saW5lV2lkdGggPSBzdHJva2VUaGlja25lc3M7XG4gICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5maWxsU3R5bGUgPSBcIndoaXRlXCI7XG4gICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5iZWdpblBhdGgoKTtcbiAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LnJlY3QoaWNvblgsIGljb25ZLCBpY29uV2lkdGgsIGljb25XaWR0aCk7XG4gICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5zdHJva2UoKTtcbiAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmZpbGwoKTtcbiAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNsb3NlUGF0aCgpO1xuICAgICAgICAgICAgICAgICAgICB9XG5cbiAgICAgICAgICAgICAgICAgICAgbG9hZChpY29uLnVybCkudGhlbihyZXNwb25zZSA9PiB7XG4gICAgICAgICAgICAgICAgICAgICAgLy8gY2hlY2sgdGhhdCB3ZSdyZSBzdGlsbCBvbiB0aGUgcmlnaHQgbGF5ZXIvem9vbS9pZFxuICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IHtpZCwgdmlzaWJsZUxheWVycywgaWNvbkNyb3AsIHNob3dMYWJlbHMsIHRleHRTaGFkb3d9ID0gdGhpcy5nZXQoKTtcbiAgICAgICAgICAgICAgICAgICAgICAvLyBjb25zb2xlLmxvZyhyZXF1ZXN0ZWRJRCwgaWQpXG4gICAgICAgICAgICAgICAgICAgICAgaWYodmlzaWJsZUxheWVycy5pbmRleE9mKGxheWVySW5kZXgpID4gLTEgJiYgcmVxdWVzdGVkSUQgPT09IGlkKSB7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb25zdCB7YWxwaGFBdHRyaWJ1dGlvbkZhY3RvciwgbGFiZWxzLCBjb25maWcsIGNsYXNzSGVhdG1hcCwgY2xhc3NIZWF0bWFwTXVsdGlwbGllciwgY2xhc3NIZWF0bWFwUG9zaXRpdmV9ID0gdGhpcy5nZXQoKTtcblxuICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qge3NvdXJjZVgsIHNvdXJjZVksIGljb25YLCBpY29uWSwgaWNvbldpZHRofSA9IHRoaXMuaWNvblRvR2xvYmFsUG9zaXRpb24oaWNvbiwgbGF5ZXJJbmRleCk7XG5cbiAgICAgICAgICAgICAgICAgICAgICAgIC8vIElmIHdlIGhhdmUgYSBjbGFzcyBoZWF0bWFwIGFjdGl2ZSwgY2FsY3VsYXRlIHRoZSB0cmFuc3BhcmVuY3kgZm9yIHRoZSBjdXJyZW50IGljb25cbiAgICAgICAgICAgICAgICAgICAgICAgIGxldCBhID0gMTtcbiAgICAgICAgICAgICAgICAgICAgICAgIGlmIChjbGFzc0hlYXRtYXAgPiAtMSkge1xuICAgICAgICAgICAgICAgICAgICAgICAgICBsZXQgaSA9IGljb24uZnVsbF9jbGFzc19pbmRpY2VzLmluZGV4T2YoY2xhc3NIZWF0bWFwKTtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGkgPiAtMSkge1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGEgPSBpY29uLmZ1bGxfY2xhc3NfdmFsdWVzW2ldIC8gbWF4QXR0cmlidXRpb25WYWx1ZTtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhID0gYSAqIGNsYXNzSGVhdG1hcFBvc2l0aXZlO1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGEgPSBNYXRoLm1heCgwLCBhKSAqIGNsYXNzSGVhdG1hcE11bHRpcGxpZXI7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYSA9IDAuMDtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgICAgICAgfVxuXG4gICAgICAgICAgICAgICAgICAgICAgICAvLyBkcmF3IHRoZSBpY29uXG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0Lmdsb2JhbEFscGhhID0gYTtcbiAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGljb25PZmZzZXQgPSAoaWNvbkNyb3AgKiBjb25maWcuaWNvbl9zaXplKSAvIDI7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNsZWFyUmVjdChpY29uWCArIDEsIGljb25ZICsgMSwgaWNvbldpZHRoIC0gMiwgaWNvbldpZHRoIC0gMik7XG4gICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmRyYXdJbWFnZShyZXNwb25zZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgLy9zb3VyY2VcbiAgICAgICAgICAgICAgICAgICAgICAgICAgc291cmNlWSArIGljb25PZmZzZXQsIHNvdXJjZVggKyBpY29uT2Zmc2V0LCBjb25maWcuaWNvbl9zaXplIC0gaWNvbk9mZnNldCAqIDIsIGNvbmZpZy5pY29uX3NpemUgLSBpY29uT2Zmc2V0ICogMixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgLy9kZXN0aW5hdGlvblxuICAgICAgICAgICAgICAgICAgICAgICAgICBpY29uWCwgaWNvblksIGljb25XaWR0aCwgaWNvbldpZHRoXG4gICAgICAgICAgICAgICAgICAgICAgICApO1xuICAgICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5nbG9iYWxBbHBoYSA9IDE7XG5cbiAgICAgICAgICAgICAgICAgICAgICAgIGlmIChzaG93TGFiZWxzICYmIGxhYmVscykge1xuICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0Lmdsb2JhbEFscGhhID0gMTtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5mb250PWZvbnRTaXplICsgXCJweCBIZWx2ZXRpY2FcIjtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgKHRleHRTaGFkb3cpIHtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmxpbmVXaWR0aCA9IDI7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5zdHJva2VTdHlsZSA9IHRleHRTaGFkb3dDb2xvcjtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LnN0cm9rZVRleHQobGFiZWxzW2ljb24udG9wX2NsYXNzX2luZGljZXNbMF1dLCBpY29uWCArIDQsIGljb25ZICsgaWNvbldpZHRoIC0gNCwgaWNvbldpZHRoIC0gOCk7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgY29udGV4dC5maWxsU3R5bGUgPSB0ZXh0Q29sb3I7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQuZmlsbFRleHQobGFiZWxzW2ljb24udG9wX2NsYXNzX2luZGljZXNbMF1dLCBpY29uWCArIDQsIGljb25ZICsgaWNvbldpZHRoIC0gNCwgaWNvbldpZHRoIC0gOCk7XG4gICAgICAgICAgICAgICAgICAgICAgICB9XG5cbiAgICAgICAgICAgICAgICAgICAgICB9XG5cbiAgICAgICAgICAgICAgICAgICAgfSlcbiAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH1cbiAgICAgICAgICB9XG4gICAgICAgIH0pXG4gICAgICB9XG4gICAgfVxuICAgIH1cbiAgfVxuXG48L3NjcmlwdD5cblxuXG48c3R5bGU+XG4gIHJlZjpyb290IHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAxMDAlO1xuICAgIGNvbnRhaW46IGxheW91dDtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICB9XG4gIHJlZjpzdGFnZSB7XG4gICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgIHRvcDogMDtcbiAgICBsZWZ0OiAwO1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGhlaWdodDogMTAwJTtcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuICB9XG4gIHJlZjpjYW52YXMge1xuICAgIHBvaW50ZXItZXZlbnRzOiBub25lO1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB0b3A6IDA7XG4gICAgbGVmdDogMDtcbiAgICBib3JkZXItcmFkaXVzOiA4cHg7XG4gIH1cbiAgcmVmOmhvdmVyIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgdG9wOiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgIGJvcmRlcjogc29saWQgM3B4IGJsYWNrO1xuICAgIHBvaW50ZXItZXZlbnRzOiBub25lO1xuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gIH1cbjwvc3R5bGU+Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQThXRSw4QkFBUyxDQUFDLEFBQ1IsUUFBUSxDQUFFLFFBQVEsQ0FDbEIsS0FBSyxDQUFFLElBQUksQ0FDWCxNQUFNLENBQUUsSUFBSSxDQUNaLE9BQU8sQ0FBRSxNQUFNLENBQ2YsUUFBUSxDQUFFLE1BQU0sQUFDbEIsQ0FBQyxBQVNELGdDQUFXLENBQUMsQUFDVixjQUFjLENBQUUsSUFBSSxDQUNwQixRQUFRLENBQUUsUUFBUSxDQUNsQixHQUFHLENBQUUsQ0FBQyxDQUNOLElBQUksQ0FBRSxDQUFDLENBQ1AsYUFBYSxDQUFFLEdBQUcsQUFDcEIsQ0FBQyxBQUNELCtCQUFVLENBQUMsQUFDVCxRQUFRLENBQUUsUUFBUSxDQUNsQixHQUFHLENBQUUsQ0FBQyxDQUNOLElBQUksQ0FBRSxDQUFDLENBQ1AsYUFBYSxDQUFFLEdBQUcsQ0FDbEIsTUFBTSxDQUFFLEtBQUssQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUN2QixjQUFjLENBQUUsSUFBSSxDQUNwQixVQUFVLENBQUUsVUFBVSxBQUN4QixDQUFDIn0= */";
 		append(document.head, style);
 	}
 
 	function create_main_fragment$3(component, ctx) {
-		var radar_updating = {}, text0, text1, div1, div0, zoom_updating = {}, text2, canvas, canvas_width_value, canvas_height_value, text3, div0_class_value, div1_resize_listener;
+		var radar_updating = {}, text0, text1, div, canvas, canvas_width_value, canvas_height_value, text2, if_block1_anchor, d3zoom_updating = {}, div_resize_listener;
 
 		var radar_initial_data = {};
 		if (ctx.ready  !== void 0) {
@@ -3075,83 +6362,102 @@
 
 		var if_block0 = (ctx.ready) && create_if_block_1(component, ctx);
 
-		var zoom_initial_data = { width: ctx.viewWidth, height: ctx.viewHeight };
+		var if_block1 = (ctx.showHoverIcon) && create_if_block(component, ctx);
+
+		var d3zoom_initial_data = {
+		 	homeX: ctx.homeX,
+		 	homeY: ctx.homeY,
+		 	homeScale: ctx.homeScale
+		 };
 		if (ctx.scale
-	         !== void 0) {
-			zoom_initial_data.scale = ctx.scale
-	        ;
-			zoom_updating.scale = true;
+	     !== void 0) {
+			d3zoom_initial_data.scale = ctx.scale
+	    ;
+			d3zoom_updating.scale = true;
 		}
-		if (ctx.unit
-	         !== void 0) {
-			zoom_initial_data.unit = ctx.unit
-	        ;
-			zoom_updating.unit = true;
+		if (ctx.translateX
+	     !== void 0) {
+			d3zoom_initial_data.translateX = ctx.translateX
+	    ;
+			d3zoom_updating.translateX = true;
 		}
-		if (ctx.gcx
-	         !== void 0) {
-			zoom_initial_data.gcx = ctx.gcx
-	        ;
-			zoom_updating.gcx = true;
+		if (ctx.translateY
+	     !== void 0) {
+			d3zoom_initial_data.translateY = ctx.translateY
+	    ;
+			d3zoom_updating.translateY = true;
 		}
-		if (ctx.gcy
-	         !== void 0) {
-			zoom_initial_data.gcy = ctx.gcy
-	        ;
-			zoom_updating.gcy = true;
+		if (ctx.mouseOver
+	     !== void 0) {
+			d3zoom_initial_data.mouseOver = ctx.mouseOver
+	    ;
+			d3zoom_updating.mouseOver = true;
 		}
-		var zoom = new Zoom({
+		if (ctx.mouseGlobalPosition
+	     !== void 0) {
+			d3zoom_initial_data.mouseGlobalPosition = ctx.mouseGlobalPosition
+	    ;
+			d3zoom_updating.mouseGlobalPosition = true;
+		}
+		if (ctx.extent
+	     !== void 0) {
+			d3zoom_initial_data.extent = ctx.extent
+	    ;
+			d3zoom_updating.extent = true;
+		}
+		if (ctx.scrollWheel
+	     !== void 0) {
+			d3zoom_initial_data.scrollWheel = ctx.scrollWheel
+	    ;
+			d3zoom_updating.scrollWheel = true;
+		}
+		var d3zoom = new D3Zoom({
 			root: component.root,
 			store: component.store,
-			data: zoom_initial_data,
+			slots: { default: createFragment() },
+			data: d3zoom_initial_data,
 			_bind(changed, childState) {
 				var newState = {};
-				if (!zoom_updating.scale && changed.scale) {
+				if (!d3zoom_updating.scale && changed.scale) {
 					newState.scale = childState.scale;
 				}
 
-				if (!zoom_updating.unit && changed.unit) {
-					newState.unit = childState.unit;
+				if (!d3zoom_updating.translateX && changed.translateX) {
+					newState.translateX = childState.translateX;
 				}
 
-				if (!zoom_updating.gcx && changed.gcx) {
-					newState.gcx = childState.gcx;
+				if (!d3zoom_updating.translateY && changed.translateY) {
+					newState.translateY = childState.translateY;
 				}
 
-				if (!zoom_updating.gcy && changed.gcy) {
-					newState.gcy = childState.gcy;
+				if (!d3zoom_updating.mouseOver && changed.mouseOver) {
+					newState.mouseOver = childState.mouseOver;
+				}
+
+				if (!d3zoom_updating.mouseGlobalPosition && changed.mouseGlobalPosition) {
+					newState.mouseGlobalPosition = childState.mouseGlobalPosition;
+				}
+
+				if (!d3zoom_updating.extent && changed.extent) {
+					newState.extent = childState.extent;
+				}
+
+				if (!d3zoom_updating.scrollWheel && changed.scrollWheel) {
+					newState.scrollWheel = childState.scrollWheel;
 				}
 				component._set(newState);
-				zoom_updating = {};
+				d3zoom_updating = {};
 			}
 		});
 
 		component.root._beforecreate.push(() => {
-			zoom._bind({ scale: 1, unit: 1, gcx: 1, gcy: 1 }, zoom.get());
+			d3zoom._bind({ scale: 1, translateX: 1, translateY: 1, mouseOver: 1, mouseGlobalPosition: 1, extent: 1, scrollWheel: 1 }, d3zoom.get());
 		});
 
-		component.refs.zoom = zoom;
+		component.refs.d3Zoom = d3zoom;
 
-		var if_block1 = (ctx.showHoverIcon) && create_if_block(component, ctx);
-
-		function mousedown_handler(event) {
-			component.mouseDown(event);
-		}
-
-		function mousemove_handler(event) {
-			component.mouseMove(event);
-		}
-
-		function mouseenter_handler(event) {
-			component.mouseEnter(event);
-		}
-
-		function mouseout_handler(event) {
-			component.mouseOut(event);
-		}
-
-		function div1_resize_handler() {
-			component.set({ viewWidth: div1.clientWidth, viewHeight: div1.clientHeight });
+		function div_resize_handler() {
+			component.set({ viewWidth: div.clientWidth, viewHeight: div.clientHeight });
 		}
 
 		return {
@@ -3159,29 +6465,20 @@
 				radar._fragment.c();
 				text0 = createText("\n\n");
 				if (if_block0) if_block0.c();
-				text1 = createText("\n\n  ");
-				div1 = createElement("div");
-				div0 = createElement("div");
-				zoom._fragment.c();
-				text2 = createText("\n      ");
+				text1 = createText("\n\n");
+				div = createElement("div");
 				canvas = createElement("canvas");
-				text3 = createText("\n      ");
+				text2 = createText("\n    ");
 				if (if_block1) if_block1.c();
+				if_block1_anchor = createComment();
+				d3zoom._fragment.c();
 				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
-				setStyle(canvas, "width", "" + ctx.viewWidth + "px");
-				setStyle(canvas, "height", "" + ctx.viewHeight + "px");
-				canvas.className = "svelte-ptap6b svelte-ref-canvas";
-				addLoc(canvas, file$3, 35, 6, 688);
-				addListener(div0, "mousedown", mousedown_handler);
-				addListener(div0, "mousemove", mousemove_handler);
-				addListener(div0, "mouseenter", mouseenter_handler);
-				addListener(div0, "mouseout", mouseout_handler);
-				div0.className = div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage";
-				addLoc(div0, file$3, 20, 4, 275);
-				component.root._beforecreate.push(div1_resize_handler);
-				div1.className = "svelte-ptap6b svelte-ref-root";
-				addLoc(div1, file$3, 15, 2, 185);
+				canvas.className = "svelte-lrxg8i svelte-ref-canvas";
+				addLoc(canvas, file$3, 31, 4, 468);
+				component.root._beforecreate.push(div_resize_handler);
+				div.className = "svelte-lrxg8i svelte-ref-root";
+				addLoc(div, file$3, 15, 0, 183);
 			},
 
 			m: function mount(target, anchor) {
@@ -3189,17 +6486,15 @@
 				insert(target, text0, anchor);
 				if (if_block0) if_block0.m(target, anchor);
 				insert(target, text1, anchor);
-				insert(target, div1, anchor);
-				append(div1, div0);
-				zoom._mount(div0, null);
-				append(div0, text2);
-				append(div0, canvas);
+				insert(target, div, anchor);
+				append(d3zoom._slotted.default, canvas);
 				component.refs.canvas = canvas;
-				append(div0, text3);
-				if (if_block1) if_block1.m(div0, null);
-				component.refs.stage = div0;
-				div1_resize_listener = addResizeListener(div1, div1_resize_handler);
-				component.refs.root = div1;
+				append(d3zoom._slotted.default, text2);
+				if (if_block1) if_block1.m(d3zoom._slotted.default, null);
+				append(d3zoom._slotted.default, if_block1_anchor);
+				d3zoom._mount(div, null);
+				div_resize_listener = addResizeListener(div, div_resize_handler);
+				component.refs.root = div;
 			},
 
 			p: function update(changed, _ctx) {
@@ -3225,36 +6520,6 @@
 					if_block0 = null;
 				}
 
-				var zoom_changes = {};
-				if (changed.viewWidth) zoom_changes.width = ctx.viewWidth;
-				if (changed.viewHeight) zoom_changes.height = ctx.viewHeight;
-				if (!zoom_updating.scale && changed.scale) {
-					zoom_changes.scale = ctx.scale
-	        ;
-					zoom_updating.scale = ctx.scale
-	         !== void 0;
-				}
-				if (!zoom_updating.unit && changed.unit) {
-					zoom_changes.unit = ctx.unit
-	        ;
-					zoom_updating.unit = ctx.unit
-	         !== void 0;
-				}
-				if (!zoom_updating.gcx && changed.gcx) {
-					zoom_changes.gcx = ctx.gcx
-	        ;
-					zoom_updating.gcx = ctx.gcx
-	         !== void 0;
-				}
-				if (!zoom_updating.gcy && changed.gcy) {
-					zoom_changes.gcy = ctx.gcy
-	        ;
-					zoom_updating.gcy = ctx.gcy
-	         !== void 0;
-				}
-				zoom._set(zoom_changes);
-				zoom_updating = {};
-
 				if ((changed.viewWidth || changed.screenResolution) && canvas_width_value !== (canvas_width_value = ctx.viewWidth * ctx.screenResolution)) {
 					canvas.width = canvas_width_value;
 				}
@@ -3263,30 +6528,67 @@
 					canvas.height = canvas_height_value;
 				}
 
-				if (changed.viewWidth) {
-					setStyle(canvas, "width", "" + ctx.viewWidth + "px");
-				}
-
-				if (changed.viewHeight) {
-					setStyle(canvas, "height", "" + ctx.viewHeight + "px");
-				}
-
 				if (ctx.showHoverIcon) {
 					if (if_block1) {
 						if_block1.p(changed, ctx);
 					} else {
 						if_block1 = create_if_block(component, ctx);
 						if_block1.c();
-						if_block1.m(div0, null);
+						if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
 					}
 				} else if (if_block1) {
 					if_block1.d(1);
 					if_block1 = null;
 				}
 
-				if ((changed.mouseMoveMode || changed.enableDragToPan) && div0_class_value !== (div0_class_value = "" + ((ctx.mouseMoveMode == 'pan' & ctx.enableDragToPan) ? 'panning' : '') + " svelte-ptap6b" + " svelte-ref-stage")) {
-					div0.className = div0_class_value;
+				var d3zoom_changes = {};
+				if (changed.homeX) d3zoom_changes.homeX = ctx.homeX;
+				if (changed.homeY) d3zoom_changes.homeY = ctx.homeY;
+				if (changed.homeScale) d3zoom_changes.homeScale = ctx.homeScale;
+				if (!d3zoom_updating.scale && changed.scale) {
+					d3zoom_changes.scale = ctx.scale
+	    ;
+					d3zoom_updating.scale = ctx.scale
+	     !== void 0;
 				}
+				if (!d3zoom_updating.translateX && changed.translateX) {
+					d3zoom_changes.translateX = ctx.translateX
+	    ;
+					d3zoom_updating.translateX = ctx.translateX
+	     !== void 0;
+				}
+				if (!d3zoom_updating.translateY && changed.translateY) {
+					d3zoom_changes.translateY = ctx.translateY
+	    ;
+					d3zoom_updating.translateY = ctx.translateY
+	     !== void 0;
+				}
+				if (!d3zoom_updating.mouseOver && changed.mouseOver) {
+					d3zoom_changes.mouseOver = ctx.mouseOver
+	    ;
+					d3zoom_updating.mouseOver = ctx.mouseOver
+	     !== void 0;
+				}
+				if (!d3zoom_updating.mouseGlobalPosition && changed.mouseGlobalPosition) {
+					d3zoom_changes.mouseGlobalPosition = ctx.mouseGlobalPosition
+	    ;
+					d3zoom_updating.mouseGlobalPosition = ctx.mouseGlobalPosition
+	     !== void 0;
+				}
+				if (!d3zoom_updating.extent && changed.extent) {
+					d3zoom_changes.extent = ctx.extent
+	    ;
+					d3zoom_updating.extent = ctx.extent
+	     !== void 0;
+				}
+				if (!d3zoom_updating.scrollWheel && changed.scrollWheel) {
+					d3zoom_changes.scrollWheel = ctx.scrollWheel
+	    ;
+					d3zoom_updating.scrollWheel = ctx.scrollWheel
+	     !== void 0;
+				}
+				d3zoom._set(d3zoom_changes);
+				d3zoom_updating = {};
 			},
 
 			d: function destroy$$1(detach) {
@@ -3298,20 +6600,15 @@
 				if (if_block0) if_block0.d(detach);
 				if (detach) {
 					detachNode(text1);
-					detachNode(div1);
+					detachNode(div);
 				}
 
-				zoom.destroy();
-				if (component.refs.zoom === zoom) component.refs.zoom = null;
 				if (component.refs.canvas === canvas) component.refs.canvas = null;
 				if (if_block1) if_block1.d();
-				removeListener(div0, "mousedown", mousedown_handler);
-				removeListener(div0, "mousemove", mousemove_handler);
-				removeListener(div0, "mouseenter", mouseenter_handler);
-				removeListener(div0, "mouseout", mouseout_handler);
-				if (component.refs.stage === div0) component.refs.stage = null;
-				div1_resize_listener.cancel();
-				if (component.refs.root === div1) component.refs.root = null;
+				d3zoom.destroy();
+				if (component.refs.d3Zoom === d3zoom) component.refs.d3Zoom = null;
+				div_resize_listener.cancel();
+				if (component.refs.root === div) component.refs.root = null;
 			}
 		};
 	}
@@ -3416,34 +6713,38 @@
 		};
 	}
 
-	// (42:6) {#if showHoverIcon}
+	// (36:4) {#if showHoverIcon}
 	function create_if_block(component, ctx) {
 		var div;
 
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "icon svelte-ptap6b";
-				setStyle(div, "width", (ctx.iconSizeInPixels + 2 + 'px'));
-				setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
-				setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
-				setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
-				addLoc(div, file$3, 42, 8, 920);
+				setStyle(div, "left", "" + ctx.hoverIconX + "px");
+				setStyle(div, "top", "" + ctx.hoverIconY + "px");
+				setStyle(div, "width", "" + ctx.hoverIconW + "px");
+				setStyle(div, "height", "" + ctx.hoverIconW + "px");
+				div.className = "svelte-lrxg8i svelte-ref-hover";
+				addLoc(div, file$3, 36, 4, 618);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
+				component.refs.hover = div;
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.iconSizeInPixels) {
-					setStyle(div, "width", (ctx.iconSizeInPixels + 2 + 'px'));
-					setStyle(div, "height", (ctx.iconSizeInPixels + 2 + 'px'));
+				if (changed.hoverIconX) {
+					setStyle(div, "left", "" + ctx.hoverIconX + "px");
 				}
 
-				if (changed.topLeftCornerHover) {
-					setStyle(div, "left", (ctx.topLeftCornerHover.x + 'px'));
-					setStyle(div, "top", (ctx.topLeftCornerHover.y + 'px'));
+				if (changed.hoverIconY) {
+					setStyle(div, "top", "" + ctx.hoverIconY + "px");
+				}
+
+				if (changed.hoverIconW) {
+					setStyle(div, "width", "" + ctx.hoverIconW + "px");
+					setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				}
 			},
 
@@ -3451,6 +6752,8 @@
 				if (detach) {
 					detachNode(div);
 				}
+
+				if (component.refs.hover === div) component.refs.hover = null;
 			}
 		};
 	}
@@ -3465,40 +6768,42 @@
 		this.refs = {};
 		this._state = assign(data$3(), options.data);
 
-		this._recompute({ layers: 1, layer: 1, viewWidth: 1, viewHeight: 1, gcx: 1, gcy: 1, scale: 1, minViewDimInPx: 1, gridSize: 1, currentZoomIndex: 1, config: 1, lastRecordedCanvasPos: 1, topLeft: 1, layerScale: 1, gridSelected: 1, classHeatmap: 1, mouseMoveMode: 1, onCanvas: 1, currentIconInfo: 1, enableHover: 1 }, this._state);
+		this._recompute({ layers: 1, layer: 1, viewWidth: 1, screenResolution: 1, viewHeight: 1, scale: 1, gridSize: 1, config: 1, classHeatmap: 1, autoGridSizeMultiplier: 1, currentZoomIndex: 1, currentLayerData: 1, mouseGlobalPosition: 1, w: 1, h: 1, translateX: 1, translateY: 1, hoverIconData: 1, enableHover: 1 }, this._state);
 		if (!('layers' in this._state)) console.warn("<Atlas> was created without expected data property 'layers'");
 		if (!('layer' in this._state)) console.warn("<Atlas> was created without expected data property 'layer'");
 		if (!('viewWidth' in this._state)) console.warn("<Atlas> was created without expected data property 'viewWidth'");
+		if (!('screenResolution' in this._state)) console.warn("<Atlas> was created without expected data property 'screenResolution'");
 		if (!('viewHeight' in this._state)) console.warn("<Atlas> was created without expected data property 'viewHeight'");
-		if (!('gcx' in this._state)) console.warn("<Atlas> was created without expected data property 'gcx'");
-		if (!('gcy' in this._state)) console.warn("<Atlas> was created without expected data property 'gcy'");
 		if (!('scale' in this._state)) console.warn("<Atlas> was created without expected data property 'scale'");
-
 		if (!('gridSize' in this._state)) console.warn("<Atlas> was created without expected data property 'gridSize'");
-
 		if (!('config' in this._state)) console.warn("<Atlas> was created without expected data property 'config'");
-		if (!('mouseMoveMode' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseMoveMode'");
-		if (!('onCanvas' in this._state)) console.warn("<Atlas> was created without expected data property 'onCanvas'");
-
-		if (!('enableHover' in this._state)) console.warn("<Atlas> was created without expected data property 'enableHover'");
-		if (!('lastRecordedCanvasPos' in this._state)) console.warn("<Atlas> was created without expected data property 'lastRecordedCanvasPos'");
-
-
-
 		if (!('classHeatmap' in this._state)) console.warn("<Atlas> was created without expected data property 'classHeatmap'");
+		if (!('autoGridSizeMultiplier' in this._state)) console.warn("<Atlas> was created without expected data property 'autoGridSizeMultiplier'");
+
+
+		if (!('mouseGlobalPosition' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseGlobalPosition'");
+
+
+
+		if (!('translateX' in this._state)) console.warn("<Atlas> was created without expected data property 'translateX'");
+		if (!('translateY' in this._state)) console.warn("<Atlas> was created without expected data property 'translateY'");
+		if (!('enableHover' in this._state)) console.warn("<Atlas> was created without expected data property 'enableHover'");
 		if (!('ready' in this._state)) console.warn("<Atlas> was created without expected data property 'ready'");
 		if (!('id' in this._state)) console.warn("<Atlas> was created without expected data property 'id'");
 		if (!('layout' in this._state)) console.warn("<Atlas> was created without expected data property 'layout'");
 		if (!('classFilter' in this._state)) console.warn("<Atlas> was created without expected data property 'classFilter'");
 		if (!('filter' in this._state)) console.warn("<Atlas> was created without expected data property 'filter'");
 		if (!('labels' in this._state)) console.warn("<Atlas> was created without expected data property 'labels'");
-		if (!('enableDragToPan' in this._state)) console.warn("<Atlas> was created without expected data property 'enableDragToPan'");
-		if (!('unit' in this._state)) console.warn("<Atlas> was created without expected data property 'unit'");
-		if (!('screenResolution' in this._state)) console.warn("<Atlas> was created without expected data property 'screenResolution'");
+		if (!('mouseOver' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseOver'");
+		if (!('extent' in this._state)) console.warn("<Atlas> was created without expected data property 'extent'");
+		if (!('scrollWheel' in this._state)) console.warn("<Atlas> was created without expected data property 'scrollWheel'");
+		if (!('homeX' in this._state)) console.warn("<Atlas> was created without expected data property 'homeX'");
+		if (!('homeY' in this._state)) console.warn("<Atlas> was created without expected data property 'homeY'");
+		if (!('homeScale' in this._state)) console.warn("<Atlas> was created without expected data property 'homeScale'");
 		this._intro = true;
 		this._handlers.update = [onupdate$1];
 
-		if (!document.getElementById("svelte-ptap6b-style")) add_css$1();
+		if (!document.getElementById("svelte-lrxg8i-style")) add_css$1();
 
 		this._fragment = create_main_fragment$3(this, this._state);
 
@@ -3521,17 +6826,17 @@
 
 	Atlas.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('maxAttributionValue' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'maxAttributionValue'");
-		if ('aspectRatio' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'aspectRatio'");
-		if ('minViewDimInPx' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'minViewDimInPx'");
-		if ('topLeft' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'topLeft'");
+		if ('w' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'w'");
+		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'h'");
 		if ('currentZoomIndex' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentZoomIndex'");
-		if ('numIconsWide' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'numIconsWide'");
-		if ('iconSizeInPixels' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'iconSizeInPixels'");
-		if ('layerScale' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'layerScale'");
-		if ('gridSelected' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'gridSelected'");
-		if ('currentIconInfo' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentIconInfo'");
+		if ('visibleLayers' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'visibleLayers'");
+		if ('currentLayerData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentLayerData'");
+		if ('hoverIconData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconData'");
+		if ('showHover' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'showHover'");
+		if ('hoverIconX' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconX'");
+		if ('hoverIconY' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconY'");
+		if ('hoverIconW' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconW'");
 		if ('showHoverIcon' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'showHoverIcon'");
-		if ('topLeftCornerHover' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'topLeftCornerHover'");
 	};
 
 	Atlas.prototype._recompute = function _recompute(changed, state) {
@@ -3539,49 +6844,52 @@
 			if (this._differs(state.maxAttributionValue, (state.maxAttributionValue = maxAttributionValue(state)))) changed.maxAttributionValue = true;
 		}
 
-		if (changed.viewWidth || changed.viewHeight) {
-			if (this._differs(state.aspectRatio, (state.aspectRatio = aspectRatio(state)))) changed.aspectRatio = true;
-			if (this._differs(state.minViewDimInPx, (state.minViewDimInPx = minViewDimInPx(state)))) changed.minViewDimInPx = true;
+		if (changed.viewWidth || changed.screenResolution) {
+			if (this._differs(state.w, (state.w = w(state)))) changed.w = true;
 		}
 
-		if (changed.gcx || changed.gcy || changed.scale || changed.viewWidth || changed.viewHeight || changed.minViewDimInPx) {
-			if (this._differs(state.topLeft, (state.topLeft = topLeft(state)))) changed.topLeft = true;
+		if (changed.viewHeight || changed.screenResolution) {
+			if (this._differs(state.h, (state.h = h(state)))) changed.h = true;
 		}
 
-		if (changed.scale || changed.gridSize) {
+		if (changed.scale || changed.gridSize || changed.config || changed.classHeatmap || changed.viewWidth || changed.viewHeight || changed.autoGridSizeMultiplier) {
 			if (this._differs(state.currentZoomIndex, (state.currentZoomIndex = currentZoomIndex(state)))) changed.currentZoomIndex = true;
 		}
 
+		if (changed.currentZoomIndex) {
+			if (this._differs(state.visibleLayers, (state.visibleLayers = visibleLayers(state)))) changed.visibleLayers = true;
+		}
+
 		if (changed.currentZoomIndex || changed.layers) {
-			if (this._differs(state.numIconsWide, (state.numIconsWide = numIconsWide(state)))) changed.numIconsWide = true;
+			if (this._differs(state.currentLayerData, (state.currentLayerData = currentLayerData(state)))) changed.currentLayerData = true;
 		}
 
-		if (changed.config || changed.minViewDimInPx || changed.currentZoomIndex || changed.scale) {
-			if (this._differs(state.iconSizeInPixels, (state.iconSizeInPixels = iconSizeInPixels(state)))) changed.iconSizeInPixels = true;
+		if (changed.currentLayerData || changed.config || changed.mouseGlobalPosition || changed.w || changed.h || changed.translateX || changed.translateY) {
+			if (this._differs(state.hoverIconData, (state.hoverIconData = hoverIconData(state)))) changed.hoverIconData = true;
 		}
 
-		if (changed.minViewDimInPx || changed.config || changed.currentZoomIndex || changed.scale) {
-			if (this._differs(state.layerScale, (state.layerScale = layerScale(state)))) changed.layerScale = true;
+		if (changed.hoverIconData || changed.mouseGlobalPosition) {
+			if (this._differs(state.showHover, (state.showHover = showHover(state)))) changed.showHover = true;
 		}
 
-		if (changed.lastRecordedCanvasPos || changed.topLeft || changed.layerScale || changed.config) {
-			if (this._differs(state.gridSelected, (state.gridSelected = gridSelected(state)))) changed.gridSelected = true;
+		if (changed.hoverIconData || changed.scale || changed.w || changed.h || changed.translateX) {
+			if (this._differs(state.hoverIconX, (state.hoverIconX = hoverIconX(state)))) changed.hoverIconX = true;
 		}
 
-		if (changed.layers || changed.currentZoomIndex || changed.gridSelected || changed.classHeatmap) {
-			if (this._differs(state.currentIconInfo, (state.currentIconInfo = currentIconInfo(state)))) changed.currentIconInfo = true;
+		if (changed.hoverIconData || changed.scale || changed.w || changed.h || changed.translateY) {
+			if (this._differs(state.hoverIconY, (state.hoverIconY = hoverIconY(state)))) changed.hoverIconY = true;
 		}
 
-		if (changed.mouseMoveMode || changed.onCanvas || changed.currentIconInfo || changed.enableHover) {
+		if (changed.hoverIconData || changed.scale || changed.w || changed.h) {
+			if (this._differs(state.hoverIconW, (state.hoverIconW = hoverIconW(state)))) changed.hoverIconW = true;
+		}
+
+		if (changed.mouseGlobalPosition || changed.hoverIconData || changed.enableHover) {
 			if (this._differs(state.showHoverIcon, (state.showHoverIcon = showHoverIcon(state)))) changed.showHoverIcon = true;
-		}
-
-		if (changed.config || changed.layerScale || changed.topLeft || changed.gridSelected) {
-			if (this._differs(state.topLeftCornerHover, (state.topLeftCornerHover = topLeftCornerHover(state)))) changed.topLeftCornerHover = true;
 		}
 	};
 
-	function noop$1() {}
+	function noop$2() {}
 
 	function assign$1(target) {
 		var k,
@@ -3613,9 +6921,9 @@
 	}
 
 	function destroy$1(detach) {
-		this.destroy = noop$1;
+		this.destroy = noop$2;
 		this.fire('destroy');
-		this.set = this.get = noop$1;
+		this.set = this.get = noop$2;
 
 		if (detach !== false) this._fragment.u();
 		this._fragment.d();
@@ -3657,11 +6965,11 @@
 		}
 	}
 
-	function get$1(key) {
+	function get$3(key) {
 		return key ? this._state[key] : this._state;
 	}
 
-	function init$1(component, options) {
+	function init$2(component, options) {
 		component._observers = { pre: blankObject$1(), post: blankObject$1() };
 		component._handlers = blankObject$1();
 		component._bind = options._bind;
@@ -3706,7 +7014,7 @@
 		};
 	}
 
-	function set$1(newState) {
+	function set$3(newState) {
 		this._set(assign$1({}, newState));
 		if (this.root._lock) return;
 		this.root._lock = true;
@@ -3751,13 +7059,13 @@
 
 	var proto$1 = {
 		destroy: destroy$1,
-		get: get$1,
+		get: get$3,
 		fire: fire$1,
 		observe: observe$1,
 		on: on$1,
-		set: set$1,
+		set: set$3,
 		teardown: destroy$1,
-		_recompute: noop$1,
+		_recompute: noop$2,
 		_set: _set$1,
 		_mount: _mount$1,
 		_unmount: _unmount,
@@ -3905,7 +7213,7 @@
 	}
 
 	function Sprite(options) {
-		init$1(this, options);
+		init$2(this, options);
 		this.refs = {};
 		this._state = assign$1(data$4(), options.data);
 		this._recompute({ width: 1, height: 1 }, this._state);
@@ -4091,7 +7399,7 @@
 	// We will cache requests and parsing.
 	const cache$1$1 = new Map();
 	const suppress$1 = new Map();
-	const namespaces$1 = new Map();
+	const namespaces$2 = new Map();
 
 	// Mapping file extensions to loaders
 	const loaders$1 = new Map([
@@ -4154,11 +7462,11 @@
 	  // If we have a previous request in this namespace, mark it as suppressed so 
 	  // that the promise is never resolved. Then we reset the current namespace to 
 	  // the current request.
-	  if (namespaces$1.has(ns)) {
-	    const pendingRequestID = namespaces$1.get(ns);
+	  if (namespaces$2.has(ns)) {
+	    const pendingRequestID = namespaces$2.get(ns);
 	    suppress$1.set(pendingRequestID, true);
 	  }
-	  namespaces$1.set(ns, requestID);
+	  namespaces$2.set(ns, requestID);
 	  
 	  return new Promise((resolve, reject) => {
 	    let p;
@@ -4220,7 +7528,7 @@
 		return clientWidth;
 	}
 
-	function id({model, layerName}) {
+	function id$1({model, layerName}) {
 		return model + "_" + layerName;
 	}
 
@@ -4408,8 +7716,776 @@
 		}
 
 		if (changed.model || changed.layerName) {
-			if (this._differs(state.id, (state.id = id(state)))) changed.id = true;
+			if (this._differs(state.id, (state.id = id$1(state)))) changed.id = true;
 		}
+	};
+
+	/* src/library/Tooltip.html generated by Svelte v2.15.3 */
+
+	function style({x, width, y, clientHeight, visible}) {
+	  if (visible === false) {
+	    return "visibility: hidden;";
+	  } else {
+	    const scrollLeft = document.documentElement.scrollLeft;
+	    const scrollTop = document.documentElement.scrollTop;
+	    const rightEdge = document.documentElement.clientWidth - width;
+	    const bottomEdge = document.documentElement.clientHeight - clientHeight;
+	    let left = Math.min(x, rightEdge);
+	    let top = Math.min(y, bottomEdge);
+	    if (x >= rightEdge && y >= bottomEdge) {
+	      left = x - width;
+	    }
+	    return `width: ${width}px; top: ${top + scrollTop}px; left: ${left + scrollLeft}px;`;
+	  }
+	}
+
+	function data$6() {
+	  return {
+	    visible: false,
+	    width: 200,
+	    component: null,
+	  }
+	}
+	var methods$4 = {
+	  mousemove: function(event) {
+	    const {visible} = this.get();
+	    if (visible) {
+	      this.set({
+	        x: event.clientX,
+	        y: event.clientY
+	      });
+	    }
+	  },
+	  show: function(d) {
+	    this.set({visible: true});
+	    this.refs.component.set({...d});
+	  },
+	  hide: function() {
+	    this.set({
+	      visible: false
+	    });
+	    
+	  }
+	};
+
+	const file$5 = "src/library/Tooltip.html";
+
+	function add_css$3() {
+		var style = createElement("style");
+		style.id = 'svelte-14z2oof-style';
+		style.textContent = ".svelte-ref-root.svelte-14z2oof{box-sizing:border-box;pointer-events:none;z-index:1000000;position:absolute;top:0;left:0}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVG9vbHRpcC5odG1sIiwic291cmNlcyI6WyJUb29sdGlwLmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiPCEtLSBcbiAgLy9Zb3UgZmlyc3QgbXVzdCBhZGQgb25lIGNvbXBvbmVudCB0byB0aGUgcm9vdCBkb2N1bWVudC5cbiAgLy9JdCB3aWxsIGF1dG9tYXRpY2FsbHkgZm9sbG93IHRoZSBtb3VzZSBwb3NpdGlvbi5cbiAgLy9Zb3Ugc2hvdWxkIGFsc28gc2F2ZSBpdCB0byB5b3VyIGdsb2JhbCBzdG9yZSwgc28gYWxsIGNvbXBvbmVudHMgaGF2ZSBhY2Nlc3MuXG4gIC8vWW91IG11c3QgYWxzbyBwYXNzIGluIHdoYXQgY29tcG9uZW50IHRvIHVzZSBmb3IgcmVuZGVyaW5nIHRoZSBkYXRhIHlvdSB3aWxsIHBhc3MgbGF0ZXIuXG5cblx0Ly8gQSBnbG9iYWwgdG9vbHRpcFxuXHRzdG9yZS5zZXQoe1xuXHRcdHRvb2x0aXA6IG5ldyBUb29sdGlwKHtcblx0XHRcdHRhcmdldDogZG9jdW1lbnQuYm9keSxcbiAgICAgIHN0b3JlLFxuXHRcdFx0ZGF0YToge1xuXHRcdFx0XHRjb21wb25lbnQ6IEF0bGFzVG9vbHRpcFxuXHRcdFx0fVxuXHRcdH0pXG5cdH0pO1xuXG4gIC8vV2hlbiB5b3Ugd2FudCB0byBzaG93IGl0OlxuICBjb25zdCB7IHRvb2x0aXAgfSA9IHRoaXMuc3RvcmUuZ2V0KCk7XG4gIHRvb2x0aXAuc2hvdyhcbiAgICB7XG4gICAgICBtZXNzYWdlOiBcImhlbGxvXCJcbiAgICB9XG4gICk7XG5cbiAgLy9BbmQgd2hlbiB5b3Ugd2FudCB0byBoaWRlIGl0OiBcbiAgY29uc3QgeyB0b29sdGlwIH0gPSB0aGlzLnN0b3JlLmdldCgpO1xuICB0b29sdGlwLmhpZGUoKTtcblxuIC0tPlxuXG48c3ZlbHRlOmRvY3VtZW50IG9uOm1vdXNlbW92ZT1cIm1vdXNlbW92ZShldmVudClcIiAvPlxuXG48ZGl2IHJlZjpyb290IGJpbmQ6Y2xpZW50SGVpZ2h0IHtzdHlsZX0+XG4gIHsjaWYgY29tcG9uZW50fVxuICAgIDxzdmVsdGU6Y29tcG9uZW50IHRoaXM9e2NvbXBvbmVudH0gcmVmOmNvbXBvbmVudC8+XG4gIHsvaWZ9XG48L2Rpdj5cblxuPHNjcmlwdD5cbiAgZXhwb3J0IGRlZmF1bHQge1xuICAgIGRhdGEoKSB7XG4gICAgICByZXR1cm4ge1xuICAgICAgICB2aXNpYmxlOiBmYWxzZSxcbiAgICAgICAgd2lkdGg6IDIwMCxcbiAgICAgICAgY29tcG9uZW50OiBudWxsLFxuICAgICAgfVxuICAgIH0sXG4gICAgY29tcHV0ZWQ6IHtcbiAgICAgIHN0eWxlOiAoe3gsIHdpZHRoLCB5LCBjbGllbnRIZWlnaHQsIHZpc2libGV9KSA9PiB7XG4gICAgICAgIGlmICh2aXNpYmxlID09PSBmYWxzZSkge1xuICAgICAgICAgIHJldHVybiBcInZpc2liaWxpdHk6IGhpZGRlbjtcIjtcbiAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICBjb25zdCBzY3JvbGxMZWZ0ID0gZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LnNjcm9sbExlZnQ7XG4gICAgICAgICAgY29uc3Qgc2Nyb2xsVG9wID0gZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LnNjcm9sbFRvcDtcbiAgICAgICAgICBjb25zdCByaWdodEVkZ2UgPSBkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQuY2xpZW50V2lkdGggLSB3aWR0aDtcbiAgICAgICAgICBjb25zdCBib3R0b21FZGdlID0gZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LmNsaWVudEhlaWdodCAtIGNsaWVudEhlaWdodDtcbiAgICAgICAgICBsZXQgbGVmdCA9IE1hdGgubWluKHgsIHJpZ2h0RWRnZSk7XG4gICAgICAgICAgbGV0IHRvcCA9IE1hdGgubWluKHksIGJvdHRvbUVkZ2UpO1xuICAgICAgICAgIGlmICh4ID49IHJpZ2h0RWRnZSAmJiB5ID49IGJvdHRvbUVkZ2UpIHtcbiAgICAgICAgICAgIGxlZnQgPSB4IC0gd2lkdGg7XG4gICAgICAgICAgfVxuICAgICAgICAgIHJldHVybiBgd2lkdGg6ICR7d2lkdGh9cHg7IHRvcDogJHt0b3AgKyBzY3JvbGxUb3B9cHg7IGxlZnQ6ICR7bGVmdCArIHNjcm9sbExlZnR9cHg7YDtcbiAgICAgICAgfVxuICAgICAgfSxcbiAgICB9LFxuICAgIG1ldGhvZHM6IHtcbiAgICAgIG1vdXNlbW92ZTogZnVuY3Rpb24oZXZlbnQpIHtcbiAgICAgICAgY29uc3Qge3Zpc2libGV9ID0gdGhpcy5nZXQoKTtcbiAgICAgICAgaWYgKHZpc2libGUpIHtcbiAgICAgICAgICB0aGlzLnNldCh7XG4gICAgICAgICAgICB4OiBldmVudC5jbGllbnRYLFxuICAgICAgICAgICAgeTogZXZlbnQuY2xpZW50WVxuICAgICAgICAgIH0pO1xuICAgICAgICB9XG4gICAgICB9LFxuICAgICAgc2hvdzogZnVuY3Rpb24oZCkge1xuICAgICAgICB0aGlzLnNldCh7dmlzaWJsZTogdHJ1ZX0pO1xuICAgICAgICB0aGlzLnJlZnMuY29tcG9uZW50LnNldCh7Li4uZH0pO1xuICAgICAgfSxcbiAgICAgIGhpZGU6IGZ1bmN0aW9uKCkge1xuICAgICAgICB0aGlzLnNldCh7XG4gICAgICAgICAgdmlzaWJsZTogZmFsc2VcbiAgICAgICAgfSk7XG4gICAgICAgIFxuICAgICAgfVxuICAgIH1cbiAgfVxuPC9zY3JpcHQ+XG5cbjxzdHlsZT5cbiAgcmVmOnJvb3Qge1xuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgcG9pbnRlci1ldmVudHM6IG5vbmU7XG4gICAgei1pbmRleDogMTAwMDAwMDtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgdG9wOiAwO1xuICAgIGxlZnQ6IDA7XG4gIH1cbjwvc3R5bGU+Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQTJGRSwrQkFBUyxDQUFDLEFBQ1IsVUFBVSxDQUFFLFVBQVUsQ0FDdEIsY0FBYyxDQUFFLElBQUksQ0FDcEIsT0FBTyxDQUFFLE9BQU8sQ0FDaEIsUUFBUSxDQUFFLFFBQVEsQ0FDbEIsR0FBRyxDQUFFLENBQUMsQ0FDTixJQUFJLENBQUUsQ0FBQyxBQUNULENBQUMifQ== */";
+		append(document.head, style);
+	}
+
+	function create_main_fragment$6(component, ctx) {
+		var text, div, div_resize_listener;
+
+		function onwindowmousemove(event) {
+			component.mousemove(event);	}
+		document.addEventListener("mousemove", onwindowmousemove);
+
+		var if_block = (ctx.component) && create_if_block$1(component, ctx);
+
+		function div_resize_handler() {
+			component.set({ clientHeight: div.clientHeight });
+		}
+
+		return {
+			c: function create() {
+				text = createText("\n\n");
+				div = createElement("div");
+				if (if_block) if_block.c();
+				component.root._beforecreate.push(div_resize_handler);
+				div.style.cssText = ctx.style;
+				div.className = "svelte-14z2oof svelte-ref-root";
+				addLoc(div, file$5, 33, 0, 725);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+				insert(target, div, anchor);
+				if (if_block) if_block.m(div, null);
+				div_resize_listener = addResizeListener(div, div_resize_handler);
+				component.refs.root = div;
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.component) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$1(component, ctx);
+						if_block.c();
+						if_block.m(div, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (changed.style) {
+					div.style.cssText = ctx.style;
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				document.removeEventListener("mousemove", onwindowmousemove);
+
+				if (detach) {
+					detachNode(text);
+					detachNode(div);
+				}
+
+				if (if_block) if_block.d();
+				div_resize_listener.cancel();
+				if (component.refs.root === div) component.refs.root = null;
+			}
+		};
+	}
+
+	// (35:2) {#if component}
+	function create_if_block$1(component, ctx) {
+		var switch_instance_anchor;
+
+		var switch_value = ctx.component;
+
+		function switch_props(ctx) {
+			return {
+				root: component.root,
+				store: component.store
+			};
+		}
+
+		if (switch_value) {
+			var switch_instance = new switch_value(switch_props(ctx));
+		}
+
+		return {
+			c: function create() {
+				if (switch_instance) switch_instance._fragment.c();
+				switch_instance_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (switch_instance) {
+					switch_instance._mount(target, anchor);
+					component.refs.component = switch_instance;
+				}
+
+				insert(target, switch_instance_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (switch_value !== (switch_value = ctx.component)) {
+					if (switch_instance) {
+						switch_instance.destroy();
+					}
+
+					if (switch_value) {
+						switch_instance = new switch_value(switch_props(ctx));
+						switch_instance._fragment.c();
+						switch_instance._mount(switch_instance_anchor.parentNode, switch_instance_anchor);
+
+						component.refs.component = switch_instance;
+					} else {
+						switch_instance = null;
+						if (component.refs.component === switch_instance) {
+							component.refs.component = null;
+						}
+					}
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(switch_instance_anchor);
+				}
+
+				if (switch_instance) switch_instance.destroy(detach);
+			}
+		};
+	}
+
+	function Tooltip(options) {
+		this._debugName = '<Tooltip>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(data$6(), options.data);
+
+		this._recompute({ x: 1, width: 1, y: 1, clientHeight: 1, visible: 1 }, this._state);
+		if (!('x' in this._state)) console.warn("<Tooltip> was created without expected data property 'x'");
+		if (!('width' in this._state)) console.warn("<Tooltip> was created without expected data property 'width'");
+		if (!('y' in this._state)) console.warn("<Tooltip> was created without expected data property 'y'");
+		if (!('clientHeight' in this._state)) console.warn("<Tooltip> was created without expected data property 'clientHeight'");
+		if (!('visible' in this._state)) console.warn("<Tooltip> was created without expected data property 'visible'");
+
+		if (!('component' in this._state)) console.warn("<Tooltip> was created without expected data property 'component'");
+		this._intro = true;
+
+		if (!document.getElementById("svelte-14z2oof-style")) add_css$3();
+
+		this._fragment = create_main_fragment$6(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(Tooltip.prototype, protoDev);
+	assign(Tooltip.prototype, methods$4);
+
+	Tooltip.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('style' in newState && !this._updatingReadonlyProperty) throw new Error("<Tooltip>: Cannot set read-only property 'style'");
+	};
+
+	Tooltip.prototype._recompute = function _recompute(changed, state) {
+		if (changed.x || changed.width || changed.y || changed.clientHeight || changed.visible) {
+			if (this._differs(state.style, (state.style = style(state)))) changed.style = true;
+		}
+	};
+
+	// Computes the decimal coefficient and exponent of the specified number x with
+	// significant digits p, where x is positive and p is in [1, 21] or undefined.
+	// For example, formatDecimal(1.23) returns ["123", 0].
+	function formatDecimal(x, p) {
+	  if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+	  var i, coefficient = x.slice(0, i);
+
+	  // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+	  // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+	  return [
+	    coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+	    +x.slice(i + 1)
+	  ];
+	}
+
+	function exponent$1(x) {
+	  return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
+	}
+
+	function formatGroup(grouping, thousands) {
+	  return function(value, width) {
+	    var i = value.length,
+	        t = [],
+	        j = 0,
+	        g = grouping[0],
+	        length = 0;
+
+	    while (i > 0 && g > 0) {
+	      if (length + g + 1 > width) g = Math.max(1, width - length);
+	      t.push(value.substring(i -= g, i + g));
+	      if ((length += g + 1) > width) break;
+	      g = grouping[j = (j + 1) % grouping.length];
+	    }
+
+	    return t.reverse().join(thousands);
+	  };
+	}
+
+	function formatNumerals(numerals) {
+	  return function(value) {
+	    return value.replace(/[0-9]/g, function(i) {
+	      return numerals[+i];
+	    });
+	  };
+	}
+
+	// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+	var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+	function formatSpecifier(specifier) {
+	  return new FormatSpecifier(specifier);
+	}
+
+	formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+	function FormatSpecifier(specifier) {
+	  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+	  var match;
+	  this.fill = match[1] || " ";
+	  this.align = match[2] || ">";
+	  this.sign = match[3] || "-";
+	  this.symbol = match[4] || "";
+	  this.zero = !!match[5];
+	  this.width = match[6] && +match[6];
+	  this.comma = !!match[7];
+	  this.precision = match[8] && +match[8].slice(1);
+	  this.trim = !!match[9];
+	  this.type = match[10] || "";
+	}
+
+	FormatSpecifier.prototype.toString = function() {
+	  return this.fill
+	      + this.align
+	      + this.sign
+	      + this.symbol
+	      + (this.zero ? "0" : "")
+	      + (this.width == null ? "" : Math.max(1, this.width | 0))
+	      + (this.comma ? "," : "")
+	      + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+	      + (this.trim ? "~" : "")
+	      + this.type;
+	};
+
+	// Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+	function formatTrim(s) {
+	  out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+	    switch (s[i]) {
+	      case ".": i0 = i1 = i; break;
+	      case "0": if (i0 === 0) i0 = i; i1 = i; break;
+	      default: if (i0 > 0) { if (!+s[i]) break out; i0 = 0; } break;
+	    }
+	  }
+	  return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+	}
+
+	var prefixExponent;
+
+	function formatPrefixAuto(x, p) {
+	  var d = formatDecimal(x, p);
+	  if (!d) return x + "";
+	  var coefficient = d[0],
+	      exponent = d[1],
+	      i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+	      n = coefficient.length;
+	  return i === n ? coefficient
+	      : i > n ? coefficient + new Array(i - n + 1).join("0")
+	      : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+	      : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+	}
+
+	function formatRounded(x, p) {
+	  var d = formatDecimal(x, p);
+	  if (!d) return x + "";
+	  var coefficient = d[0],
+	      exponent = d[1];
+	  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+	      : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+	      : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+	}
+
+	var formatTypes = {
+	  "%": function(x, p) { return (x * 100).toFixed(p); },
+	  "b": function(x) { return Math.round(x).toString(2); },
+	  "c": function(x) { return x + ""; },
+	  "d": function(x) { return Math.round(x).toString(10); },
+	  "e": function(x, p) { return x.toExponential(p); },
+	  "f": function(x, p) { return x.toFixed(p); },
+	  "g": function(x, p) { return x.toPrecision(p); },
+	  "o": function(x) { return Math.round(x).toString(8); },
+	  "p": function(x, p) { return formatRounded(x * 100, p); },
+	  "r": formatRounded,
+	  "s": formatPrefixAuto,
+	  "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
+	  "x": function(x) { return Math.round(x).toString(16); }
+	};
+
+	function identity$3(x) {
+	  return x;
+	}
+
+	var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+	function formatLocale(locale) {
+	  var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity$3,
+	      currency = locale.currency,
+	      decimal = locale.decimal,
+	      numerals = locale.numerals ? formatNumerals(locale.numerals) : identity$3,
+	      percent = locale.percent || "%";
+
+	  function newFormat(specifier) {
+	    specifier = formatSpecifier(specifier);
+
+	    var fill = specifier.fill,
+	        align = specifier.align,
+	        sign = specifier.sign,
+	        symbol = specifier.symbol,
+	        zero = specifier.zero,
+	        width = specifier.width,
+	        comma = specifier.comma,
+	        precision = specifier.precision,
+	        trim = specifier.trim,
+	        type = specifier.type;
+
+	    // The "n" type is an alias for ",g".
+	    if (type === "n") comma = true, type = "g";
+
+	    // The "" type, and any invalid type, is an alias for ".12~g".
+	    else if (!formatTypes[type]) precision == null && (precision = 12), trim = true, type = "g";
+
+	    // If zero fill is specified, padding goes after sign and before digits.
+	    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+	    // Compute the prefix and suffix.
+	    // For SI-prefix, the suffix is lazily computed.
+	    var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+	        suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? percent : "";
+
+	    // What format function should we use?
+	    // Is this an integer type?
+	    // Can this type generate exponential notation?
+	    var formatType = formatTypes[type],
+	        maybeSuffix = /[defgprs%]/.test(type);
+
+	    // Set the default precision if not specified,
+	    // or clamp the specified precision to the supported range.
+	    // For significant precision, it must be in [1, 21].
+	    // For fixed precision, it must be in [0, 20].
+	    precision = precision == null ? 6
+	        : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+	        : Math.max(0, Math.min(20, precision));
+
+	    function format(value) {
+	      var valuePrefix = prefix,
+	          valueSuffix = suffix,
+	          i, n, c;
+
+	      if (type === "c") {
+	        valueSuffix = formatType(value) + valueSuffix;
+	        value = "";
+	      } else {
+	        value = +value;
+
+	        // Perform the initial formatting.
+	        var valueNegative = value < 0;
+	        value = formatType(Math.abs(value), precision);
+
+	        // Trim insignificant zeros.
+	        if (trim) value = formatTrim(value);
+
+	        // If a negative value rounds to zero during formatting, treat as positive.
+	        if (valueNegative && +value === 0) valueNegative = false;
+
+	        // Compute the prefix and suffix.
+	        valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+	        valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+	        // Break the formatted value into the integer “value” part that can be
+	        // grouped, and fractional or exponential “suffix” part that is not.
+	        if (maybeSuffix) {
+	          i = -1, n = value.length;
+	          while (++i < n) {
+	            if (c = value.charCodeAt(i), 48 > c || c > 57) {
+	              valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+	              value = value.slice(0, i);
+	              break;
+	            }
+	          }
+	        }
+	      }
+
+	      // If the fill character is not "0", grouping is applied before padding.
+	      if (comma && !zero) value = group(value, Infinity);
+
+	      // Compute the padding.
+	      var length = valuePrefix.length + value.length + valueSuffix.length,
+	          padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+	      // If the fill character is "0", grouping is applied after padding.
+	      if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+	      // Reconstruct the final output based on the desired alignment.
+	      switch (align) {
+	        case "<": value = valuePrefix + value + valueSuffix + padding; break;
+	        case "=": value = valuePrefix + padding + value + valueSuffix; break;
+	        case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+	        default: value = padding + valuePrefix + value + valueSuffix; break;
+	      }
+
+	      return numerals(value);
+	    }
+
+	    format.toString = function() {
+	      return specifier + "";
+	    };
+
+	    return format;
+	  }
+
+	  function formatPrefix(specifier, value) {
+	    var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+	        e = Math.max(-8, Math.min(8, Math.floor(exponent$1(value) / 3))) * 3,
+	        k = Math.pow(10, -e),
+	        prefix = prefixes[8 + e / 3];
+	    return function(value) {
+	      return f(k * value) + prefix;
+	    };
+	  }
+
+	  return {
+	    format: newFormat,
+	    formatPrefix: formatPrefix
+	  };
+	}
+
+	var locale;
+	var format;
+	var formatPrefix;
+
+	defaultLocale({
+	  decimal: ".",
+	  thousands: ",",
+	  grouping: [3],
+	  currency: ["$", ""]
+	});
+
+	function defaultLocale(definition) {
+	  locale = formatLocale(definition);
+	  format = locale.format;
+	  formatPrefix = locale.formatPrefix;
+	  return locale;
+	}
+
+	/* src/components/AtlasTooltip.html generated by Svelte v2.15.3 */
+
+	var format_1 = format(".2f");
+
+	const file$6 = "src/components/AtlasTooltip.html";
+
+	function add_css$4() {
+		var style = createElement("style");
+		style.id = 'svelte-1b6k7p4-style';
+		style.textContent = ".hover.svelte-1b6k7p4{margin:30px;color:white;font-size:12px;line-height:14px;background:rgba(0, 0, 0, 0.8);padding:8px;border-radius:8px;border:solid 1px rgba(255, 255, 255, 0.4);box-sizing:border-box;box-shadow:0 1px 8px rgba(0, 0, 0, 0.4);z-index:10000}.hover.svelte-1b6k7p4 table.svelte-1b6k7p4{width:100%;margin-bottom:0}.hover.svelte-1b6k7p4 td.svelte-1b6k7p4{font-size:12px;border-bottom:solid 1px rgba(255, 255, 255, 0.2);padding:6px 0;margin:6px 0;color:rgba(255, 255, 255, 0.8);overflow:ellipsis}.hover.svelte-1b6k7p4 td.first.svelte-1b6k7p4{color:rgba(255, 255, 255, 1.0);font-weight:bold}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXRsYXNUb29sdGlwLmh0bWwiLCJzb3VyY2VzIjpbIkF0bGFzVG9vbHRpcC5odG1sIl0sInNvdXJjZXNDb250ZW50IjpbIjxkaXYgY2xhc3M9XCJob3ZlclwiPlxuICA8dGFibGU+XG4gIHsjaWYgdG9wX2NsYXNzX2luZGljZXN9XG4gICAgeyNlYWNoIHRvcF9jbGFzc19pbmRpY2VzLnNsaWNlKDAsNSkgYXMgdG9wLCBpfVxuICAgICAgPHRyPlxuICAgICAgICA8dGQgc3R5bGU9XCJ3aWR0aDogMTBweDsgdGV4dC1hbGlnbjogcmlnaHQ7IHBhZGRpbmctcmlnaHQ6IDRweDtcIj57aSArIDF9LjwvdGQ+XG4gICAgICAgIDx0ZCBjbGFzcz1cIntpID09IDAgPyAnZmlyc3QnOiAnJ31cIj57JGluY2VwdGlvbkxhYmVsc1t0b3BdfTwvdGQ+XG4gICAgICAgIDx0ZCBzdHlsZT1cInRleHQtYWxpZ246IHJpZ2h0O1wiPntmb3JtYXQodG9wX2NsYXNzX3ZhbHVlc1tpXSl9PC90ZD5cbiAgICAgIDwvdHI+XG4gICAgey9lYWNofVxuICB7L2lmfVxuICA8L3RhYmxlPlxuICA8ZGl2IHN0eWxlPVwiZm9udC1zaXplOiAxMHB4OyBtYXJnaW4tdG9wOiA0cHg7IGNvbG9yOiAjOTk5OyB0ZXh0LWFsaWduOiByaWdodDtcIj5BdmVyYWdlIG9mIHtudW1fYWN0aXZhdGlvbnN9IGFjdGl2YXRpb25zPC9kaXY+XG5cbjwvZGl2PlxuXG48c2NyaXB0PlxuICBpbXBvcnQge2Zvcm1hdH0gZnJvbSBcImQzLWZvcm1hdFwiO1xuXG4gIGV4cG9ydCBkZWZhdWx0IHtcbiAgICBoZWxwZXJzOiB7XG4gICAgICBmb3JtYXQ6IGZvcm1hdChcIi4yZlwiKVxuICAgIH1cbiAgfVxuPC9zY3JpcHQ+XG5cbjxzdHlsZT5cbi5ob3ZlciB7XG4gIG1hcmdpbjogMzBweDtcbiAgY29sb3I6IHdoaXRlO1xuICBmb250LXNpemU6IDEycHg7XG4gIGxpbmUtaGVpZ2h0OiAxNHB4O1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuOCk7XG4gIHBhZGRpbmc6IDhweDtcbiAgYm9yZGVyLXJhZGl1czogOHB4O1xuICBib3JkZXI6IHNvbGlkIDFweCByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNCk7XG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gIGJveC1zaGFkb3c6IDAgMXB4IDhweCByZ2JhKDAsIDAsIDAsIDAuNCk7XG4gIHotaW5kZXg6IDEwMDAwO1xufVxuLmhvdmVyIHRhYmxlIHtcbiAgd2lkdGg6IDEwMCU7XG4gIG1hcmdpbi1ib3R0b206IDA7XG59XG4uaG92ZXIgdGQge1xuICBmb250LXNpemU6IDEycHg7XG4gIGJvcmRlci1ib3R0b206IHNvbGlkIDFweCByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMik7XG4gIHBhZGRpbmc6IDZweCAwO1xuICBtYXJnaW46IDZweCAwO1xuICBjb2xvcjogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjgpO1xuICBvdmVyZmxvdzogZWxsaXBzaXM7XG59XG4uaG92ZXIgdGQuZmlyc3Qge1xuICBjb2xvcjogcmdiYSgyNTUsIDI1NSwgMjU1LCAxLjApO1xuICBmb250LXdlaWdodDogYm9sZDtcbn1cblxuLmljb24ge1xuICBkaXNwbGF5OiBibG9jaztcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IDA7XG4gIGxlZnQ6IDA7XG4gIGJvcmRlci1yYWRpdXM6IDRweDtcbiAgYm9yZGVyOiBzb2xpZCAzcHggYmxhY2s7XG4gIHBvaW50ZXItZXZlbnRzOiBub25lO1xuICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xufVxuPC9zdHlsZT4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBMkJBLE1BQU0sZUFBQyxDQUFDLEFBQ04sTUFBTSxDQUFFLElBQUksQ0FDWixLQUFLLENBQUUsS0FBSyxDQUNaLFNBQVMsQ0FBRSxJQUFJLENBQ2YsV0FBVyxDQUFFLElBQUksQ0FDakIsVUFBVSxDQUFFLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQzlCLE9BQU8sQ0FBRSxHQUFHLENBQ1osYUFBYSxDQUFFLEdBQUcsQ0FDbEIsTUFBTSxDQUFFLEtBQUssQ0FBQyxHQUFHLENBQUMsS0FBSyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FDMUMsVUFBVSxDQUFFLFVBQVUsQ0FDdEIsVUFBVSxDQUFFLENBQUMsQ0FBQyxHQUFHLENBQUMsR0FBRyxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQ3hDLE9BQU8sQ0FBRSxLQUFLLEFBQ2hCLENBQUMsQUFDRCxxQkFBTSxDQUFDLEtBQUssZUFBQyxDQUFDLEFBQ1osS0FBSyxDQUFFLElBQUksQ0FDWCxhQUFhLENBQUUsQ0FBQyxBQUNsQixDQUFDLEFBQ0QscUJBQU0sQ0FBQyxFQUFFLGVBQUMsQ0FBQyxBQUNULFNBQVMsQ0FBRSxJQUFJLENBQ2YsYUFBYSxDQUFFLEtBQUssQ0FBQyxHQUFHLENBQUMsS0FBSyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FDakQsT0FBTyxDQUFFLEdBQUcsQ0FBQyxDQUFDLENBQ2QsTUFBTSxDQUFFLEdBQUcsQ0FBQyxDQUFDLENBQ2IsS0FBSyxDQUFFLEtBQUssR0FBRyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQy9CLFFBQVEsQ0FBRSxRQUFRLEFBQ3BCLENBQUMsQUFDRCxxQkFBTSxDQUFDLEVBQUUsTUFBTSxlQUFDLENBQUMsQUFDZixLQUFLLENBQUUsS0FBSyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FDL0IsV0FBVyxDQUFFLElBQUksQUFDbkIsQ0FBQyJ9 */";
+		append(document.head, style);
+	}
+
+	function get_each_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.top = list[i];
+		child_ctx.i = i;
+		return child_ctx;
+	}
+
+	function create_main_fragment$7(component, ctx) {
+		var div1, table, text0, div0, text1, text2, text3;
+
+		var if_block = (ctx.top_class_indices) && create_if_block$2(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				table = createElement("table");
+				if (if_block) if_block.c();
+				text0 = createText("\n  ");
+				div0 = createElement("div");
+				text1 = createText("Average of ");
+				text2 = createText(ctx.num_activations);
+				text3 = createText(" activations");
+				table.className = "svelte-1b6k7p4";
+				addLoc(table, file$6, 1, 2, 22);
+				setStyle(div0, "font-size", "10px");
+				setStyle(div0, "margin-top", "4px");
+				setStyle(div0, "color", "#999");
+				setStyle(div0, "text-align", "right");
+				addLoc(div0, file$6, 12, 2, 395);
+				div1.className = "hover svelte-1b6k7p4";
+				addLoc(div1, file$6, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, table);
+				if (if_block) if_block.m(table, null);
+				append(div1, text0);
+				append(div1, div0);
+				append(div0, text1);
+				append(div0, text2);
+				append(div0, text3);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.top_class_indices) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$2(component, ctx);
+						if_block.c();
+						if_block.m(table, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (changed.num_activations) {
+					setData(text2, ctx.num_activations);
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (3:2) {#if top_class_indices}
+	function create_if_block$2(component, ctx) {
+		var each_anchor;
+
+		var each_value = ctx.top_class_indices.slice(0,5);
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block(component, get_each_context(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(target, anchor);
+				}
+
+				insert(target, each_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.top_class_values || changed.$inceptionLabels || changed.top_class_indices) {
+					each_value = ctx.top_class_indices.slice(0,5);
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				destroyEach(each_blocks, detach);
+
+				if (detach) {
+					detachNode(each_anchor);
+				}
+			}
+		};
+	}
+
+	// (4:4) {#each top_class_indices.slice(0,5) as top, i}
+	function create_each_block(component, ctx) {
+		var tr, td0, text0_value = ctx.i + 1, text0, text1, text2, td1, text3_value = ctx.$inceptionLabels[ctx.top], text3, text4, td2, text5_value = format_1(ctx.top_class_values[ctx.i]), text5;
+
+		return {
+			c: function create() {
+				tr = createElement("tr");
+				td0 = createElement("td");
+				text0 = createText(text0_value);
+				text1 = createText(".");
+				text2 = createText("\n        ");
+				td1 = createElement("td");
+				text3 = createText(text3_value);
+				text4 = createText("\n        ");
+				td2 = createElement("td");
+				text5 = createText(text5_value);
+				setStyle(td0, "width", "10px");
+				setStyle(td0, "text-align", "right");
+				setStyle(td0, "padding-right", "4px");
+				td0.className = "svelte-1b6k7p4";
+				addLoc(td0, file$6, 5, 8, 126);
+				td1.className = "" + (ctx.i == 0 ? 'first': '') + " svelte-1b6k7p4";
+				addLoc(td1, file$6, 6, 8, 212);
+				setStyle(td2, "text-align", "right");
+				td2.className = "svelte-1b6k7p4";
+				addLoc(td2, file$6, 7, 8, 284);
+				addLoc(tr, file$6, 4, 6, 113);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, tr, anchor);
+				append(tr, td0);
+				append(td0, text0);
+				append(td0, text1);
+				append(tr, text2);
+				append(tr, td1);
+				append(td1, text3);
+				append(tr, text4);
+				append(tr, td2);
+				append(td2, text5);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.$inceptionLabels || changed.top_class_indices) && text3_value !== (text3_value = ctx.$inceptionLabels[ctx.top])) {
+					setData(text3, text3_value);
+				}
+
+				if ((changed.top_class_values) && text5_value !== (text5_value = format_1(ctx.top_class_values[ctx.i]))) {
+					setData(text5, text5_value);
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(tr);
+				}
+			}
+		};
+	}
+
+	function AtlasTooltip(options) {
+		this._debugName = '<AtlasTooltip>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+		if (!options.store) {
+			throw new Error("<AtlasTooltip> references store properties, but no store was provided");
+		}
+
+		init(this, options);
+		this._state = assign(this.store._init(["inceptionLabels"]), options.data);
+		this.store._add(this, ["inceptionLabels"]);
+		if (!('top_class_indices' in this._state)) console.warn("<AtlasTooltip> was created without expected data property 'top_class_indices'");
+		if (!('$inceptionLabels' in this._state)) console.warn("<AtlasTooltip> was created without expected data property '$inceptionLabels'");
+		if (!('top_class_values' in this._state)) console.warn("<AtlasTooltip> was created without expected data property 'top_class_values'");
+		if (!('num_activations' in this._state)) console.warn("<AtlasTooltip> was created without expected data property 'num_activations'");
+		this._intro = true;
+
+		this._handlers.destroy = [removeFromStore];
+
+		if (!document.getElementById("svelte-1b6k7p4-style")) add_css$4();
+
+		this._fragment = create_main_fragment$7(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(AtlasTooltip.prototype, protoDev);
+
+	AtlasTooltip.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
 	function download(filename, url) {
@@ -4420,6 +8496,19 @@
 	  a.style["display"] = "none";
 	  a.click();
 	}
+
+
+	// A global tooltip
+	store.set({
+	  tooltip: new Tooltip({
+	    target: document.body,
+	    store,
+	    data: {
+	      width: 300,
+	      component: AtlasTooltip
+	    }
+	  })
+	});
 
 	let app = document.querySelector("#app");
 

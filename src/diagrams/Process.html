@@ -3,11 +3,13 @@
     
     <!-- UMAP -->
     <g transform="translate({(columnWidth + columnPadding) * 1}, 0)">
-      {#each layoutData as point}
+    <!-- mixed4c-layout.jpg -->
+      <image xlink:href="assets/images/mixed4c-layout.jpg" width={columnWidth} height={columnWidth}/>
+      <!-- {#each layoutData as point}
         <g transform="translate({point[1] * columnWidth}, {point[0] * columnWidth})">
           <rect fill="#999" fill-opacity=0.5 width=2 height=2></rect>
         </g>
-      {/each}
+      {/each} -->
       <!-- {#each webData as icon}
           <rect stroke="grey"  x={icon.y * iconWidth} y={icon.x * iconWidth} width={iconWidth} height={iconWidth}/>
       {/each} -->
@@ -126,10 +128,10 @@ export default {
   oncreate() {
     console.log("loading")
     const {dataURL, webURL} = this.get();
-    load([dataURL, webURL]).then(responses => {
+    load(webURL).then(response => {
       this.set({
-        layoutData: responses[0].slice(0, 10000),
-        webData: responses[1]
+        // layoutData: responses[0].slice(0, 10000),
+        webData: response
       })
     });
   },
