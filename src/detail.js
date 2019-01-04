@@ -3,6 +3,10 @@ import App from "./components/App.html"
 import Tooltip from "./library/Tooltip.html";
 import AtlasTooltip from "./components/AtlasTooltip.html";
 
+store.set({
+  scroll: true
+})
+
 // A global tooltip
 store.set({
   tooltip: new Tooltip({

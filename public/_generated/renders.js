@@ -1436,6 +1436,7 @@
 	class MyStore extends Store { }
 
 	const store = new MyStore({
+	  scroll: false,
 	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,

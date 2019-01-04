@@ -4,7 +4,7 @@
 
 quicklinks in multiple layers causes weird async loading issues.
 
-Make minimap a little bigger
+Make minimap draggable
 
 smooth zoom between gridsizes
 

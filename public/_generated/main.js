@@ -1503,6 +1503,7 @@
 	class MyStore extends Store { }
 
 	const store = new MyStore({
+	  scroll: false,
 	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
@@ -10656,8 +10657,7 @@
 	    showOptions: true,
 	    homeX: .5,
 	    homeY: .5,
-	    homeScale: 1,
-	    scrollWheel: true,
+	    homeScale: 1
 	  }
 	}
 	var format_1$1 = format(".3f");
@@ -10811,10 +10811,8 @@
 	          ;
 			atlas_updating.extent = true;
 		}
-		if (ctx.scrollWheel
-	           !== void 0) {
-			atlas_initial_data.scrollWheel = ctx.scrollWheel
-	          ;
+		if (ctx.$scroll !== void 0) {
+			atlas_initial_data.scrollWheel = ctx.$scroll;
 			atlas_updating.scrollWheel = true;
 		}
 		var atlas = new Atlas({
@@ -10822,7 +10820,7 @@
 			store: component.store,
 			data: atlas_initial_data,
 			_bind(changed, childState) {
-				var newState = {};
+				var newState = {}, newStoreState = {};
 				if (!atlas_updating.density && changed.density) {
 					newState.density = childState.density;
 				}
@@ -10872,8 +10870,9 @@
 				}
 
 				if (!atlas_updating.scrollWheel && changed.scrollWheel) {
-					newState.scrollWheel = childState.scrollWheel;
+					newStoreState.scroll = childState.scrollWheel;
 				}
+				component.store.set(newStoreState);
 				component._set(newState);
 				atlas_updating = {};
 			}
@@ -10968,7 +10967,7 @@
 		});
 
 		function input0_change_handler() {
-			component.set({ scrollWheel: input0.checked });
+			component.store.set({ scroll: input0.checked });
 		}
 
 		function input1_change_handler() {
@@ -10976,7 +10975,7 @@
 		}
 
 		function input2_change_handler() {
-			component.set({ scrollWheel: input2.checked });
+			component.store.set({ scroll: input2.checked });
 		}
 
 		function input3_change_handler() {
@@ -11207,159 +11206,159 @@
 				addLoc(div3, file$m, 11, 4, 300);
 				div4.className = "map svelte-10yshsn";
 				setStyle(div4, "display", (ctx.scale > 1.0 ? 'block' : 'block'));
-				addLoc(div4, file$m, 50, 12, 1309);
+				addLoc(div4, file$m, 50, 12, 1319);
 				div5.className = "buttons svelte-10yshsn";
-				addLoc(div5, file$m, 60, 12, 1659);
+				addLoc(div5, file$m, 60, 12, 1669);
 				div6.className = "nav svelte-10yshsn";
-				addLoc(div6, file$m, 49, 10, 1279);
+				addLoc(div6, file$m, 49, 10, 1289);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$m, 67, 19, 2065);
-				addLoc(label0, file$m, 67, 12, 2058);
-				addLoc(br0, file$m, 68, 12, 2147);
+				addLoc(input0, file$m, 67, 19, 2075);
+				addLoc(label0, file$m, 67, 12, 2068);
+				addLoc(br0, file$m, 68, 12, 2155);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "checkbox");
-				addLoc(input1, file$m, 69, 19, 2171);
-				addLoc(label1, file$m, 69, 12, 2164);
-				addLoc(div7, file$m, 66, 10, 2040);
+				addLoc(input1, file$m, 69, 19, 2179);
+				addLoc(label1, file$m, 69, 12, 2172);
+				addLoc(div7, file$m, 66, 10, 2050);
 				div8.className = "svelte-10yshsn svelte-ref-controls";
-				addLoc(div8, file$m, 48, 8, 1250);
+				addLoc(div8, file$m, 48, 8, 1260);
 				div9.className = "atlas svelte-10yshsn";
 				addLoc(div9, file$m, 23, 4, 611);
 				div10.className = "main svelte-10yshsn";
 				addLoc(div10, file$m, 22, 2, 588);
 				setAttribute(h22, "slot", "head");
-				addLoc(h22, file$m, 76, 6, 2382);
-				addLoc(div11, file$m, 80, 10, 2481);
-				addLoc(div12, file$m, 81, 10, 2531);
-				addLoc(div13, file$m, 82, 10, 2575);
-				addLoc(div14, file$m, 83, 10, 2619);
+				addLoc(h22, file$m, 76, 6, 2390);
+				addLoc(div11, file$m, 80, 10, 2489);
+				addLoc(div12, file$m, 81, 10, 2539);
+				addLoc(div13, file$m, 82, 10, 2583);
+				addLoc(div14, file$m, 83, 10, 2627);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "checkbox");
-				addLoc(input2, file$m, 84, 17, 2676);
+				addLoc(input2, file$m, 84, 17, 2684);
 				label2.className = "svelte-10yshsn";
-				addLoc(label2, file$m, 84, 10, 2669);
-				addLoc(div15, file$m, 79, 8, 2465);
-				addLoc(h30, file$m, 87, 8, 2783);
+				addLoc(label2, file$m, 84, 10, 2677);
+				addLoc(div15, file$m, 79, 8, 2473);
+				addLoc(h30, file$m, 87, 8, 2789);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "checkbox");
-				addLoc(input3, file$m, 88, 17, 2821);
+				addLoc(input3, file$m, 88, 17, 2827);
 				label3.className = "svelte-10yshsn";
-				addLoc(label3, file$m, 88, 10, 2814);
-				addLoc(div16, file$m, 86, 8, 2769);
-				addLoc(h31, file$m, 91, 10, 2944);
+				addLoc(label3, file$m, 88, 10, 2820);
+				addLoc(div16, file$m, 86, 8, 2775);
+				addLoc(h31, file$m, 91, 10, 2950);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 0;
 				input4.value = input4.__value;
-				addLoc(input4, file$m, 92, 17, 2980);
+				addLoc(input4, file$m, 92, 17, 2986);
 				label4.className = "svelte-10yshsn";
-				addLoc(label4, file$m, 92, 10, 2973);
+				addLoc(label4, file$m, 92, 10, 2979);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 1;
 				input5.value = input5.__value;
-				addLoc(input5, file$m, 93, 17, 3060);
+				addLoc(input5, file$m, 93, 17, 3066);
 				label5.className = "svelte-10yshsn";
-				addLoc(label5, file$m, 93, 10, 3053);
+				addLoc(label5, file$m, 93, 10, 3059);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
 				setAttribute(input6, "type", "radio");
 				input6.__value = 2;
 				input6.value = input6.__value;
-				addLoc(input6, file$m, 94, 17, 3140);
+				addLoc(input6, file$m, 94, 17, 3146);
 				label6.className = "svelte-10yshsn";
-				addLoc(label6, file$m, 94, 10, 3133);
+				addLoc(label6, file$m, 94, 10, 3139);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
 				setAttribute(input7, "type", "radio");
 				input7.__value = 3;
 				input7.value = input7.__value;
-				addLoc(input7, file$m, 95, 17, 3220);
+				addLoc(input7, file$m, 95, 17, 3226);
 				label7.className = "svelte-10yshsn";
-				addLoc(label7, file$m, 95, 10, 3213);
+				addLoc(label7, file$m, 95, 10, 3219);
 				component._bindingGroups[0].push(input8);
 				addListener(input8, "change", input8_change_handler);
 				setAttribute(input8, "type", "radio");
 				input8.__value = 4;
 				input8.value = input8.__value;
-				addLoc(input8, file$m, 96, 17, 3302);
+				addLoc(input8, file$m, 96, 17, 3308);
 				label8.className = "svelte-10yshsn";
-				addLoc(label8, file$m, 96, 10, 3295);
+				addLoc(label8, file$m, 96, 10, 3301);
 				component._bindingGroups[0].push(input9);
 				addListener(input9, "change", input9_change_handler);
 				setAttribute(input9, "type", "radio");
 				input9.__value = -1;
 				input9.value = input9.__value;
-				addLoc(input9, file$m, 97, 17, 3384);
+				addLoc(input9, file$m, 97, 17, 3390);
 				label9.className = "svelte-10yshsn";
-				addLoc(label9, file$m, 97, 10, 3377);
-				addLoc(div17, file$m, 99, 12, 3528);
+				addLoc(label9, file$m, 97, 10, 3383);
+				addLoc(div17, file$m, 99, 12, 3534);
 				addListener(input10, "change", input10_change_input_handler);
 				addListener(input10, "input", input10_change_input_handler);
 				setAttribute(input10, "type", "range");
 				input10.min = 0.6;
 				input10.max = 1.4;
 				input10.step = 0.01;
-				addLoc(input10, file$m, 100, 12, 3598);
+				addLoc(input10, file$m, 100, 12, 3604);
 				setStyle(div18, "display", (ctx.gridSize == -1 ? 'block': 'none'));
-				addLoc(div18, file$m, 98, 10, 3457);
+				addLoc(div18, file$m, 98, 10, 3463);
 				div19.className = "grid-size";
-				addLoc(div19, file$m, 90, 8, 2910);
-				addLoc(h32, file$m, 104, 10, 3741);
-				addLoc(div20, file$m, 105, 10, 3766);
+				addLoc(div19, file$m, 90, 8, 2916);
+				addLoc(h32, file$m, 104, 10, 3747);
+				addLoc(div20, file$m, 105, 10, 3772);
 				addListener(input11, "change", input11_change_input_handler);
 				addListener(input11, "input", input11_change_input_handler);
 				setAttribute(input11, "type", "range");
 				input11.min = 0.2;
 				input11.max = 8;
 				input11.step = 0.01;
-				addLoc(input11, file$m, 106, 10, 3812);
-				addLoc(br1, file$m, 107, 10, 3892);
-				addLoc(div21, file$m, 108, 10, 3907);
+				addLoc(input11, file$m, 106, 10, 3818);
+				addLoc(br1, file$m, 107, 10, 3898);
+				addLoc(div21, file$m, 108, 10, 3913);
 				addListener(input12, "change", input12_change_input_handler);
 				addListener(input12, "input", input12_change_input_handler);
 				setAttribute(input12, "type", "range");
 				input12.min = 0;
 				input12.max = 0.5;
 				input12.step = 0.01;
-				addLoc(input12, file$m, 109, 10, 3951);
-				addLoc(div22, file$m, 103, 8, 3725);
-				addLoc(h33, file$m, 112, 10, 4117);
-				addLoc(div23, file$m, 113, 10, 4149);
+				addLoc(input12, file$m, 109, 10, 3957);
+				addLoc(div22, file$m, 103, 8, 3731);
+				addLoc(h33, file$m, 112, 10, 4123);
+				addLoc(div23, file$m, 113, 10, 4155);
 				addListener(input13, "change", input13_change_input_handler);
 				addListener(input13, "input", input13_change_input_handler);
 				setAttribute(input13, "type", "range");
 				input13.min = "0.5";
 				input13.max = "2";
 				input13.step = "0.1";
-				addLoc(input13, file$m, 114, 10, 4212);
+				addLoc(input13, file$m, 114, 10, 4218);
 				component._bindingGroups[1].push(input14);
 				addListener(input14, "change", input14_change_handler);
 				setAttribute(input14, "type", "radio");
 				input14.__value = 1;
 				input14.value = input14.__value;
-				addLoc(input14, file$m, 115, 17, 4307);
+				addLoc(input14, file$m, 115, 17, 4313);
 				label10.className = "svelte-10yshsn";
-				addLoc(label10, file$m, 115, 10, 4300);
+				addLoc(label10, file$m, 115, 10, 4306);
 				component._bindingGroups[1].push(input15);
 				addListener(input15, "change", input15_change_handler);
 				setAttribute(input15, "type", "radio");
 				input15.__value = -1;
 				input15.value = input15.__value;
-				addLoc(input15, file$m, 116, 17, 4412);
+				addLoc(input15, file$m, 116, 17, 4418);
 				label11.className = "svelte-10yshsn";
-				addLoc(label11, file$m, 116, 10, 4405);
+				addLoc(label11, file$m, 116, 10, 4411);
 				setStyle(div24, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div24, file$m, 111, 8, 4045);
+				addLoc(div24, file$m, 111, 8, 4051);
 				setAttribute(div25, "slot", "body");
 				div25.className = "options-body svelte-10yshsn";
-				addLoc(div25, file$m, 77, 6, 2417);
+				addLoc(div25, file$m, 77, 6, 2425);
 				div26.className = "options svelte-10yshsn";
 				setStyle(div26, "display", (ctx.showOptions ? 'block' : 'none'));
-				addLoc(div26, file$m, 74, 2, 2291);
+				addLoc(div26, file$m, 74, 2, 2299);
 				div27.className = "container svelte-10yshsn";
 				addLoc(div27, file$m, 0, 0, 0);
 			},
@@ -11403,7 +11402,7 @@
 				append(div7, label0);
 				append(label0, input0);
 
-				input0.checked = ctx.scrollWheel;
+				input0.checked = ctx.$scroll;
 
 				append(label0, text11);
 				append(div7, text12);
@@ -11445,7 +11444,7 @@
 				append(div15, label2);
 				append(label2, input2);
 
-				input2.checked = ctx.scrollWheel;
+				input2.checked = ctx.$scroll;
 
 				append(label2, text26);
 				append(div25, text27);
@@ -11678,11 +11677,9 @@
 					atlas_updating.extent = ctx.extent
 	           !== void 0;
 				}
-				if (!atlas_updating.scrollWheel && changed.scrollWheel) {
-					atlas_changes.scrollWheel = ctx.scrollWheel
-	          ;
-					atlas_updating.scrollWheel = ctx.scrollWheel
-	           !== void 0;
+				if (!atlas_updating.scrollWheel && changed.$scroll) {
+					atlas_changes.scrollWheel = ctx.$scroll;
+					atlas_updating.scrollWheel = ctx.$scroll !== void 0;
 				}
 				atlas._set(atlas_changes);
 				atlas_updating = {};
@@ -11705,7 +11702,7 @@
 					setStyle(div4, "display", (ctx.scale > 1.0 ? 'block' : 'block'));
 				}
 
-				if (changed.scrollWheel) input0.checked = ctx.scrollWheel;
+				if (changed.$scroll) input0.checked = ctx.$scroll;
 				if (changed.showLabels) input1.checked = ctx.showLabels;
 				if (changed.homeScale) {
 					detachAfter(raw0_before);
@@ -11727,7 +11724,7 @@
 					raw3_before.insertAdjacentHTML("afterend", raw3_value);
 				}
 
-				if (changed.scrollWheel) input2.checked = ctx.scrollWheel;
+				if (changed.$scroll) input2.checked = ctx.$scroll;
 				if (changed.showLabels) input3.checked = ctx.showLabels;
 				if (changed.gridSize) input4.checked = input4.__value === ctx.gridSize;
 				if (changed.gridSize) input5.checked = input5.__value === ctx.gridSize;
@@ -11831,10 +11828,14 @@
 		if (!options || (!options.target && !options.root)) {
 			throw new Error("'target' is a required option");
 		}
+		if (!options.store) {
+			throw new Error("<App> references store properties, but no store was provided");
+		}
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$g(), options.data);
+		this._state = assign(assign(this.store._init(["scroll"]), data$g()), options.data);
+		this.store._add(this, ["scroll"]);
 
 		this._recompute({ gridSize: 1, iconScaleFactor: 1, realGridSize: 1 }, this._state);
 		if (!('gridSize' in this._state)) console.warn("<App> was created without expected data property 'gridSize'");
@@ -11855,7 +11856,7 @@
 		if (!('gcx' in this._state)) console.warn("<App> was created without expected data property 'gcx'");
 		if (!('gcy' in this._state)) console.warn("<App> was created without expected data property 'gcy'");
 		if (!('extent' in this._state)) console.warn("<App> was created without expected data property 'extent'");
-		if (!('scrollWheel' in this._state)) console.warn("<App> was created without expected data property 'scrollWheel'");
+		if (!('$scroll' in this._state)) console.warn("<App> was created without expected data property '$scroll'");
 		if (!('homeX' in this._state)) console.warn("<App> was created without expected data property 'homeX'");
 		if (!('homeY' in this._state)) console.warn("<App> was created without expected data property 'homeY'");
 		if (!('homeScale' in this._state)) console.warn("<App> was created without expected data property 'homeScale'");
@@ -11863,6 +11864,8 @@
 		if (!('showOptions' in this._state)) console.warn("<App> was created without expected data property 'showOptions'");
 		this._bindingGroups = [[], []];
 		this._intro = true;
+
+		this._handlers.destroy = [removeFromStore];
 
 		this._fragment = create_main_fragment$n(this, this._state);
 
