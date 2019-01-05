@@ -118,14 +118,16 @@ export default {
     },
     w: ({viewWidth, screenResolution}) => viewWidth * screenResolution,
     h: ({viewHeight, screenResolution}) => viewHeight * screenResolution,
-    currentZoomIndex: ({scale, gridSize, config, classHeatmap, viewWidth, viewHeight, autoGridSizeMultiplier}) => {
+    currentZoomIndex: ({scale, gridSize, config, classHeatmap, w, h, autoGridSizeMultiplier}) => {
       let s = 0;
       if (gridSize > -1) {
         s = +gridSize
       } else {
-        const size = Math.min(viewWidth, viewHeight)
-        s = Math.floor(size * scale / 80 / 20 / autoGridSizeMultiplier);
-        console.log("s", s)
+        const size = Math.max(w, h);
+        const optimalNumIcons = ((size * scale) / 80) / autoGridSizeMultiplier;
+        const snapToGrid = Math.floor(Math.sqrt(optimalNumIcons / 20));
+        s = snapToGrid;
+        // s = Math.floor((((size * scale) / 80) / 20) / autoGridSizeMultiplier);
         // if (scale > 1 * 0.5) s = 0;
         // if (scale > 2 * 0.5) s = 1;
         // if (scale > 4 * 0.5) s = 2;

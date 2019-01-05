@@ -81,7 +81,7 @@
                   <label><input type=radio bind:group=gridSize value={-1}> auto</label>
                   <div style="display: {gridSize == -1 ? 'block': 'none'};">
                     <div>auto threshold: {@html autoGridSizeMultiplier}</div>
-                    <input type="range" min={0.6} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
+                    <input type="range" min={0.5} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
                   </div>
                   </div>
                 <div class="section" >
@@ -107,39 +107,6 @@
           </div>
         </div>
     </div>
-  </div>
-  <div class="options" style="display: none;">
-    <Panel>
-      <h2 slot="head">Options</h2>
-      <div slot="body" class="options-body">
-
-        <div>
-          <div>homeScale: {@html homeScale}</div>
-          <div>x: {@html format(gcx)}</div>
-          <div>y: {@html format(gcy)}</div>
-          <div>scale: {@html format(scale)}</div>
-          <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
-        </div>
-        <div>
-        <h3>Attribution</h3>
-          <label><input type=checkbox bind:checked=showLabels> show labels</label>
-        </div>
-        <div class="grid-size">
-          <h3>Grid size</h3>
-          <label><input type=radio bind:group=gridSize value={0}> 20x20</label>
-          <label><input type=radio bind:group=gridSize value={1}> 40x40</label>
-          <label><input type=radio bind:group=gridSize value={2}> 80x80</label>
-          <label><input type=radio bind:group=gridSize value={3}> 160x160</label>
-          <label><input type=radio bind:group=gridSize value={4}> 320x320</label>
-          <label><input type=radio bind:group=gridSize value={-1}> auto</label>
-          <div style="display: {gridSize == -1 ? 'block': 'none'};">
-            <div>auto threshold: {@html autoGridSizeMultiplier}</div>
-            <input type="range" min={0.6} max={1.4} step={0.01} bind:value=autoGridSizeMultiplier>
-          </div>
-        </div>
-        
-      </div>
-    </Panel>
   </div>
 </div>
 

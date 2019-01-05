@@ -2,11 +2,11 @@
 
 ## Bugs
 
+add poi tour to cover caption.
+
 Make minimap draggable
 
 smooth zoom between gridsizes
-
-spread operator in object literals
 
 format numbers in toolip
 
@@ -21,6 +21,8 @@ add "reset" to layer tour (and possible zoom buttons)
 detal.html and link to it somewhere
 
 restore "no pan/zoom" options on atlas
+
+spread operator in object literals
 
 # Tweaks
 
