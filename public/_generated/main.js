@@ -10043,7 +10043,7 @@
 	  if (!current.context || changed.viewWidth || changed.viewHeight) {
 	    this.set({context: this.refs.canvas.getContext('2d')});
 	  }
-	  if (changed.autoGridSizeMultiplier || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
+	  if (changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
 	    this.render();
 	  }
 	  if (changed.hoverIconData) {
@@ -17348,7 +17348,7 @@
 	  return {
 	    layerName: "mixed4c",
 	    gridSize: 1,
-	    iconCrop: 0.3,
+	    iconCrop: 0.4,
 	  }
 	}
 	function onupdate$3({changed, current, previous}) {

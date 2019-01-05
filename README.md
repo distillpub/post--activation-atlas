@@ -2,8 +2,6 @@
 
 ## Bugs
 
-quicklinks in multiple layers causes weird async loading issues. (this might be fixed)
-
 Make minimap draggable
 
 smooth zoom between gridsizes
@@ -18,11 +16,13 @@ turn off tooltip on scroll
 
 grid size radio buttons smaller
 
-# Tweaks
-
 add "reset" to layer tour (and possible zoom buttons)
 
 detal.html and link to it somewhere
+
+restore "no pan/zoom" options on atlas
+
+# Tweaks
 
 no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
@@ -35,8 +35,8 @@ add different filtering strategies in playground
 by rank, by magnitude -- this might not be possible due to averaging
 
 ## Done
+quicklinks in multiple layers causes weird async loading issues. (this might be fixed)
 add "settings tray" to bottom of minimap
-
 turn off scroll wheel
 one-layer initializes with animation. Others do too...
 Colab notebooks
