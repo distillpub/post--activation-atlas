@@ -14,7 +14,9 @@ format numbers in toolip
 
 add hover state for notebooklink
 
-add "settings tray" to bottom of minimap
+turn off tooltip on scroll
+
+grid size radio buttons smaller
 
 # Tweaks
 
@@ -33,6 +35,8 @@ add different filtering strategies in playground
 by rank, by magnitude -- this might not be possible due to averaging
 
 ## Done
+add "settings tray" to bottom of minimap
+
 turn off scroll wheel
 one-layer initializes with animation. Others do too...
 Colab notebooks

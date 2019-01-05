@@ -25,7 +25,7 @@
 <Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
 <div ref:container bind:clientWidth style="width: {finalWidth}; height: {finalHeight};">
   {#if ready}
-    <svelte:component this={component} {...componentData} clientWidth={width}/>
+    <svelte:component ref:component this={component} {...componentData} clientWidth={width}/>
   {:else}
     <Loading />
   {/if}
@@ -90,6 +90,11 @@
         import(url).then(c => {
           this.set({component: c.default});
         });
+      }
+    },
+    methods: {
+      getComponent() {
+        return this.refs.component;
       }
     }
   }

@@ -8665,6 +8665,9 @@
 	    // this.transitionTo(homeX, homeY, homeScale, duration);
 	    this.refs.d3Zoom.home(duration);
 	  },
+	  zoomTo(x, y, scale, duration = 1000) {
+	    this.refs.d3Zoom.zoomTo(x, y, scale, duration);
+	  },
 	  transitionTo(x, y, scale, duration=0) {
 	    this.refs.d3Zoom.transformTo(x, y, scale, duration);
 	  },
@@ -8739,7 +8742,7 @@
 	                {
 	                  
 	                  // We want to draw a box so there isn't just whiteness.
-	                  if (classHeatmap > -1) {
+	                  if (classHeatmap > -1 || true) {
 	                    context.globalAlpha = 0.75;
 	                    context.strokeStyle = strokeColor;
 	                    context.lineWidth = strokeThickness;
@@ -9502,6 +9505,9 @@
 	var format_1 = format(".3f");
 
 	var methods$5 = {
+	  zoomTo(x, y, scale, duration = 1000) {
+	    this.refs.atlas.zoomTo(x, y, scale, duration);
+	  },
 	  toggle() {
 	    const {showOptions} = this.get();
 	    this.set({

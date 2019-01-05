@@ -177,6 +177,9 @@ export default {
     scaleCountFactor: ({iconScaleFactor, realGridSize}) =>  1000000 / (realGridSize * realGridSize * iconScaleFactor)
   },
   methods: {
+    zoomTo(x, y, scale, duration = 1000) {
+      this.refs.atlas.zoomTo(x, y, scale, duration);
+    },
     toggle() {
       const {showOptions} = this.get();
       this.set({

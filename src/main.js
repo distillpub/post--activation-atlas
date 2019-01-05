@@ -444,13 +444,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	// });
 
 
-	new LazyComponent({
+	const layerComparisonWrapper = new LazyComponent({
 		target: document.querySelector("#all-layer-comparison"),
 		store: store,
 		data: {
 			component: App,
 			componentData: {
 				showClassFilter: false,
+				gridSize: -1,
+				autoGridSizeMultiplier: 1
 			}
 		}
 	});
@@ -462,8 +464,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		const { pois } = store.get();
 		link.addEventListener("click", e => {
 			e.preventDefault();
-			layerComparison.set({layerName: pois[id].layerName});
-			layerComparison.set(pois[id]);
+			const component = layerComparisonWrapper.getComponent();
+			component.set({layerName: pois[id].layerName});
+			component.zoomTo(
+				pois[id].gcx,
+				pois[id].gcy,
+				pois[id].scale,
+				0
+			);
+			// layerComparison.set(pois[id]);
 		});
 	}
 

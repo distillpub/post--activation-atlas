@@ -2708,6 +2708,12 @@
 	    minHeight: null
 	  }
 	}
+	var methods$1 = {
+	  getComponent() {
+	    return this.refs.component;
+	  }
+	};
+
 	function oncreate$1() {
 	  // TODO: Make sure we have some sizes set.
 	  const {height, aspectRatio} = this.get();
@@ -2887,6 +2893,7 @@
 			m: function mount(target, anchor) {
 				if (switch_instance) {
 					switch_instance._mount(target, anchor);
+					component.refs.component = switch_instance;
 				}
 
 				insert(target, switch_instance_anchor, anchor);
@@ -2907,8 +2914,13 @@
 						switch_instance = new switch_value(switch_props(ctx));
 						switch_instance._fragment.c();
 						switch_instance._mount(switch_instance_anchor.parentNode, switch_instance_anchor);
+
+						component.refs.component = switch_instance;
 					} else {
 						switch_instance = null;
+						if (component.refs.component === switch_instance) {
+							component.refs.component = null;
+						}
 					}
 				}
 
@@ -2970,6 +2982,7 @@
 	}
 
 	assign(LazyComponent.prototype, protoDev);
+	assign(LazyComponent.prototype, methods$1);
 
 	LazyComponent.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('ready' in newState && !this._updatingReadonlyProperty) throw new Error("<LazyComponent>: Cannot set read-only property 'ready'");
@@ -3824,7 +3837,7 @@
 	    enableDragging: true,
 	  }
 	}
-	var methods$1 = {
+	var methods$2 = {
 	  mouseUp() {
 	    const { startPos, height, width, scale, aspectRatio, gcx, gcy} = this.get();
 	    this.set({dragging: false});
@@ -4125,7 +4138,7 @@
 	}
 
 	assign(AtlasReticle.prototype, protoDev);
-	assign(AtlasReticle.prototype, methods$1);
+	assign(AtlasReticle.prototype, methods$2);
 
 	AtlasReticle.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('left' in newState && !this._updatingReadonlyProperty) throw new Error("<AtlasReticle>: Cannot set read-only property 'left'");
@@ -4478,7 +4491,7 @@
 	    img: null
 	  }
 	}
-	var methods$2 = {
+	var methods$3 = {
 	  draw() {
 	    if (this.refs.canvas) {
 	      const context = this.refs.canvas.getContext('2d');
@@ -4622,7 +4635,7 @@
 		}
 	}
 
-	assign$1(Sprite.prototype, methods$2, proto$1);
+	assign$1(Sprite.prototype, methods$3, proto$1);
 
 	Sprite.prototype._recompute = function _recompute(changed, state) {
 		if (changed.width || changed.height) {
@@ -4979,7 +4992,7 @@
 	    icons: []
 	  };
 	}
-	var methods$3 = {
+	var methods$4 = {
 	  render() {
 	    const {grid, gridSize, icons, classHeatmap} = this.get();
 	    const context = this.refs.canvas.getContext('2d');
@@ -5129,7 +5142,7 @@
 	}
 
 	assign(AtlasThumbnail.prototype, protoDev);
-	assign(AtlasThumbnail.prototype, methods$3);
+	assign(AtlasThumbnail.prototype, methods$4);
 
 	AtlasThumbnail.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('height' in newState && !this._updatingReadonlyProperty) throw new Error("<AtlasThumbnail>: Cannot set read-only property 'height'");
@@ -9465,7 +9478,7 @@
 	    msy: null,
 	  };
 	}
-	var methods$4 = {
+	var methods$5 = {
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel} = this.get();
@@ -9679,7 +9692,7 @@
 	}
 
 	assign(D3Zoom.prototype, protoDev);
-	assign(D3Zoom.prototype, methods$4);
+	assign(D3Zoom.prototype, methods$5);
 
 	D3Zoom.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('minSize' in newState && !this._updatingReadonlyProperty) throw new Error("<D3Zoom>: Cannot set read-only property 'minSize'");
@@ -9865,7 +9878,7 @@
 	    screenResolution: 1,
 	  }
 	}
-	var methods$5 = {
+	var methods$6 = {
 	  fullscreen() {
 	    this.refs.root.webkitRequestFullscreen();
 	  },
@@ -9873,6 +9886,9 @@
 	    // const {homeX, homeY, homeScale} = this.get();
 	    // this.transitionTo(homeX, homeY, homeScale, duration);
 	    this.refs.d3Zoom.home(duration);
+	  },
+	  zoomTo(x, y, scale, duration = 1000) {
+	    this.refs.d3Zoom.zoomTo(x, y, scale, duration);
 	  },
 	  transitionTo(x, y, scale, duration=0) {
 	    this.refs.d3Zoom.transformTo(x, y, scale, duration);
@@ -9948,7 +9964,7 @@
 	                {
 	                  
 	                  // We want to draw a box so there isn't just whiteness.
-	                  if (classHeatmap > -1) {
+	                  if (classHeatmap > -1 || true) {
 	                    context.globalAlpha = 0.75;
 	                    context.strokeStyle = strokeColor;
 	                    context.lineWidth = strokeThickness;
@@ -10535,7 +10551,7 @@
 	}
 
 	assign(Atlas.prototype, protoDev);
-	assign(Atlas.prototype, methods$5);
+	assign(Atlas.prototype, methods$6);
 
 	Atlas.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('maxAttributionValue' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'maxAttributionValue'");
@@ -10710,7 +10726,10 @@
 	}
 	var format_1$1 = format(".3f");
 
-	var methods$6 = {
+	var methods$7 = {
+	  zoomTo(x, y, scale, duration = 1000) {
+	    this.refs.atlas.zoomTo(x, y, scale, duration);
+	  },
 	  toggle() {
 	    const {showOptions} = this.get();
 	    this.set({
@@ -12177,7 +12196,7 @@
 	}
 
 	assign(App.prototype, protoDev);
-	assign(App.prototype, methods$6);
+	assign(App.prototype, methods$7);
 
 	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('realGridSize' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'realGridSize'");
@@ -17892,7 +17911,7 @@
 	    config: null
 	  }
 	}
-	var methods$7 = {
+	var methods$8 = {
 	  render() {
 	    const {icon, config, width, height, iconCrop} = this.get();
 	    let context = this.refs.canvas.getContext('2d');
@@ -18009,7 +18028,7 @@
 	}
 
 	assign(ClippedIcon.prototype, protoDev);
-	assign(ClippedIcon.prototype, methods$7);
+	assign(ClippedIcon.prototype, methods$8);
 
 	ClippedIcon.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('height' in newState && !this._updatingReadonlyProperty) throw new Error("<ClippedIcon>: Cannot set read-only property 'height'");
@@ -18663,7 +18682,7 @@
 	    enableDragging: true,
 	  }
 	}
-	var methods$8 = {
+	var methods$9 = {
 	  mouseUp() {
 	    const { startPos, height, width, scale, aspectRatio, gcx, gcy} = this.get();
 	    this.set({dragging: false});
@@ -18978,7 +18997,7 @@
 	}
 
 	assign(AtlasStaticReticle.prototype, protoDev);
-	assign(AtlasStaticReticle.prototype, methods$8);
+	assign(AtlasStaticReticle.prototype, methods$9);
 
 	AtlasStaticReticle.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<AtlasStaticReticle>: Cannot set read-only property 'h'");
@@ -20743,13 +20762,15 @@
 		// });
 
 
-		new LazyComponent({
+		const layerComparisonWrapper = new LazyComponent({
 			target: document.querySelector("#all-layer-comparison"),
 			store: store,
 			data: {
 				component: App,
 				componentData: {
 					showClassFilter: false,
+					gridSize: -1,
+					autoGridSizeMultiplier: 1
 				}
 			}
 		});
@@ -20761,8 +20782,15 @@
 			const { pois } = store.get();
 			link.addEventListener("click", e => {
 				e.preventDefault();
-				layerComparison.set({layerName: pois[id].layerName});
-				layerComparison.set(pois[id]);
+				const component = layerComparisonWrapper.getComponent();
+				component.set({layerName: pois[id].layerName});
+				component.zoomTo(
+					pois[id].gcx,
+					pois[id].gcy,
+					pois[id].scale,
+					0
+				);
+				// layerComparison.set(pois[id]);
 			});
 		}
 
