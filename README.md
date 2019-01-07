@@ -2,11 +2,15 @@
 
 ## Bugs
 
-add poi tour to cover caption.
-
 Make minimap draggable
 
 smooth zoom between gridsizes
+
+spread operator in object literals
+
+.npy data files
+
+add poi tour to cover caption.
 
 format numbers in toolip
 
@@ -22,7 +26,6 @@ detal.html and link to it somewhere
 
 restore "no pan/zoom" options on atlas
 
-spread operator in object literals
 
 # Tweaks
 

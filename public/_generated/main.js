@@ -9762,12 +9762,6 @@
 	    const optimalNumIcons = ((size * scale) / 80) / autoGridSizeMultiplier;
 	    const snapToGrid = Math.floor(Math.sqrt(optimalNumIcons / 20));
 	    s = snapToGrid;
-	    // s = Math.floor((((size * scale) / 80) / 20) / autoGridSizeMultiplier);
-	    // if (scale > 1 * 0.5) s = 0;
-	    // if (scale > 2 * 0.5) s = 1;
-	    // if (scale > 4 * 0.5) s = 2;
-	    // if (scale > 8 * 0.5) s = 3;
-	    // if (scale > 16 * 0.5) s = 4;
 	  }
 	  // Make sure we don't overrun our data
 	  if (config) {
@@ -9779,10 +9773,6 @@
 	  }
 	  return s;
 
-	}
-
-	function visibleLayers({currentZoomIndex}) {
-	  return [currentZoomIndex];
 	}
 
 	function currentLayerData({currentZoomIndex, layers}) {
@@ -9940,9 +9930,16 @@
 	    context.imageSmoothingEnabled = imageSmoothing;
 
 	    if (config && layers) {
+	      let visibleLayers = [
+	        {i: currentZoomIndex, opacity: 1.0}
+	      ];
+	      this.set({visibleLayers});
 
-	      layers.forEach((icons, layerIndex) => {
-	        if (visibleLayers.indexOf(layerIndex) > -1) {
+	      visibleLayers.forEach(visibleLayer => {
+	        const layerIndex = visibleLayer.i;
+	        const layerOpacity = visibleLayer.opacity;
+	        const icons = layers[layerIndex];
+
 	          
 	          // Calculating min and max indices for icon render loop
 	          const minSize = Math.min(w, h);
@@ -9982,7 +9979,7 @@
 	                    // check that we're still on the right layer/zoom/id
 	                    const {id, visibleLayers, iconCrop, showLabels, textShadow} = this.get();
 	                    // console.log(requestedID, id)
-	                    if(visibleLayers.indexOf(layerIndex) > -1 && requestedID === id) {
+	                    if(visibleLayers.reduce((acc, layer) => layer.i === layerIndex ? acc + 1 : acc, 0) && requestedID === id) {
 	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
 	                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
@@ -10023,18 +10020,15 @@
 	                        context.fillStyle = textColor;
 	                        context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
 	                      }
-
 	                    }
-
 	                  });
 	                }
 	              }
 	            }
 	          }
-	        }
-	      });
+	        });
+	      }
 	    }
-	  }
 	  };
 
 	function oncreate$5() {
@@ -10560,7 +10554,6 @@
 		if ('w' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'w'");
 		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'h'");
 		if ('currentZoomIndex' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentZoomIndex'");
-		if ('visibleLayers' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'visibleLayers'");
 		if ('currentLayerData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentLayerData'");
 		if ('hoverIconData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconData'");
 		if ('showHover' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'showHover'");
@@ -10585,10 +10578,6 @@
 
 		if (changed.scale || changed.gridSize || changed.config || changed.classHeatmap || changed.w || changed.h || changed.autoGridSizeMultiplier) {
 			if (this._differs(state.currentZoomIndex, (state.currentZoomIndex = currentZoomIndex(state)))) changed.currentZoomIndex = true;
-		}
-
-		if (changed.currentZoomIndex) {
-			if (this._differs(state.visibleLayers, (state.visibleLayers = visibleLayers(state)))) changed.visibleLayers = true;
 		}
 
 		if (changed.currentZoomIndex || changed.layers) {
