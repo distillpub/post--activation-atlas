@@ -9779,6 +9779,27 @@
 	  return layers ? layers[currentZoomIndex] : [[]]
 	}
 
+	function labelsBuffer({labelsBufferContext, labels, fontSize, textColor, textShadowColor}) {
+	  // console.log(labelsBufferContext, labels);
+
+	  if (labelsBufferContext && labels) {
+	    labelsBufferContext.globalAlpha = 0.9;
+	    labelsBufferContext.font=fontSize + "px Helvetica";
+	    labels.forEach((label, i) => {
+	      // if (textShadow) {
+	      labelsBufferContext.lineWidth = 3;
+	      labelsBufferContext.lineJoin = "round";
+	      labelsBufferContext.strokeStyle = textShadowColor;
+	      labelsBufferContext.strokeText(label, (i % 10) * 100 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
+	      // }
+	      labelsBufferContext.fillStyle = textColor;
+	      labelsBufferContext.fillStyle = textColor;
+	      labelsBufferContext.fillText(label, (i % 10) * 100 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
+	                    
+	    });
+	  }
+	}
+
 	function showHover({hoverIconData, mouseGlobalPosition}) {
 		return mouseGlobalPosition && hoverIconData && hoverIconData.gcx;
 	}
@@ -9863,7 +9884,7 @@
 	    imageSmoothing: false,
 	    fontSize: 10,
 	    textColor: "white",
-	    textShadowColor: "rgba(0, 0, 0, 0.8)",
+	    textShadowColor: "rgba(0, 0, 0, 0.7)",
 	    showLabels: false,
 	    textShadow: false,
 
@@ -9915,11 +9936,13 @@
 	    return {sourceX, sourceY, iconX: adjustedIconX, iconY: adjustedIconY, iconWidth: adjustedIconWidth}
 	  },
 	  clear() {
-	    const {viewHeight, viewWidth, context, backgroundColor} = this.get();
+	    const {viewHeight, viewWidth, context, backgroundColor, labelsContext} = this.get();
 	    context.globalAlpha = 1;
 	    context.fillStyle= backgroundColor;
 	    context.clearRect(0, 0, viewWidth, viewHeight);
 	    context.fillRect(0, 0, viewWidth, viewHeight);
+	    labelsContext.globalAlpha = 1;
+	    labelsContext.clearRect(0, 0, viewWidth, viewHeight);
 	  },
 	  render() {
 
@@ -9980,7 +10003,7 @@
 	                    const {id, visibleLayers, iconCrop, showLabels, textShadow} = this.get();
 	                    // console.log(requestedID, id)
 	                    if(visibleLayers.reduce((acc, layer) => layer.i === layerIndex ? acc + 1 : acc, 0) && requestedID === id) {
-	                      const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
+	                      const {labelsContext, labelsBufferCanvas, alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
 	                      const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
 
@@ -10008,17 +10031,18 @@
 	                        iconX, iconY, iconWidth, iconWidth
 	                      );
 	                      context.globalAlpha = 1;
-
-	                      if (showLabels && labels) {
+	                      const textSkipX = iconWidth < 40 ? 2 : 1;
+	                      const textSkipY = iconWidth < 60 ? 2 : 1;
+	                      if (showLabels && labels && classHeatmap === -1 && icon.y % textSkipY == 0 && icon.x % textSkipX == 0) {
 	                        context.globalAlpha = 1;
-	                        context.font=fontSize + "px Helvetica";
-	                        if (textShadow) {
-	                          context.lineWidth = 2;
-	                          context.strokeStyle = textShadowColor;
-	                          context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
-	                        }
-	                        context.fillStyle = textColor;
-	                        context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
+	                        const labelIndex = icon.top_class_indices[0];
+	                        labelsContext.drawImage(
+	                          labelsBufferCanvas,
+	                          //source
+	                          (labelIndex % 10) * 100, Math.floor(labelIndex / 10) * 20 + 4, Math.min(iconWidth * textSkipY - 5, 100), 20,
+	                          //destination
+	                          iconX, iconY + iconWidth - 20 - 2, Math.min(iconWidth * textSkipY - 5, 100), 20
+	                        );
 	                      }
 	                    }
 	                  });
@@ -10032,12 +10056,22 @@
 	  };
 
 	function oncreate$5() {
-	  // this.home(0);
+	  // Offscreen buffer for drawing text labels;
+	  const labelsBufferCanvas = document.createElement("canvas");
+	  labelsBufferCanvas.width = 100 * 10;
+	  labelsBufferCanvas.height = (Math.ceil(1002 / 10) + 1) * 20;
+	  const labelsBufferContext = labelsBufferCanvas.getContext("2d");
+	  this.set({labelsBufferCanvas, labelsBufferContext});
 	}
 	function onupdate$2({changed, current, previous}) {
 	  // console.log("atlas", changed, current.scale)
 	  if (!current.context || changed.viewWidth || changed.viewHeight) {
-	    this.set({context: this.refs.canvas.getContext('2d')});
+	    const labelsContext = this.refs.labelsCanvas.getContext('2d');
+	    labelsContext.imageSmoothingEnabled = false;
+	    this.set({
+	      context: this.refs.canvas.getContext('2d'),
+	      labelsContext
+	    });
 	  }
 	  if (changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
 	    this.render();
@@ -10062,7 +10096,7 @@
 	const file$k = "src/Atlas.html";
 
 	function create_main_fragment$l(component, ctx) {
-		var radar_updating = {}, text0, text1, div, canvas, canvas_width_value, canvas_height_value, text2, if_block1_anchor, d3zoom_updating = {}, div_resize_listener;
+		var radar_updating = {}, text0, text1, div, canvas0, canvas0_width_value, canvas0_height_value, text2, canvas1, canvas1_width_value, canvas1_height_value, text3, if_block1_anchor, d3zoom_updating = {}, div_resize_listener;
 
 		var radar_initial_data = {};
 		if (ctx.ready  !== void 0) {
@@ -10194,17 +10228,23 @@
 				if (if_block0) if_block0.c();
 				text1 = createText("\n\n");
 				div = createElement("div");
-				canvas = createElement("canvas");
+				canvas0 = createElement("canvas");
 				text2 = createText("\n    ");
+				canvas1 = createElement("canvas");
+				text3 = createText("\n    ");
 				if (if_block1) if_block1.c();
 				if_block1_anchor = createComment();
 				d3zoom._fragment.c();
-				canvas.width = canvas_width_value = ctx.viewWidth * ctx.screenResolution;
-				canvas.height = canvas_height_value = ctx.viewHeight * ctx.screenResolution;
-				canvas.className = "svelte-lrxg8i svelte-ref-canvas";
-				addLoc(canvas, file$k, 31, 4, 468);
+				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
+				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
+				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
+				addLoc(canvas0, file$k, 31, 4, 468);
+				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
+				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
+				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
+				addLoc(canvas1, file$k, 35, 4, 594);
 				component.root._beforecreate.push(div_resize_handler);
-				div.className = "svelte-lrxg8i svelte-ref-root";
+				div.className = "svelte-w9b5xg svelte-ref-root";
 				addLoc(div, file$k, 15, 0, 183);
 			},
 
@@ -10214,9 +10254,12 @@
 				if (if_block0) if_block0.m(target, anchor);
 				insert(target, text1, anchor);
 				insert(target, div, anchor);
-				append(d3zoom._slotted.default, canvas);
-				component.refs.canvas = canvas;
+				append(d3zoom._slotted.default, canvas0);
+				component.refs.canvas = canvas0;
 				append(d3zoom._slotted.default, text2);
+				append(d3zoom._slotted.default, canvas1);
+				component.refs.labelsCanvas = canvas1;
+				append(d3zoom._slotted.default, text3);
 				if (if_block1) if_block1.m(d3zoom._slotted.default, null);
 				append(d3zoom._slotted.default, if_block1_anchor);
 				d3zoom._mount(div, null);
@@ -10247,12 +10290,20 @@
 					if_block0 = null;
 				}
 
-				if ((changed.viewWidth || changed.screenResolution) && canvas_width_value !== (canvas_width_value = ctx.viewWidth * ctx.screenResolution)) {
-					canvas.width = canvas_width_value;
+				if ((changed.viewWidth || changed.screenResolution) && canvas0_width_value !== (canvas0_width_value = ctx.viewWidth * ctx.screenResolution)) {
+					canvas0.width = canvas0_width_value;
 				}
 
-				if ((changed.viewHeight || changed.screenResolution) && canvas_height_value !== (canvas_height_value = ctx.viewHeight * ctx.screenResolution)) {
-					canvas.height = canvas_height_value;
+				if ((changed.viewHeight || changed.screenResolution) && canvas0_height_value !== (canvas0_height_value = ctx.viewHeight * ctx.screenResolution)) {
+					canvas0.height = canvas0_height_value;
+				}
+
+				if ((changed.viewWidth || changed.screenResolution) && canvas1_width_value !== (canvas1_width_value = ctx.viewWidth * ctx.screenResolution)) {
+					canvas1.width = canvas1_width_value;
+				}
+
+				if ((changed.viewHeight || changed.screenResolution) && canvas1_height_value !== (canvas1_height_value = ctx.viewHeight * ctx.screenResolution)) {
+					canvas1.height = canvas1_height_value;
 				}
 
 				if (ctx.showHoverIcon) {
@@ -10330,7 +10381,8 @@
 					detachNode(div);
 				}
 
-				if (component.refs.canvas === canvas) component.refs.canvas = null;
+				if (component.refs.canvas === canvas0) component.refs.canvas = null;
+				if (component.refs.labelsCanvas === canvas1) component.refs.labelsCanvas = null;
 				if (if_block1) if_block1.d();
 				d3zoom.destroy();
 				if (component.refs.d3Zoom === d3zoom) component.refs.d3Zoom = null;
@@ -10440,7 +10492,7 @@
 		};
 	}
 
-	// (36:4) {#if showHoverIcon}
+	// (40:4) {#if showHoverIcon}
 	function create_if_block$5(component, ctx) {
 		var div;
 
@@ -10451,8 +10503,8 @@
 				setStyle(div, "top", "" + ctx.hoverIconY + "px");
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
-				div.className = "svelte-lrxg8i svelte-ref-hover";
-				addLoc(div, file$k, 36, 4, 618);
+				div.className = "svelte-w9b5xg svelte-ref-hover";
+				addLoc(div, file$k, 40, 4, 750);
 			},
 
 			m: function mount(target, anchor) {
@@ -10495,7 +10547,7 @@
 		this.refs = {};
 		this._state = assign(data$f(), options.data);
 
-		this._recompute({ layers: 1, layer: 1, viewWidth: 1, screenResolution: 1, viewHeight: 1, scale: 1, gridSize: 1, config: 1, classHeatmap: 1, w: 1, h: 1, autoGridSizeMultiplier: 1, currentZoomIndex: 1, currentLayerData: 1, mouseGlobalPosition: 1, translateX: 1, translateY: 1, hoverIconData: 1, enableHover: 1 }, this._state);
+		this._recompute({ layers: 1, layer: 1, viewWidth: 1, screenResolution: 1, viewHeight: 1, scale: 1, gridSize: 1, config: 1, classHeatmap: 1, w: 1, h: 1, autoGridSizeMultiplier: 1, currentZoomIndex: 1, labelsBufferContext: 1, labels: 1, fontSize: 1, textColor: 1, textShadowColor: 1, currentLayerData: 1, mouseGlobalPosition: 1, translateX: 1, translateY: 1, hoverIconData: 1, enableHover: 1 }, this._state);
 		if (!('layers' in this._state)) console.warn("<Atlas> was created without expected data property 'layers'");
 		if (!('layer' in this._state)) console.warn("<Atlas> was created without expected data property 'layer'");
 		if (!('viewWidth' in this._state)) console.warn("<Atlas> was created without expected data property 'viewWidth'");
@@ -10509,6 +10561,11 @@
 
 		if (!('autoGridSizeMultiplier' in this._state)) console.warn("<Atlas> was created without expected data property 'autoGridSizeMultiplier'");
 
+		if (!('labelsBufferContext' in this._state)) console.warn("<Atlas> was created without expected data property 'labelsBufferContext'");
+		if (!('labels' in this._state)) console.warn("<Atlas> was created without expected data property 'labels'");
+		if (!('fontSize' in this._state)) console.warn("<Atlas> was created without expected data property 'fontSize'");
+		if (!('textColor' in this._state)) console.warn("<Atlas> was created without expected data property 'textColor'");
+		if (!('textShadowColor' in this._state)) console.warn("<Atlas> was created without expected data property 'textShadowColor'");
 
 		if (!('mouseGlobalPosition' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseGlobalPosition'");
 
@@ -10520,7 +10577,6 @@
 		if (!('layout' in this._state)) console.warn("<Atlas> was created without expected data property 'layout'");
 		if (!('classFilter' in this._state)) console.warn("<Atlas> was created without expected data property 'classFilter'");
 		if (!('filter' in this._state)) console.warn("<Atlas> was created without expected data property 'filter'");
-		if (!('labels' in this._state)) console.warn("<Atlas> was created without expected data property 'labels'");
 		if (!('mouseOver' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseOver'");
 		if (!('extent' in this._state)) console.warn("<Atlas> was created without expected data property 'extent'");
 		if (!('scrollWheel' in this._state)) console.warn("<Atlas> was created without expected data property 'scrollWheel'");
@@ -10555,6 +10611,7 @@
 		if ('h' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'h'");
 		if ('currentZoomIndex' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentZoomIndex'");
 		if ('currentLayerData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'currentLayerData'");
+		if ('labelsBuffer' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'labelsBuffer'");
 		if ('hoverIconData' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconData'");
 		if ('showHover' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'showHover'");
 		if ('hoverIconX' in newState && !this._updatingReadonlyProperty) throw new Error("<Atlas>: Cannot set read-only property 'hoverIconX'");
@@ -10582,6 +10639,10 @@
 
 		if (changed.currentZoomIndex || changed.layers) {
 			if (this._differs(state.currentLayerData, (state.currentLayerData = currentLayerData(state)))) changed.currentLayerData = true;
+		}
+
+		if (changed.labelsBufferContext || changed.labels || changed.fontSize || changed.textColor || changed.textShadowColor) {
+			if (this._differs(state.labelsBuffer, (state.labelsBuffer = labelsBuffer(state)))) changed.labelsBuffer = true;
 		}
 
 		if (changed.currentLayerData || changed.config || changed.mouseGlobalPosition || changed.w || changed.h || changed.translateX || changed.translateY) {

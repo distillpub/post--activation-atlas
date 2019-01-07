@@ -33,6 +33,10 @@
       width={viewWidth * screenResolution}
       height={viewHeight * screenResolution}
     ></canvas>
+    <canvas ref:labelsCanvas
+      width={viewWidth * screenResolution}
+      height={viewHeight * screenResolution}
+    ></canvas>
     {#if showHoverIcon}
     <div ref:hover
       style="left: {hoverIconX}px; top: {hoverIconY}px; width: {hoverIconW}px; height: {hoverIconW}px;"
@@ -94,7 +98,7 @@ export default {
       imageSmoothing: false,
       fontSize: 10,
       textColor: "white",
-      textShadowColor: "rgba(0, 0, 0, 0.8)",
+      textShadowColor: "rgba(0, 0, 0, 0.7)",
       showLabels: false,
       textShadow: false,
 
@@ -145,6 +149,26 @@ export default {
     currentLayerData: ({currentZoomIndex, layers}) => {
       return layers ? layers[currentZoomIndex] : [[]]
     },
+    labelsBuffer: ({labelsBufferContext, labels, fontSize, textColor, textShadowColor}) => {
+      // console.log(labelsBufferContext, labels);
+    
+      if (labelsBufferContext && labels) {
+        labelsBufferContext.globalAlpha = 0.9;
+        labelsBufferContext.font=fontSize + "px Helvetica";
+        labels.forEach((label, i) => {
+          // if (textShadow) {
+          labelsBufferContext.lineWidth = 3;
+          labelsBufferContext.lineJoin = "round"
+          labelsBufferContext.strokeStyle = textShadowColor;
+          labelsBufferContext.strokeText(label, (i % 10) * 100 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
+          // }
+          labelsBufferContext.fillStyle = textColor;
+          labelsBufferContext.fillStyle = textColor;
+          labelsBufferContext.fillText(label, (i % 10) * 100 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
+                        
+        });
+      }
+    },
     showHover: ({hoverIconData, mouseGlobalPosition}) => mouseGlobalPosition && hoverIconData && hoverIconData.gcx,
     hoverIconData: ({currentLayerData, config, mouseGlobalPosition, w, h, translateX, translateY}) => {
       // const msx = mouseGlobalPosition[0]
@@ -176,7 +200,12 @@ export default {
   onupdate({changed, current, previous}) {
     // console.log("atlas", changed, current.scale)
     if (!current.context || changed.viewWidth || changed.viewHeight) {
-      this.set({context: this.refs.canvas.getContext('2d')});
+      const labelsContext = this.refs.labelsCanvas.getContext('2d');
+      labelsContext.imageSmoothingEnabled = false;
+      this.set({
+        context: this.refs.canvas.getContext('2d'),
+        labelsContext
+      });
     }
     if (changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
       this.render();
@@ -199,7 +228,12 @@ export default {
 
   },
   oncreate() {
-    // this.home(0);
+    // Offscreen buffer for drawing text labels;
+    const labelsBufferCanvas = document.createElement("canvas");
+    labelsBufferCanvas.width = 100 * 10;
+    labelsBufferCanvas.height = (Math.ceil(1002 / 10) + 1) * 20;
+    const labelsBufferContext = labelsBufferCanvas.getContext("2d");
+    this.set({labelsBufferCanvas, labelsBufferContext});
   },
   methods: {
     fullscreen() {
@@ -246,11 +280,13 @@ export default {
       return {sourceX, sourceY, iconX: adjustedIconX, iconY: adjustedIconY, iconWidth: adjustedIconWidth}
     },
     clear() {
-      const {viewHeight, viewWidth, context, backgroundColor} = this.get();
+      const {viewHeight, viewWidth, context, backgroundColor, labelsContext} = this.get();
       context.globalAlpha = 1;
       context.fillStyle= backgroundColor;
       context.clearRect(0, 0, viewWidth, viewHeight);
       context.fillRect(0, 0, viewWidth, viewHeight);
+      labelsContext.globalAlpha = 1;
+      labelsContext.clearRect(0, 0, viewWidth, viewHeight);
     },
     render() {
 
@@ -311,7 +347,7 @@ export default {
                       const {id, visibleLayers, iconCrop, showLabels, textShadow} = this.get();
                       // console.log(requestedID, id)
                       if(visibleLayers.reduce((acc, layer) => layer.i === layerIndex ? acc + 1 : acc, 0) && requestedID === id) {
-                        const {alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
+                        const {labelsContext, labelsBufferCanvas, alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
                         const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
 
@@ -339,17 +375,18 @@ export default {
                           iconX, iconY, iconWidth, iconWidth
                         );
                         context.globalAlpha = 1;
-
-                        if (showLabels && labels) {
+                        const textSkipX = iconWidth < 40 ? 2 : 1;
+                        const textSkipY = iconWidth < 60 ? 2 : 1;
+                        if (showLabels && labels && classHeatmap === -1 && icon.y % textSkipY == 0 && icon.x % textSkipX == 0) {
                           context.globalAlpha = 1;
-                          context.font=fontSize + "px Helvetica";
-                          if (textShadow) {
-                            context.lineWidth = 2;
-                            context.strokeStyle = textShadowColor;
-                            context.strokeText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
-                          }
-                          context.fillStyle = textColor;
-                          context.fillText(labels[icon.top_class_indices[0]], iconX + 4, iconY + iconWidth - 4, iconWidth - 8);
+                          const labelIndex = icon.top_class_indices[0];
+                          labelsContext.drawImage(
+                            labelsBufferCanvas,
+                            //source
+                            (labelIndex % 10) * 100, Math.floor(labelIndex / 10) * 20 + 4, Math.min(iconWidth * textSkipY - 5, 100), 20,
+                            //destination
+                            iconX, iconY + iconWidth - 20 - 2, Math.min(iconWidth * textSkipY - 5, 100), 20
+                          );
                         }
                       }
                     })
@@ -382,7 +419,7 @@ export default {
     height: 100%;
     overflow: hidden;
   }
-  ref:canvas {
+  ref:canvas, ref:labelsCanvas {
     pointer-events: none;
     position: absolute;
     top: 0;

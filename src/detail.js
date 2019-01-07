@@ -23,5 +23,7 @@ new App({
   target: document.querySelector("#app"),
   store,
   data: {
+    gridSize: -1,
+    showLabels: true
   }
 });
