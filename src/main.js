@@ -105,7 +105,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			componentData: {
 				showClassFilter: false,
 				layerName: "mixed4d",
-				showLabels: false,
 				showOptions: false,
 				homeX: 0.55,
 				homeY: 0.7,

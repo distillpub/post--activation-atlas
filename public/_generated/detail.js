@@ -8663,8 +8663,7 @@
 	    fontSize: 10,
 	    textColor: "white",
 	    textShadowColor: "rgba(0, 0, 0, 0.7)",
-	    showLabels: false,
-	    textShadow: false,
+	    showLabels: true,
 
 	    screenResolution: 1,
 	  }
@@ -8811,7 +8810,7 @@
 	                      context.globalAlpha = 1;
 	                      const textSkipX = iconWidth < 40 ? 2 : 1;
 	                      const textSkipY = iconWidth < 60 ? 2 : 1;
-	                      if (showLabels && labels && classHeatmap === -1 && icon.y % textSkipY == 0 && icon.x % textSkipX == 0) {
+	                      if (showLabels && labels && classHeatmap === -1 && icon.y % textSkipY == 0 && icon.x % textSkipX == 0 && iconWidth > 25) {
 	                        context.globalAlpha = 1;
 	                        const labelIndex = icon.top_class_indices[0];
 	                        labelsContext.drawImage(
