@@ -9790,11 +9790,11 @@
 	      labelsBufferContext.lineWidth = 3;
 	      labelsBufferContext.lineJoin = "round";
 	      labelsBufferContext.strokeStyle = textShadowColor;
-	      labelsBufferContext.strokeText(label, (i % 10) * 100 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
+	      labelsBufferContext.strokeText(label, (i % 10) * 150 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
 	      // }
 	      labelsBufferContext.fillStyle = textColor;
 	      labelsBufferContext.fillStyle = textColor;
-	      labelsBufferContext.fillText(label, (i % 10) * 100 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
+	      labelsBufferContext.fillText(label, (i % 10) * 150 + 10, Math.floor(i / 10 + 1) * 20, 80, 15);
 	                    
 	    });
 	  }
@@ -9863,7 +9863,7 @@
 	    classHeatmapMultiplier: 1,
 	    classHeatmapPositive: 1,
 	    iconCrop: 0.02,
-	    autoGridSizeMultiplier: 0.8,
+	    autoGridSizeMultiplier: 0.6,
 
 	    gridSize: null,
 
@@ -9884,7 +9884,7 @@
 	    imageSmoothing: false,
 	    fontSize: 10,
 	    textColor: "white",
-	    textShadowColor: "rgba(0, 0, 0, 0.7)",
+	    textShadowColor: "rgba(0, 0, 0, 0.6)",
 	    showLabels: true,
 
 	    screenResolution: 1,
@@ -9945,11 +9945,15 @@
 	  },
 	  render() {
 
-	    const {id, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {id, labelsContext, classHeatmap, showLabels, labels, labelsBufferCanvas, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
 	    // context.imageSmoothingQuality = "low";
 	    context.imageSmoothingEnabled = imageSmoothing;
+
+	    labelsContext.strokeStyle = strokeColor;
+	    labelsContext.lineWidth = strokeThickness;
+	    context.fillStyle = "white";
 
 	    if (config && layers) {
 	      let visibleLayers = [
@@ -9976,7 +9980,7 @@
 	              if (icons[y] && icons[y][x]) {
 	                const icon = icons[y][x];
 
-	                const {classHeatmap, sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
+	                const {sourceX, sourceY, iconX, iconY, iconWidth} = this.iconToGlobalPosition(icon, layerIndex);
 	                
 	                const requestedID = id;
 	                // If icon is in the viewport 
@@ -9986,15 +9990,22 @@
 	                  
 	                  // We want to draw a box so there isn't just whiteness.
 	                  if (classHeatmap > -1 || true) {
-	                    context.globalAlpha = 0.75;
-	                    context.strokeStyle = strokeColor;
-	                    context.lineWidth = strokeThickness;
-	                    context.fillStyle = "white";
-	                    context.beginPath();
-	                    context.rect(iconX, iconY, iconWidth, iconWidth);
-	                    context.stroke();
-	                    context.fill();
-	                    context.closePath();
+	                    labelsContext.globalAlpha = 0.3;
+	                    labelsContext.strokeRect(iconX, iconY, iconWidth, iconWidth);
+	                    labelsContext.globalAlpha = 1.0;
+	                  }
+	                  const textSkipX = Math.ceil(40 / iconWidth);
+	                  const textSkipY = Math.ceil(60 / iconWidth);
+	                  if (showLabels && labels && classHeatmap === -1 && icon.y % textSkipY == 0 && icon.x % textSkipX == 0 ) {
+	                    labelsContext.globalAlpha = 1;
+	                    const labelIndex = icon.top_class_indices[0];
+	                    labelsContext.drawImage(
+	                      labelsBufferCanvas,
+	                      //source
+	                      (labelIndex % 10) * 150, Math.floor(labelIndex / 10) * 20 + 4, Math.min(iconWidth * textSkipY - 5, 100), 20,
+	                      //destination
+	                      iconX, iconY + iconWidth - 20 - 2, Math.min(iconWidth * textSkipY - 5, 100), 20
+	                    );
 	                  }
 
 	                  load$1(icon.url).then(response => {
@@ -10017,32 +10028,30 @@
 	                        } else {
 	                          a = 0.0;
 	                        }
+	                        
 	                      }
 
 	                      // draw the icon
-	                      context.globalAlpha = a;
+	                      context.globalAlpha = 1;
 	                      const iconOffset = (iconCrop * config.icon_size) / 2;
-	                      context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
+	                      // context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
+	                      if (classHeatmap > -1) {
+	                        // labelsContext.beginPath();
+	                        context.fillRect(iconX, iconY, iconWidth, iconWidth);
+	                        // context.fill();
+	                        // context.closePath();
+	                      }
+	                      context.globalAlpha = a;
 	                      context.drawImage(response,
 	                        //source
 	                        sourceY + iconOffset, sourceX + iconOffset, config.icon_size - iconOffset * 2, config.icon_size - iconOffset * 2,
 	                        //destination
 	                        iconX, iconY, iconWidth, iconWidth
 	                      );
-	                      context.globalAlpha = 1;
-	                      const textSkipX = iconWidth < 40 ? 2 : 1;
-	                      const textSkipY = iconWidth < 60 ? 2 : 1;
-	                      if (showLabels && labels && classHeatmap === -1 && icon.y % textSkipY == 0 && icon.x % textSkipX == 0 && iconWidth > 25) {
-	                        context.globalAlpha = 1;
-	                        const labelIndex = icon.top_class_indices[0];
-	                        labelsContext.drawImage(
-	                          labelsBufferCanvas,
-	                          //source
-	                          (labelIndex % 10) * 100, Math.floor(labelIndex / 10) * 20 + 4, Math.min(iconWidth * textSkipY - 5, 100), 20,
-	                          //destination
-	                          iconX, iconY + iconWidth - 20 - 2, Math.min(iconWidth * textSkipY - 5, 100), 20
-	                        );
-	                      }
+	                      
+	                      // context.globalAlpha = 1;
+	                      // context.closePath();
+	                      
 	                    }
 	                  });
 	                }
@@ -10057,7 +10066,7 @@
 	function oncreate$5() {
 	  // Offscreen buffer for drawing text labels;
 	  const labelsBufferCanvas = document.createElement("canvas");
-	  labelsBufferCanvas.width = 100 * 10;
+	  labelsBufferCanvas.width = 150 * 10;
 	  labelsBufferCanvas.height = (Math.ceil(1002 / 10) + 1) * 20;
 	  const labelsBufferContext = labelsBufferCanvas.getContext("2d");
 	  this.set({labelsBufferCanvas, labelsBufferContext});
@@ -20475,8 +20484,7 @@
 				component: App,
 				componentData: {
 					showClassFilter: false,
-					gridSize: -1,
-					autoGridSizeMultiplier: 1
+					gridSize: -1
 				}
 			}
 		});

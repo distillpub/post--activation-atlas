@@ -450,8 +450,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			component: App,
 			componentData: {
 				showClassFilter: false,
-				gridSize: -1,
-				autoGridSizeMultiplier: 1
+				gridSize: -1
 			}
 		}
 	});
