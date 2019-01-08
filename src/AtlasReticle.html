@@ -1,14 +1,10 @@
 <div class="root" bind:clientWidth bind:clientHeight
-  on:mousemove="mouseMove(event)"
   on:mousedown="mouseDown(event)"
-  on:mouseup="mouseUp(event)"
 >
   {#if extent}
   <svg width={clientWidth} height={clientHeight}>
     <path
       class="{background ? '' : 'transparent'}"
-      on:mousemove="mouseMove(event)"
-      on:mouseup="mouseUp(event)"
       d="M0,0 L{clientWidth},0 L{clientWidth},{clientHeight} L0,{clientHeight} z M{left},{top} L{left},{bottom} L{right},{bottom}  L{right},{top} z"
     />
   </svg>
@@ -46,8 +42,9 @@
         background: true,
         round: false,
         color: "rgb(255, 130, 0)",
-        // color: "rgba(100, 100, 100, 0.5)",
         enableDragging: true,
+        mouseUpListener: null,
+        mouseMoveListener: null
       }
     },
     computed: {
@@ -58,36 +55,41 @@
     },
     methods: {
       mouseUp() {
-        const {clientWidth, clientHeight} = this.get();
-        this.set({dragging: false})
+        const {mouseMoveListener, mouseUpListener} = this.get();
+        window.removeEventListener("mousemove", mouseMoveListener);
+        window.removeEventListener("mouseup", mouseUpListener);
       },
       mouseDown(event) {
+        event.preventDefault();
         const {enableDragging, clientWidth, clientHeight} = this.get();
         if(enableDragging){
-          event.preventDefault();
-          const gcx = event.offsetX / clientWidth; 
-          const gcy = event.offsetY / clientHeight;
-           this.set({
-              dragging: true,
-              gcx,
-              gcy,
-              startPos: {x: event.screenX, y: event.screenY}
-           });
-           this.fire("drag", {gcx, gcy});
+          // const gcx = event.offsetX / clientWidth; 
+          // const gcy = event.offsetY / clientHeight;
+          //  this.set({
+          //     dragging: true,
+          //     gcx,
+          //     gcy,
+          //     startPos: {x: event.screenX, y: event.screenY}
+          //  });
+          //  this.fire("drag", {gcx, gcy});
+          this.mouseMove(event);
         }
+        const mouseUpListener = this.mouseUp.bind(this);
+        const mouseMoveListener = this.mouseMove.bind(this);
+        window.addEventListener("mousemove", mouseMoveListener);
+        window.addEventListener("mouseup", mouseUpListener);
+        this.set({mouseMoveListener, mouseUpListener});
       },
       mouseMove(event) {
-        const {dragging, startPos, clientWidth, clientHeight, left, right, top, bottom} = this.get();
-        if(dragging){
-          const gcx = event.offsetX / clientWidth; 
-          const gcy = event.offsetY / clientHeight;
-           this.set({
-              gcx,
-              gcy,
-              startPos: {x: event.screenX, y: event.screenY}
-           });
-           this.fire("drag", {gcx, gcy});
-        }
+        const {clientWidth, clientHeight} = this.get();
+        const gcx = event.offsetX / clientWidth; 
+        const gcy = event.offsetY / clientHeight;
+          this.set({
+            gcx,
+            gcy,
+            startPos: {x: event.screenX, y: event.screenY}
+          });
+          this.fire("drag", {gcx, gcy});
       },
     },
   }

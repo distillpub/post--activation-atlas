@@ -3833,42 +3833,48 @@
 	    background: true,
 	    round: false,
 	    color: "rgb(255, 130, 0)",
-	    // color: "rgba(100, 100, 100, 0.5)",
 	    enableDragging: true,
+	    mouseUpListener: null,
+	    mouseMoveListener: null
 	  }
 	}
 	var methods$2 = {
 	  mouseUp() {
-	    const {clientWidth, clientHeight} = this.get();
-	    this.set({dragging: false});
+	    const {mouseMoveListener, mouseUpListener} = this.get();
+	    window.removeEventListener("mousemove", mouseMoveListener);
+	    window.removeEventListener("mouseup", mouseUpListener);
 	  },
 	  mouseDown(event) {
+	    event.preventDefault();
 	    const {enableDragging, clientWidth, clientHeight} = this.get();
 	    if(enableDragging){
-	      event.preventDefault();
-	      const gcx = event.offsetX / clientWidth; 
-	      const gcy = event.offsetY / clientHeight;
-	       this.set({
-	          dragging: true,
-	          gcx,
-	          gcy,
-	          startPos: {x: event.screenX, y: event.screenY}
-	       });
-	       this.fire("drag", {gcx, gcy});
+	      // const gcx = event.offsetX / clientWidth; 
+	      // const gcy = event.offsetY / clientHeight;
+	      //  this.set({
+	      //     dragging: true,
+	      //     gcx,
+	      //     gcy,
+	      //     startPos: {x: event.screenX, y: event.screenY}
+	      //  });
+	      //  this.fire("drag", {gcx, gcy});
+	      this.mouseMove(event);
 	    }
+	    const mouseUpListener = this.mouseUp.bind(this);
+	    const mouseMoveListener = this.mouseMove.bind(this);
+	    window.addEventListener("mousemove", mouseMoveListener);
+	    window.addEventListener("mouseup", mouseUpListener);
+	    this.set({mouseMoveListener, mouseUpListener});
 	  },
 	  mouseMove(event) {
-	    const {dragging, startPos, clientWidth, clientHeight, left, right, top, bottom} = this.get();
-	    if(dragging){
-	      const gcx = event.offsetX / clientWidth; 
-	      const gcy = event.offsetY / clientHeight;
-	       this.set({
-	          gcx,
-	          gcy,
-	          startPos: {x: event.screenX, y: event.screenY}
-	       });
-	       this.fire("drag", {gcx, gcy});
-	    }
+	    const {clientWidth, clientHeight} = this.get();
+	    const gcx = event.offsetX / clientWidth; 
+	    const gcy = event.offsetY / clientHeight;
+	      this.set({
+	        gcx,
+	        gcy,
+	        startPos: {x: event.screenX, y: event.screenY}
+	      });
+	      this.fire("drag", {gcx, gcy});
 	  },
 	};
 
@@ -3883,16 +3889,8 @@
 			component.set({ clientWidth: div.clientWidth, clientHeight: div.clientHeight });
 		}
 
-		function mousemove_handler(event) {
-			component.mouseMove(event);
-		}
-
 		function mousedown_handler(event) {
 			component.mouseDown(event);
-		}
-
-		function mouseup_handler(event) {
-			component.mouseUp(event);
 		}
 
 		return {
@@ -3900,9 +3898,7 @@
 				div = createElement("div");
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
-				addListener(div, "mousemove", mousemove_handler);
 				addListener(div, "mousedown", mousedown_handler);
-				addListener(div, "mouseup", mouseup_handler);
 				div.className = "root svelte-xo8icp";
 				addLoc(div, file$d, 0, 0, 0);
 			},
@@ -3935,24 +3931,14 @@
 
 				if (if_block) if_block.d();
 				div_resize_listener.cancel();
-				removeListener(div, "mousemove", mousemove_handler);
 				removeListener(div, "mousedown", mousedown_handler);
-				removeListener(div, "mouseup", mouseup_handler);
 			}
 		};
 	}
 
-	// (6:2) {#if extent}
+	// (4:2) {#if extent}
 	function create_if_block$4(component, ctx) {
 		var svg, path, path_class_value, path_d_value, text, div, div_class_value;
-
-		function mousemove_handler(event) {
-			component.mouseMove(event);
-		}
-
-		function mouseup_handler(event) {
-			component.mouseUp(event);
-		}
 
 		var if_block = (ctx.annotationValue) && create_if_block_1(component, ctx);
 
@@ -3963,22 +3949,20 @@
 				text = createText("\n    ");
 				div = createElement("div");
 				if (if_block) if_block.c();
-				addListener(path, "mousemove", mousemove_handler);
-				addListener(path, "mouseup", mouseup_handler);
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$d, 7, 4, 222);
+				addLoc(path, file$d, 5, 4, 158);
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
 				setAttribute(svg, "class", "svelte-xo8icp");
-				addLoc(svg, file$d, 6, 2, 170);
+				addLoc(svg, file$d, 4, 2, 106);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + ctx.top + "px");
 				setStyle(div, "left", "" + ctx.left + "px");
 				setStyle(div, "width", "" + (ctx.right-ctx.left) + "px");
 				setStyle(div, "height", "" + (ctx.bottom-ctx.top) + "px");
-				addLoc(div, file$d, 14, 4, 517);
+				addLoc(div, file$d, 10, 4, 381);
 			},
 
 			m: function mount(target, anchor) {
@@ -4047,11 +4031,6 @@
 			d: function destroy$$1(detach) {
 				if (detach) {
 					detachNode(svg);
-				}
-
-				removeListener(path, "mousemove", mousemove_handler);
-				removeListener(path, "mouseup", mouseup_handler);
-				if (detach) {
 					detachNode(text);
 					detachNode(div);
 				}
@@ -4061,7 +4040,7 @@
 		};
 	}
 
-	// (27:4) {#if annotationValue}
+	// (23:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
 		var div1, div0, p, text;
 
@@ -4072,13 +4051,13 @@
 				p = createElement("p");
 				text = createText(ctx.annotationValue);
 				p.className = "annotation svelte-xo8icp";
-				addLoc(p, file$d, 29, 10, 911);
+				addLoc(p, file$d, 25, 10, 775);
 				div0.className = "annotationTab svelte-xo8icp";
 				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$d, 28, 8, 845);
+				addLoc(div0, file$d, 24, 8, 709);
 				div1.className = "annotationTabParent svelte-xo8icp";
 				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$d, 27, 6, 770);
+				addLoc(div1, file$d, 23, 6, 634);
 			},
 
 			m: function mount(target, anchor) {
