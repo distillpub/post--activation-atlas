@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				homeX: 0.55,
 				homeY: 0.7,
 				homeScale: 4,
-				gridSize: 2,
+				gridSize: -1,
 				scrollWheel: false,
 			}
 		}

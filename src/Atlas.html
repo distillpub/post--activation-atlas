@@ -77,7 +77,7 @@ export default {
       classHeatmapMultiplier: 1,
       classHeatmapPositive: 1,
       iconCrop: 0.02,
-      autoGridSizeMultiplier: 0.6,
+      autoGridSizeMultiplier: 0.5,
 
       gridSize: null,
 
@@ -152,7 +152,7 @@ export default {
       // console.log(labelsBufferContext, labels);
     
       if (labelsBufferContext && labels) {
-        labelsBufferContext.globalAlpha = 0.9;
+        labelsBufferContext.globalAlpha = 1.0;
         labelsBufferContext.font=fontSize + "px Helvetica";
         labels.forEach((label, i) => {
           // if (textShadow) {
@@ -356,9 +356,11 @@ export default {
                     }
 
                     load(icon.url).then(response => {
+                      
                       // check that we're still on the right layer/zoom/id
                       const {id, visibleLayers, iconCrop, showLabels, textShadow} = this.get();
                       // console.log(requestedID, id)
+
                       if(visibleLayers.reduce((acc, layer) => layer.i === layerIndex ? acc + 1 : acc, 0) && requestedID === id) {
                         const {labelsContext, labelsBufferCanvas, alphaAttributionFactor, labels, config, classHeatmap, classHeatmapMultiplier, classHeatmapPositive} = this.get();
 
@@ -377,10 +379,10 @@ export default {
                           }
                           
                         }
-
+                        const computedIconCrop = Math.min(8 / iconWidth, 0.6);
                         // draw the icon
                         context.globalAlpha = 1;
-                        const iconOffset = (iconCrop * config.icon_size) / 2;
+                        const iconOffset = (computedIconCrop * config.icon_size) / 2;
                         // context.clearRect(iconX + 1, iconY + 1, iconWidth - 2, iconWidth - 2);
                         if (classHeatmap > -1) {
                           // labelsContext.beginPath();

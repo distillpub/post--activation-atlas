@@ -23,7 +23,7 @@ export default {
       el: null,
       selection: null, //the d3 selection of the root
       transform: null, // the d3 transform
-      scaleExtent: [1, 32], //
+      scaleExtent: [1, 48], //
       scrollWheel: false,
       homeScale: 1,
       homeX: 0.5,
@@ -161,7 +161,6 @@ export default {
             .translate(- x * minSize, - y * minSize));
     },
     translateTo: function(x, y) {
-      console.log(x, y);
       const {z, selection, minSize} = this.get();
       z.translateTo(selection, x * minSize, y * minSize)
     },
