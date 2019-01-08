@@ -161,8 +161,9 @@ export default {
             .translate(- x * minSize, - y * minSize));
     },
     translateTo: function(x, y) {
+      console.log(x, y);
       const {z, selection, minSize} = this.get();
-      z.transform(selection, x * minSize, y * minSize)
+      z.translateTo(selection, x * minSize, y * minSize)
     },
     home: function(duration = 0) {
 

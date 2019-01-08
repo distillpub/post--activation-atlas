@@ -1,4 +1,8 @@
-<div class="root" bind:clientWidth bind:clientHeight>
+<div class="root" bind:clientWidth bind:clientHeight
+  on:mousemove="mouseMove(event)"
+  on:mousedown="mouseDown(event)"
+  on:mouseup="mouseUp(event)"
+>
   {#if extent}
   <svg width={clientWidth} height={clientHeight}>
     <path
@@ -10,9 +14,7 @@
   </svg>
     <div
       class="reticle {round ? 'round' : ''}"
-      on:mousemove="mouseMove(event)"
-      on:mousedown="mouseDown(event)"
-      on:mouseup="mouseUp(event)"
+
       style="
         border-color: {color};
         top:{top}px;
@@ -56,26 +58,35 @@
     },
     methods: {
       mouseUp() {
-        const { startPos, height, width, scale, aspectRatio, gcx, gcy} = this.get();
+        const {clientWidth, clientHeight} = this.get();
         this.set({dragging: false})
       },
       mouseDown(event) {
-        const {enableDragging} = this.get();
+        const {enableDragging, clientWidth, clientHeight} = this.get();
         if(enableDragging){
           event.preventDefault();
-          this.set({dragging: true, startPos: {x: event.screenX, y: event.screenY}})
+          const gcx = event.offsetX / clientWidth; 
+          const gcy = event.offsetY / clientHeight;
+           this.set({
+              dragging: true,
+              gcx,
+              gcy,
+              startPos: {x: event.screenX, y: event.screenY}
+           });
+           this.fire("drag", {gcx, gcy});
         }
       },
       mouseMove(event) {
-        const {dragging, startPos, scale, width, aspectRatio, height, left, top} = this.get();
+        const {dragging, startPos, clientWidth, clientHeight, left, right, top, bottom} = this.get();
         if(dragging){
+          const gcx = event.offsetX / clientWidth; 
+          const gcy = event.offsetY / clientHeight;
            this.set({
-              gcx: (event.screenX - startPos.x + left) / width + 1 / scale * aspectRatio / 2, 
-              gcy: (event.screenY - startPos.y + top) / height + 1 / scale / 2, 
-           })
-           this.set({
-            startPos: {x: event.screenX, y: event.screenY}
-           })
+              gcx,
+              gcy,
+              startPos: {x: event.screenX, y: event.screenY}
+           });
+           this.fire("drag", {gcx, gcy});
         }
       },
     },
@@ -113,6 +124,7 @@
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0);
     border-radius: 4px;
+    pointer-events: none;
   }
   .reticle.round {
     border-radius: 50%;

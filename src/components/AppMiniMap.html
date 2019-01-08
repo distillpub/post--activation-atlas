@@ -16,6 +16,7 @@
     <AtlasReticle
       bind:extent
       enableDragging={true}
+      on:drag="fire('drag', event)"
     />
   </Placeholder>
 </div>

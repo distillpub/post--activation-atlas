@@ -243,6 +243,9 @@ export default {
       // this.transitionTo(homeX, homeY, homeScale, duration);
       this.refs.d3Zoom.home(duration);
     },
+    translateTo(x, y) {
+      this.refs.d3Zoom.translateTo(x, y);
+    },
     zoomTo(x, y, scale, duration = 1000) {
       this.refs.d3Zoom.zoomTo(x, y, scale, duration);
     },
