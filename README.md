@@ -4,8 +4,6 @@
 
 spread operator in object literals
 
-add hover state for notebooklink
-
 app.html and link to it somewhere
 
 cache assets
@@ -14,13 +12,13 @@ cache assets
 
 grid size radio buttons smaller
 
-turn off tooltip on scroll
-
 .npy data files
 
 smooth zoom between gridsizes
 
 ## Done
+add hover state for notebooklink
+turn off tooltip on scroll
 restore "no pan/zoom" options on atlas
 format numbers in toolip
 add "reset" to layer tour (and possible zoom buttons)

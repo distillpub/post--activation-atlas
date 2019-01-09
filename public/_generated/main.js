@@ -1808,6 +1808,10 @@
 			component.mousemove(event);	}
 		document.addEventListener("mousemove", onwindowmousemove);
 
+		function onwindowscroll(event) {
+			component.hide();	}
+		document.addEventListener("scroll", onwindowscroll);
+
 		var if_block = (ctx.component) && create_if_block(component, ctx);
 
 		function div_resize_handler() {
@@ -1822,7 +1826,7 @@
 				component.root._beforecreate.push(div_resize_handler);
 				div.style.cssText = ctx.style;
 				div.className = "svelte-14z2oof svelte-ref-root";
-				addLoc(div, file, 33, 0, 725);
+				addLoc(div, file, 33, 0, 743);
 			},
 
 			m: function mount(target, anchor) {
@@ -1854,6 +1858,8 @@
 
 			d: function destroy$$1(detach) {
 				document.removeEventListener("mousemove", onwindowmousemove);
+
+				document.removeEventListener("scroll", onwindowscroll);
 
 				if (detach) {
 					detachNode(text);
@@ -3365,16 +3371,16 @@
 				span = createElement("span");
 				text1 = createText(ctx.text);
 				setAttribute(path, "d", "M14,2c0-0.3-0.2-0.5-0.5-0.5S13,1.7,13,2v12c0,0.6-0.4,1-1,1H3.1c-0.3,0-0.5-0.1-0.7-0.3L1.7,14h8.8c0.8,0,1.5-0.7,1.5-1.5\n      l0-11C12,0.7,11.3,0,10.5,0l-9,0C0.7,0,0,0.7,0,1.5v12.1c0,0.3,0.1,0.5,0.3,0.7l1.4,1.4C1.9,15.9,2.1,16,2.4,16h10.1\n      c0.8,0,1.5-0.7,1.5-1.5l0-1.8C14,9,14,2,14,2z M9.1,9.6c0,0.3-0.2,0.5-0.5,0.5H5.4c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h3.1\n      C8.8,9.1,9.1,9.3,9.1,9.6z M2.3,4.7C2.1,4.5,2.1,4.2,2.3,4C2.5,3.8,2.8,3.8,3,4l2.8,2.6L3,9.3C2.9,9.4,2.8,9.4,2.7,9.4\n      c-0.1,0-0.3-0.1-0.4-0.2c-0.2-0.2-0.2-0.5,0-0.7l2-1.9L2.3,4.7z");
-				setAttribute(path, "class", "svelte-1i7b4jt");
-				addLoc(path, file$7, 2, 4, 81);
+				setAttribute(path, "class", "svelte-7z3jn3");
+				addLoc(path, file$7, 8, 4, 263);
 				setAttribute(svg, "viewBox", "0 0 18 18");
-				setAttribute(svg, "class", "svelte-1i7b4jt");
-				addLoc(svg, file$7, 1, 2, 51);
-				span.className = "svelte-1i7b4jt";
-				addLoc(span, file$7, 8, 2, 660);
+				setAttribute(svg, "class", "svelte-7z3jn3");
+				addLoc(svg, file$7, 7, 2, 233);
+				span.className = "svelte-7z3jn3";
+				addLoc(span, file$7, 14, 2, 842);
 				a.href = ctx.url;
-				a.className = a_class_value = "root emphasis-" + ctx.emphasis + " svelte-1i7b4jt";
-				addLoc(a, file$7, 0, 0, 0);
+				a.className = a_class_value = "root emphasis-" + ctx.emphasis + " svelte-7z3jn3";
+				addLoc(a, file$7, 6, 0, 182);
 			},
 
 			m: function mount(target, anchor) {
@@ -3395,7 +3401,7 @@
 					a.href = ctx.url;
 				}
 
-				if ((changed.emphasis) && a_class_value !== (a_class_value = "root emphasis-" + ctx.emphasis + " svelte-1i7b4jt")) {
+				if ((changed.emphasis) && a_class_value !== (a_class_value = "root emphasis-" + ctx.emphasis + " svelte-7z3jn3")) {
 					a.className = a_class_value;
 				}
 			},
@@ -17750,15 +17756,15 @@
 				text4 = createText("\n      ");
 				navigation2._fragment.c();
 				button2._fragment.c();
-				div0.className = "detail svelte-5gahm5";
+				div0.className = "detail svelte-12h17x1";
 				addLoc(div0, file$C, 3, 2, 83);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-5gahm5";
+				img.className = "svelte-12h17x1";
 				addLoc(img, file$C, 21, 6, 435);
-				div1.className = "atlas svelte-5gahm5";
+				div1.className = "atlas svelte-12h17x1";
 				addLoc(div1, file$C, 20, 4, 409);
-				div2.className = "controls svelte-5gahm5";
+				div2.className = "controls svelte-12h17x1";
 				addLoc(div2, file$C, 27, 4, 654);
 				addLoc(div3, file$C, 19, 2, 399);
 				setStyle(div4, "display", "grid");
@@ -18440,7 +18446,7 @@
 				setStyle(img, "width", "100%");
 				setStyle(img, "display", "block");
 				addLoc(img, file$F, 11, 6, 184);
-				div1.className = "thumbnail svelte-110lo0q";
+				div1.className = "thumbnail svelte-1wb5xrc";
 				addLoc(div1, file$F, 10, 4, 154);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
@@ -18475,11 +18481,11 @@
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
 				addLoc(path1, file$F, 42, 6, 1044);
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
-				setAttribute(svg, "class", "pathArrow svelte-110lo0q");
+				setAttribute(svg, "class", "pathArrow svelte-1wb5xrc");
 				addLoc(svg, file$F, 13, 4, 327);
-				div2.className = "atlas svelte-110lo0q";
+				div2.className = "atlas svelte-1wb5xrc";
 				addLoc(div2, file$F, 9, 2, 130);
-				div3.className = "showapath svelte-110lo0q";
+				div3.className = "showapath svelte-1wb5xrc";
 				addLoc(div3, file$F, 0, 0, 0);
 			},
 

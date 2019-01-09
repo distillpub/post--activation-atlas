@@ -29,7 +29,7 @@
 
  -->
 
-<svelte:document on:mousemove="mousemove(event)" />
+<svelte:document on:mousemove="mousemove(event)" on:scroll="hide()"/>
 
 <div ref:root bind:clientHeight {style}>
   {#if component}

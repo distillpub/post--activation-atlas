@@ -1,3 +1,9 @@
+<!-- 
+  A link to a ipynb or other such computational notebook. 
+  Shows an icon and some text.
+  There are three levels of emphasis available as well: 0, 1, 2 with 1 default.
+ -->
+
 <a href="{url}"class="root emphasis-{emphasis}">
   <svg viewBox="0 0 18 18">
     <path d="M14,2c0-0.3-0.2-0.5-0.5-0.5S13,1.7,13,2v12c0,0.6-0.4,1-1,1H3.1c-0.3,0-0.5-0.1-0.7-0.3L1.7,14h8.8c0.8,0,1.5-0.7,1.5-1.5
@@ -41,6 +47,9 @@ export default {
   .emphasis-1.root {
     border-color: rgba(0, 0, 0, 0.1);
     color: #ff6600;
+  }
+  .emphasis-1.root:hover {
+    border-color: rgba(0, 0, 0, 0.2);
   }
   .emphasis-2.root {
     border-color: #ff6600;

@@ -10837,6 +10837,10 @@
 			component.mousemove(event);	}
 		document.addEventListener("mousemove", onwindowmousemove);
 
+		function onwindowscroll(event) {
+			component.hide();	}
+		document.addEventListener("scroll", onwindowscroll);
+
 		var if_block = (ctx.component) && create_if_block$2(component, ctx);
 
 		function div_resize_handler() {
@@ -10851,7 +10855,7 @@
 				component.root._beforecreate.push(div_resize_handler);
 				div.style.cssText = ctx.style;
 				div.className = "svelte-14z2oof svelte-ref-root";
-				addLoc(div, file$h, 33, 0, 725);
+				addLoc(div, file$h, 33, 0, 743);
 			},
 
 			m: function mount(target, anchor) {
@@ -10883,6 +10887,8 @@
 
 			d: function destroy$$1(detach) {
 				document.removeEventListener("mousemove", onwindowmousemove);
+
+				document.removeEventListener("scroll", onwindowscroll);
 
 				if (detach) {
 					detachNode(text);
