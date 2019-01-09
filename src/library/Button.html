@@ -1,12 +1,21 @@
 <button
   on:click="fire('click')"
+  style="
+    background-color: {backgroundColor};
+    color: {color};
+  "
 >
   <slot></slot>
 </button>
 
 <script>
 export default {
-
+  data() {
+    return {
+      backgroundColor: "rgb(255, 130, 0)",
+      color: "white",
+    }
+  }
 }
 
 </script>
@@ -17,9 +26,7 @@ export default {
     outline: none;
     font-size: 13px;
     border: none;
-    color: white;
     padding: 0 4px;
-    background-color: rgb(255, 130, 0);
     font-weight: 500;
     height: 32px;
     line-height: 1em;

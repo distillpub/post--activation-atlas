@@ -16,8 +16,6 @@ cache assets
 
 ## Nice to haves
 
-add "reset" to layer tour (and possible zoom buttons)
-
 grid size radio buttons smaller
 
 turn off tooltip on scroll
@@ -27,6 +25,7 @@ turn off tooltip on scroll
 smooth zoom between gridsizes
 
 ## Done
+add "reset" to layer tour (and possible zoom buttons)
 add 3d slides for intro
 no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
