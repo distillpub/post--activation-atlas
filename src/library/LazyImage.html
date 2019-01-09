@@ -1,4 +1,4 @@
-<div class="{background ? 'background' : ''} {border ? 'border' : ''}">
+<div ref:root class="{background ? 'background' : ''} {border ? 'border' : ''}">
   <Radar bind:ready>
     <Placeholder {aspectRatio}>
       {#if ready}
@@ -32,6 +32,10 @@
 </script>
 
 <style>
+ref:root {
+  contain: content;
+  overflow: hidden;
+}
 .background {
   background: rgba(0, 0, 0, 0.05);
 }

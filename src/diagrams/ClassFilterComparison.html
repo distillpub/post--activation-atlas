@@ -3,14 +3,14 @@
 <div style="display: grid;grid-column-gap: 20px; grid-template-columns: 1fr 1fr 200px;">
   
   <div>
-    <h4>“{@html $inceptionLabels[$currentClassAtlasCompareIndex]}” filtered by top rank</h4>
+    <h4>“{@html $inceptionLabels[$currentClassAtlasCompareIndex]}” <br>filtered by top rank</h4>
     <div class="atlas">
       <ClassAtlas classFilter={$currentClassAtlasCompareIndex} filterType="winner" />
     </div>
     <div class="figcaption">We pluck only those activations whose top attribution is toward the class in question. The results are often much more focused and isolated, exclusive to the class. Some are low magnitude, like backgrounds, and we miss correlations or concepts that are shared among many classes. </div>
   </div>
   <div>
-    <h4>“{@html $inceptionLabels[$currentClassAtlasCompareIndex]}” filtered by overall magnitude</h4>
+    <h4>“{@html $inceptionLabels[$currentClassAtlasCompareIndex]}” <br>filtered by overall magnitude</h4>
     <div class="atlas">
       <ClassAtlas classFilter={$currentClassAtlasCompareIndex} filterType="top" />
     </div>

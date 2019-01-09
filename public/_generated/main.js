@@ -2783,7 +2783,7 @@
 				component.root._beforecreate.push(div_resize_handler);
 				setStyle(div, "width", ctx.finalWidth);
 				setStyle(div, "height", ctx.finalHeight);
-				div.className = "svelte-15vhi6w svelte-ref-container";
+				div.className = "svelte-16j6f9b svelte-ref-container";
 				addLoc(div, file$4, 25, 0, 1198);
 			},
 
@@ -3192,7 +3192,7 @@
 				if_block_anchor = createComment();
 				placeholder._fragment.c();
 				radar._fragment.c();
-				div.className = div_class_value = "" + (ctx.background ? 'background' : '') + " " + (ctx.border ? 'border' : '') + " svelte-lat22x";
+				div.className = div_class_value = "" + (ctx.background ? 'background' : '') + " " + (ctx.border ? 'border' : '') + " svelte-1q1tvil" + " svelte-ref-root";
 				addLoc(div, file$6, 0, 0, 0);
 			},
 
@@ -3202,6 +3202,7 @@
 				append(placeholder._slotted.default, if_block_anchor);
 				placeholder._mount(radar._slotted.default, null);
 				radar._mount(div, null);
+				component.refs.root = div;
 			},
 
 			p: function update(changed, _ctx) {
@@ -3227,7 +3228,7 @@
 				radar._set(radar_changes);
 				radar_updating = {};
 
-				if ((changed.background || changed.border) && div_class_value !== (div_class_value = "" + (ctx.background ? 'background' : '') + " " + (ctx.border ? 'border' : '') + " svelte-lat22x")) {
+				if ((changed.background || changed.border) && div_class_value !== (div_class_value = "" + (ctx.background ? 'background' : '') + " " + (ctx.border ? 'border' : '') + " svelte-1q1tvil" + " svelte-ref-root")) {
 					div.className = div_class_value;
 				}
 			},
@@ -3240,6 +3241,7 @@
 				if_block.d();
 				placeholder.destroy();
 				radar.destroy();
+				if (component.refs.root === div) component.refs.root = null;
 			}
 		};
 	}
@@ -3278,8 +3280,8 @@
 				img = createElement("img");
 				img.src = ctx.src;
 				img.alt = ctx.alt;
-				img.className = "svelte-lat22x svelte-ref-image";
-				addLoc(img, file$6, 4, 8, 151);
+				img.className = "svelte-1q1tvil svelte-ref-image";
+				addLoc(img, file$6, 4, 8, 160);
 			},
 
 			m: function mount(target, anchor) {
@@ -12108,7 +12110,7 @@
 				lazyimage1._fragment.c();
 				text3 = createText("\n    ");
 				div1 = createElement("div");
-				div1.textContent = "Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only show us one-dimensional, orthogonal probes of the high-dimensional activation space.";
+				div1.textContent = "Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only shows us one-dimensional, orthogonal probes of the high-dimensional activation space.";
 				text5 = createText("\n  ");
 				div5 = createElement("div");
 				h41 = createElement("h4");
@@ -12120,7 +12122,7 @@
 				lazyimage3._fragment.c();
 				text9 = createText("\n    ");
 				div4 = createElement("div");
-				div4.textContent = "Studying pairwise interactions surface some interaction effects, but they only show us two-dimensional slices of a space that has hundreds of dimensions and many of the combinations are not realistic.";
+				div4.textContent = "Pairwise interactions reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions and many of the combinations are not realistic.";
 				text11 = createText("\n  ");
 				div8 = createElement("div");
 				h42 = createElement("h4");
@@ -12132,7 +12134,7 @@
 				lazyimage5._fragment.c();
 				text15 = createText("\n    ");
 				div7 = createElement("div");
-				div7.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given image example.";
+				div7.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given example image.";
 				text17 = createText("\n  ");
 				div11 = createElement("div");
 				h43 = createElement("h4");
@@ -12153,26 +12155,26 @@
 				addLoc(div1, file$n, 10, 4, 269);
 				addLoc(div2, file$n, 1, 2, 17);
 				h41.className = "svelte-ruuveb";
-				addLoc(h41, file$n, 13, 4, 526);
+				addLoc(h41, file$n, 13, 4, 527);
 				div3.className = "diagram svelte-ruuveb";
-				addLoc(div3, file$n, 18, 4, 652);
+				addLoc(div3, file$n, 18, 4, 653);
 				div4.className = "figcaption";
-				addLoc(div4, file$n, 21, 4, 773);
-				addLoc(div5, file$n, 12, 2, 516);
+				addLoc(div4, file$n, 21, 4, 774);
+				addLoc(div5, file$n, 12, 2, 517);
 				h42.className = "svelte-ruuveb";
-				addLoc(h42, file$n, 24, 4, 1025);
+				addLoc(h42, file$n, 24, 4, 1008);
 				div6.className = "diagram svelte-ruuveb";
-				addLoc(div6, file$n, 29, 4, 1147);
+				addLoc(div6, file$n, 29, 4, 1130);
 				div7.className = "figcaption";
-				addLoc(div7, file$n, 32, 4, 1268);
-				addLoc(div8, file$n, 23, 2, 1015);
+				addLoc(div7, file$n, 32, 4, 1251);
+				addLoc(div8, file$n, 23, 2, 998);
 				h43.className = "svelte-ruuveb";
-				addLoc(h43, file$n, 35, 4, 1507);
+				addLoc(h43, file$n, 35, 4, 1490);
 				div9.className = "diagram svelte-ruuveb";
-				addLoc(div9, file$n, 40, 4, 1625);
+				addLoc(div9, file$n, 40, 4, 1608);
 				div10.className = "figcaption";
-				addLoc(div10, file$n, 43, 4, 1746);
-				addLoc(div11, file$n, 34, 2, 1497);
+				addLoc(div10, file$n, 43, 4, 1729);
+				addLoc(div11, file$n, 34, 2, 1480);
 				div12.className = "svelte-ruuveb svelte-ref-root";
 				addLoc(div12, file$n, 0, 0, 0);
 			},
@@ -13020,7 +13022,7 @@
 	}
 
 	function create_main_fragment$t(component, ctx) {
-		var div8, div2, h40, text0, raw0_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], raw0_before, raw0_after, text1, text2, div0, text3, div1, text5, div5, h41, text6, raw1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], raw1_before, raw1_after, text7, text8, div3, text9, div4, text11, div7, div6;
+		var div8, div2, h40, text0, raw0_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], raw0_before, raw0_after, text1, br0, text2, text3, div0, text4, div1, text6, div5, h41, text7, raw1_value = ctx.$inceptionLabels[ctx.$currentClassAtlasCompareIndex], raw1_before, raw1_after, text8, br1, text9, text10, div3, text11, div4, text13, div7, div6;
 
 		var classatlas0_initial_data = {
 		 	classFilter: ctx.$currentClassAtlasCompareIndex,
@@ -13058,51 +13060,57 @@
 				text0 = createText("“");
 				raw0_before = createElement('noscript');
 				raw0_after = createElement('noscript');
-				text1 = createText("” filtered by top rank");
-				text2 = createText("\n    ");
+				text1 = createText("” ");
+				br0 = createElement("br");
+				text2 = createText("filtered by top rank");
+				text3 = createText("\n    ");
 				div0 = createElement("div");
 				classatlas0._fragment.c();
-				text3 = createText("\n    ");
+				text4 = createText("\n    ");
 				div1 = createElement("div");
 				div1.textContent = "We pluck only those activations whose top attribution is toward the class in question. The results are often much more focused and isolated, exclusive to the class. Some are low magnitude, like backgrounds, and we miss correlations or concepts that are shared among many classes.";
-				text5 = createText("\n  ");
+				text6 = createText("\n  ");
 				div5 = createElement("div");
 				h41 = createElement("h4");
-				text6 = createText("“");
+				text7 = createText("“");
 				raw1_before = createElement('noscript');
 				raw1_after = createElement('noscript');
-				text7 = createText("” filtered by overall magnitude");
-				text8 = createText("\n    ");
+				text8 = createText("” ");
+				br1 = createElement("br");
+				text9 = createText("filtered by overall magnitude");
+				text10 = createText("\n    ");
 				div3 = createElement("div");
 				classatlas1._fragment.c();
-				text9 = createText("\n    ");
+				text11 = createText("\n    ");
 				div4 = createElement("div");
 				div4.textContent = "Here we sort all the activations by the magnitude toward the class in question (independent of other classes) and take the top 2,000 activations. We see more correlated activations that could, on their own, contribute to another classification. Some of them are spurious, however.";
-				text11 = createText("\n  ");
+				text13 = createText("\n  ");
 				div7 = createElement("div");
 				div6 = createElement("div");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
+				addLoc(br0, file$s, 5, 67, 169);
 				h40.className = "svelte-1kmawds";
 				addLoc(h40, file$s, 5, 4, 106);
 				div0.className = "atlas";
-				addLoc(div0, file$s, 6, 4, 199);
+				addLoc(div0, file$s, 6, 4, 203);
 				div1.className = "figcaption svelte-1kmawds";
-				addLoc(div1, file$s, 9, 4, 320);
+				addLoc(div1, file$s, 9, 4, 324);
 				addLoc(div2, file$s, 4, 2, 96);
+				addLoc(br1, file$s, 12, 67, 719);
 				h41.className = "svelte-1kmawds";
-				addLoc(h41, file$s, 12, 4, 652);
+				addLoc(h41, file$s, 12, 4, 656);
 				div3.className = "atlas";
-				addLoc(div3, file$s, 13, 4, 754);
+				addLoc(div3, file$s, 13, 4, 762);
 				div4.className = "figcaption svelte-1kmawds";
-				addLoc(div4, file$s, 16, 4, 872);
-				addLoc(div5, file$s, 11, 2, 642);
+				addLoc(div4, file$s, 16, 4, 880);
+				addLoc(div5, file$s, 11, 2, 646);
 				div6.className = "chooser svelte-1kmawds";
-				addLoc(div6, file$s, 19, 4, 1231);
+				addLoc(div6, file$s, 19, 4, 1239);
 				div7.className = "chooser-container svelte-1kmawds";
-				addLoc(div7, file$s, 18, 2, 1195);
+				addLoc(div7, file$s, 18, 2, 1203);
 				setStyle(div8, "display", "grid");
 				setStyle(div8, "grid-column-gap", "20px");
 				setStyle(div8, "grid-template-columns", "1fr 1fr 200px");
@@ -13118,25 +13126,29 @@
 				raw0_before.insertAdjacentHTML("afterend", raw0_value);
 				append(h40, raw0_after);
 				append(h40, text1);
-				append(div2, text2);
+				append(h40, br0);
+				append(h40, text2);
+				append(div2, text3);
 				append(div2, div0);
 				classatlas0._mount(div0, null);
-				append(div2, text3);
+				append(div2, text4);
 				append(div2, div1);
-				append(div8, text5);
+				append(div8, text6);
 				append(div8, div5);
 				append(div5, h41);
-				append(h41, text6);
+				append(h41, text7);
 				append(h41, raw1_before);
 				raw1_before.insertAdjacentHTML("afterend", raw1_value);
 				append(h41, raw1_after);
-				append(h41, text7);
-				append(div5, text8);
+				append(h41, text8);
+				append(h41, br1);
+				append(h41, text9);
+				append(div5, text10);
 				append(div5, div3);
 				classatlas1._mount(div3, null);
-				append(div5, text9);
+				append(div5, text11);
 				append(div5, div4);
-				append(div8, text11);
+				append(div8, text13);
 				append(div8, div7);
 				append(div7, div6);
 
@@ -13222,9 +13234,9 @@
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
 				input.className = "svelte-1kmawds";
-				addLoc(input, file$s, 22, 10, 1382);
+				addLoc(input, file$s, 22, 10, 1390);
 				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1kmawds";
-				addLoc(label, file$s, 21, 8, 1299);
+				addLoc(label, file$s, 21, 8, 1307);
 			},
 
 			m: function mount(target, anchor) {
@@ -17738,15 +17750,15 @@
 				text4 = createText("\n      ");
 				navigation2._fragment.c();
 				button2._fragment.c();
-				div0.className = "detail svelte-akxh2o";
+				div0.className = "detail svelte-5gahm5";
 				addLoc(div0, file$C, 3, 2, 83);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-akxh2o";
+				img.className = "svelte-5gahm5";
 				addLoc(img, file$C, 21, 6, 435);
-				div1.className = "atlas svelte-akxh2o";
+				div1.className = "atlas svelte-5gahm5";
 				addLoc(div1, file$C, 20, 4, 409);
-				div2.className = "controls svelte-akxh2o";
+				div2.className = "controls svelte-5gahm5";
 				addLoc(div2, file$C, 27, 4, 654);
 				addLoc(div3, file$C, 19, 2, 399);
 				setStyle(div4, "display", "grid");
