@@ -4,13 +4,9 @@
 
 spread operator in object literals
 
-format numbers in toolip
-
 add hover state for notebooklink
 
-detal.html and link to it somewhere
-
-restore "no pan/zoom" options on atlas
+app.html and link to it somewhere
 
 cache assets
 
@@ -25,6 +21,8 @@ turn off tooltip on scroll
 smooth zoom between gridsizes
 
 ## Done
+restore "no pan/zoom" options on atlas
+format numbers in toolip
 add "reset" to layer tour (and possible zoom buttons)
 add 3d slides for intro
 no label shadow (or labels) when zooming or panning.
