@@ -5,8 +5,10 @@
       src="assets/images/overview-neuron.jpg"
       border={false}
     />
-    <img src="assets/images/manifold-1.jpg" >
-    <div class="figcaption">Visualizing individual neurons make hidden layers somewhate meaningful, but misses interactions between neurons.</div>
+    <div class="diagram">
+      <LazyImage src="assets/images/manifold-1.jpg" alt="diagram" border={false} />
+    </div>
+    <div class="figcaption">Visualizing individual neurons make hidden layers somewhate meaningful, but misses interactions between neurons and only shows us one-dimensional probes of the high-dimensional activation space.</div>
   </div>
   <div>
     <h4>Pairwise Interactions</h4>
@@ -14,8 +16,10 @@
       src="assets/images/overview-pairwise.jpg"
       border={false}
     />
-    <img src="assets/images/manifold-2.jpg" >
-    <div class="figcaption">Studying pairwise interaction surfaces some interaction effects, but doesn't show interactions between many and the space of possible pairs is huge.</div>
+    <div class="diagram">
+      <LazyImage src="assets/images/manifold-2.jpg" alt="diagram" border={false} />
+    </div>
+    <div class="figcaption">Studying pairwise interaction surfaces some interaction effects, but only shows us two-dimensional slices through the high-dimensional activation space.</div>
   </div>
   <div>
     <h4>Spatial Activations</h4>
@@ -23,8 +27,10 @@
       src="assets/images/activation-grid.png"
       border={false}
     />
-    <img src="assets/images/manifold-3.jpg" >
-    <div class="figcaption">Spatial activations show important combinations of many neurons, but are focused on a single example.</div>
+    <div class="diagram">
+      <LazyImage src="assets/images/manifold-3.jpg" alt="diagram" border={false} />
+    </div>
+    <div class="figcaption">Spatial activations show us samples of the sub-manifold of likely activations (which are important combinations of many neurons), but they are limited to those that occur in a single example.</div>
   </div>
   <div>
     <h4>Activation Atlas</h4>
@@ -32,7 +38,9 @@
       src="assets/images/overview-atlas.jpg"
       border={false}
     />
-    <img src="assets/images/manifold-4.jpg" >
+    <div class="diagram">
+      <LazyImage src="assets/images/manifold-4.jpg" alt="diagram" border={false} />
+    </div>
     <div class="figcaption">Activation atlases show important combinations of neurons and give us a bigger picture overview.</div>
   </div>
 </div>
@@ -56,10 +64,8 @@
     padding-bottom: 8px;
     margin-top: 0;
   }
-  .figcaption {
-    /* margin-top: 16px; */
-  }
-  img {
+  .diagram {
+    position: relative;
     padding: 20px;
     box-sizing: border-box;
   }

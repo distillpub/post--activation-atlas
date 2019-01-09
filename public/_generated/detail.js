@@ -9868,7 +9868,7 @@
 		});
 
 		button0.on("click", function(event) {
-			component.refs.atlas.home(2000);
+			component.refs.atlas.home(4000);
 		});
 
 		var navigation1_initial_data = { name: "add", color: "white" };

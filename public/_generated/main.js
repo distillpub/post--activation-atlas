@@ -11090,7 +11090,7 @@
 		});
 
 		button0.on("click", function(event) {
-			component.refs.atlas.home(2000);
+			component.refs.atlas.home(4000);
 		});
 
 		var navigation1_initial_data = { name: "add", color: "white" };
@@ -11905,7 +11905,7 @@
 	const file$n = "src/diagrams/Overview.html";
 
 	function create_main_fragment$o(component, ctx) {
-		var div8, div1, h40, text1, text2, img0, text3, div0, text5, div3, h41, text7, text8, img1, text9, div2, text11, div5, h42, text13, text14, img2, text15, div4, text17, div7, h43, text19, text20, img3, text21, div6;
+		var div12, div2, h40, text1, text2, div0, text3, div1, text5, div5, h41, text7, text8, div3, text9, div4, text11, div8, h42, text13, text14, div6, text15, div7, text17, div11, h43, text19, text20, div9, text21, div10;
 
 		var lazyimage0_initial_data = {
 		 	src: "assets/images/overview-neuron.jpg",
@@ -11918,7 +11918,8 @@
 		});
 
 		var lazyimage1_initial_data = {
-		 	src: "assets/images/overview-pairwise.jpg",
+		 	src: "assets/images/manifold-1.jpg",
+		 	alt: "diagram",
 		 	border: false
 		 };
 		var lazyimage1 = new LazyImage({
@@ -11928,7 +11929,7 @@
 		});
 
 		var lazyimage2_initial_data = {
-		 	src: "assets/images/activation-grid.png",
+		 	src: "assets/images/overview-pairwise.jpg",
 		 	border: false
 		 };
 		var lazyimage2 = new LazyImage({
@@ -11938,7 +11939,8 @@
 		});
 
 		var lazyimage3_initial_data = {
-		 	src: "assets/images/overview-atlas.jpg",
+		 	src: "assets/images/manifold-2.jpg",
+		 	alt: "diagram",
 		 	border: false
 		 };
 		var lazyimage3 = new LazyImage({
@@ -11947,140 +11949,190 @@
 			data: lazyimage3_initial_data
 		});
 
+		var lazyimage4_initial_data = {
+		 	src: "assets/images/activation-grid.png",
+		 	border: false
+		 };
+		var lazyimage4 = new LazyImage({
+			root: component.root,
+			store: component.store,
+			data: lazyimage4_initial_data
+		});
+
+		var lazyimage5_initial_data = {
+		 	src: "assets/images/manifold-3.jpg",
+		 	alt: "diagram",
+		 	border: false
+		 };
+		var lazyimage5 = new LazyImage({
+			root: component.root,
+			store: component.store,
+			data: lazyimage5_initial_data
+		});
+
+		var lazyimage6_initial_data = {
+		 	src: "assets/images/overview-atlas.jpg",
+		 	border: false
+		 };
+		var lazyimage6 = new LazyImage({
+			root: component.root,
+			store: component.store,
+			data: lazyimage6_initial_data
+		});
+
+		var lazyimage7_initial_data = {
+		 	src: "assets/images/manifold-4.jpg",
+		 	alt: "diagram",
+		 	border: false
+		 };
+		var lazyimage7 = new LazyImage({
+			root: component.root,
+			store: component.store,
+			data: lazyimage7_initial_data
+		});
+
 		return {
 			c: function create() {
-				div8 = createElement("div");
-				div1 = createElement("div");
+				div12 = createElement("div");
+				div2 = createElement("div");
 				h40 = createElement("h4");
 				h40.textContent = "Individual Neurons";
 				text1 = createText("\n    ");
 				lazyimage0._fragment.c();
 				text2 = createText("\n    ");
-				img0 = createElement("img");
-				text3 = createText("\n    ");
 				div0 = createElement("div");
-				div0.textContent = "Visualizing individual neurons make hidden layers somewhate meaningful, but misses interactions between neurons.";
+				lazyimage1._fragment.c();
+				text3 = createText("\n    ");
+				div1 = createElement("div");
+				div1.textContent = "Visualizing individual neurons make hidden layers somewhate meaningful, but misses interactions between neurons and only shows us one-dimensional probes of the high-dimensional activation space.";
 				text5 = createText("\n  ");
-				div3 = createElement("div");
+				div5 = createElement("div");
 				h41 = createElement("h4");
 				h41.textContent = "Pairwise Interactions";
 				text7 = createText("\n    ");
-				lazyimage1._fragment.c();
+				lazyimage2._fragment.c();
 				text8 = createText("\n    ");
-				img1 = createElement("img");
+				div3 = createElement("div");
+				lazyimage3._fragment.c();
 				text9 = createText("\n    ");
-				div2 = createElement("div");
-				div2.textContent = "Studying pairwise interaction surfaces some interaction effects, but doesn't show interactions between many and the space of possible pairs is huge.";
+				div4 = createElement("div");
+				div4.textContent = "Studying pairwise interaction surfaces some interaction effects, but only shows us two-dimensional slices through the high-dimensional activation space.";
 				text11 = createText("\n  ");
-				div5 = createElement("div");
+				div8 = createElement("div");
 				h42 = createElement("h4");
 				h42.textContent = "Spatial Activations";
 				text13 = createText("\n    ");
-				lazyimage2._fragment.c();
+				lazyimage4._fragment.c();
 				text14 = createText("\n    ");
-				img2 = createElement("img");
+				div6 = createElement("div");
+				lazyimage5._fragment.c();
 				text15 = createText("\n    ");
-				div4 = createElement("div");
-				div4.textContent = "Spatial activations show important combinations of many neurons, but are focused on a single example.";
-				text17 = createText("\n  ");
 				div7 = createElement("div");
+				div7.textContent = "Spatial activations show us samples of the sub-manifold of likely activations (which are important combinations of many neurons), but they are limited to those that occur in a single example.";
+				text17 = createText("\n  ");
+				div11 = createElement("div");
 				h43 = createElement("h4");
 				h43.textContent = "Activation Atlas";
 				text19 = createText("\n    ");
-				lazyimage3._fragment.c();
+				lazyimage6._fragment.c();
 				text20 = createText("\n    ");
-				img3 = createElement("img");
+				div9 = createElement("div");
+				lazyimage7._fragment.c();
 				text21 = createText("\n    ");
-				div6 = createElement("div");
-				div6.textContent = "Activation atlases show important combinations of neurons and give us a bigger picture overview.";
-				h40.className = "svelte-he9p5d";
+				div10 = createElement("div");
+				div10.textContent = "Activation atlases show important combinations of neurons and give us a bigger picture overview.";
+				h40.className = "svelte-ruuveb";
 				addLoc(h40, file$n, 2, 4, 27);
-				img0.src = "assets/images/manifold-1.jpg";
-				img0.className = "svelte-he9p5d";
-				addLoc(img0, file$n, 7, 4, 148);
-				div0.className = "figcaption svelte-he9p5d";
-				addLoc(div0, file$n, 8, 4, 194);
-				addLoc(div1, file$n, 1, 2, 17);
-				h41.className = "svelte-he9p5d";
-				addLoc(h41, file$n, 11, 4, 358);
-				img1.src = "assets/images/manifold-2.jpg";
-				img1.className = "svelte-he9p5d";
-				addLoc(img1, file$n, 16, 4, 484);
-				div2.className = "figcaption svelte-he9p5d";
-				addLoc(div2, file$n, 17, 4, 530);
-				addLoc(div3, file$n, 10, 2, 348);
-				h42.className = "svelte-he9p5d";
-				addLoc(h42, file$n, 20, 4, 730);
-				img2.src = "assets/images/manifold-3.jpg";
-				img2.className = "svelte-he9p5d";
-				addLoc(img2, file$n, 25, 4, 852);
-				div4.className = "figcaption svelte-he9p5d";
-				addLoc(div4, file$n, 26, 4, 898);
-				addLoc(div5, file$n, 19, 2, 720);
-				h43.className = "svelte-he9p5d";
-				addLoc(h43, file$n, 29, 4, 1051);
-				img3.src = "assets/images/manifold-4.jpg";
-				img3.className = "svelte-he9p5d";
-				addLoc(img3, file$n, 34, 4, 1169);
-				div6.className = "figcaption svelte-he9p5d";
-				addLoc(div6, file$n, 35, 4, 1215);
-				addLoc(div7, file$n, 28, 2, 1041);
-				div8.className = "svelte-he9p5d svelte-ref-root";
-				addLoc(div8, file$n, 0, 0, 0);
+				div0.className = "diagram svelte-ruuveb";
+				addLoc(div0, file$n, 7, 4, 148);
+				div1.className = "figcaption";
+				addLoc(div1, file$n, 10, 4, 269);
+				addLoc(div2, file$n, 1, 2, 17);
+				h41.className = "svelte-ruuveb";
+				addLoc(h41, file$n, 13, 4, 515);
+				div3.className = "diagram svelte-ruuveb";
+				addLoc(div3, file$n, 18, 4, 641);
+				div4.className = "figcaption";
+				addLoc(div4, file$n, 21, 4, 762);
+				addLoc(div5, file$n, 12, 2, 505);
+				h42.className = "svelte-ruuveb";
+				addLoc(h42, file$n, 24, 4, 966);
+				div6.className = "diagram svelte-ruuveb";
+				addLoc(div6, file$n, 29, 4, 1088);
+				div7.className = "figcaption";
+				addLoc(div7, file$n, 32, 4, 1209);
+				addLoc(div8, file$n, 23, 2, 956);
+				h43.className = "svelte-ruuveb";
+				addLoc(h43, file$n, 35, 4, 1452);
+				div9.className = "diagram svelte-ruuveb";
+				addLoc(div9, file$n, 40, 4, 1570);
+				div10.className = "figcaption";
+				addLoc(div10, file$n, 43, 4, 1691);
+				addLoc(div11, file$n, 34, 2, 1442);
+				div12.className = "svelte-ruuveb svelte-ref-root";
+				addLoc(div12, file$n, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div8, anchor);
-				append(div8, div1);
-				append(div1, h40);
-				append(div1, text1);
-				lazyimage0._mount(div1, null);
-				append(div1, text2);
-				append(div1, img0);
-				append(div1, text3);
-				append(div1, div0);
-				append(div8, text5);
-				append(div8, div3);
-				append(div3, h41);
-				append(div3, text7);
-				lazyimage1._mount(div3, null);
-				append(div3, text8);
-				append(div3, img1);
-				append(div3, text9);
-				append(div3, div2);
-				append(div8, text11);
-				append(div8, div5);
-				append(div5, h42);
-				append(div5, text13);
+				insert(target, div12, anchor);
+				append(div12, div2);
+				append(div2, h40);
+				append(div2, text1);
+				lazyimage0._mount(div2, null);
+				append(div2, text2);
+				append(div2, div0);
+				lazyimage1._mount(div0, null);
+				append(div2, text3);
+				append(div2, div1);
+				append(div12, text5);
+				append(div12, div5);
+				append(div5, h41);
+				append(div5, text7);
 				lazyimage2._mount(div5, null);
-				append(div5, text14);
-				append(div5, img2);
-				append(div5, text15);
+				append(div5, text8);
+				append(div5, div3);
+				lazyimage3._mount(div3, null);
+				append(div5, text9);
 				append(div5, div4);
-				append(div8, text17);
+				append(div12, text11);
+				append(div12, div8);
+				append(div8, h42);
+				append(div8, text13);
+				lazyimage4._mount(div8, null);
+				append(div8, text14);
+				append(div8, div6);
+				lazyimage5._mount(div6, null);
+				append(div8, text15);
 				append(div8, div7);
-				append(div7, h43);
-				append(div7, text19);
-				lazyimage3._mount(div7, null);
-				append(div7, text20);
-				append(div7, img3);
-				append(div7, text21);
-				append(div7, div6);
-				component.refs.root = div8;
+				append(div12, text17);
+				append(div12, div11);
+				append(div11, h43);
+				append(div11, text19);
+				lazyimage6._mount(div11, null);
+				append(div11, text20);
+				append(div11, div9);
+				lazyimage7._mount(div9, null);
+				append(div11, text21);
+				append(div11, div10);
+				component.refs.root = div12;
 			},
 
 			p: noop,
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div8);
+					detachNode(div12);
 				}
 
 				lazyimage0.destroy();
 				lazyimage1.destroy();
 				lazyimage2.destroy();
 				lazyimage3.destroy();
-				if (component.refs.root === div8) component.refs.root = null;
+				lazyimage4.destroy();
+				lazyimage5.destroy();
+				lazyimage6.destroy();
+				lazyimage7.destroy();
+				if (component.refs.root === div12) component.refs.root = null;
 			}
 		};
 	}
