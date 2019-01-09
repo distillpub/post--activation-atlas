@@ -61,8 +61,8 @@ export default {
         [y0 / minSize, y1 / minSize],
       ]
     },
-    gcx: ({extent}) => (extent[0][0] + extent[1][0]) / 2,
-    gcy: ({extent}) => (extent[0][1] + extent[1][1]) / 2,
+    gcx: ({extent}) => (extent[0][0] + extent[0][1]) / 2,
+    gcy: ({extent}) => (extent[1][0] + extent[1][1]) / 2,
   },
   
   oncreate() {

@@ -200,11 +200,11 @@ const store = new MyStore({
       scale: 8
     },
     dogs: {
-      layerName: "mixed5b",
+      layerName: "mixed5a",
       gridSize: 3,
-      gcx: 0.678,
-      gcy: 0.931,
-      scale: 8
+      gcx: 0.589,
+      gcy: 0.946,
+      scale: 10
 
     },
     curves: {

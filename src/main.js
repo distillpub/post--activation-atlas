@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	// Components
 	// 
 
-	new LazyComponent({
+	const coverWrapper = new LazyComponent({
 		target: document.querySelector("#cover"),
 		store: store,
 		data: {
@@ -106,14 +106,32 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				showClassFilter: false,
 				layerName: "mixed4d",
 				showOptions: false,
-				homeX: 0.55,
-				homeY: 0.7,
+				homeX: 0.5,
+				homeY: 0.8,
 				homeScale: 4,
-				gridSize: -1,
+				gridSize: 2,
 				scrollWheel: false,
 			}
 		}
 	});
+
+	const coverPoiLinks = document.querySelectorAll("[data-cover-poi]");
+	for (const link of coverPoiLinks) {
+		const s = link.getAttribute("data-cover-poi");
+		const parts = s.split(",").map(p => +p);
+
+		link.addEventListener("click", e => {
+			e.preventDefault();
+			const component = coverWrapper.getComponent();
+			component.set({ layerName: "mixed4d" });
+			component.zoomTo(
+				parts[0],
+				parts[1],
+				parts[2],
+				4000
+			);
+		});
+	}
 
 	// const cover = document.querySelector("#cover");
 	// cover.addEventListener("ready", e => {
