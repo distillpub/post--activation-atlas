@@ -8,9 +8,11 @@ format numbers in toolip
 
 add hover state for notebooklink
 
-turn off tooltip on scroll
-
 detal.html and link to it somewhere
+
+restore "no pan/zoom" options on atlas
+
+cache assets
 
 ## Nice to haves
 
@@ -18,15 +20,14 @@ add "reset" to layer tour (and possible zoom buttons)
 
 grid size radio buttons smaller
 
-restore "no pan/zoom" options on atlas
+turn off tooltip on scroll
 
 .npy data files
-
-add 3d slides for intro
 
 smooth zoom between gridsizes
 
 ## Done
+add 3d slides for intro
 no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
 add poi tour to cover caption.
