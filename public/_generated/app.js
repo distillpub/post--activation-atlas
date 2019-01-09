@@ -8152,7 +8152,7 @@
 	    y: 0,
 	    msx: null,
 	    msy: null,
-	    enablePanning: true,
+	    disableBehaviors: false,
 	    scrollWheel: false,
 
 	  };
@@ -8160,9 +8160,11 @@
 	var methods$3 = {
 	  tween,
 	  zoomEventFilter: function() {
-	    console.log(event);
-	    const {scrollWheel} = this.get();
+	    const {scrollWheel, disableBehaviors} = this.get();
 	    // console.log(d3Event);
+	    if (disableBehaviors) {
+	      return false;
+	    }
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
@@ -8971,9 +8973,11 @@
 	    ;
 			d3zoom_updating.scrollWheel = true;
 		}
-		if (ctx.enableDragToPan !== void 0) {
-			d3zoom_initial_data.enablePanning = ctx.enableDragToPan;
-			d3zoom_updating.enablePanning = true;
+		if (ctx.disableBehaviors
+	     !== void 0) {
+			d3zoom_initial_data.disableBehaviors = ctx.disableBehaviors
+	    ;
+			d3zoom_updating.disableBehaviors = true;
 		}
 		if (ctx.gcx
 	     !== void 0) {
@@ -9022,8 +9026,8 @@
 					newState.scrollWheel = childState.scrollWheel;
 				}
 
-				if (!d3zoom_updating.enablePanning && changed.enablePanning) {
-					newState.enableDragToPan = childState.enablePanning;
+				if (!d3zoom_updating.disableBehaviors && changed.disableBehaviors) {
+					newState.disableBehaviors = childState.disableBehaviors;
 				}
 
 				if (!d3zoom_updating.gcx && changed.gcx) {
@@ -9039,7 +9043,7 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			d3zoom._bind({ scale: 1, translateX: 1, translateY: 1, mouseOver: 1, mouseGlobalPosition: 1, extent: 1, scrollWheel: 1, enablePanning: 1, gcx: 1, gcy: 1 }, d3zoom.get());
+			d3zoom._bind({ scale: 1, translateX: 1, translateY: 1, mouseOver: 1, mouseGlobalPosition: 1, extent: 1, scrollWheel: 1, disableBehaviors: 1, gcx: 1, gcy: 1 }, d3zoom.get());
 		});
 
 		component.refs.d3Zoom = d3zoom;
@@ -9065,11 +9069,11 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$e, 35, 4, 552);
+				addLoc(canvas0, file$e, 35, 4, 537);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$e, 39, 4, 678);
+				addLoc(canvas1, file$e, 39, 4, 663);
 				component.root._beforecreate.push(div_resize_handler);
 				div.className = "svelte-w9b5xg svelte-ref-root";
 				addLoc(div, file$e, 16, 0, 200);
@@ -9192,9 +9196,11 @@
 					d3zoom_updating.scrollWheel = ctx.scrollWheel
 	     !== void 0;
 				}
-				if (!d3zoom_updating.enablePanning && changed.enableDragToPan) {
-					d3zoom_changes.enablePanning = ctx.enableDragToPan;
-					d3zoom_updating.enablePanning = ctx.enableDragToPan !== void 0;
+				if (!d3zoom_updating.disableBehaviors && changed.disableBehaviors) {
+					d3zoom_changes.disableBehaviors = ctx.disableBehaviors
+	    ;
+					d3zoom_updating.disableBehaviors = ctx.disableBehaviors
+	     !== void 0;
 				}
 				if (!d3zoom_updating.gcx && changed.gcx) {
 					d3zoom_changes.gcx = ctx.gcx
@@ -9363,7 +9369,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$e, 44, 4, 834);
+				addLoc(div, file$e, 44, 4, 819);
 			},
 
 			m: function mount(target, anchor) {
@@ -9440,7 +9446,7 @@
 		if (!('mouseOver' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseOver'");
 		if (!('extent' in this._state)) console.warn("<Atlas> was created without expected data property 'extent'");
 		if (!('scrollWheel' in this._state)) console.warn("<Atlas> was created without expected data property 'scrollWheel'");
-		if (!('enableDragToPan' in this._state)) console.warn("<Atlas> was created without expected data property 'enableDragToPan'");
+		if (!('disableBehaviors' in this._state)) console.warn("<Atlas> was created without expected data property 'disableBehaviors'");
 		if (!('gcx' in this._state)) console.warn("<Atlas> was created without expected data property 'gcx'");
 		if (!('gcy' in this._state)) console.warn("<Atlas> was created without expected data property 'gcy'");
 		if (!('homeX' in this._state)) console.warn("<Atlas> was created without expected data property 'homeX'");
@@ -11208,4 +11214,4 @@
 	});
 
 }());
-//# sourceMappingURL=detail.js.map
+//# sourceMappingURL=app.js.map

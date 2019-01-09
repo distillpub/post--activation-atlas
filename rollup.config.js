@@ -38,9 +38,9 @@ export default [
 		]
 	},
 	{
-		input: "src/detail.js",
+		input: "src/app.js",
 		output: {
-			file: production ? 'public/_generated/detail.min.js' : 'public/_generated/detail.js',
+			file: production ? 'public/_generated/app.min.js' : 'public/_generated/app.js',
 			format: 'iife',
 			sourcemap: true,
 		},
@@ -50,7 +50,7 @@ export default [
 				dev: !production,
 				extensions: [".html", ".svelte", ".svg"],
 				css: css => {
-					css.write('public/_generated/detail.css');
+					css.write('public/_generated/app.css');
 				}
 			}),
 			resolve(),

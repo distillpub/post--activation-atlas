@@ -9470,7 +9470,6 @@
 	    selection: null, //the d3 selection of the root
 	    transform: null, // the d3 transform
 	    scaleExtent: [1, 48], //
-	    scrollWheel: false,
 	    homeScale: 1,
 	    homeX: 0.5,
 	    homeY: 0.5,
@@ -9482,13 +9481,19 @@
 	    y: 0,
 	    msx: null,
 	    msy: null,
+	    disableBehaviors: false,
+	    scrollWheel: false,
+
 	  };
 	}
 	var methods$5 = {
 	  tween,
 	  zoomEventFilter: function() {
-	    const {scrollWheel} = this.get();
+	    const {scrollWheel, disableBehaviors} = this.get();
 	    // console.log(d3Event);
+	    if (disableBehaviors) {
+	      return false;
+	    }
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
@@ -10190,6 +10195,12 @@
 	    ;
 			d3zoom_updating.scrollWheel = true;
 		}
+		if (ctx.disableBehaviors
+	     !== void 0) {
+			d3zoom_initial_data.disableBehaviors = ctx.disableBehaviors
+	    ;
+			d3zoom_updating.disableBehaviors = true;
+		}
 		if (ctx.gcx
 	     !== void 0) {
 			d3zoom_initial_data.gcx = ctx.gcx
@@ -10237,6 +10248,10 @@
 					newState.scrollWheel = childState.scrollWheel;
 				}
 
+				if (!d3zoom_updating.disableBehaviors && changed.disableBehaviors) {
+					newState.disableBehaviors = childState.disableBehaviors;
+				}
+
 				if (!d3zoom_updating.gcx && changed.gcx) {
 					newState.gcx = childState.gcx;
 				}
@@ -10250,7 +10265,7 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			d3zoom._bind({ scale: 1, translateX: 1, translateY: 1, mouseOver: 1, mouseGlobalPosition: 1, extent: 1, scrollWheel: 1, gcx: 1, gcy: 1 }, d3zoom.get());
+			d3zoom._bind({ scale: 1, translateX: 1, translateY: 1, mouseOver: 1, mouseGlobalPosition: 1, extent: 1, scrollWheel: 1, disableBehaviors: 1, gcx: 1, gcy: 1 }, d3zoom.get());
 		});
 
 		component.refs.d3Zoom = d3zoom;
@@ -10276,11 +10291,11 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$k, 34, 4, 511);
+				addLoc(canvas0, file$k, 35, 4, 537);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$k, 38, 4, 637);
+				addLoc(canvas1, file$k, 39, 4, 663);
 				component.root._beforecreate.push(div_resize_handler);
 				div.className = "svelte-w9b5xg svelte-ref-root";
 				addLoc(div, file$k, 16, 0, 200);
@@ -10401,6 +10416,12 @@
 					d3zoom_changes.scrollWheel = ctx.scrollWheel
 	    ;
 					d3zoom_updating.scrollWheel = ctx.scrollWheel
+	     !== void 0;
+				}
+				if (!d3zoom_updating.disableBehaviors && changed.disableBehaviors) {
+					d3zoom_changes.disableBehaviors = ctx.disableBehaviors
+	    ;
+					d3zoom_updating.disableBehaviors = ctx.disableBehaviors
 	     !== void 0;
 				}
 				if (!d3zoom_updating.gcx && changed.gcx) {
@@ -10558,7 +10579,7 @@
 		};
 	}
 
-	// (43:4) {#if showHoverIcon}
+	// (44:4) {#if showHoverIcon}
 	function create_if_block$5(component, ctx) {
 		var div;
 
@@ -10570,7 +10591,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$k, 43, 4, 793);
+				addLoc(div, file$k, 44, 4, 819);
 			},
 
 			m: function mount(target, anchor) {
@@ -10647,6 +10668,7 @@
 		if (!('mouseOver' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseOver'");
 		if (!('extent' in this._state)) console.warn("<Atlas> was created without expected data property 'extent'");
 		if (!('scrollWheel' in this._state)) console.warn("<Atlas> was created without expected data property 'scrollWheel'");
+		if (!('disableBehaviors' in this._state)) console.warn("<Atlas> was created without expected data property 'disableBehaviors'");
 		if (!('gcx' in this._state)) console.warn("<Atlas> was created without expected data property 'gcx'");
 		if (!('gcy' in this._state)) console.warn("<Atlas> was created without expected data property 'gcy'");
 		if (!('homeX' in this._state)) console.warn("<Atlas> was created without expected data property 'homeX'");
@@ -12046,7 +12068,7 @@
 				lazyimage3._fragment.c();
 				text9 = createText("\n    ");
 				div4 = createElement("div");
-				div4.textContent = "Studying pairwise interactions surface some interaction effects, but they only show us two-dimensional slices of a space that has hundreds of dimensions.";
+				div4.textContent = "Studying pairwise interactions surface some interaction effects, but they only show us two-dimensional slices of a space that has hundreds of dimensions and many of the combinations are not realistic.";
 				text11 = createText("\n  ");
 				div8 = createElement("div");
 				h42 = createElement("h4");
@@ -12058,7 +12080,7 @@
 				lazyimage5._fragment.c();
 				text15 = createText("\n    ");
 				div7 = createElement("div");
-				div7.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in a single image example.";
+				div7.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given image example.";
 				text17 = createText("\n  ");
 				div11 = createElement("div");
 				h43 = createElement("h4");
@@ -12086,19 +12108,19 @@
 				addLoc(div4, file$n, 21, 4, 773);
 				addLoc(div5, file$n, 12, 2, 516);
 				h42.className = "svelte-ruuveb";
-				addLoc(h42, file$n, 24, 4, 978);
+				addLoc(h42, file$n, 24, 4, 1025);
 				div6.className = "diagram svelte-ruuveb";
-				addLoc(div6, file$n, 29, 4, 1100);
+				addLoc(div6, file$n, 29, 4, 1147);
 				div7.className = "figcaption";
-				addLoc(div7, file$n, 32, 4, 1221);
-				addLoc(div8, file$n, 23, 2, 968);
+				addLoc(div7, file$n, 32, 4, 1268);
+				addLoc(div8, file$n, 23, 2, 1015);
 				h43.className = "svelte-ruuveb";
-				addLoc(h43, file$n, 35, 4, 1459);
+				addLoc(h43, file$n, 35, 4, 1507);
 				div9.className = "diagram svelte-ruuveb";
-				addLoc(div9, file$n, 40, 4, 1577);
+				addLoc(div9, file$n, 40, 4, 1625);
 				div10.className = "figcaption";
-				addLoc(div10, file$n, 43, 4, 1698);
-				addLoc(div11, file$n, 34, 2, 1449);
+				addLoc(div10, file$n, 43, 4, 1746);
+				addLoc(div11, file$n, 34, 2, 1497);
 				div12.className = "svelte-ruuveb svelte-ref-root";
 				addLoc(div12, file$n, 0, 0, 0);
 			},
@@ -17156,7 +17178,7 @@
 	const file$B = "src/diagrams/OneLayer.html";
 
 	function create_main_fragment$C(component, ctx) {
-		var div1, div0, label0, text1, label1, input0, text2, text3, label2, input1, text4, text5, label3, input2, text6, text7, label4, input3, text8, text9, div2, atlas_updating = {};
+		var div1, div0, label0, text1, label1, input0, text2, text3, label2, input1, text4, text5, label3, input2, text6, text7, label4, input3, text8, text9, label5, input4, text10, text11, div2, atlas_updating = {};
 
 		function input0_change_handler() {
 			component.set({ gridSize: input0.__value });
@@ -17174,12 +17196,15 @@
 			component.set({ gridSize: input3.__value });
 		}
 
+		function input4_change_handler() {
+			component.set({ showLabels: input4.checked });
+		}
+
 		var atlas_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
 		 	scaleCountFactor: "200",
 		 	iconCrop: ctx.iconCrop,
-		 	enableClickToZoom: false,
-		 	enableDragToPan: false
+		 	disableBehaviors: true
 		 };
 		if (ctx.gridSize  !== void 0) {
 			atlas_initial_data.gridSize = ctx.gridSize ;
@@ -17188,6 +17213,10 @@
 		if (ctx.viewWidth  !== void 0) {
 			atlas_initial_data.viewWidth = ctx.viewWidth ;
 			atlas_updating.viewWidth = true;
+		}
+		if (ctx.showLabels  !== void 0) {
+			atlas_initial_data.showLabels = ctx.showLabels ;
+			atlas_updating.showLabels = true;
 		}
 		var atlas = new Atlas({
 			root: component.root,
@@ -17202,13 +17231,17 @@
 				if (!atlas_updating.viewWidth && changed.viewWidth) {
 					newState.viewWidth = childState.viewWidth;
 				}
+
+				if (!atlas_updating.showLabels && changed.showLabels) {
+					newState.showLabels = childState.showLabels;
+				}
 				component._set(newState);
 				atlas_updating = {};
 			}
 		});
 
 		component.root._beforecreate.push(() => {
-			atlas._bind({ gridSize: 1, viewWidth: 1 }, atlas.get());
+			atlas._bind({ gridSize: 1, viewWidth: 1, showLabels: 1 }, atlas.get());
 		});
 
 		return {
@@ -17233,7 +17266,11 @@
 				label4 = createElement("label");
 				input3 = createElement("input");
 				text8 = createText(" 160x160");
-				text9 = createText("\n\n\n");
+				text9 = createText("\n\n    ");
+				label5 = createElement("label");
+				input4 = createElement("input");
+				text10 = createText(" attribution labels");
+				text11 = createText("\n\n\n");
 				div2 = createElement("div");
 				atlas._fragment.c();
 				addLoc(label0, file$B, 2, 4, 76);
@@ -17269,6 +17306,12 @@
 				input3.className = "svelte-1h549gh";
 				addLoc(input3, file$B, 6, 11, 336);
 				addLoc(label4, file$B, 6, 4, 329);
+				addListener(input4, "change", input4_change_handler);
+				setAttribute(input4, "type", "checkbox");
+				input4.className = "svelte-1h549gh";
+				addLoc(input4, file$B, 8, 33, 435);
+				setStyle(label5, "float", "right");
+				addLoc(label5, file$B, 8, 4, 406);
 				setStyle(div0, "grid-column", "text");
 				div0.className = "svelte-1h549gh svelte-ref-controls";
 				addLoc(div0, file$B, 1, 2, 26);
@@ -17276,7 +17319,7 @@
 				addLoc(div1, file$B, 0, 0, 0);
 				div2.className = "atlas svelte-1h549gh";
 				setStyle(div2, "grid-column", "screen");
-				addLoc(div2, file$B, 12, 0, 420);
+				addLoc(div2, file$B, 13, 0, 526);
 			},
 
 			m: function mount(target, anchor) {
@@ -17311,8 +17354,15 @@
 				input3.checked = input3.__value === ctx.gridSize;
 
 				append(label4, text8);
+				append(div0, text9);
+				append(div0, label5);
+				append(label5, input4);
+
+				input4.checked = ctx.showLabels;
+
+				append(label5, text10);
 				component.refs.controls = div0;
-				insert(target, text9, anchor);
+				insert(target, text11, anchor);
 				insert(target, div2, anchor);
 				atlas._mount(div2, null);
 			},
@@ -17323,6 +17373,7 @@
 				if (changed.gridSize) input1.checked = input1.__value === ctx.gridSize;
 				if (changed.gridSize) input2.checked = input2.__value === ctx.gridSize;
 				if (changed.gridSize) input3.checked = input3.__value === ctx.gridSize;
+				if (changed.showLabels) input4.checked = ctx.showLabels;
 
 				var atlas_changes = {};
 				if (changed.layerName) atlas_changes.id = "inceptionv1_" + ctx.layerName;
@@ -17334,6 +17385,10 @@
 				if (!atlas_updating.viewWidth && changed.viewWidth) {
 					atlas_changes.viewWidth = ctx.viewWidth ;
 					atlas_updating.viewWidth = ctx.viewWidth  !== void 0;
+				}
+				if (!atlas_updating.showLabels && changed.showLabels) {
+					atlas_changes.showLabels = ctx.showLabels ;
+					atlas_updating.showLabels = ctx.showLabels  !== void 0;
 				}
 				atlas._set(atlas_changes);
 				atlas_updating = {};
@@ -17352,9 +17407,10 @@
 				removeListener(input2, "change", input2_change_handler);
 				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input3), 1);
 				removeListener(input3, "change", input3_change_handler);
+				removeListener(input4, "change", input4_change_handler);
 				if (component.refs.controls === div0) component.refs.controls = null;
 				if (detach) {
-					detachNode(text9);
+					detachNode(text11);
 					detachNode(div2);
 				}
 
@@ -17373,6 +17429,7 @@
 		this.refs = {};
 		this._state = assign(data$r(), options.data);
 		if (!('gridSize' in this._state)) console.warn("<OneLayer> was created without expected data property 'gridSize'");
+		if (!('showLabels' in this._state)) console.warn("<OneLayer> was created without expected data property 'showLabels'");
 		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
 		if (!('viewWidth' in this._state)) console.warn("<OneLayer> was created without expected data property 'viewWidth'");
 		if (!('iconCrop' in this._state)) console.warn("<OneLayer> was created without expected data property 'iconCrop'");

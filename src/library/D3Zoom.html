@@ -24,7 +24,6 @@ export default {
       selection: null, //the d3 selection of the root
       transform: null, // the d3 transform
       scaleExtent: [1, 48], //
-      scrollWheel: false,
       homeScale: 1,
       homeX: 0.5,
       homeY: 0.5,
@@ -36,6 +35,9 @@ export default {
       y: 0,
       msx: null,
       msy: null,
+      disableBehaviors: false,
+      scrollWheel: false,
+
     };
   },
   computed: {
@@ -113,8 +115,11 @@ export default {
   methods: {
     tween,
     zoomEventFilter: function() {
-      const {scrollWheel} = this.get();
+      const {scrollWheel, disableBehaviors} = this.get();
       // console.log(d3Event);
+      if (disableBehaviors) {
+        return false;
+      }
       // If we want to suppress scroll wheel events...
       if (!scrollWheel) {
         // ... return false for scroll wheel events + button = 1 events

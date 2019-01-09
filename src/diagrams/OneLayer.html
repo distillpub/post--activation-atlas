@@ -6,12 +6,13 @@
     <label><input type=radio bind:group=gridSize value={2}> 80x80</label>
     <label><input type=radio bind:group=gridSize value={3}> 160x160</label>
 
+    <label style="float: right;"><input type=checkbox bind:checked=showLabels> attribution labels</label>
   </div>
 </div>
 
 
 <div class="atlas" style="grid-column: screen;">
-  <Atlas id="inceptionv1_{layerName}" bind:gridSize bind:viewWidth scaleCountFactor=200 {iconCrop} enableClickToZoom={false} enableDragToPan={false}/>
+  <Atlas id="inceptionv1_{layerName}" bind:gridSize bind:viewWidth bind:showLabels scaleCountFactor=200 {iconCrop} disableBehaviors={true}/>
 </div>
 
 <script>
