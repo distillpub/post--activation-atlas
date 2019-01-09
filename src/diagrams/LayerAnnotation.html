@@ -3,6 +3,7 @@
 <div style="display: grid; grid-gap: 20px; grid-template-columns: 1fr 120px;">
   <div class="detail">
     <Atlas 
+      ref:atlas
       id="inceptionv1_{layerName}" 
       bind:gridSize
       bind:homeX 
@@ -16,11 +17,16 @@
       backgroundColor="#dfdfdf"
     />
   </div>
-  <div class="atlas">
-    <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
-    <AtlasReticle
-      bind:extent
-    />
+  <div>
+    <div class="atlas">
+      <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
+      <AtlasReticle
+        bind:extent
+      />
+    </div>
+    <button on:click="refs.atlas.scaleBy(2)">+</button>
+    <button on:click="refs.atlas.scaleBy(0.5)">-</button>
+    <button on:click="refs.atlas.home()">home</button>
   </div>
 </div>
 <script>
@@ -53,5 +59,18 @@ export default {
     display: block;
     width: 100%;
     opacity: 0.4;
+  }
+  button {
+    border: none;
+    text-transform: uppercase;
+    font-size: 11px;
+    display: inline-block;
+    padding: 6px 10px;
+    text-align: left;
+    color: #aaa;
+    outline: none;
+    background: rgb(245, 245, 245);
+    border-radius: 4px;
+    margin-top: 16px;
   }
 </style>

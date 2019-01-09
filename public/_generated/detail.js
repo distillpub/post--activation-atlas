@@ -2514,7 +2514,7 @@
 				div = createElement("div");
 				if (if_block) if_block.c();
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
-				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z");
+				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
 				addLoc(path, file$5, 5, 4, 158);
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
@@ -2522,11 +2522,11 @@
 				addLoc(svg, file$5, 4, 2, 106);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp";
 				setStyle(div, "border-color", ctx.color);
-				setStyle(div, "top", "" + ctx.top + "px");
-				setStyle(div, "left", "" + ctx.left + "px");
-				setStyle(div, "width", "" + (ctx.right-ctx.left) + "px");
-				setStyle(div, "height", "" + (ctx.bottom-ctx.top) + "px");
-				addLoc(div, file$5, 10, 4, 381);
+				setStyle(div, "top", "" + (ctx.top - 1) + "px");
+				setStyle(div, "left", "" + (ctx.left - 1) + "px");
+				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
+				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
+				addLoc(div, file$5, 10, 4, 380);
 			},
 
 			m: function mount(target, anchor) {
@@ -2542,7 +2542,7 @@
 					setAttribute(path, "class", path_class_value);
 				}
 
-				if ((changed.clientWidth || changed.clientHeight || changed.left || changed.top || changed.bottom || changed.right) && path_d_value !== (path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z")) {
+				if ((changed.clientWidth || changed.clientHeight || changed.left || changed.top || changed.bottom || changed.right) && path_d_value !== (path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z")) {
 					setAttribute(path, "d", path_d_value);
 				}
 
@@ -2576,19 +2576,19 @@
 				}
 
 				if (changed.top) {
-					setStyle(div, "top", "" + ctx.top + "px");
+					setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				}
 
 				if (changed.left) {
-					setStyle(div, "left", "" + ctx.left + "px");
+					setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				}
 
 				if (changed.right || changed.left) {
-					setStyle(div, "width", "" + (ctx.right-ctx.left) + "px");
+					setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				}
 
 				if (changed.bottom || changed.top) {
-					setStyle(div, "height", "" + (ctx.bottom-ctx.top) + "px");
+					setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
 				}
 			},
 
@@ -2604,7 +2604,7 @@
 		};
 	}
 
-	// (23:4) {#if annotationValue}
+	// (21:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
 		var div1, div0, p, text;
 
@@ -2615,13 +2615,13 @@
 				p = createElement("p");
 				text = createText(ctx.annotationValue);
 				p.className = "annotation svelte-xo8icp";
-				addLoc(p, file$5, 25, 10, 775);
+				addLoc(p, file$5, 23, 10, 792);
 				div0.className = "annotationTab svelte-xo8icp";
 				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$5, 24, 8, 709);
+				addLoc(div0, file$5, 22, 8, 726);
 				div1.className = "annotationTabParent svelte-xo8icp";
 				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$5, 23, 6, 634);
+				addLoc(div1, file$5, 21, 6, 651);
 			},
 
 			m: function mount(target, anchor) {

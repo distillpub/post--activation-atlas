@@ -3950,7 +3950,7 @@
 				div = createElement("div");
 				if (if_block) if_block.c();
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
-				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z");
+				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
 				addLoc(path, file$d, 5, 4, 158);
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
@@ -3958,11 +3958,11 @@
 				addLoc(svg, file$d, 4, 2, 106);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp";
 				setStyle(div, "border-color", ctx.color);
-				setStyle(div, "top", "" + ctx.top + "px");
-				setStyle(div, "left", "" + ctx.left + "px");
-				setStyle(div, "width", "" + (ctx.right-ctx.left) + "px");
-				setStyle(div, "height", "" + (ctx.bottom-ctx.top) + "px");
-				addLoc(div, file$d, 10, 4, 381);
+				setStyle(div, "top", "" + (ctx.top - 1) + "px");
+				setStyle(div, "left", "" + (ctx.left - 1) + "px");
+				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
+				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
+				addLoc(div, file$d, 10, 4, 380);
 			},
 
 			m: function mount(target, anchor) {
@@ -3978,7 +3978,7 @@
 					setAttribute(path, "class", path_class_value);
 				}
 
-				if ((changed.clientWidth || changed.clientHeight || changed.left || changed.top || changed.bottom || changed.right) && path_d_value !== (path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z")) {
+				if ((changed.clientWidth || changed.clientHeight || changed.left || changed.top || changed.bottom || changed.right) && path_d_value !== (path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z")) {
 					setAttribute(path, "d", path_d_value);
 				}
 
@@ -4012,19 +4012,19 @@
 				}
 
 				if (changed.top) {
-					setStyle(div, "top", "" + ctx.top + "px");
+					setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				}
 
 				if (changed.left) {
-					setStyle(div, "left", "" + ctx.left + "px");
+					setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				}
 
 				if (changed.right || changed.left) {
-					setStyle(div, "width", "" + (ctx.right-ctx.left) + "px");
+					setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				}
 
 				if (changed.bottom || changed.top) {
-					setStyle(div, "height", "" + (ctx.bottom-ctx.top) + "px");
+					setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
 				}
 			},
 
@@ -4040,7 +4040,7 @@
 		};
 	}
 
-	// (23:4) {#if annotationValue}
+	// (21:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
 		var div1, div0, p, text;
 
@@ -4051,13 +4051,13 @@
 				p = createElement("p");
 				text = createText(ctx.annotationValue);
 				p.className = "annotation svelte-xo8icp";
-				addLoc(p, file$d, 25, 10, 775);
+				addLoc(p, file$d, 23, 10, 792);
 				div0.className = "annotationTab svelte-xo8icp";
 				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$d, 24, 8, 709);
+				addLoc(div0, file$d, 22, 8, 726);
 				div1.className = "annotationTabParent svelte-xo8icp";
 				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$d, 23, 6, 634);
+				addLoc(div1, file$d, 21, 6, 651);
 			},
 
 			m: function mount(target, anchor) {
@@ -17383,7 +17383,7 @@
 	const file$C = "src/diagrams/LayerAnnotation.html";
 
 	function create_main_fragment$D(component, ctx) {
-		var div2, div0, atlas_updating = {}, text0, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {};
+		var div3, div0, atlas_updating = {}, text0, div2, div1, img, img_src_value, img_alt_value, text1, atlasreticle_updating = {}, text2, button0, text4, button1, text6, button2;
 
 		var atlas_initial_data = {
 		 	id: "inceptionv1_" + ctx.layerName,
@@ -17484,11 +17484,13 @@
 			atlas._bind({ gridSize: 1, homeX: 1, homeY: 1, homeScale: 1, aspectRatio: 1, scale: 1, extent: 1, showLabels: 1 }, atlas.get());
 		});
 
+		component.refs.atlas = atlas;
+
 		var atlasreticle_initial_data = {};
 		if (ctx.extent
-	     !== void 0) {
+	       !== void 0) {
 			atlasreticle_initial_data.extent = ctx.extent
-	    ;
+	      ;
 			atlasreticle_updating.extent = true;
 		}
 		var atlasreticle = new AtlasReticle({
@@ -17509,39 +17511,78 @@
 			atlasreticle._bind({ extent: 1 }, atlasreticle.get());
 		});
 
+		function click_handler(event) {
+			component.refs.atlas.scaleBy(2);
+		}
+
+		function click_handler_1(event) {
+			component.refs.atlas.scaleBy(0.5);
+		}
+
+		function click_handler_2(event) {
+			component.refs.atlas.home();
+		}
+
 		return {
 			c: function create() {
-				div2 = createElement("div");
+				div3 = createElement("div");
 				div0 = createElement("div");
 				atlas._fragment.c();
 				text0 = createText("\n  ");
+				div2 = createElement("div");
 				div1 = createElement("div");
 				img = createElement("img");
-				text1 = createText("\n    ");
+				text1 = createText("\n      ");
 				atlasreticle._fragment.c();
-				div0.className = "detail svelte-hxcxst";
+				text2 = createText("\n    ");
+				button0 = createElement("button");
+				button0.textContent = "+";
+				text4 = createText("\n    ");
+				button1 = createElement("button");
+				button1.textContent = "-";
+				text6 = createText("\n    ");
+				button2 = createElement("button");
+				button2.textContent = "home";
+				div0.className = "detail svelte-qfntqa";
 				addLoc(div0, file$C, 3, 2, 83);
 				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
 				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-hxcxst";
-				addLoc(img, file$C, 19, 4, 407);
-				div1.className = "atlas svelte-hxcxst";
-				addLoc(div1, file$C, 18, 2, 383);
-				setStyle(div2, "display", "grid");
-				setStyle(div2, "grid-gap", "20px");
-				setStyle(div2, "grid-template-columns", "1fr 120px");
-				addLoc(div2, file$C, 2, 0, 2);
+				img.className = "svelte-qfntqa";
+				addLoc(img, file$C, 21, 6, 435);
+				div1.className = "atlas svelte-qfntqa";
+				addLoc(div1, file$C, 20, 4, 409);
+				addListener(button0, "click", click_handler);
+				button0.className = "svelte-qfntqa";
+				addLoc(button0, file$C, 26, 4, 591);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "svelte-qfntqa";
+				addLoc(button1, file$C, 27, 4, 647);
+				addListener(button2, "click", click_handler_2);
+				button2.className = "svelte-qfntqa";
+				addLoc(button2, file$C, 28, 4, 705);
+				addLoc(div2, file$C, 19, 2, 399);
+				setStyle(div3, "display", "grid");
+				setStyle(div3, "grid-gap", "20px");
+				setStyle(div3, "grid-template-columns", "1fr 120px");
+				addLoc(div3, file$C, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div2, anchor);
-				append(div2, div0);
+				insert(target, div3, anchor);
+				append(div3, div0);
 				atlas._mount(div0, null);
-				append(div2, text0);
+				append(div3, text0);
+				append(div3, div2);
 				append(div2, div1);
 				append(div1, img);
 				append(div1, text1);
 				atlasreticle._mount(div1, null);
+				append(div2, text2);
+				append(div2, button0);
+				append(div2, text4);
+				append(div2, button1);
+				append(div2, text6);
+				append(div2, button2);
 			},
 
 			p: function update(changed, _ctx) {
@@ -17610,9 +17651,9 @@
 				var atlasreticle_changes = {};
 				if (!atlasreticle_updating.extent && changed.extent) {
 					atlasreticle_changes.extent = ctx.extent
-	    ;
+	      ;
 					atlasreticle_updating.extent = ctx.extent
-	     !== void 0;
+	       !== void 0;
 				}
 				atlasreticle._set(atlasreticle_changes);
 				atlasreticle_updating = {};
@@ -17620,11 +17661,15 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div2);
+					detachNode(div3);
 				}
 
 				atlas.destroy();
+				if (component.refs.atlas === atlas) component.refs.atlas = null;
 				atlasreticle.destroy();
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
+				removeListener(button2, "click", click_handler_2);
 			}
 		};
 	}
@@ -17636,6 +17681,7 @@
 		}
 
 		init(this, options);
+		this.refs = {};
 		this._state = assign(data$r(), options.data);
 		if (!('layerName' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'layerName'");
 		if (!('gridSize' in this._state)) console.warn("<LayerAnnotation> was created without expected data property 'gridSize'");
