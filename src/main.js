@@ -106,9 +106,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				showClassFilter: false,
 				layerName: "mixed4d",
 				showOptions: false,
-				homeX: 0.5,
-				homeY: 0.8,
-				homeScale: 4,
+				homeX: 0.55,
+				homeY: 0.75,
+				homeScale: 5,
 				gridSize: 2,
 				scrollWheel: false,
 			}
@@ -468,6 +468,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			component: App,
 			componentData: {
 				showClassFilter: false,
+				layerName: "mixed4e",
 				gridSize: -1
 			}
 		}

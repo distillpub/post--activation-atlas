@@ -12004,7 +12004,7 @@
 				lazyimage1._fragment.c();
 				text3 = createText("\n    ");
 				div1 = createElement("div");
-				div1.textContent = "Visualizing individual neurons make hidden layers somewhate meaningful, but misses interactions between neurons and only shows us one-dimensional probes of the high-dimensional activation space.";
+				div1.textContent = "Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only show us one-dimensional, orthogonal probes of the high-dimensional activation space.";
 				text5 = createText("\n  ");
 				div5 = createElement("div");
 				h41 = createElement("h4");
@@ -12016,7 +12016,7 @@
 				lazyimage3._fragment.c();
 				text9 = createText("\n    ");
 				div4 = createElement("div");
-				div4.textContent = "Studying pairwise interaction surfaces some interaction effects, but only shows us two-dimensional slices through the high-dimensional activation space.";
+				div4.textContent = "Studying pairwise interactions surface some interaction effects, but they only show us two-dimensional slices of a space that has hundreds of dimensions.";
 				text11 = createText("\n  ");
 				div8 = createElement("div");
 				h42 = createElement("h4");
@@ -12028,7 +12028,7 @@
 				lazyimage5._fragment.c();
 				text15 = createText("\n    ");
 				div7 = createElement("div");
-				div7.textContent = "Spatial activations show us samples of the sub-manifold of likely activations (which are important combinations of many neurons), but they are limited to those that occur in a single example.";
+				div7.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in a single image example.";
 				text17 = createText("\n  ");
 				div11 = createElement("div");
 				h43 = createElement("h4");
@@ -12040,7 +12040,7 @@
 				lazyimage7._fragment.c();
 				text21 = createText("\n    ");
 				div10 = createElement("div");
-				div10.textContent = "Activation atlases show important combinations of neurons and give us a bigger picture overview.";
+				div10.textContent = "Activation atlases give us a bigger picture overview by sampling more of the manifold of likely activations.";
 				h40.className = "svelte-ruuveb";
 				addLoc(h40, file$n, 2, 4, 27);
 				div0.className = "diagram svelte-ruuveb";
@@ -12049,26 +12049,26 @@
 				addLoc(div1, file$n, 10, 4, 269);
 				addLoc(div2, file$n, 1, 2, 17);
 				h41.className = "svelte-ruuveb";
-				addLoc(h41, file$n, 13, 4, 515);
+				addLoc(h41, file$n, 13, 4, 526);
 				div3.className = "diagram svelte-ruuveb";
-				addLoc(div3, file$n, 18, 4, 641);
+				addLoc(div3, file$n, 18, 4, 652);
 				div4.className = "figcaption";
-				addLoc(div4, file$n, 21, 4, 762);
-				addLoc(div5, file$n, 12, 2, 505);
+				addLoc(div4, file$n, 21, 4, 773);
+				addLoc(div5, file$n, 12, 2, 516);
 				h42.className = "svelte-ruuveb";
-				addLoc(h42, file$n, 24, 4, 966);
+				addLoc(h42, file$n, 24, 4, 978);
 				div6.className = "diagram svelte-ruuveb";
-				addLoc(div6, file$n, 29, 4, 1088);
+				addLoc(div6, file$n, 29, 4, 1100);
 				div7.className = "figcaption";
-				addLoc(div7, file$n, 32, 4, 1209);
-				addLoc(div8, file$n, 23, 2, 956);
+				addLoc(div7, file$n, 32, 4, 1221);
+				addLoc(div8, file$n, 23, 2, 968);
 				h43.className = "svelte-ruuveb";
-				addLoc(h43, file$n, 35, 4, 1452);
+				addLoc(h43, file$n, 35, 4, 1459);
 				div9.className = "diagram svelte-ruuveb";
-				addLoc(div9, file$n, 40, 4, 1570);
+				addLoc(div9, file$n, 40, 4, 1577);
 				div10.className = "figcaption";
-				addLoc(div10, file$n, 43, 4, 1691);
-				addLoc(div11, file$n, 34, 2, 1442);
+				addLoc(div10, file$n, 43, 4, 1698);
+				addLoc(div11, file$n, 34, 2, 1449);
 				div12.className = "svelte-ruuveb svelte-ref-root";
 				addLoc(div12, file$n, 0, 0, 0);
 			},
@@ -20191,9 +20191,9 @@
 					showClassFilter: false,
 					layerName: "mixed4d",
 					showOptions: false,
-					homeX: 0.5,
-					homeY: 0.8,
-					homeScale: 4,
+					homeX: 0.55,
+					homeY: 0.75,
+					homeScale: 5,
 					gridSize: 2,
 					scrollWheel: false,
 				}
@@ -20553,6 +20553,7 @@
 				component: App,
 				componentData: {
 					showClassFilter: false,
+					layerName: "mixed4e",
 					gridSize: -1
 				}
 			}
