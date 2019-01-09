@@ -1,6 +1,7 @@
 <script>
 import { default as load } from './library/load.js';
 import classesToKeep from './classesToKeep.js';
+import Labels from './Labels.js';
 
 export default {
   data() {
@@ -9,21 +10,21 @@ export default {
     // root: "assets",
       root: "https://storage.googleapis.com/activation-atlas/build",
       id: "inceptionv1",
+      labels: Labels.inception,
       layer: 0,
       classFilter: 0,
       filter: 0,
       layout: 0,
       config: null,
       layers: null,
-      labels: null
+      loading: false
     };
   },
   onupdate({ changed, current, previous }) {
-    this.set({data: null});
     if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
       const {root, id, layer, classFilter, filter, fingerprint, layout} = this.get();
-
+      this.set({loading: true});
       load(`${root}/${id}/${id}.json`, fingerprint).then(response => {
         let config = response;
         this.set({config});
@@ -88,11 +89,7 @@ export default {
               }
               layers[i] = icons
             })
-            this.set({layers});
-            load(`${root}/labels--model-${config.model}.txt`).then(response => {
-              const labels = response.split("\n")
-              this.set({labels})
-            })
+            this.set({layers, loading: false});
           })
         }
       });

@@ -446,7 +446,7 @@
 		}
 	});
 
-	var inceptionLabels = {
+	var Labels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1456,7 +1456,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: inceptionLabels.inception,
+	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1610,7 +1610,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -4070,9 +4070,9 @@
 
 
 
-	function labels({inceptionLabels: inceptionLabels$$1}) {
+	function labels({inceptionLabels}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels$$1.inception[k];
+	    let l = inceptionLabels.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -4081,7 +4081,7 @@
 	function data$8() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels,
+	    inceptionLabels: Labels,
 	    classHeatmap: 235
 	  }
 	}
@@ -4589,21 +4589,21 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
+	    labels: Labels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
 	    layout: 0,
 	    config: null,
 	    layers: null,
-	    labels: null
+	    loading: false
 	  };
 	}
 	function onupdate$1({ changed, current, previous }) {
-	  this.set({data: null});
 	  if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
 	    const {root, id, layer, classFilter, filter, fingerprint, layout} = this.get();
-
+	    this.set({loading: true});
 	    load$1(`${root}/${id}/${id}.json`, fingerprint).then(response => {
 	      let config = response;
 	      this.set({config});
@@ -4668,11 +4668,7 @@
 	            }
 	            layers[i] = icons;
 	          });
-	          this.set({layers});
-	          load$1(`${root}/labels--model-${config.model}.txt`).then(response => {
-	            const labels = response.split("\n");
-	            this.set({labels});
-	          });
+	          this.set({layers, loading: false});
 	        });
 	      }
 	    });
@@ -8636,7 +8632,6 @@
 	    
 	    config: null,
 	    layers: null,
-	    labels: null,
 
 	    layer: 0,
 	    layout: 0,
@@ -8736,7 +8731,7 @@
 	  },
 	  render() {
 
-	    const {id, labelsContext, classHeatmap, showLabels, labels, labelsBufferCanvas, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+	    const {id, labelsContext, loading, classHeatmap, showLabels, labels, labelsBufferCanvas, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
 	    this.clear();
 	    // context.imageSmoothingQuality = "low";
@@ -8746,7 +8741,7 @@
 	    labelsContext.lineWidth = strokeThickness;
 	    context.fillStyle = "white";
 
-	    if (config && layers) {
+	    if (config && layers && !loading) {
 	      let visibleLayers = [
 	        {i: currentZoomIndex, opacity: 1.0}
 	      ];
@@ -8874,7 +8869,7 @@
 	      labelsContext
 	    });
 	  }
-	  if (changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
+	  if (changed.loading || changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
 	    this.render();
 	  }
 	  if (changed.hoverIconData) {
@@ -9059,14 +9054,14 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$e, 33, 4, 494);
+				addLoc(canvas0, file$e, 34, 4, 511);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$e, 37, 4, 620);
+				addLoc(canvas1, file$e, 38, 4, 637);
 				component.root._beforecreate.push(div_resize_handler);
 				div.className = "svelte-w9b5xg svelte-ref-root";
-				addLoc(div, file$e, 15, 0, 183);
+				addLoc(div, file$e, 16, 0, 200);
 			},
 
 			m: function mount(target, anchor) {
@@ -9249,10 +9244,16 @@
 			atlasdataloader_updating.layers = true;
 		}
 		if (ctx.labels 
-	   !== void 0) {
+	     !== void 0) {
 			atlasdataloader_initial_data.labels = ctx.labels 
-	  ;
+	    ;
 			atlasdataloader_updating.labels = true;
+		}
+		if (ctx.loading
+	   !== void 0) {
+			atlasdataloader_initial_data.loading = ctx.loading
+	  ;
+			atlasdataloader_updating.loading = true;
 		}
 		var atlasdataloader = new AtlasDataLoader({
 			root: component.root,
@@ -9271,13 +9272,17 @@
 				if (!atlasdataloader_updating.labels && changed.labels) {
 					newState.labels = childState.labels;
 				}
+
+				if (!atlasdataloader_updating.loading && changed.loading) {
+					newState.loading = childState.loading;
+				}
 				component._set(newState);
 				atlasdataloader_updating = {};
 			}
 		});
 
 		component.root._beforecreate.push(() => {
-			atlasdataloader._bind({ config: 1, layers: 1, labels: 1 }, atlasdataloader.get());
+			atlasdataloader._bind({ config: 1, layers: 1, labels: 1, loading: 1 }, atlasdataloader.get());
 		});
 
 		return {
@@ -9311,8 +9316,14 @@
 				}
 				if (!atlasdataloader_updating.labels && changed.labels) {
 					atlasdataloader_changes.labels = ctx.labels 
-	  ;
+	    ;
 					atlasdataloader_updating.labels = ctx.labels 
+	     !== void 0;
+				}
+				if (!atlasdataloader_updating.loading && changed.loading) {
+					atlasdataloader_changes.loading = ctx.loading
+	  ;
+					atlasdataloader_updating.loading = ctx.loading
 	   !== void 0;
 				}
 				atlasdataloader._set(atlasdataloader_changes);
@@ -9325,7 +9336,7 @@
 		};
 	}
 
-	// (42:4) {#if showHoverIcon}
+	// (43:4) {#if showHoverIcon}
 	function create_if_block$1(component, ctx) {
 		var div;
 
@@ -9337,7 +9348,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$e, 42, 4, 776);
+				addLoc(div, file$e, 43, 4, 793);
 			},
 
 			m: function mount(target, anchor) {
@@ -9410,6 +9421,7 @@
 		if (!('layout' in this._state)) console.warn("<Atlas> was created without expected data property 'layout'");
 		if (!('classFilter' in this._state)) console.warn("<Atlas> was created without expected data property 'classFilter'");
 		if (!('filter' in this._state)) console.warn("<Atlas> was created without expected data property 'filter'");
+		if (!('loading' in this._state)) console.warn("<Atlas> was created without expected data property 'loading'");
 		if (!('mouseOver' in this._state)) console.warn("<Atlas> was created without expected data property 'mouseOver'");
 		if (!('extent' in this._state)) console.warn("<Atlas> was created without expected data property 'extent'");
 		if (!('scrollWheel' in this._state)) console.warn("<Atlas> was created without expected data property 'scrollWheel'");

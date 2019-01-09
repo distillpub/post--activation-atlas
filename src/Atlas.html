@@ -10,6 +10,7 @@
     bind:config
     bind:layers 
     bind:labels 
+    bind:loading
   />
 {/if}
 
@@ -64,7 +65,6 @@ export default {
       
       config: null,
       layers: null,
-      labels: null,
 
       layer: 0,
       layout: 0,
@@ -208,7 +208,7 @@ export default {
         labelsContext
       });
     }
-    if (changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
+    if (changed.loading || changed.autoGridSizeMultiplier || changed.labels || changed.density || changed.maxAttributionValue || changed.classHeatmap || changed.classHeatmapMultiplier || changed.classHeatmapPositive || changed.showLabels || changed.viewWidth || changed.viewHeight || changed.scale || changed.translateX || changed.translateY || changed.iconCrop || changed.gridSize || changed.layers) {
       this.render();
     }
     if (changed.hoverIconData) {
@@ -294,7 +294,7 @@ export default {
     },
     render() {
 
-      const {id, labelsContext, classHeatmap, showLabels, labels, labelsBufferCanvas, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
+      const {id, labelsContext, loading, classHeatmap, showLabels, labels, labelsBufferCanvas, imageSmoothing, scale, w, h, translateX, translateY, context, backgroundColor, config, layers, visibleLayers, currentZoomIndex, strokeColor, strokeThickness, fontSize,textShadowColor, textColor, maxAttributionValue, classHeatmapMultiplier} = this.get();
 
       this.clear();
       // context.imageSmoothingQuality = "low";
@@ -304,7 +304,7 @@ export default {
       labelsContext.lineWidth = strokeThickness;
       context.fillStyle = "white";
 
-      if (config && layers) {
+      if (config && layers && !loading) {
         let visibleLayers = [
           {i: currentZoomIndex, opacity: 1.0}
         ];
