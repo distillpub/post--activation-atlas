@@ -1696,9 +1696,9 @@
 	    clothing: {
 	      layerName: "mixed5a",
 	      gridSize: 3,
-	      gcx: 0.74955,
-	      gcy: 0.5058,
-	      scale: 13
+	      gcx: 0.743,
+	      gcy: 0.520,
+	      scale: 10
 	    }
 	  }
 	});
@@ -2411,7 +2411,7 @@
 	function data$2() {
 	  return {
 	    dragging: false,
-	    extent: [[],[]],
+	    extent: [[0, 0],[0, 0]],
 	    background: true,
 	    round: false,
 	    color: "rgb(255, 130, 0)",
@@ -2520,20 +2520,19 @@
 
 	// (4:2) {#if extent}
 	function create_if_block(component, ctx) {
-		var svg, path, path_class_value, path_d_value, text, div, div_class_value;
+		var svg, text, div, div_class_value;
 
-		var if_block = (ctx.annotationValue) && create_if_block_1(component, ctx);
+		var if_block0 = (ctx.left && ctx.right && ctx.top && ctx.bottom) && create_if_block_2(component, ctx);
+
+		var if_block1 = (ctx.annotationValue) && create_if_block_1(component, ctx);
 
 		return {
 			c: function create() {
 				svg = createSvgElement("svg");
-				path = createSvgElement("path");
+				if (if_block0) if_block0.c();
 				text = createText("\n    ");
 				div = createElement("div");
-				if (if_block) if_block.c();
-				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
-				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$5, 5, 4, 158);
+				if (if_block1) if_block1.c();
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
 				setAttribute(svg, "class", "svelte-xo8icp");
@@ -2544,24 +2543,29 @@
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
-				addLoc(div, file$5, 10, 4, 380);
+				addLoc(div, file$5, 12, 4, 439);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, svg, anchor);
-				append(svg, path);
+				if (if_block0) if_block0.m(svg, null);
 				insert(target, text, anchor);
 				insert(target, div, anchor);
-				if (if_block) if_block.m(div, null);
+				if (if_block1) if_block1.m(div, null);
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp")) {
-					setAttribute(path, "class", path_class_value);
-				}
-
-				if ((changed.clientWidth || changed.clientHeight || changed.left || changed.top || changed.bottom || changed.right) && path_d_value !== (path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z")) {
-					setAttribute(path, "d", path_d_value);
+				if (ctx.left && ctx.right && ctx.top && ctx.bottom) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_2(component, ctx);
+						if_block0.c();
+						if_block0.m(svg, null);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
 				}
 
 				if (changed.clientWidth) {
@@ -2573,16 +2577,16 @@
 				}
 
 				if (ctx.annotationValue) {
-					if (if_block) {
-						if_block.p(changed, ctx);
+					if (if_block1) {
+						if_block1.p(changed, ctx);
 					} else {
-						if_block = create_if_block_1(component, ctx);
-						if_block.c();
-						if_block.m(div, null);
+						if_block1 = create_if_block_1(component, ctx);
+						if_block1.c();
+						if_block1.m(div, null);
 					}
-				} else if (if_block) {
-					if_block.d(1);
-					if_block = null;
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
 				}
 
 				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp")) {
@@ -2613,16 +2617,54 @@
 			d: function destroy$$1(detach) {
 				if (detach) {
 					detachNode(svg);
+				}
+
+				if (if_block0) if_block0.d();
+				if (detach) {
 					detachNode(text);
 					detachNode(div);
 				}
 
-				if (if_block) if_block.d();
+				if (if_block1) if_block1.d();
 			}
 		};
 	}
 
-	// (21:4) {#if annotationValue}
+	// (6:4) {#if left && right && top && bottom}
+	function create_if_block_2(component, ctx) {
+		var path, path_class_value, path_d_value;
+
+		return {
+			c: function create() {
+				path = createSvgElement("path");
+				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
+				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
+				addLoc(path, file$5, 6, 6, 201);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, path, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp")) {
+					setAttribute(path, "class", path_class_value);
+				}
+
+				if ((changed.clientWidth || changed.clientHeight || changed.left || changed.top || changed.bottom || changed.right) && path_d_value !== (path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z")) {
+					setAttribute(path, "d", path_d_value);
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(path);
+				}
+			}
+		};
+	}
+
+	// (23:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
 		var div1, div0, p, text;
 
@@ -2633,13 +2675,13 @@
 				p = createElement("p");
 				text = createText(ctx.annotationValue);
 				p.className = "annotation svelte-xo8icp";
-				addLoc(p, file$5, 23, 10, 792);
+				addLoc(p, file$5, 25, 10, 851);
 				div0.className = "annotationTab svelte-xo8icp";
 				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$5, 22, 8, 726);
+				addLoc(div0, file$5, 24, 8, 785);
 				div1.className = "annotationTabParent svelte-xo8icp";
 				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$5, 21, 6, 651);
+				addLoc(div1, file$5, 23, 6, 710);
 			},
 
 			m: function mount(target, anchor) {
@@ -2684,11 +2726,11 @@
 		if (!('clientWidth' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'clientWidth'");
 		if (!('extent' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'extent'");
 		if (!('clientHeight' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'clientHeight'");
+
+
+
+
 		if (!('background' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'background'");
-
-
-
-
 		if (!('round' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'round'");
 		if (!('color' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'color'");
 		if (!('annotationValue' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'annotationValue'");
@@ -4579,9 +4621,436 @@
 
 	var ascendingBisect = bisector(ascending);
 
+	var vm = "shan-gpu-07-vm";
+	var id$1 = "inceptionv1_mixed3b";
+	var build_dir = "build";
+	var cloud_dir = "gs://shancarter/activation-atlas/build";
+	var model = "InceptionV1";
+	var layer = "mixed3b";
+	var sample_type = "random";
+	var sample_images = 1000000;
+	var filter = 500000;
+	var tries = 2;
+	var tile_size = 10;
+	var grid_size = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten = "false";
+	var steps = 1024;
+	var icon_size = 80;
+	var layout = "1000_0.05_euclidean";
+	var class_filter = null;
+	var batch_size = 100;
+	var x = null;
+	var y = null;
+	var alpha = false;
+	var inceptionv1_mixed3b = {
+		vm: vm,
+		id: id$1,
+		build_dir: build_dir,
+		cloud_dir: cloud_dir,
+		model: model,
+		layer: layer,
+		sample_type: sample_type,
+		sample_images: sample_images,
+		filter: filter,
+		tries: tries,
+		tile_size: tile_size,
+		grid_size: grid_size,
+		whiten: whiten,
+		steps: steps,
+		icon_size: icon_size,
+		layout: layout,
+		class_filter: class_filter,
+		batch_size: batch_size,
+		x: x,
+		y: y,
+		alpha: alpha
+	};
+
+	var vm$1 = "shan-gpu-08-vm";
+	var id$2 = "inceptionv1_mixed4a";
+	var build_dir$1 = "build";
+	var cloud_dir$1 = "gs://shancarter/activation-atlas/build";
+	var model$1 = "InceptionV1";
+	var layer$1 = [
+		"mixed4a"
+	];
+	var sample_type$1 = "random";
+	var sample_images$1 = 1000000;
+	var filter$1 = null;
+	var tries$1 = 4;
+	var tile_size$1 = 10;
+	var grid_size$1 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$1 = "true";
+	var steps$1 = 1024;
+	var icon_size$1 = 80;
+	var layout$1 = "50_0.05_cosine";
+	var class_filter$1 = null;
+	var batch_size$1 = 100;
+	var x$1 = null;
+	var y$1 = null;
+	var alpha$1 = false;
+	var inceptionv1_mixed4a = {
+		vm: vm$1,
+		id: id$2,
+		build_dir: build_dir$1,
+		cloud_dir: cloud_dir$1,
+		model: model$1,
+		layer: layer$1,
+		sample_type: sample_type$1,
+		sample_images: sample_images$1,
+		filter: filter$1,
+		tries: tries$1,
+		tile_size: tile_size$1,
+		grid_size: grid_size$1,
+		whiten: whiten$1,
+		steps: steps$1,
+		icon_size: icon_size$1,
+		layout: layout$1,
+		class_filter: class_filter$1,
+		batch_size: batch_size$1,
+		x: x$1,
+		y: y$1,
+		alpha: alpha$1
+	};
+
+	var vm$2 = "shan-gpu-08-vm";
+	var id$3 = "inceptionv1_mixed4b";
+	var build_dir$2 = "build";
+	var cloud_dir$2 = "gs://shancarter/activation-atlas/build";
+	var model$2 = "InceptionV1";
+	var layer$2 = [
+		"mixed4b"
+	];
+	var sample_type$2 = "random";
+	var sample_images$2 = 1000000;
+	var filter$2 = null;
+	var tries$2 = 4;
+	var tile_size$2 = 10;
+	var grid_size$2 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$2 = "true";
+	var steps$2 = 1024;
+	var icon_size$2 = 80;
+	var layout$2 = "50_0.05_cosine";
+	var class_filter$2 = null;
+	var batch_size$2 = 100;
+	var x$2 = null;
+	var y$2 = null;
+	var alpha$2 = false;
+	var inceptionv1_mixed4b = {
+		vm: vm$2,
+		id: id$3,
+		build_dir: build_dir$2,
+		cloud_dir: cloud_dir$2,
+		model: model$2,
+		layer: layer$2,
+		sample_type: sample_type$2,
+		sample_images: sample_images$2,
+		filter: filter$2,
+		tries: tries$2,
+		tile_size: tile_size$2,
+		grid_size: grid_size$2,
+		whiten: whiten$2,
+		steps: steps$2,
+		icon_size: icon_size$2,
+		layout: layout$2,
+		class_filter: class_filter$2,
+		batch_size: batch_size$2,
+		x: x$2,
+		y: y$2,
+		alpha: alpha$2
+	};
+
+	var vm$3 = "shan-gpu-08-vm";
+	var id$4 = "inceptionv1_mixed4c";
+	var build_dir$3 = "build";
+	var cloud_dir$3 = "gs://shancarter/activation-atlas/build";
+	var model$3 = "InceptionV1";
+	var layer$3 = [
+		"mixed4c"
+	];
+	var sample_type$3 = "random";
+	var sample_images$3 = 1000000;
+	var filter$3 = null;
+	var tries$3 = 4;
+	var tile_size$3 = 10;
+	var grid_size$3 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$3 = "true";
+	var steps$3 = 1024;
+	var icon_size$3 = 80;
+	var layout$3 = "50_0.05_cosine";
+	var class_filter$3 = null;
+	var batch_size$3 = 100;
+	var x$3 = null;
+	var y$3 = null;
+	var alpha$3 = false;
+	var inceptionv1_mixed4c = {
+		vm: vm$3,
+		id: id$4,
+		build_dir: build_dir$3,
+		cloud_dir: cloud_dir$3,
+		model: model$3,
+		layer: layer$3,
+		sample_type: sample_type$3,
+		sample_images: sample_images$3,
+		filter: filter$3,
+		tries: tries$3,
+		tile_size: tile_size$3,
+		grid_size: grid_size$3,
+		whiten: whiten$3,
+		steps: steps$3,
+		icon_size: icon_size$3,
+		layout: layout$3,
+		class_filter: class_filter$3,
+		batch_size: batch_size$3,
+		x: x$3,
+		y: y$3,
+		alpha: alpha$3
+	};
+
+	var vm$4 = "shan-gpu-07-vm";
+	var id$5 = "inceptionv1_mixed4d";
+	var build_dir$4 = "build";
+	var cloud_dir$4 = "gs://shancarter/activation-atlas/build";
+	var model$4 = "InceptionV1";
+	var layer$4 = [
+		"mixed4d"
+	];
+	var sample_type$4 = "random";
+	var sample_images$4 = 1000000;
+	var filter$4 = null;
+	var tries$4 = 4;
+	var tile_size$4 = 10;
+	var grid_size$4 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$4 = "true";
+	var steps$4 = 1024;
+	var icon_size$4 = 80;
+	var layout$4 = "50_0.05_cosine";
+	var class_filter$4 = null;
+	var batch_size$4 = 100;
+	var x$4 = null;
+	var y$4 = null;
+	var alpha$4 = false;
+	var inceptionv1_mixed4d = {
+		vm: vm$4,
+		id: id$5,
+		build_dir: build_dir$4,
+		cloud_dir: cloud_dir$4,
+		model: model$4,
+		layer: layer$4,
+		sample_type: sample_type$4,
+		sample_images: sample_images$4,
+		filter: filter$4,
+		tries: tries$4,
+		tile_size: tile_size$4,
+		grid_size: grid_size$4,
+		whiten: whiten$4,
+		steps: steps$4,
+		icon_size: icon_size$4,
+		layout: layout$4,
+		class_filter: class_filter$4,
+		batch_size: batch_size$4,
+		x: x$4,
+		y: y$4,
+		alpha: alpha$4
+	};
+
+	var vm$5 = "shan-gpu-07-vm";
+	var id$6 = "inceptionv1_mixed4e";
+	var build_dir$5 = "build";
+	var cloud_dir$5 = "gs://shancarter/activation-atlas/build";
+	var model$5 = "InceptionV1";
+	var layer$5 = [
+		"mixed4e"
+	];
+	var sample_type$5 = "random";
+	var sample_images$5 = 1000000;
+	var filter$5 = null;
+	var tries$5 = 4;
+	var tile_size$5 = 10;
+	var grid_size$5 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$5 = "true";
+	var steps$5 = 1024;
+	var icon_size$5 = 80;
+	var layout$5 = "50_0.05_cosine";
+	var class_filter$5 = null;
+	var batch_size$5 = 100;
+	var x$5 = null;
+	var y$5 = null;
+	var alpha$5 = false;
+	var inceptionv1_mixed4e = {
+		vm: vm$5,
+		id: id$6,
+		build_dir: build_dir$5,
+		cloud_dir: cloud_dir$5,
+		model: model$5,
+		layer: layer$5,
+		sample_type: sample_type$5,
+		sample_images: sample_images$5,
+		filter: filter$5,
+		tries: tries$5,
+		tile_size: tile_size$5,
+		grid_size: grid_size$5,
+		whiten: whiten$5,
+		steps: steps$5,
+		icon_size: icon_size$5,
+		layout: layout$5,
+		class_filter: class_filter$5,
+		batch_size: batch_size$5,
+		x: x$5,
+		y: y$5,
+		alpha: alpha$5
+	};
+
+	var vm$6 = "shan-gpu-08-vm";
+	var id$7 = "inceptionv1_mixed5a";
+	var build_dir$6 = "build";
+	var cloud_dir$6 = "gs://shancarter/activation-atlas/build";
+	var model$6 = "InceptionV1";
+	var layer$6 = [
+		"mixed5a"
+	];
+	var sample_type$6 = "random";
+	var sample_images$6 = 1000000;
+	var filter$6 = null;
+	var tries$6 = 4;
+	var tile_size$6 = 10;
+	var grid_size$6 = [
+		20,
+		40,
+		80,
+		160,
+		320
+	];
+	var whiten$6 = "true";
+	var steps$6 = 1024;
+	var icon_size$6 = 80;
+	var layout$6 = "50_0.05_cosine";
+	var class_filter$6 = null;
+	var batch_size$6 = 100;
+	var x$6 = null;
+	var y$6 = null;
+	var alpha$6 = false;
+	var inceptionv1_mixed5a = {
+		vm: vm$6,
+		id: id$7,
+		build_dir: build_dir$6,
+		cloud_dir: cloud_dir$6,
+		model: model$6,
+		layer: layer$6,
+		sample_type: sample_type$6,
+		sample_images: sample_images$6,
+		filter: filter$6,
+		tries: tries$6,
+		tile_size: tile_size$6,
+		grid_size: grid_size$6,
+		whiten: whiten$6,
+		steps: steps$6,
+		icon_size: icon_size$6,
+		layout: layout$6,
+		class_filter: class_filter$6,
+		batch_size: batch_size$6,
+		x: x$6,
+		y: y$6,
+		alpha: alpha$6
+	};
+
+	var vm$7 = "shan-gpu-07-vm";
+	var id$8 = "inceptionv1_mixed5b";
+	var build_dir$7 = "build";
+	var cloud_dir$7 = "gs://shancarter/activation-atlas/build";
+	var model$7 = "InceptionV1";
+	var layer$7 = [
+		"mixed5b"
+	];
+	var sample_type$7 = "random";
+	var sample_images$7 = 1000000;
+	var filter$7 = null;
+	var tries$7 = 4;
+	var tile_size$7 = 10;
+	var grid_size$7 = [
+		20,
+		40,
+		80,
+		160,
+		320
+	];
+	var whiten$7 = "true";
+	var steps$7 = 1024;
+	var icon_size$7 = 80;
+	var layout$7 = "50_0.05_cosine";
+	var class_filter$7 = null;
+	var batch_size$7 = 100;
+	var x$7 = null;
+	var y$7 = null;
+	var alpha$7 = false;
+	var inceptionv1_mixed5b = {
+		vm: vm$7,
+		id: id$8,
+		build_dir: build_dir$7,
+		cloud_dir: cloud_dir$7,
+		model: model$7,
+		layer: layer$7,
+		sample_type: sample_type$7,
+		sample_images: sample_images$7,
+		filter: filter$7,
+		tries: tries$7,
+		tile_size: tile_size$7,
+		grid_size: grid_size$7,
+		whiten: whiten$7,
+		steps: steps$7,
+		icon_size: icon_size$7,
+		layout: layout$7,
+		class_filter: class_filter$7,
+		batch_size: batch_size$7,
+		x: x$7,
+		y: y$7,
+		alpha: alpha$7
+	};
+
 	/* src/AtlasDataLoader.html generated by Svelte v2.15.3 */
 
 
+
+	const configs = {
+	  inceptionv1_mixed3b: inceptionv1_mixed3b,
+	  inceptionv1_mixed4a: inceptionv1_mixed4a,
+	  inceptionv1_mixed4b: inceptionv1_mixed4b,
+	  inceptionv1_mixed4c: inceptionv1_mixed4c,
+	  inceptionv1_mixed4d: inceptionv1_mixed4d,
+	  inceptionv1_mixed4e: inceptionv1_mixed4e,
+	  inceptionv1_mixed5a: inceptionv1_mixed5a,
+	  inceptionv1_mixed5b: inceptionv1_mixed5b,
+	};
 
 	function data$9() {
 	  return {
@@ -4602,76 +5071,74 @@
 	function onupdate$1({ changed, current, previous }) {
 	  if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
-	    const {root, id, layer, classFilter, filter, fingerprint, layout} = this.get();
+	    const {root, id, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1} = this.get();
 	    this.set({loading: true});
-	    load$1(`${root}/${id}/${id}.json`, fingerprint).then(response => {
-	      let config = response;
-	      this.set({config});
+	    const config = configs[id];
+	    this.set({config});
 
-	      if (classFilter !== null) {
-	  
-	        if (config.class_filter == null) { config.class_filter = "None"; }
-	        if (config.filter == null) { config.filter = "None"; }
-	        if (!Array.isArray(config.grid_size)) { config.grid_size = [config.grid_size]; }
-	        if (!Array.isArray(config.class_filter)) { config.class_filter = [config.class_filter]; }
-	        if (!Array.isArray(config.layer)) { config.layer = [config.layer]; }
-	        if (!Array.isArray(config.layout)) { config.layout = [config.layout]; }
-	        if (!Array.isArray(config.filter)) { config.filter = [config.filter]; }
-	        // console.log(config.layout, layout, Array.isArray(config.layout))
-	        //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size=8--layout=5_0.1_cosine,10_0.1_cosine,15_0.1_cosine--class_filter=7--filter=None--layer=mixed4a--model=InceptionV1--sample_images=1000000--sample_type=random.json
-	        //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size%3D16--layout%3D10_0.1_cosine--class_filter%3D1--filter%3DNone--layer%3Dmixed4a--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json
-	        // console.log(config)
-	        let gridUrls = config.grid_size.map(g => `${root}/${id}/web/web--grid_size=${g}--layout=${config.layout[layout]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter]}--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
-	        // console.log(gridUrls)
-	        load$1(gridUrls).then(responses => {
-	          let layers = Array(responses.length);
-	          responses.forEach((g, i) => {
-	            let gridSize = config.grid_size[i];
-	            let tileSize = config.tile_size;
-	            let numRows = gridSize / tileSize;
-	            let t = [...Array(numRows).keys()];
-	            // let tiles = t.map(x => Array(numRows))
-	            // for (let x = 0; x < numRows; x++) {
-	            //   for (let y = 0; y < numRows; y++) {
-	            //     tiles[x][y] = {
-	            //       //render/render--x%3D0--y%3D0--tries%3D4--alpha%3DFalse--tile_size%3D10--whiten%3Dtrue--steps%3D1024--icon_size%3D80--grid_size%3D10--layout%3D50_0.05_cosine--class_filter%3DNone--filter%3DNone--layer%3Dmixed4d--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.jpg?_ga=2.191103914.-1445069976.1518735995
-	            //       //assets/alexnet/render/render--x=0--y=0--tries={config.tries}--tile_size={config.tile_size}--whiten={config.whiten}--steps={config.steps}--icon_size=80--grid_size=16--layout={config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer={layer}--model={config.model}--sample_images={config.sample_images}--sample_type={config.sample_type}.jpg
-	            //       url: `${root}/${id}/render/render--x=${x}--y=${y}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`
-	            //     }
-	            //   }
-	            // }
-	            let ic = [...Array(gridSize).keys()];
-	            let icons = ic.map(x => Array(gridSize));
-	            for (const gd of g) {
-	              if (gd.x !== undefined) { gd.grid_x = gd.x; }
-	              if (gd.y !== undefined) { gd.grid_y = gd.y; }
-	              if (gd.n !== undefined) { gd.num_activations = gd.n; }
-	              if (gd.i !== undefined) { gd.top_class_indices = gd.i; }
-	              if (gd.v !== undefined) { gd.top_class_values = gd.v; }
-	              if (gd.f !== undefined) { 
-	                gd.full_class_values = gd.f; 
-	                gd.full_class_indices = classesToKeep;
-	              }
-	              
-	              let x = gd.grid_x;
-	              let y = gd.grid_y;
-	              gd.gx = x / gridSize;
-	              gd.gy = y / gridSize;
-	              gd.gw = 1 / gridSize;
-	              let tileX = Math.floor(x / tileSize);
-	              let tileY = Math.floor(y / tileSize);
-	              gd.localX = x % tileSize;
-	              gd.localY = y % tileSize;
-	                        //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
-	              gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter]}--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
-	              icons[gd.grid_x][gd.grid_y] = gd;
+	    if (classFilter !== null) {
+
+	      if (config.class_filter == null) { config.class_filter = "None"; }
+	      if (config.filter == null) { config.filter = "None"; }
+	      if (!Array.isArray(config.grid_size)) { config.grid_size = [config.grid_size]; }
+	      if (!Array.isArray(config.class_filter)) { config.class_filter = [config.class_filter]; }
+	      if (!Array.isArray(config.layer)) { config.layer = [config.layer]; }
+	      if (!Array.isArray(config.layout)) { config.layout = [config.layout]; }
+	      if (!Array.isArray(config.filter)) { config.filter = [config.filter]; }
+	      // console.log(config.layout, layout, Array.isArray(config.layout))
+	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size=8--layout=5_0.1_cosine,10_0.1_cosine,15_0.1_cosine--class_filter=7--filter=None--layer=mixed4a--model=InceptionV1--sample_images=1000000--sample_type=random.json
+	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size%3D16--layout%3D10_0.1_cosine--class_filter%3D1--filter%3DNone--layer%3Dmixed4a--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json
+	      // console.log(config)
+	      let gridUrls = config.grid_size.map(g => `${root}/${id}/web/web--grid_size=${g}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
+	      // console.log(gridUrls)
+	      load$1(gridUrls).then(responses => {
+	        let layers = Array(responses.length);
+	        responses.forEach((g, i) => {
+	          let gridSize = config.grid_size[i];
+	          let tileSize = config.tile_size;
+	          let numRows = gridSize / tileSize;
+	          let t = [...Array(numRows).keys()];
+	          // let tiles = t.map(x => Array(numRows))
+	          // for (let x = 0; x < numRows; x++) {
+	          //   for (let y = 0; y < numRows; y++) {
+	          //     tiles[x][y] = {
+	          //       //render/render--x%3D0--y%3D0--tries%3D4--alpha%3DFalse--tile_size%3D10--whiten%3Dtrue--steps%3D1024--icon_size%3D80--grid_size%3D10--layout%3D50_0.05_cosine--class_filter%3DNone--filter%3DNone--layer%3Dmixed4d--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.jpg?_ga=2.191103914.-1445069976.1518735995
+	          //       //assets/alexnet/render/render--x=0--y=0--tries={config.tries}--tile_size={config.tile_size}--whiten={config.whiten}--steps={config.steps}--icon_size=80--grid_size=16--layout={config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer={layer}--model={config.model}--sample_images={config.sample_images}--sample_type={config.sample_type}.jpg
+	          //       url: `${root}/${id}/render/render--x=${x}--y=${y}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`
+	          //     }
+	          //   }
+	          // }
+	          let ic = [...Array(gridSize).keys()];
+	          let icons = ic.map(x$$1 => Array(gridSize));
+	          for (const gd of g) {
+	            if (gd.x !== undefined) { gd.grid_x = gd.x; }
+	            if (gd.y !== undefined) { gd.grid_y = gd.y; }
+	            if (gd.n !== undefined) { gd.num_activations = gd.n; }
+	            if (gd.i !== undefined) { gd.top_class_indices = gd.i; }
+	            if (gd.v !== undefined) { gd.top_class_values = gd.v; }
+	            if (gd.f !== undefined) { 
+	              gd.full_class_values = gd.f; 
+	              gd.full_class_indices = classesToKeep;
 	            }
-	            layers[i] = icons;
-	          });
-	          this.set({layers, loading: false});
+	            
+	            let x$$1 = gd.grid_x;
+	            let y$$1 = gd.grid_y;
+	            gd.gx = x$$1 / gridSize;
+	            gd.gy = y$$1 / gridSize;
+	            gd.gw = 1 / gridSize;
+	            let tileX = Math.floor(x$$1 / tileSize);
+	            let tileY = Math.floor(y$$1 / tileSize);
+	            gd.localX = x$$1 % tileSize;
+	            gd.localY = y$$1 % tileSize;
+	                      //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+	            gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
+	            icons[gd.grid_x][gd.grid_y] = gd;
+	          }
+	          layers[i] = icons;
 	        });
-	      }
-	    });
+	        this.set({layers, loading: false});
+	      });
+	    }
 	  }     
 	}
 	function create_main_fragment$c(component, ctx) {
@@ -7357,7 +7824,7 @@
 	  return new Transition(groups, this._parents, name, id1);
 	}
 
-	var id$1 = 0;
+	var id$9 = 0;
 
 	function Transition(groups, parents, name, id) {
 	  this._groups = groups;
@@ -7371,7 +7838,7 @@
 	}
 
 	function newId() {
-	  return ++id$1;
+	  return ++id$9;
 	}
 
 	var selection_prototype = selection.prototype;
@@ -8214,10 +8681,10 @@
 	    const {z, selection: selection$$1, minSize} = this.get();
 	    z.translateTo(selection$$1, x * minSize, y * minSize);
 	  },
-	  home: function(duration = 0) {
+	  home: function(duration=0) {
 
 	    const {homeX, homeY, homeScale} = this.get();
-	    this.zoomTo(homeX, homeY, homeScale);
+	    this.zoomTo(homeX, homeY, homeScale, duration);
 
 	    // selection.transition()
 	    //   .duration(duration)
@@ -9920,7 +10387,7 @@
 		});
 
 		button0.on("click", function(event) {
-			component.refs.atlas.home(4000);
+			component.refs.atlas.home(3000);
 		});
 
 		var navigation1_initial_data = { name: "add", color: "white" };
@@ -10128,11 +10595,11 @@
 				h33.textContent = "Location";
 				text45 = createText("\n                  ");
 				div14 = createElement("div");
-				text46 = createText("gcx: ");
+				text46 = createText("x: ");
 				text47 = createText(text47_value);
 				text48 = createText("\n                  ");
 				div15 = createElement("div");
-				text49 = createText("gcy: ");
+				text49 = createText("y: ");
 				text50 = createText(text50_value);
 				text51 = createText("\n                  ");
 				div16 = createElement("div");
@@ -10280,8 +10747,8 @@
 				h33.className = "svelte-1xmf6n";
 				addLoc(h33, file$g, 102, 18, 4403);
 				addLoc(div14, file$g, 103, 18, 4439);
-				addLoc(div15, file$g, 104, 18, 4487);
-				addLoc(div16, file$g, 105, 18, 4535);
+				addLoc(div15, file$g, 104, 18, 4485);
+				addLoc(div16, file$g, 105, 18, 4531);
 				div17.className = "section svelte-1xmf6n";
 				addLoc(div17, file$g, 101, 16, 4363);
 				div18.className = "grid-size";
@@ -10292,9 +10759,9 @@
 				addLoc(div20, file$g, 66, 10, 2138);
 				addListener(button3, "click", click_handler);
 				button3.className = "svelte-1xmf6n";
-				addLoc(button3, file$g, 111, 12, 4699);
+				addLoc(button3, file$g, 111, 12, 4695);
 				div21.className = "expand-toggle svelte-1xmf6n";
-				addLoc(div21, file$g, 110, 10, 4659);
+				addLoc(div21, file$g, 110, 10, 4655);
 				div22.className = div22_class_value = "" + (ctx.showOptions ? 'open' : 'closed') + " svelte-1xmf6n" + " svelte-ref-controls";
 				addLoc(div22, file$g, 47, 8, 1233);
 				div23.className = "atlas svelte-1xmf6n";

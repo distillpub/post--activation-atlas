@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import compiler from '@ampproject/rollup-plugin-closure-compiler';
 // import buble from 'rollup-plugin-buble';
 // import uglify from 'rollup-plugin-uglify';
+import json from "rollup-plugin-json";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -25,6 +26,7 @@ export default [
 		},
 		context: "window",
 		plugins: [
+			json(),
 			svelte({
 				dev: !production,
 				extensions: [".html", ".svelte", ".svg"],
@@ -46,6 +48,7 @@ export default [
 		},
 		context: "window",
 		plugins: [
+			json(),
 			svelte({
 				dev: !production,
 				extensions: [".html", ".svelte", ".svg"],
@@ -66,6 +69,7 @@ export default [
 			sourcemap: true,
 		},
 		plugins: [
+			json(),
 			svelte({
 				dev: !production,
 				extensions: [".html", ".svelte", ".svg"]

@@ -1677,9 +1677,9 @@
 	    clothing: {
 	      layerName: "mixed5a",
 	      gridSize: 3,
-	      gcx: 0.74955,
-	      gcy: 0.5058,
-	      scale: 13
+	      gcx: 0.743,
+	      gcy: 0.520,
+	      scale: 10
 	    }
 	  }
 	});
@@ -2047,9 +2047,436 @@
 	// 672, //wok
 	// 6, //grey whale
 
+	var vm = "shan-gpu-07-vm";
+	var id = "inceptionv1_mixed3b";
+	var build_dir = "build";
+	var cloud_dir = "gs://shancarter/activation-atlas/build";
+	var model = "InceptionV1";
+	var layer = "mixed3b";
+	var sample_type = "random";
+	var sample_images = 1000000;
+	var filter = 500000;
+	var tries = 2;
+	var tile_size = 10;
+	var grid_size = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten = "false";
+	var steps = 1024;
+	var icon_size = 80;
+	var layout = "1000_0.05_euclidean";
+	var class_filter = null;
+	var batch_size = 100;
+	var x = null;
+	var y = null;
+	var alpha = false;
+	var inceptionv1_mixed3b = {
+		vm: vm,
+		id: id,
+		build_dir: build_dir,
+		cloud_dir: cloud_dir,
+		model: model,
+		layer: layer,
+		sample_type: sample_type,
+		sample_images: sample_images,
+		filter: filter,
+		tries: tries,
+		tile_size: tile_size,
+		grid_size: grid_size,
+		whiten: whiten,
+		steps: steps,
+		icon_size: icon_size,
+		layout: layout,
+		class_filter: class_filter,
+		batch_size: batch_size,
+		x: x,
+		y: y,
+		alpha: alpha
+	};
+
+	var vm$1 = "shan-gpu-08-vm";
+	var id$1 = "inceptionv1_mixed4a";
+	var build_dir$1 = "build";
+	var cloud_dir$1 = "gs://shancarter/activation-atlas/build";
+	var model$1 = "InceptionV1";
+	var layer$1 = [
+		"mixed4a"
+	];
+	var sample_type$1 = "random";
+	var sample_images$1 = 1000000;
+	var filter$1 = null;
+	var tries$1 = 4;
+	var tile_size$1 = 10;
+	var grid_size$1 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$1 = "true";
+	var steps$1 = 1024;
+	var icon_size$1 = 80;
+	var layout$1 = "50_0.05_cosine";
+	var class_filter$1 = null;
+	var batch_size$1 = 100;
+	var x$1 = null;
+	var y$1 = null;
+	var alpha$1 = false;
+	var inceptionv1_mixed4a = {
+		vm: vm$1,
+		id: id$1,
+		build_dir: build_dir$1,
+		cloud_dir: cloud_dir$1,
+		model: model$1,
+		layer: layer$1,
+		sample_type: sample_type$1,
+		sample_images: sample_images$1,
+		filter: filter$1,
+		tries: tries$1,
+		tile_size: tile_size$1,
+		grid_size: grid_size$1,
+		whiten: whiten$1,
+		steps: steps$1,
+		icon_size: icon_size$1,
+		layout: layout$1,
+		class_filter: class_filter$1,
+		batch_size: batch_size$1,
+		x: x$1,
+		y: y$1,
+		alpha: alpha$1
+	};
+
+	var vm$2 = "shan-gpu-08-vm";
+	var id$2 = "inceptionv1_mixed4b";
+	var build_dir$2 = "build";
+	var cloud_dir$2 = "gs://shancarter/activation-atlas/build";
+	var model$2 = "InceptionV1";
+	var layer$2 = [
+		"mixed4b"
+	];
+	var sample_type$2 = "random";
+	var sample_images$2 = 1000000;
+	var filter$2 = null;
+	var tries$2 = 4;
+	var tile_size$2 = 10;
+	var grid_size$2 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$2 = "true";
+	var steps$2 = 1024;
+	var icon_size$2 = 80;
+	var layout$2 = "50_0.05_cosine";
+	var class_filter$2 = null;
+	var batch_size$2 = 100;
+	var x$2 = null;
+	var y$2 = null;
+	var alpha$2 = false;
+	var inceptionv1_mixed4b = {
+		vm: vm$2,
+		id: id$2,
+		build_dir: build_dir$2,
+		cloud_dir: cloud_dir$2,
+		model: model$2,
+		layer: layer$2,
+		sample_type: sample_type$2,
+		sample_images: sample_images$2,
+		filter: filter$2,
+		tries: tries$2,
+		tile_size: tile_size$2,
+		grid_size: grid_size$2,
+		whiten: whiten$2,
+		steps: steps$2,
+		icon_size: icon_size$2,
+		layout: layout$2,
+		class_filter: class_filter$2,
+		batch_size: batch_size$2,
+		x: x$2,
+		y: y$2,
+		alpha: alpha$2
+	};
+
+	var vm$3 = "shan-gpu-08-vm";
+	var id$3 = "inceptionv1_mixed4c";
+	var build_dir$3 = "build";
+	var cloud_dir$3 = "gs://shancarter/activation-atlas/build";
+	var model$3 = "InceptionV1";
+	var layer$3 = [
+		"mixed4c"
+	];
+	var sample_type$3 = "random";
+	var sample_images$3 = 1000000;
+	var filter$3 = null;
+	var tries$3 = 4;
+	var tile_size$3 = 10;
+	var grid_size$3 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$3 = "true";
+	var steps$3 = 1024;
+	var icon_size$3 = 80;
+	var layout$3 = "50_0.05_cosine";
+	var class_filter$3 = null;
+	var batch_size$3 = 100;
+	var x$3 = null;
+	var y$3 = null;
+	var alpha$3 = false;
+	var inceptionv1_mixed4c = {
+		vm: vm$3,
+		id: id$3,
+		build_dir: build_dir$3,
+		cloud_dir: cloud_dir$3,
+		model: model$3,
+		layer: layer$3,
+		sample_type: sample_type$3,
+		sample_images: sample_images$3,
+		filter: filter$3,
+		tries: tries$3,
+		tile_size: tile_size$3,
+		grid_size: grid_size$3,
+		whiten: whiten$3,
+		steps: steps$3,
+		icon_size: icon_size$3,
+		layout: layout$3,
+		class_filter: class_filter$3,
+		batch_size: batch_size$3,
+		x: x$3,
+		y: y$3,
+		alpha: alpha$3
+	};
+
+	var vm$4 = "shan-gpu-07-vm";
+	var id$4 = "inceptionv1_mixed4d";
+	var build_dir$4 = "build";
+	var cloud_dir$4 = "gs://shancarter/activation-atlas/build";
+	var model$4 = "InceptionV1";
+	var layer$4 = [
+		"mixed4d"
+	];
+	var sample_type$4 = "random";
+	var sample_images$4 = 1000000;
+	var filter$4 = null;
+	var tries$4 = 4;
+	var tile_size$4 = 10;
+	var grid_size$4 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$4 = "true";
+	var steps$4 = 1024;
+	var icon_size$4 = 80;
+	var layout$4 = "50_0.05_cosine";
+	var class_filter$4 = null;
+	var batch_size$4 = 100;
+	var x$4 = null;
+	var y$4 = null;
+	var alpha$4 = false;
+	var inceptionv1_mixed4d = {
+		vm: vm$4,
+		id: id$4,
+		build_dir: build_dir$4,
+		cloud_dir: cloud_dir$4,
+		model: model$4,
+		layer: layer$4,
+		sample_type: sample_type$4,
+		sample_images: sample_images$4,
+		filter: filter$4,
+		tries: tries$4,
+		tile_size: tile_size$4,
+		grid_size: grid_size$4,
+		whiten: whiten$4,
+		steps: steps$4,
+		icon_size: icon_size$4,
+		layout: layout$4,
+		class_filter: class_filter$4,
+		batch_size: batch_size$4,
+		x: x$4,
+		y: y$4,
+		alpha: alpha$4
+	};
+
+	var vm$5 = "shan-gpu-07-vm";
+	var id$5 = "inceptionv1_mixed4e";
+	var build_dir$5 = "build";
+	var cloud_dir$5 = "gs://shancarter/activation-atlas/build";
+	var model$5 = "InceptionV1";
+	var layer$5 = [
+		"mixed4e"
+	];
+	var sample_type$5 = "random";
+	var sample_images$5 = 1000000;
+	var filter$5 = null;
+	var tries$5 = 4;
+	var tile_size$5 = 10;
+	var grid_size$5 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$5 = "true";
+	var steps$5 = 1024;
+	var icon_size$5 = 80;
+	var layout$5 = "50_0.05_cosine";
+	var class_filter$5 = null;
+	var batch_size$5 = 100;
+	var x$5 = null;
+	var y$5 = null;
+	var alpha$5 = false;
+	var inceptionv1_mixed4e = {
+		vm: vm$5,
+		id: id$5,
+		build_dir: build_dir$5,
+		cloud_dir: cloud_dir$5,
+		model: model$5,
+		layer: layer$5,
+		sample_type: sample_type$5,
+		sample_images: sample_images$5,
+		filter: filter$5,
+		tries: tries$5,
+		tile_size: tile_size$5,
+		grid_size: grid_size$5,
+		whiten: whiten$5,
+		steps: steps$5,
+		icon_size: icon_size$5,
+		layout: layout$5,
+		class_filter: class_filter$5,
+		batch_size: batch_size$5,
+		x: x$5,
+		y: y$5,
+		alpha: alpha$5
+	};
+
+	var vm$6 = "shan-gpu-08-vm";
+	var id$6 = "inceptionv1_mixed5a";
+	var build_dir$6 = "build";
+	var cloud_dir$6 = "gs://shancarter/activation-atlas/build";
+	var model$6 = "InceptionV1";
+	var layer$6 = [
+		"mixed5a"
+	];
+	var sample_type$6 = "random";
+	var sample_images$6 = 1000000;
+	var filter$6 = null;
+	var tries$6 = 4;
+	var tile_size$6 = 10;
+	var grid_size$6 = [
+		20,
+		40,
+		80,
+		160,
+		320
+	];
+	var whiten$6 = "true";
+	var steps$6 = 1024;
+	var icon_size$6 = 80;
+	var layout$6 = "50_0.05_cosine";
+	var class_filter$6 = null;
+	var batch_size$6 = 100;
+	var x$6 = null;
+	var y$6 = null;
+	var alpha$6 = false;
+	var inceptionv1_mixed5a = {
+		vm: vm$6,
+		id: id$6,
+		build_dir: build_dir$6,
+		cloud_dir: cloud_dir$6,
+		model: model$6,
+		layer: layer$6,
+		sample_type: sample_type$6,
+		sample_images: sample_images$6,
+		filter: filter$6,
+		tries: tries$6,
+		tile_size: tile_size$6,
+		grid_size: grid_size$6,
+		whiten: whiten$6,
+		steps: steps$6,
+		icon_size: icon_size$6,
+		layout: layout$6,
+		class_filter: class_filter$6,
+		batch_size: batch_size$6,
+		x: x$6,
+		y: y$6,
+		alpha: alpha$6
+	};
+
+	var vm$7 = "shan-gpu-07-vm";
+	var id$7 = "inceptionv1_mixed5b";
+	var build_dir$7 = "build";
+	var cloud_dir$7 = "gs://shancarter/activation-atlas/build";
+	var model$7 = "InceptionV1";
+	var layer$7 = [
+		"mixed5b"
+	];
+	var sample_type$7 = "random";
+	var sample_images$7 = 1000000;
+	var filter$7 = null;
+	var tries$7 = 4;
+	var tile_size$7 = 10;
+	var grid_size$7 = [
+		20,
+		40,
+		80,
+		160,
+		320
+	];
+	var whiten$7 = "true";
+	var steps$7 = 1024;
+	var icon_size$7 = 80;
+	var layout$7 = "50_0.05_cosine";
+	var class_filter$7 = null;
+	var batch_size$7 = 100;
+	var x$7 = null;
+	var y$7 = null;
+	var alpha$7 = false;
+	var inceptionv1_mixed5b = {
+		vm: vm$7,
+		id: id$7,
+		build_dir: build_dir$7,
+		cloud_dir: cloud_dir$7,
+		model: model$7,
+		layer: layer$7,
+		sample_type: sample_type$7,
+		sample_images: sample_images$7,
+		filter: filter$7,
+		tries: tries$7,
+		tile_size: tile_size$7,
+		grid_size: grid_size$7,
+		whiten: whiten$7,
+		steps: steps$7,
+		icon_size: icon_size$7,
+		layout: layout$7,
+		class_filter: class_filter$7,
+		batch_size: batch_size$7,
+		x: x$7,
+		y: y$7,
+		alpha: alpha$7
+	};
+
 	/* src/AtlasDataLoader.html generated by Svelte v2.15.3 */
 
 
+
+	const configs = {
+	  inceptionv1_mixed3b: inceptionv1_mixed3b,
+	  inceptionv1_mixed4a: inceptionv1_mixed4a,
+	  inceptionv1_mixed4b: inceptionv1_mixed4b,
+	  inceptionv1_mixed4c: inceptionv1_mixed4c,
+	  inceptionv1_mixed4d: inceptionv1_mixed4d,
+	  inceptionv1_mixed4e: inceptionv1_mixed4e,
+	  inceptionv1_mixed5a: inceptionv1_mixed5a,
+	  inceptionv1_mixed5b: inceptionv1_mixed5b,
+	};
 
 	function data() {
 	  return {
@@ -2070,76 +2497,74 @@
 	function onupdate({ changed, current, previous }) {
 	  if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
-	    const {root, id, layer, classFilter, filter, fingerprint, layout} = this.get();
+	    const {root, id: id$$1, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1} = this.get();
 	    this.set({loading: true});
-	    load(`${root}/${id}/${id}.json`, fingerprint).then(response => {
-	      let config = response;
-	      this.set({config});
+	    const config = configs[id$$1];
+	    this.set({config});
 
-	      if (classFilter !== null) {
-	  
-	        if (config.class_filter == null) { config.class_filter = "None"; }
-	        if (config.filter == null) { config.filter = "None"; }
-	        if (!Array.isArray(config.grid_size)) { config.grid_size = [config.grid_size]; }
-	        if (!Array.isArray(config.class_filter)) { config.class_filter = [config.class_filter]; }
-	        if (!Array.isArray(config.layer)) { config.layer = [config.layer]; }
-	        if (!Array.isArray(config.layout)) { config.layout = [config.layout]; }
-	        if (!Array.isArray(config.filter)) { config.filter = [config.filter]; }
-	        // console.log(config.layout, layout, Array.isArray(config.layout))
-	        //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size=8--layout=5_0.1_cosine,10_0.1_cosine,15_0.1_cosine--class_filter=7--filter=None--layer=mixed4a--model=InceptionV1--sample_images=1000000--sample_type=random.json
-	        //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size%3D16--layout%3D10_0.1_cosine--class_filter%3D1--filter%3DNone--layer%3Dmixed4a--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json
-	        // console.log(config)
-	        let gridUrls = config.grid_size.map(g => `${root}/${id}/web/web--grid_size=${g}--layout=${config.layout[layout]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter]}--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
-	        // console.log(gridUrls)
-	        load(gridUrls).then(responses => {
-	          let layers = Array(responses.length);
-	          responses.forEach((g, i) => {
-	            let gridSize = config.grid_size[i];
-	            let tileSize = config.tile_size;
-	            let numRows = gridSize / tileSize;
-	            let t = [...Array(numRows).keys()];
-	            // let tiles = t.map(x => Array(numRows))
-	            // for (let x = 0; x < numRows; x++) {
-	            //   for (let y = 0; y < numRows; y++) {
-	            //     tiles[x][y] = {
-	            //       //render/render--x%3D0--y%3D0--tries%3D4--alpha%3DFalse--tile_size%3D10--whiten%3Dtrue--steps%3D1024--icon_size%3D80--grid_size%3D10--layout%3D50_0.05_cosine--class_filter%3DNone--filter%3DNone--layer%3Dmixed4d--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.jpg?_ga=2.191103914.-1445069976.1518735995
-	            //       //assets/alexnet/render/render--x=0--y=0--tries={config.tries}--tile_size={config.tile_size}--whiten={config.whiten}--steps={config.steps}--icon_size=80--grid_size=16--layout={config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer={layer}--model={config.model}--sample_images={config.sample_images}--sample_type={config.sample_type}.jpg
-	            //       url: `${root}/${id}/render/render--x=${x}--y=${y}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`
-	            //     }
-	            //   }
-	            // }
-	            let ic = [...Array(gridSize).keys()];
-	            let icons = ic.map(x => Array(gridSize));
-	            for (const gd of g) {
-	              if (gd.x !== undefined) { gd.grid_x = gd.x; }
-	              if (gd.y !== undefined) { gd.grid_y = gd.y; }
-	              if (gd.n !== undefined) { gd.num_activations = gd.n; }
-	              if (gd.i !== undefined) { gd.top_class_indices = gd.i; }
-	              if (gd.v !== undefined) { gd.top_class_values = gd.v; }
-	              if (gd.f !== undefined) { 
-	                gd.full_class_values = gd.f; 
-	                gd.full_class_indices = classesToKeep;
-	              }
-	              
-	              let x = gd.grid_x;
-	              let y = gd.grid_y;
-	              gd.gx = x / gridSize;
-	              gd.gy = y / gridSize;
-	              gd.gw = 1 / gridSize;
-	              let tileX = Math.floor(x / tileSize);
-	              let tileY = Math.floor(y / tileSize);
-	              gd.localX = x % tileSize;
-	              gd.localY = y % tileSize;
-	                        //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
-	              gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter]}--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
-	              icons[gd.grid_x][gd.grid_y] = gd;
+	    if (classFilter !== null) {
+
+	      if (config.class_filter == null) { config.class_filter = "None"; }
+	      if (config.filter == null) { config.filter = "None"; }
+	      if (!Array.isArray(config.grid_size)) { config.grid_size = [config.grid_size]; }
+	      if (!Array.isArray(config.class_filter)) { config.class_filter = [config.class_filter]; }
+	      if (!Array.isArray(config.layer)) { config.layer = [config.layer]; }
+	      if (!Array.isArray(config.layout)) { config.layout = [config.layout]; }
+	      if (!Array.isArray(config.filter)) { config.filter = [config.filter]; }
+	      // console.log(config.layout, layout, Array.isArray(config.layout))
+	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size=8--layout=5_0.1_cosine,10_0.1_cosine,15_0.1_cosine--class_filter=7--filter=None--layer=mixed4a--model=InceptionV1--sample_images=1000000--sample_type=random.json
+	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size%3D16--layout%3D10_0.1_cosine--class_filter%3D1--filter%3DNone--layer%3Dmixed4a--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json
+	      // console.log(config)
+	      let gridUrls = config.grid_size.map(g => `${root}/${id$$1}/web/web--grid_size=${g}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
+	      // console.log(gridUrls)
+	      load(gridUrls).then(responses => {
+	        let layers = Array(responses.length);
+	        responses.forEach((g, i) => {
+	          let gridSize = config.grid_size[i];
+	          let tileSize = config.tile_size;
+	          let numRows = gridSize / tileSize;
+	          let t = [...Array(numRows).keys()];
+	          // let tiles = t.map(x => Array(numRows))
+	          // for (let x = 0; x < numRows; x++) {
+	          //   for (let y = 0; y < numRows; y++) {
+	          //     tiles[x][y] = {
+	          //       //render/render--x%3D0--y%3D0--tries%3D4--alpha%3DFalse--tile_size%3D10--whiten%3Dtrue--steps%3D1024--icon_size%3D80--grid_size%3D10--layout%3D50_0.05_cosine--class_filter%3DNone--filter%3DNone--layer%3Dmixed4d--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.jpg?_ga=2.191103914.-1445069976.1518735995
+	          //       //assets/alexnet/render/render--x=0--y=0--tries={config.tries}--tile_size={config.tile_size}--whiten={config.whiten}--steps={config.steps}--icon_size=80--grid_size=16--layout={config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer={layer}--model={config.model}--sample_images={config.sample_images}--sample_type={config.sample_type}.jpg
+	          //       url: `${root}/${id}/render/render--x=${x}--y=${y}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`
+	          //     }
+	          //   }
+	          // }
+	          let ic = [...Array(gridSize).keys()];
+	          let icons = ic.map(x$$1 => Array(gridSize));
+	          for (const gd of g) {
+	            if (gd.x !== undefined) { gd.grid_x = gd.x; }
+	            if (gd.y !== undefined) { gd.grid_y = gd.y; }
+	            if (gd.n !== undefined) { gd.num_activations = gd.n; }
+	            if (gd.i !== undefined) { gd.top_class_indices = gd.i; }
+	            if (gd.v !== undefined) { gd.top_class_values = gd.v; }
+	            if (gd.f !== undefined) { 
+	              gd.full_class_values = gd.f; 
+	              gd.full_class_indices = classesToKeep;
 	            }
-	            layers[i] = icons;
-	          });
-	          this.set({layers, loading: false});
+	            
+	            let x$$1 = gd.grid_x;
+	            let y$$1 = gd.grid_y;
+	            gd.gx = x$$1 / gridSize;
+	            gd.gy = y$$1 / gridSize;
+	            gd.gw = 1 / gridSize;
+	            let tileX = Math.floor(x$$1 / tileSize);
+	            let tileY = Math.floor(y$$1 / tileSize);
+	            gd.localX = x$$1 % tileSize;
+	            gd.localY = y$$1 % tileSize;
+	                      //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+	            gd.url = `${root}/${id$$1}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
+	            icons[gd.grid_x][gd.grid_y] = gd;
+	          }
+	          layers[i] = icons;
 	        });
-	      }
-	    });
+	        this.set({layers, loading: false});
+	      });
+	    }
 	  }     
 	}
 	function create_main_fragment(component, ctx) {
@@ -4825,7 +5250,7 @@
 	  return new Transition(groups, this._parents, name, id1);
 	}
 
-	var id = 0;
+	var id$8 = 0;
 
 	function Transition(groups, parents, name, id) {
 	  this._groups = groups;
@@ -4839,7 +5264,7 @@
 	}
 
 	function newId() {
-	  return ++id;
+	  return ++id$8;
 	}
 
 	var selection_prototype = selection.prototype;
@@ -5682,10 +6107,10 @@
 	    const {z, selection: selection$$1, minSize} = this.get();
 	    z.translateTo(selection$$1, x * minSize, y * minSize);
 	  },
-	  home: function(duration = 0) {
+	  home: function(duration=0) {
 
 	    const {homeX, homeY, homeScale} = this.get();
-	    this.zoomTo(homeX, homeY, homeScale);
+	    this.zoomTo(homeX, homeY, homeScale, duration);
 
 	    // selection.transition()
 	    //   .duration(duration)
@@ -5739,7 +6164,7 @@
 	function add_css() {
 		var style = createElement("style");
 		style.id = 'svelte-kaete3-style';
-		style.textContent = ".svelte-ref-root.svelte-kaete3{position:relative;background:white;width:100%;height:100%}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRDNab29tLmh0bWwiLCJzb3VyY2VzIjpbIkQzWm9vbS5odG1sIl0sInNvdXJjZXNDb250ZW50IjpbIjxkaXYgXG4gIHJlZjpyb290IFxuICBjbGFzcz1cImQzem9vbVwiIFxuICBiaW5kOmNsaWVudFdpZHRoXG4gIGJpbmQ6Y2xpZW50SGVpZ2h0XG4gIG9uOm1vdXNlbW92ZT1cIm1vdXNlTW92ZShldmVudClcIlxuICBvbjptb3VzZWRvd249XCJzZXQoe21zeDogbnVsbCwgbXN5OiBudWxsfSlcIlxuICBvbjptb3VzZW91dD1cInNldCh7bXN4OiBudWxsLCBtc3k6IG51bGx9KVwiXG4+XG4gIDxzbG90IC8+XG48L2Rpdj5cblxuPHNjcmlwdD5cbmltcG9ydCB7em9vbUlkZW50aXR5IGFzIGQzWm9vbUlkZW50aXR5LCB6b29tIGFzIGQzWm9vbSwgem9vbVRyYW5zZm9ybSBhcyBkM1pvb21UcmFuc2Zvcm19IGZyb20gXCJkMy16b29tXCI7XG5pbXBvcnQge2V2ZW50IGFzIGQzRXZlbnQsIHNlbGVjdCBhcyBkM1NlbGVjdH0gZnJvbSBcImQzLXNlbGVjdGlvblwiO1xuaW1wb3J0IHsgdHdlZW4gfSBmcm9tICdzdmVsdGUtZXh0cmFzJztcbmltcG9ydCAqIGFzIGVhc2VzIGZyb20gJ2Vhc2VzLWpzbmV4dCc7XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgZGF0YSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgejogZDNab29tKCksIC8vZDMgem9vbSBvYmplY3RcbiAgICAgIGVsOiBudWxsLFxuICAgICAgc2VsZWN0aW9uOiBudWxsLCAvL3RoZSBkMyBzZWxlY3Rpb24gb2YgdGhlIHJvb3RcbiAgICAgIHRyYW5zZm9ybTogbnVsbCwgLy8gdGhlIGQzIHRyYW5zZm9ybVxuICAgICAgc2NhbGVFeHRlbnQ6IFsxLCA0OF0sIC8vXG4gICAgICBob21lU2NhbGU6IDEsXG4gICAgICBob21lWDogMC41LFxuICAgICAgaG9tZVk6IDAuNSxcbiAgICAgIHNjYWxlOiBudWxsLFxuICAgICAgdHJhbnNsYXRlWDogbnVsbCxcbiAgICAgIHRyYW5zbGF0ZVk6IG51bGwsXG4gICAgICBrOiAxLFxuICAgICAgeDogMCxcbiAgICAgIHk6IDAsXG4gICAgICBtc3g6IG51bGwsXG4gICAgICBtc3k6IG51bGwsXG4gICAgICBkaXNhYmxlQmVoYXZpb3JzOiBmYWxzZSxcbiAgICAgIHNjcm9sbFdoZWVsOiBmYWxzZSxcblxuICAgIH07XG4gIH0sXG4gIGNvbXB1dGVkOiB7XG4gICAgbWluU2l6ZTogKHtjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0fSkgPT4gTWF0aC5taW4oY2xpZW50V2lkdGgsIGNsaWVudEhlaWdodCksXG4gICAgbW91c2VPdmVyOiAoe21zeCwgbXN5fSkgPT4gbXN4ICE9IHVuZGVmaW5lZCAmJiBtc3kgIT0gdW5kZWZpbmVkLFxuICAgIG1vdXNlR2xvYmFsUG9zaXRpb246ICh7dHJhbnNmb3JtLCBtc3gsIG1zeSwgY2xpZW50SGVpZ2h0LCBjbGllbnRXaWR0aCwgbWluU2l6ZX0pID0+IHtcbiAgICAgIGlmICh0cmFuc2Zvcm0gJiYgbXN4ICE9IHVuZGVmaW5lZCAmJiBtc3kgIT0gdW5kZWZpbmVkKSB7XG4gICAgICAgIHJldHVybiBbXG4gICAgICAgICAgdHJhbnNmb3JtLmludmVydFgobXN4KSwvLyAtIChjbGllbnRXaWR0aCAtIG1pblNpemUpIC8gMixcbiAgICAgICAgICB0cmFuc2Zvcm0uaW52ZXJ0WShtc3kpLC8vIC0gKGNsaWVudEhlaWdodCAtIG1pblNpemUpIC8gMixcbiAgICAgICAgXTtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIHJldHVybiBudWxsO1xuICAgICAgfVxuICAgIH0sXG4gICAgZXh0ZW50OiAoe3NjYWxlLCB0cmFuc2xhdGVYLCB0cmFuc2xhdGVZLCBtaW5TaXplLCBjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0fSkgPT4ge1xuICAgICAgY29uc3QgeDAgPSAtIHRyYW5zbGF0ZVggLyBzY2FsZTtcbiAgICAgIGNvbnN0IHkwID0gLSB0cmFuc2xhdGVZIC8gc2NhbGU7XG4gICAgICBjb25zdCB4MSA9IHgwICsgY2xpZW50V2lkdGggLyBzY2FsZTtcbiAgICAgIGNvbnN0IHkxID0geTAgKyBjbGllbnRIZWlnaHQgLyBzY2FsZTtcbiAgICAgIHJldHVybiBbXG4gICAgICAgIFt4MCAvIG1pblNpemUsIHgxIC8gbWluU2l6ZV0sXG4gICAgICAgIFt5MCAvIG1pblNpemUsIHkxIC8gbWluU2l6ZV0sXG4gICAgICBdXG4gICAgfSxcbiAgICBnY3g6ICh7ZXh0ZW50fSkgPT4gKGV4dGVudFswXVswXSArIGV4dGVudFswXVsxXSkgLyAyLFxuICAgIGdjeTogKHtleHRlbnR9KSA9PiAoZXh0ZW50WzFdWzBdICsgZXh0ZW50WzFdWzFdKSAvIDIsXG4gIH0sXG4gIFxuICBvbmNyZWF0ZSgpIHtcbiAgICBjb25zdCB7eiwgc2NhbGVFeHRlbnQsIG1pblNpemUsIGNsaWVudFdpZHRoLCBjbGllbnRIZWlnaHQsIGhvbWVTY2FsZSwgaG9tZVgsIGhvbWVZfSA9IHRoaXMuZ2V0KCk7XG4gICAgY29uc3QgdGhhdCA9IHRoaXM7IC8vIG5lZWRlZCBiZWNhdXNlIGQzIGdpdmVzIFwidGhpc1wiIGFzIHRoZSBub2RlLCBub3QgY29tcG9uZW50LlxuICAgIHoud2hlZWxEZWx0YSgoKSA9PiB7XG4gICAgICBsZXQgZCA9IC1kM0V2ZW50LmRlbHRhWSAqIChkM0V2ZW50LmRlbHRhTW9kZSA/IDEyMCA6IDEpIC8gNTAwO1xuICAgICAgaWYgKGQzRXZlbnQuY3RybEtleSkge1xuICAgICAgICBkID0gZCAqIDEwO1xuICAgICAgfVxuICAgICAgcmV0dXJuIGQ7XG4gICAgfSk7XG4gICAgei5zY2FsZUV4dGVudChzY2FsZUV4dGVudCk7XG4gICAgY29uc3Qgc2VsZWN0aW9uID0gZDNTZWxlY3QodGhpcy5yZWZzLnJvb3QpO1xuICAgIHRoaXMuc2V0KHtcbiAgICAgIHNlbGVjdGlvbixcbiAgICAgIGVsOiB0aGlzLnJlZnMucm9vdCxcbiAgICB9KTtcbiAgICB6KHNlbGVjdGlvbik7XG4gICAgei5maWx0ZXIodGhpcy56b29tRXZlbnRGaWx0ZXIuYmluZCh0aGlzKSk7XG4gICAgei5vbihcInpvb21cIiwgKCkgPT4geyB0aGlzLm9uem9vbSh0aGF0KTsgfSk7XG4gICAgei50cmFuc2xhdGVUbyhzZWxlY3Rpb24sIGhvbWVYICogbWluU2l6ZSwgaG9tZVkgKiBtaW5TaXplKVxuICAgIHouc2NhbGVUbyhzZWxlY3Rpb24sIGhvbWVTY2FsZSk7XG4gIH0sXG4gIG9uc3RhdGUoe2NoYW5nZWQsIGN1cnJlbnQsIHByZXZpb3VzfSkge1xuICAgIGlmIChwcmV2aW91cyAhPSB1bmRlZmluZWQpIHtcbiAgICAgIGlmICgoY2hhbmdlZC5jbGllbnRXaWR0aCB8fCBjaGFuZ2VkLmNsaWVudEhlaWdodCkgJiYgY3VycmVudC5lbCkge1xuICAgICAgICB0aGlzLnVwZGF0ZSgpO1xuICAgICAgfVxuICAgIH1cbiAgICAvLyBjb25zb2xlLmxvZyhcInVwZGF0ZVwiLCBjaGFuZ2VkLCBjdXJyZW50LnNjYWxlKVxuICAgIGNvbnN0IHt6LCBzZWxlY3Rpb24sIGVsLCB4LCB5fSA9IHRoaXMuZ2V0KCk7XG4gICAgLy8gaWYgKGNoYW5nZWQuc2NhbGVFeHRlbnQgJiYgY3VycmVudC5zY2FsZUV4dGVudCkgeyB6LnNjYWxlRXh0ZW50KGN1cnJlbnQuc2NhbGVFeHRlbnQpIH0gXG4gICAgaWYgKHNlbGVjdGlvbikge1xuXG4gICAgICAvLyBpZiAoY2hhbmdlZC54IHx8IGNoYW5nZWQueSkge1xuICAgICAgLy8gICB6LnRyYW5zbGF0ZVRvKHNlbGVjdGlvbiwgY3VycmVudC54LCBjdXJyZW50LnkpO1xuICAgICAgLy8gfVxuXG4gICAgICAvLyBpZiAoY2hhbmdlZC5zY2FsZSkgeyB0aGlzLnNldCh7azogY3VycmVudC5zY2FsZX0pOyB9XG4gICAgICAvLyBpZiAoY2hhbmdlZC5rKSB7IHouc2NhbGVUbyhzZWxlY3Rpb24sIGN1cnJlbnQuayk7IH0gXG5cbiAgICAgIC8vIGlmIChjaGFuZ2VkLnRyYW5zbGF0ZVgpIHsgdGhpcy5zZXQoe3g6IGN1cnJlbnQudHJhbnNsYXRlWH0pOyB9XG4gICAgICAvLyBpZiAoY2hhbmdlZC50cmFuc2xhdGVZKSB7IHRoaXMuc2V0KHt4OiBjdXJyZW50LnRyYW5zbGF0ZVl9KTsgfVxuXG4gICAgfVxuICB9LFxuICBtZXRob2RzOiB7XG4gICAgdHdlZW4sXG4gICAgem9vbUV2ZW50RmlsdGVyOiBmdW5jdGlvbigpIHtcbiAgICAgIGNvbnN0IHtzY3JvbGxXaGVlbCwgZGlzYWJsZUJlaGF2aW9yc30gPSB0aGlzLmdldCgpO1xuICAgICAgLy8gY29uc29sZS5sb2coZDNFdmVudCk7XG4gICAgICBpZiAoZGlzYWJsZUJlaGF2aW9ycykge1xuICAgICAgICByZXR1cm4gZmFsc2U7XG4gICAgICB9XG4gICAgICAvLyBJZiB3ZSB3YW50IHRvIHN1cHByZXNzIHNjcm9sbCB3aGVlbCBldmVudHMuLi5cbiAgICAgIGlmICghc2Nyb2xsV2hlZWwpIHtcbiAgICAgICAgLy8gLi4uIHJldHVybiBmYWxzZSBmb3Igc2Nyb2xsIHdoZWVsIGV2ZW50cyArIGJ1dHRvbiA9IDEgZXZlbnRzXG4gICAgICAgIHJldHVybiAhKGQzRXZlbnQudHlwZSA9PT0gXCJ3aGVlbFwiICYmIGQzRXZlbnQuY3RybEtleSA9PT0gZmFsc2UpICYmIGQzRXZlbnQuYnV0dG9uID09IDA7XG4gICAgICB9IGVsc2Uge1xuICAgICAgICAvLy4uLiBqdXN0IHJldHVybiBmYWxzZSBmb3IgYnV0dG9uID0gMSBldmVudHNcbiAgICAgICAgcmV0dXJuIGQzRXZlbnQuYnV0dG9uID09IDA7XG4gICAgICB9XG4gICAgfSxcbiAgICBtb3VzZU1vdmU6IGZ1bmN0aW9uKGV2ZW50KSB7XG4gICAgICBjb25zdCBtc3ggPSBldmVudC5vZmZzZXRYO1xuICAgICAgY29uc3QgbXN5ID0gZXZlbnQub2Zmc2V0WTtcbiAgICAgIHRoaXMuc2V0KHtcbiAgICAgICAgbXN4LCBtc3lcbiAgICAgIH0pO1xuICAgICAgY29uc3Qge21vdXNlR2xvYmFsUG9zaXRpb259ID0gdGhpcy5nZXQoKTtcbiAgICB9LFxuICAgIHVwZGF0ZTogZnVuY3Rpb24oKSB7XG4gICAgICBcbiAgICAgIGNvbnN0IHtjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0LCBtaW5TaXplLCBlbCwgen0gPSB0aGlzLmdldCgpO1xuICAgICAgY29uc3QgdHJhbnNmb3JtID0gZDNab29tVHJhbnNmb3JtKGVsKTtcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwidXBkYXRlXCIsIHRyYW5zZm9ybS5rKVxuICAgICAgY29uc3Qgc2NhbGUgPSB0cmFuc2Zvcm0uaztcbiAgICAgIHRoaXMuc2V0KHtcbiAgICAgICAgc2NhbGUsXG4gICAgICAgIHRyYW5zZm9ybSxcbiAgICAgICAgdHJhbnNsYXRlWDogdHJhbnNmb3JtLngsIC8vICsgc2NhbGUgKiAoY2xpZW50V2lkdGggLSBtaW5TaXplKSAvIDIsXG4gICAgICAgIHRyYW5zbGF0ZVk6IHRyYW5zZm9ybS55LCAvLyArIHNjYWxlICogKGNsaWVudEhlaWdodCAtIG1pblNpemUpIC8gMixcbiAgICAgIH0pO1xuICAgIH0sXG4gICAgb256b29tOiBmdW5jdGlvbih0aGF0KSB7XG4gICAgICAvLyBjb25zb2xlLmxvZyhcIm9uem9vbVwiKVxuICAgICAgdGhhdC51cGRhdGUoKTtcbiAgICB9LFxuICAgIHpvb21UbzogZnVuY3Rpb24oeCwgeSwgc2NhbGUgPSAxLCBkdXJhdGlvbiA9IDEwMDApIHtcbiAgICAgIGNvbnN0IHtzZWxlY3Rpb24sIHosIG1pblNpemUsIGNsaWVudFdpZHRoLCBjbGllbnRIZWlnaHR9ID0gdGhpcy5nZXQoKTtcblxuICAgICAgc2VsZWN0aW9uLnRyYW5zaXRpb24oKVxuICAgICAgICAuZHVyYXRpb24oZHVyYXRpb24pXG4gICAgICAgIC5jYWxsKHoudHJhbnNmb3JtLCBcbiAgICAgICAgICBkM1pvb21JZGVudGl0eVxuICAgICAgICAgICAgLnRyYW5zbGF0ZShjbGllbnRXaWR0aCAvIDIsIGNsaWVudEhlaWdodCAvIDIpXG4gICAgICAgICAgICAuc2NhbGUoc2NhbGUpXG4gICAgICAgICAgICAudHJhbnNsYXRlKC0geCAqIG1pblNpemUsIC0geSAqIG1pblNpemUpKTtcbiAgICB9LFxuICAgIHRyYW5zbGF0ZVRvOiBmdW5jdGlvbih4LCB5KSB7XG4gICAgICBjb25zdCB7eiwgc2VsZWN0aW9uLCBtaW5TaXplfSA9IHRoaXMuZ2V0KCk7XG4gICAgICB6LnRyYW5zbGF0ZVRvKHNlbGVjdGlvbiwgeCAqIG1pblNpemUsIHkgKiBtaW5TaXplKVxuICAgIH0sXG4gICAgaG9tZTogZnVuY3Rpb24oZHVyYXRpb24gPSAwKSB7XG5cbiAgICAgIGNvbnN0IHtob21lWCwgaG9tZVksIGhvbWVTY2FsZX0gPSB0aGlzLmdldCgpO1xuICAgICAgdGhpcy56b29tVG8oaG9tZVgsIGhvbWVZLCBob21lU2NhbGUpXG5cbiAgICAgIC8vIHNlbGVjdGlvbi50cmFuc2l0aW9uKClcbiAgICAgIC8vICAgLmR1cmF0aW9uKGR1cmF0aW9uKVxuICAgICAgLy8gICAuY2FsbCh6LnRyYW5zZm9ybSwgXG4gICAgICAvLyAgICAgZDNab29tSWRlbnRpdHlcbiAgICAgIC8vICAgICAgIC50cmFuc2xhdGUoY2xpZW50V2lkdGggLyAyLCBjbGllbnRIZWlnaHQgLyAyKVxuICAgICAgLy8gICAgICAgLnRyYW5zbGF0ZSgtIDAuNSAqIG1pblNpemUsIC0gMC41ICogbWluU2l6ZSkpO1xuICAgIH0sXG4gICAgc2NhbGVUbzogZnVuY3Rpb24oc2NhbGUsIGR1cmF0aW9uPTApIHtcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwic2NhbGVUb1wiLCBkdXJhdGlvbilcbiAgICAgIGNvbnN0IHt6LCBzZWxlY3Rpb259ID0gdGhpcy5nZXQoKTtcbiAgICAgIHNlbGVjdGlvbi50cmFuc2l0aW9uKClcbiAgICAgICAgLmR1cmF0aW9uKGR1cmF0aW9uKVxuICAgICAgICAuY2FsbCh6LnNjYWxlVG8sIHNjYWxlKTtcbiAgICB9XG4gIH1cbn1cbjwvc2NyaXB0PlxuXG48c3R5bGU+XG5yZWY6cm9vdCB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgYmFja2dyb3VuZDogd2hpdGU7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG59XG48L3N0eWxlPiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFtTUEsOEJBQVMsQ0FBQyxBQUNSLFFBQVEsQ0FBRSxRQUFRLENBQ2xCLFVBQVUsQ0FBRSxLQUFLLENBQ2pCLEtBQUssQ0FBRSxJQUFJLENBQ1gsTUFBTSxDQUFFLElBQUksQUFDZCxDQUFDIn0= */";
+		style.textContent = ".svelte-ref-root.svelte-kaete3{position:relative;background:white;width:100%;height:100%}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRDNab29tLmh0bWwiLCJzb3VyY2VzIjpbIkQzWm9vbS5odG1sIl0sInNvdXJjZXNDb250ZW50IjpbIjxkaXYgXG4gIHJlZjpyb290IFxuICBjbGFzcz1cImQzem9vbVwiIFxuICBiaW5kOmNsaWVudFdpZHRoXG4gIGJpbmQ6Y2xpZW50SGVpZ2h0XG4gIG9uOm1vdXNlbW92ZT1cIm1vdXNlTW92ZShldmVudClcIlxuICBvbjptb3VzZWRvd249XCJzZXQoe21zeDogbnVsbCwgbXN5OiBudWxsfSlcIlxuICBvbjptb3VzZW91dD1cInNldCh7bXN4OiBudWxsLCBtc3k6IG51bGx9KVwiXG4+XG4gIDxzbG90IC8+XG48L2Rpdj5cblxuPHNjcmlwdD5cbmltcG9ydCB7em9vbUlkZW50aXR5IGFzIGQzWm9vbUlkZW50aXR5LCB6b29tIGFzIGQzWm9vbSwgem9vbVRyYW5zZm9ybSBhcyBkM1pvb21UcmFuc2Zvcm19IGZyb20gXCJkMy16b29tXCI7XG5pbXBvcnQge2V2ZW50IGFzIGQzRXZlbnQsIHNlbGVjdCBhcyBkM1NlbGVjdH0gZnJvbSBcImQzLXNlbGVjdGlvblwiO1xuaW1wb3J0IHsgdHdlZW4gfSBmcm9tICdzdmVsdGUtZXh0cmFzJztcbmltcG9ydCAqIGFzIGVhc2VzIGZyb20gJ2Vhc2VzLWpzbmV4dCc7XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgZGF0YSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgejogZDNab29tKCksIC8vZDMgem9vbSBvYmplY3RcbiAgICAgIGVsOiBudWxsLFxuICAgICAgc2VsZWN0aW9uOiBudWxsLCAvL3RoZSBkMyBzZWxlY3Rpb24gb2YgdGhlIHJvb3RcbiAgICAgIHRyYW5zZm9ybTogbnVsbCwgLy8gdGhlIGQzIHRyYW5zZm9ybVxuICAgICAgc2NhbGVFeHRlbnQ6IFsxLCA0OF0sIC8vXG4gICAgICBob21lU2NhbGU6IDEsXG4gICAgICBob21lWDogMC41LFxuICAgICAgaG9tZVk6IDAuNSxcbiAgICAgIHNjYWxlOiBudWxsLFxuICAgICAgdHJhbnNsYXRlWDogbnVsbCxcbiAgICAgIHRyYW5zbGF0ZVk6IG51bGwsXG4gICAgICBrOiAxLFxuICAgICAgeDogMCxcbiAgICAgIHk6IDAsXG4gICAgICBtc3g6IG51bGwsXG4gICAgICBtc3k6IG51bGwsXG4gICAgICBkaXNhYmxlQmVoYXZpb3JzOiBmYWxzZSxcbiAgICAgIHNjcm9sbFdoZWVsOiBmYWxzZSxcblxuICAgIH07XG4gIH0sXG4gIGNvbXB1dGVkOiB7XG4gICAgbWluU2l6ZTogKHtjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0fSkgPT4gTWF0aC5taW4oY2xpZW50V2lkdGgsIGNsaWVudEhlaWdodCksXG4gICAgbW91c2VPdmVyOiAoe21zeCwgbXN5fSkgPT4gbXN4ICE9IHVuZGVmaW5lZCAmJiBtc3kgIT0gdW5kZWZpbmVkLFxuICAgIG1vdXNlR2xvYmFsUG9zaXRpb246ICh7dHJhbnNmb3JtLCBtc3gsIG1zeSwgY2xpZW50SGVpZ2h0LCBjbGllbnRXaWR0aCwgbWluU2l6ZX0pID0+IHtcbiAgICAgIGlmICh0cmFuc2Zvcm0gJiYgbXN4ICE9IHVuZGVmaW5lZCAmJiBtc3kgIT0gdW5kZWZpbmVkKSB7XG4gICAgICAgIHJldHVybiBbXG4gICAgICAgICAgdHJhbnNmb3JtLmludmVydFgobXN4KSwvLyAtIChjbGllbnRXaWR0aCAtIG1pblNpemUpIC8gMixcbiAgICAgICAgICB0cmFuc2Zvcm0uaW52ZXJ0WShtc3kpLC8vIC0gKGNsaWVudEhlaWdodCAtIG1pblNpemUpIC8gMixcbiAgICAgICAgXTtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIHJldHVybiBudWxsO1xuICAgICAgfVxuICAgIH0sXG4gICAgZXh0ZW50OiAoe3NjYWxlLCB0cmFuc2xhdGVYLCB0cmFuc2xhdGVZLCBtaW5TaXplLCBjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0fSkgPT4ge1xuICAgICAgY29uc3QgeDAgPSAtIHRyYW5zbGF0ZVggLyBzY2FsZTtcbiAgICAgIGNvbnN0IHkwID0gLSB0cmFuc2xhdGVZIC8gc2NhbGU7XG4gICAgICBjb25zdCB4MSA9IHgwICsgY2xpZW50V2lkdGggLyBzY2FsZTtcbiAgICAgIGNvbnN0IHkxID0geTAgKyBjbGllbnRIZWlnaHQgLyBzY2FsZTtcbiAgICAgIHJldHVybiBbXG4gICAgICAgIFt4MCAvIG1pblNpemUsIHgxIC8gbWluU2l6ZV0sXG4gICAgICAgIFt5MCAvIG1pblNpemUsIHkxIC8gbWluU2l6ZV0sXG4gICAgICBdXG4gICAgfSxcbiAgICBnY3g6ICh7ZXh0ZW50fSkgPT4gKGV4dGVudFswXVswXSArIGV4dGVudFswXVsxXSkgLyAyLFxuICAgIGdjeTogKHtleHRlbnR9KSA9PiAoZXh0ZW50WzFdWzBdICsgZXh0ZW50WzFdWzFdKSAvIDIsXG4gIH0sXG4gIFxuICBvbmNyZWF0ZSgpIHtcbiAgICBjb25zdCB7eiwgc2NhbGVFeHRlbnQsIG1pblNpemUsIGNsaWVudFdpZHRoLCBjbGllbnRIZWlnaHQsIGhvbWVTY2FsZSwgaG9tZVgsIGhvbWVZfSA9IHRoaXMuZ2V0KCk7XG4gICAgY29uc3QgdGhhdCA9IHRoaXM7IC8vIG5lZWRlZCBiZWNhdXNlIGQzIGdpdmVzIFwidGhpc1wiIGFzIHRoZSBub2RlLCBub3QgY29tcG9uZW50LlxuICAgIHoud2hlZWxEZWx0YSgoKSA9PiB7XG4gICAgICBsZXQgZCA9IC1kM0V2ZW50LmRlbHRhWSAqIChkM0V2ZW50LmRlbHRhTW9kZSA/IDEyMCA6IDEpIC8gNTAwO1xuICAgICAgaWYgKGQzRXZlbnQuY3RybEtleSkge1xuICAgICAgICBkID0gZCAqIDEwO1xuICAgICAgfVxuICAgICAgcmV0dXJuIGQ7XG4gICAgfSk7XG4gICAgei5zY2FsZUV4dGVudChzY2FsZUV4dGVudCk7XG4gICAgY29uc3Qgc2VsZWN0aW9uID0gZDNTZWxlY3QodGhpcy5yZWZzLnJvb3QpO1xuICAgIHRoaXMuc2V0KHtcbiAgICAgIHNlbGVjdGlvbixcbiAgICAgIGVsOiB0aGlzLnJlZnMucm9vdCxcbiAgICB9KTtcbiAgICB6KHNlbGVjdGlvbik7XG4gICAgei5maWx0ZXIodGhpcy56b29tRXZlbnRGaWx0ZXIuYmluZCh0aGlzKSk7XG4gICAgei5vbihcInpvb21cIiwgKCkgPT4geyB0aGlzLm9uem9vbSh0aGF0KTsgfSk7XG4gICAgei50cmFuc2xhdGVUbyhzZWxlY3Rpb24sIGhvbWVYICogbWluU2l6ZSwgaG9tZVkgKiBtaW5TaXplKVxuICAgIHouc2NhbGVUbyhzZWxlY3Rpb24sIGhvbWVTY2FsZSk7XG4gIH0sXG4gIG9uc3RhdGUoe2NoYW5nZWQsIGN1cnJlbnQsIHByZXZpb3VzfSkge1xuICAgIGlmIChwcmV2aW91cyAhPSB1bmRlZmluZWQpIHtcbiAgICAgIGlmICgoY2hhbmdlZC5jbGllbnRXaWR0aCB8fCBjaGFuZ2VkLmNsaWVudEhlaWdodCkgJiYgY3VycmVudC5lbCkge1xuICAgICAgICB0aGlzLnVwZGF0ZSgpO1xuICAgICAgfVxuICAgIH1cbiAgICAvLyBjb25zb2xlLmxvZyhcInVwZGF0ZVwiLCBjaGFuZ2VkLCBjdXJyZW50LnNjYWxlKVxuICAgIGNvbnN0IHt6LCBzZWxlY3Rpb24sIGVsLCB4LCB5fSA9IHRoaXMuZ2V0KCk7XG4gICAgLy8gaWYgKGNoYW5nZWQuc2NhbGVFeHRlbnQgJiYgY3VycmVudC5zY2FsZUV4dGVudCkgeyB6LnNjYWxlRXh0ZW50KGN1cnJlbnQuc2NhbGVFeHRlbnQpIH0gXG4gICAgaWYgKHNlbGVjdGlvbikge1xuXG4gICAgICAvLyBpZiAoY2hhbmdlZC54IHx8IGNoYW5nZWQueSkge1xuICAgICAgLy8gICB6LnRyYW5zbGF0ZVRvKHNlbGVjdGlvbiwgY3VycmVudC54LCBjdXJyZW50LnkpO1xuICAgICAgLy8gfVxuXG4gICAgICAvLyBpZiAoY2hhbmdlZC5zY2FsZSkgeyB0aGlzLnNldCh7azogY3VycmVudC5zY2FsZX0pOyB9XG4gICAgICAvLyBpZiAoY2hhbmdlZC5rKSB7IHouc2NhbGVUbyhzZWxlY3Rpb24sIGN1cnJlbnQuayk7IH0gXG5cbiAgICAgIC8vIGlmIChjaGFuZ2VkLnRyYW5zbGF0ZVgpIHsgdGhpcy5zZXQoe3g6IGN1cnJlbnQudHJhbnNsYXRlWH0pOyB9XG4gICAgICAvLyBpZiAoY2hhbmdlZC50cmFuc2xhdGVZKSB7IHRoaXMuc2V0KHt4OiBjdXJyZW50LnRyYW5zbGF0ZVl9KTsgfVxuXG4gICAgfVxuICB9LFxuICBtZXRob2RzOiB7XG4gICAgdHdlZW4sXG4gICAgem9vbUV2ZW50RmlsdGVyOiBmdW5jdGlvbigpIHtcbiAgICAgIGNvbnN0IHtzY3JvbGxXaGVlbCwgZGlzYWJsZUJlaGF2aW9yc30gPSB0aGlzLmdldCgpO1xuICAgICAgLy8gY29uc29sZS5sb2coZDNFdmVudCk7XG4gICAgICBpZiAoZGlzYWJsZUJlaGF2aW9ycykge1xuICAgICAgICByZXR1cm4gZmFsc2U7XG4gICAgICB9XG4gICAgICAvLyBJZiB3ZSB3YW50IHRvIHN1cHByZXNzIHNjcm9sbCB3aGVlbCBldmVudHMuLi5cbiAgICAgIGlmICghc2Nyb2xsV2hlZWwpIHtcbiAgICAgICAgLy8gLi4uIHJldHVybiBmYWxzZSBmb3Igc2Nyb2xsIHdoZWVsIGV2ZW50cyArIGJ1dHRvbiA9IDEgZXZlbnRzXG4gICAgICAgIHJldHVybiAhKGQzRXZlbnQudHlwZSA9PT0gXCJ3aGVlbFwiICYmIGQzRXZlbnQuY3RybEtleSA9PT0gZmFsc2UpICYmIGQzRXZlbnQuYnV0dG9uID09IDA7XG4gICAgICB9IGVsc2Uge1xuICAgICAgICAvLy4uLiBqdXN0IHJldHVybiBmYWxzZSBmb3IgYnV0dG9uID0gMSBldmVudHNcbiAgICAgICAgcmV0dXJuIGQzRXZlbnQuYnV0dG9uID09IDA7XG4gICAgICB9XG4gICAgfSxcbiAgICBtb3VzZU1vdmU6IGZ1bmN0aW9uKGV2ZW50KSB7XG4gICAgICBjb25zdCBtc3ggPSBldmVudC5vZmZzZXRYO1xuICAgICAgY29uc3QgbXN5ID0gZXZlbnQub2Zmc2V0WTtcbiAgICAgIHRoaXMuc2V0KHtcbiAgICAgICAgbXN4LCBtc3lcbiAgICAgIH0pO1xuICAgICAgY29uc3Qge21vdXNlR2xvYmFsUG9zaXRpb259ID0gdGhpcy5nZXQoKTtcbiAgICB9LFxuICAgIHVwZGF0ZTogZnVuY3Rpb24oKSB7XG4gICAgICBcbiAgICAgIGNvbnN0IHtjbGllbnRXaWR0aCwgY2xpZW50SGVpZ2h0LCBtaW5TaXplLCBlbCwgen0gPSB0aGlzLmdldCgpO1xuICAgICAgY29uc3QgdHJhbnNmb3JtID0gZDNab29tVHJhbnNmb3JtKGVsKTtcbiAgICAgIC8vIGNvbnNvbGUubG9nKFwidXBkYXRlXCIsIHRyYW5zZm9ybS5rKVxuICAgICAgY29uc3Qgc2NhbGUgPSB0cmFuc2Zvcm0uaztcbiAgICAgIHRoaXMuc2V0KHtcbiAgICAgICAgc2NhbGUsXG4gICAgICAgIHRyYW5zZm9ybSxcbiAgICAgICAgdHJhbnNsYXRlWDogdHJhbnNmb3JtLngsIC8vICsgc2NhbGUgKiAoY2xpZW50V2lkdGggLSBtaW5TaXplKSAvIDIsXG4gICAgICAgIHRyYW5zbGF0ZVk6IHRyYW5zZm9ybS55LCAvLyArIHNjYWxlICogKGNsaWVudEhlaWdodCAtIG1pblNpemUpIC8gMixcbiAgICAgIH0pO1xuICAgIH0sXG4gICAgb256b29tOiBmdW5jdGlvbih0aGF0KSB7XG4gICAgICAvLyBjb25zb2xlLmxvZyhcIm9uem9vbVwiKVxuICAgICAgdGhhdC51cGRhdGUoKTtcbiAgICB9LFxuICAgIHpvb21UbzogZnVuY3Rpb24oeCwgeSwgc2NhbGUgPSAxLCBkdXJhdGlvbiA9IDEwMDApIHtcbiAgICAgIGNvbnN0IHtzZWxlY3Rpb24sIHosIG1pblNpemUsIGNsaWVudFdpZHRoLCBjbGllbnRIZWlnaHR9ID0gdGhpcy5nZXQoKTtcblxuICAgICAgc2VsZWN0aW9uLnRyYW5zaXRpb24oKVxuICAgICAgICAuZHVyYXRpb24oZHVyYXRpb24pXG4gICAgICAgIC5jYWxsKHoudHJhbnNmb3JtLCBcbiAgICAgICAgICBkM1pvb21JZGVudGl0eVxuICAgICAgICAgICAgLnRyYW5zbGF0ZShjbGllbnRXaWR0aCAvIDIsIGNsaWVudEhlaWdodCAvIDIpXG4gICAgICAgICAgICAuc2NhbGUoc2NhbGUpXG4gICAgICAgICAgICAudHJhbnNsYXRlKC0geCAqIG1pblNpemUsIC0geSAqIG1pblNpemUpKTtcbiAgICB9LFxuICAgIHRyYW5zbGF0ZVRvOiBmdW5jdGlvbih4LCB5KSB7XG4gICAgICBjb25zdCB7eiwgc2VsZWN0aW9uLCBtaW5TaXplfSA9IHRoaXMuZ2V0KCk7XG4gICAgICB6LnRyYW5zbGF0ZVRvKHNlbGVjdGlvbiwgeCAqIG1pblNpemUsIHkgKiBtaW5TaXplKVxuICAgIH0sXG4gICAgaG9tZTogZnVuY3Rpb24oZHVyYXRpb249MCkge1xuXG4gICAgICBjb25zdCB7aG9tZVgsIGhvbWVZLCBob21lU2NhbGV9ID0gdGhpcy5nZXQoKTtcbiAgICAgIHRoaXMuem9vbVRvKGhvbWVYLCBob21lWSwgaG9tZVNjYWxlLCBkdXJhdGlvbilcblxuICAgICAgLy8gc2VsZWN0aW9uLnRyYW5zaXRpb24oKVxuICAgICAgLy8gICAuZHVyYXRpb24oZHVyYXRpb24pXG4gICAgICAvLyAgIC5jYWxsKHoudHJhbnNmb3JtLCBcbiAgICAgIC8vICAgICBkM1pvb21JZGVudGl0eVxuICAgICAgLy8gICAgICAgLnRyYW5zbGF0ZShjbGllbnRXaWR0aCAvIDIsIGNsaWVudEhlaWdodCAvIDIpXG4gICAgICAvLyAgICAgICAudHJhbnNsYXRlKC0gMC41ICogbWluU2l6ZSwgLSAwLjUgKiBtaW5TaXplKSk7XG4gICAgfSxcbiAgICBzY2FsZVRvOiBmdW5jdGlvbihzY2FsZSwgZHVyYXRpb249MCkge1xuICAgICAgLy8gY29uc29sZS5sb2coXCJzY2FsZVRvXCIsIGR1cmF0aW9uKVxuICAgICAgY29uc3Qge3osIHNlbGVjdGlvbn0gPSB0aGlzLmdldCgpO1xuICAgICAgc2VsZWN0aW9uLnRyYW5zaXRpb24oKVxuICAgICAgICAuZHVyYXRpb24oZHVyYXRpb24pXG4gICAgICAgIC5jYWxsKHouc2NhbGVUbywgc2NhbGUpO1xuICAgIH1cbiAgfVxufVxuPC9zY3JpcHQ+XG5cbjxzdHlsZT5cbnJlZjpyb290IHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICBiYWNrZ3JvdW5kOiB3aGl0ZTtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbn1cbjwvc3R5bGU+Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQW1NQSw4QkFBUyxDQUFDLEFBQ1IsUUFBUSxDQUFFLFFBQVEsQ0FDbEIsVUFBVSxDQUFFLEtBQUssQ0FDakIsS0FBSyxDQUFFLElBQUksQ0FDWCxNQUFNLENBQUUsSUFBSSxBQUNkLENBQUMifQ== */";
 		append(document.head, style);
 	}
 
@@ -7664,7 +8089,7 @@
 		return clientWidth;
 	}
 
-	function id$1({model, layerName}) {
+	function id$9({model, layerName}) {
 		return model + "_" + layerName;
 	}
 
@@ -7852,7 +8277,7 @@
 		}
 
 		if (changed.model || changed.layerName) {
-			if (this._differs(state.id, (state.id = id$1(state)))) changed.id = true;
+			if (this._differs(state.id, (state.id = id$9(state)))) changed.id = true;
 		}
 	};
 

@@ -245,9 +245,9 @@ const store = new MyStore({
     clothing: {
       layerName: "mixed5a",
       gridSize: 3,
-      gcx: 0.74955,
-      gcy: 0.5058,
-      scale: 13
+      gcx: 0.743,
+      gcy: 0.520,
+      scale: 10
     }
   }
 });

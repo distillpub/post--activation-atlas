@@ -311,8 +311,8 @@
   <a href="#" data-poi="cups">bowls and cups of mixed5b</a>. Mixed4b has some 
   <a href="#" data-poi="patterns">interesting text and pattern detectors</a>, whereas mixed5a appears to use those to differentiate 
   <a href="#" data-poi="text">menus from crossword puzzles from rulers</a>. In early layers, like mixed4b, you'll see things that have similar textures near each other, like 
-  <a href="#" data-poi="fabric">fabrics</a>. In later layers, you'll see that those things are 
-  <a href="#" data-poi="clothing">much more differentiated</a>.
+  <a href="#" data-poi="fabric">fabrics</a>. In later layers, you'll see   
+  <a href="#" data-poi="clothing">specific types of clothing</a>.
 
   <figure class="app-container">
     <d-figure id="all-layer-comparison"></d-figure>
@@ -470,7 +470,7 @@
 
   <p>Activation Atlases are a sample-based method which can only show a manifold of sampled activations. First, the dataset from which those activations are sampled from needs to come from the same distribution as the one that we are interested in. In this article we sample from the training set because we are interested in what the model has learned to recognize. Second, we need to provide enough samples to span the full manifold we want to observe. In this article we generally used one million activations but we found that 100,000 activations was often sufficient. 
 
-  <figure id="samples" style="grid-column: text/page-end;"></figure>
+  <figure id="samples" style="grid-column: page;"></figure>
 
   <h4>Doesn’t Surface Compositionality</h4>
 
@@ -497,16 +497,17 @@
 
   <p>Because the choice of a grid size is somewhat arbitrary, much like choosing a histogram bin size <d-cite key="aranm2017exploring"></d-cite>, your choice of grid size will determine the effectiveness of the final output. Choosing the wrong bin size can sometimes *hide* important features in the averages. In some of the later examples we bind this value to the zoom level so the detail of the visualizations dynamic changes as you zoom in. A more principled clustering method might be better.
 
-  <figure id="class-grids" style="grid-column: text/page-end;"></figure>
+  <figure id="class-grids" style="grid-column: page;"></figure>
 
   <h4>Dimensionality reduction vs clustering</h4>
 
   <p>One might think that a true clustering algorithm, like k-means, might produce a more robust decomposition of the activation manifold. After all, centroids produced by such an algorithm are by definition close to clusters of activations the network produces, a property that discretizing the dimensionality-reduced activations doesn’t guarantee. We experimented with different clustering techniques such as k-means, spherical k-means, and DBSCAN. However, the images produced by visualizing the resulting centroids were subjectively worse and less interpretable than the technique described in this article. Also, dimensionality reduction followed by 2D binning allows for multiple levels of detail while preserving spatial consistency, which is necessary for making atlasses zoomable. Thus, we preferred that method over clustering in this article -- but finding tradeoffs between these techniques remains an open question.</p>
 
-<h3 id="author-contributions">Author Contributions</h3>
-<p>Shan Carter wrote the majority of the article and performed all the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
-<h3 id="acknowledgements">Acknowledgments</h3>
-<p>Thanks to Ludwig Schubert for extensive technical advice and general feedback. Thanks to Sam Greydanus and Kevin Quealy for substantial editing help. Thanks to Nick Cammarata and Arvind Satyanarayan for additional feedback during development. </p>
+  <h3 id="author-contributions">Author Contributions</h3>
+  <p>Shan Carter wrote the majority of the article and performed all the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
+  <h3 id="acknowledgements">Acknowledgments</h3>
+  <p>Thanks to Ludwig Schubert for extensive technical advice and general support. Thanks to Kevin Quealy and Sam Greydanus for substantial editing help. Thanks to Arvind Satyanarayan and Nick Cammarata for additional feedback during development. </p>
+  <p>The photo used to illustrate a sub-manifold in the introduction was taken by <a href="https://unsplash.com/photos/_STiCuGSxa8">Alexandru-Bogdan Ghita</a></p>
 	<!-- <h3 id="additional-resources">Additional Resources</h3>-->
 	<d-footnote-list></d-footnote-list>
   <d-citation-list></d-citation-list>

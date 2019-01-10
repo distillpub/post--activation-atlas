@@ -169,10 +169,10 @@ export default {
       const {z, selection, minSize} = this.get();
       z.translateTo(selection, x * minSize, y * minSize)
     },
-    home: function(duration = 0) {
+    home: function(duration=0) {
 
       const {homeX, homeY, homeScale} = this.get();
-      this.zoomTo(homeX, homeY, homeScale)
+      this.zoomTo(homeX, homeY, homeScale, duration)
 
       // selection.transition()
       //   .duration(duration)

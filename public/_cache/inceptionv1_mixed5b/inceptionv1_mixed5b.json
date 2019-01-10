@@ -1,0 +1,31 @@
+{
+  "vm": "shan-gpu-07-vm",
+  "id": "inceptionv1_mixed5b",
+  "build_dir": "build",
+  "cloud_dir": "gs://shancarter/activation-atlas/build",
+  "model": "InceptionV1",
+  "layer": [
+    "mixed5b"
+  ],
+  "sample_type": "random",
+  "sample_images": 1000000,
+  "filter": null,
+  "tries": 4,
+  "tile_size": 10,
+  "grid_size": [
+    20,
+    40,
+    80,
+    160,
+    320
+  ],
+  "whiten": "true",
+  "steps": 1024,
+  "icon_size": 80,
+  "layout": "50_0.05_cosine",
+  "class_filter": null,
+  "batch_size": 100,
+  "x": null,
+  "y": null,
+  "alpha": false
+}

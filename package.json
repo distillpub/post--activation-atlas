@@ -18,6 +18,7 @@
     "d3-zoom": "^1.7.3",
     "eases-jsnext": "^1.0.10",
     "lucid-components": "0.0.6",
+    "rollup-plugin-json": "^3.1.0",
     "svelte-extras": "^2.0.2"
   },
   "scripts": {

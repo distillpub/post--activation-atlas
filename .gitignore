@@ -1,4 +1,6 @@
 node_modules/
 .DS_Store
 cache.py
-_cache/
+gradients/
+render/
+web/

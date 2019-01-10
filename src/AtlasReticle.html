@@ -3,10 +3,12 @@
 >
   {#if extent}
   <svg width={clientWidth} height={clientHeight}>
-    <path
-      class="{background ? '' : 'transparent'}"
-      d="M0,0 L{clientWidth},0 L{clientWidth},{clientHeight} L0,{clientHeight} z M{left},{top} L{left},{bottom} L{right},{bottom} L{right},{top} z"
-    />
+    {#if left && right && top && bottom}
+      <path
+        class="{background ? '' : 'transparent'}"
+        d="M0,0 L{clientWidth},0 L{clientWidth},{clientHeight} L0,{clientHeight} z M{left},{top} L{left},{bottom} L{right},{bottom} L{right},{top} z"
+      />
+    {/if}
   </svg>
     <div
       class="reticle {round ? 'round' : ''}"
@@ -36,7 +38,7 @@
     data() {
       return {
         dragging: false,
-        extent: [[],[]],
+        extent: [[0, 0],[0, 0]],
         background: true,
         round: false,
         color: "rgb(255, 130, 0)",
