@@ -1,4 +1,5 @@
-<div class="container">
+<ResponsiveResizer {clientWidth} {clientHeight} minWidth={900}>
+  <div class="container">
     <div class="filter" style="display: {showClassFilter ? 'block' : 'none'};">
       <Panel>
         <h2 slot="head">Class Filter</h2>
@@ -115,7 +116,7 @@
     </div>
   </div>
 </div>
-
+</ResponsiveResizer>
 
 <script>
 import {format as f} from "d3-format";
@@ -128,7 +129,8 @@ export default {
     AppLayerChooser: "./AppLayerChooser.html",
     AppClassFilter: "./AppClassFilter.html",
     Atlas: "../Atlas.html",
-    Panel: "../library/App/Panel.html"
+    Panel: "../library/App/Panel.html",
+    ResponsiveResizer: "../library/ResponsiveResizer.html"
   },
   data() {
     return {

@@ -1,0 +1,53 @@
+<!-- 
+  Will start to add a transform: scale(...) when the width gets smaller than
+  the provided minWidth parameter.
+  clientWidth and clientHeight are otherwise respected.
+ -->
+
+<div ref:root>
+  <div
+    ref:frame
+    style="
+      transform: scale({scale});
+      width: {finalWidth};
+      height: {finalHeight};
+    "
+  >
+    <slot></slot>
+  </div>
+</div>
+
+<script>
+export default {
+  data() {
+    return {
+      clientWidth: 1000,
+      clientHeight: 1000,
+      minWidth: 800,
+    }
+  },
+  computed: {
+    scale: ({clientWidth, minWidth}) => clientWidth / Math.max(clientWidth, minWidth),
+    finalWidth: ({clientWidth, width, minWidth}) => {
+      return Math.max(clientWidth, minWidth) + "px";
+    },
+    finalHeight: ({clientHeight, scale}) => {
+      return clientHeight / scale + "px";
+    }
+  }
+}
+</script>
+
+
+<style>
+  ref:root {
+    width: 100%;
+    position: relative;
+  }
+  ref:frame {
+    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+</style>

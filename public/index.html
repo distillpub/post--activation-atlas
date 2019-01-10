@@ -22,8 +22,8 @@
       border-bottom: solid 1px rgba(0, 0, 0, 0.2);
       grid-column: screen;
       height: 80vh; 
-      max-height: 1200px;
-      min-height: 550px;
+      max-height: 400px;
+      min-height: 300px;
       position: relative;
       box-shadow: 0 0 18px 4px rgba(0, 0, 0, 0.12);
       margin-top: 3em;
@@ -31,10 +31,14 @@
       display: flex;
       contain: content;
       overflow: hidden;
-
+    }
+    @media (min-width: 900px) {
+      .app-container {
+        max-height: 1200px;
+        min-height: 400px;
+      }
     }
     d-title .app-container {
-      max-height: 800px;
       margin-top: 1.5em;
     }
     .app-container > d-figure {

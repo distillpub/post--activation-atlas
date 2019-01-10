@@ -15,22 +15,22 @@
 
   height: Simply uses this constant value. If a number is given, assumed to be
   pixel height. If a string is given, a css value is assumed and pased directly
-  to a css height: "" declaration. Thus you can use "10vh" as a value.
+  to a css height: "..." declaration. Thus you can use "10vh" as a value.
 
   aspectRatio (w/h): used the width of the element to compute the height based on 
   this ratio. When aspectRatio is used, an optional property "minHeight" is 
   available and any height values given are ignored.
  -->
 
-<Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
-<div ref:container bind:clientWidth style="width: {finalWidth}; height: {finalHeight};">
-  {#if ready}
-    <svelte:component ref:component this={component} {...componentData} clientWidth={width}/>
-  {:else}
-    <Loading />
-  {/if}
+<div ref:container bind:clientWidth bind:clientHeight style="width: {finalWidth}; height: {finalHeight};">
+  <Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
+    {#if ready}
+      <svelte:component ref:component this={component} {clientWidth} {clientHeight} {...componentData} />
+    {:else}
+      <Loading />
+    {/if}
+  </Radar>
 </div>
-</Radar>
 
 <script>
   export default {

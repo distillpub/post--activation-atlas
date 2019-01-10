@@ -81,6 +81,19 @@ h4 {
   margin: 16px 0;
 }
 
+@media (min-width: 550px) {
+  .section {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .section h4 {
+    grid-column: 1/4;
+  }
+  .section .figcaption {
+    grid-column: 3/4;
+    margin: 0;
+  }
+}
+
 @media (min-width: 768px) {
   .section {
     display: block;
@@ -92,10 +105,14 @@ h4 {
   }
   .diagram {
     position: relative;
-    padding: 20px;
     box-sizing: border-box;
+    padding: 10px 0;
   }
-  
-    
+}
+
+@media (min-width: 1000px) {
+  .diagram {
+    padding: 20px;
+  }
 }
 </style>
