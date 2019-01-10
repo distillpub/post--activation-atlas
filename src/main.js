@@ -437,14 +437,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 	subjects.forEach(s => {
 		groups.forEach (g => {
+			let d = {
+				index: g,
+				subject: s
+			}
+			Object.assign(d, store.get().multipleLayers[s][g])
 			new VerticalLayerStatic({
 				target: document.querySelector(`#${s}-${g}`),
 				store: store,
-				data: {
-					index: g,
-					subject: s,
-					...(store.get().multipleLayers[s][g])
-				}
+				data: d
 			});
 		})
 	});

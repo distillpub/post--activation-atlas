@@ -1,43 +1,51 @@
 <div ref:root>
-  <div>
+  <div class="section">
     <h4>Individual Neurons</h4>
-    <LazyImage
-      src="assets/images/overview-neuron.jpg"
-      border={false}
-    />
+    <div class="image">
+      <LazyImage
+        src="assets/images/overview-neuron.jpg"
+        border={false}
+      />
+    </div>
     <div class="diagram">
       <LazyImage src="assets/images/manifold-1.jpg" alt="diagram" border={false} />
     </div>
     <div class="figcaption">Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only shows us one-dimensional, orthogonal probes of the high-dimensional activation space.</div>
   </div>
-  <div>
+  <div class="section">
     <h4>Pairwise Interactions</h4>
-    <LazyImage
-      src="assets/images/overview-pairwise.jpg"
-      border={false}
-    />
+    <div class="image">
+      <LazyImage
+        src="assets/images/overview-pairwise.jpg"
+        border={false}
+      />
+    </div>
     <div class="diagram">
       <LazyImage src="assets/images/manifold-2.jpg" alt="diagram" border={false} />
     </div>
-    <div class="figcaption">Pairwise interactions reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions and many of the combinations are not realistic.</div>
+    <div class="figcaption">Pairwise interactions reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions, and many of the combinations are not realistic.</div>
   </div>
-  <div>
+  <div class="section">
     <h4>Spatial Activations</h4>
-    <LazyImage
-      src="assets/images/activation-grid.png"
-      border={false}
-    />
+    <div class="image">
+      <LazyImage
+        src="assets/images/activation-grid.png"
+        border={false}
+      />
+    </div>
     <div class="diagram">
       <LazyImage src="assets/images/manifold-3.jpg" alt="diagram" border={false} />
     </div>
     <div class="figcaption">Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given example image.</div>
   </div>
-  <div>
+  <div class="section">
     <h4>Activation Atlas</h4>
-    <LazyImage
-      src="assets/images/overview-atlas.jpg"
-      border={false}
-    />
+    <div class="image">
+      <LazyImage
+        src="assets/images/overview-atlas.jpg"
+        border={false}
+      />
+    </div>
     <div class="diagram">
       <LazyImage src="assets/images/manifold-4.jpg" alt="diagram" border={false} />
     </div>
@@ -54,19 +62,40 @@
 </script>
 
 <style>
+h4 {
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  padding-bottom: 8px;
+  margin-top: 0;
+}
+.section {
+  display: grid;
+  grid-column-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 1em;
+}
+.section h4 {
+  grid-column: 1/3;
+}
+.section .figcaption {
+  grid-column: 1/3;
+  margin: 16px 0;
+}
+
+@media (min-width: 768px) {
+  .section {
+    display: block;
+  }
   ref:root {
     display: grid;
     grid-gap: 40px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-  h4 {
-    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
-    padding-bottom: 8px;
-    margin-top: 0;
   }
   .diagram {
     position: relative;
     padding: 20px;
     box-sizing: border-box;
   }
+  
+    
+}
 </style>

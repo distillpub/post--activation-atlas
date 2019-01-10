@@ -3654,7 +3654,6 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
-	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -5130,7 +5129,7 @@
 	            let tileY = Math.floor(y$$1 / tileSize);
 	            gd.localX = x$$1 % tileSize;
 	            gd.localY = y$$1 % tileSize;
-	                      //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+	            //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 	            gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
 	            icons[gd.grid_x][gd.grid_y] = gd;
 	          }
@@ -11285,7 +11284,7 @@
 	  },
 	  show: function(d) {
 	    this.set({visible: true});
-	    this.refs.component.set({...d});
+	    this.refs.component.set(d);
 	  },
 	  hide: function() {
 	    this.set({

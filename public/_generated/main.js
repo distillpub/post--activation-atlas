@@ -1789,7 +1789,7 @@
 	  },
 	  show: function(d) {
 	    this.set({visible: true});
-	    this.refs.component.set({...d});
+	    this.refs.component.set(d);
 	  },
 	  hide: function() {
 	    this.set({
@@ -6469,7 +6469,7 @@
 	            let tileY = Math.floor(y$$1 / tileSize);
 	            gd.localX = x$$1 % tileSize;
 	            gd.localY = y$$1 % tileSize;
-	                      //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
+	            //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 	            gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
 	            icons[gd.grid_x][gd.grid_y] = gd;
 	          }
@@ -12484,7 +12484,7 @@
 	const file$n = "src/diagrams/Overview.html";
 
 	function create_main_fragment$o(component, ctx) {
-		var div12, div2, h40, text1, text2, div0, text3, div1, text5, div5, h41, text7, text8, div3, text9, div4, text11, div8, h42, text13, text14, div6, text15, div7, text17, div11, h43, text19, text20, div9, text21, div10;
+		var div16, div3, h40, text1, div0, text2, div1, text3, div2, text5, div7, h41, text7, div4, text8, div5, text9, div6, text11, div11, h42, text13, div8, text14, div9, text15, div10, text17, div15, h43, text19, div12, text20, div13, text21, div14;
 
 		var lazyimage0_initial_data = {
 		 	src: "assets/images/overview-neuron.jpg",
@@ -12572,135 +12572,155 @@
 
 		return {
 			c: function create() {
-				div12 = createElement("div");
-				div2 = createElement("div");
+				div16 = createElement("div");
+				div3 = createElement("div");
 				h40 = createElement("h4");
 				h40.textContent = "Individual Neurons";
 				text1 = createText("\n    ");
+				div0 = createElement("div");
 				lazyimage0._fragment.c();
 				text2 = createText("\n    ");
-				div0 = createElement("div");
+				div1 = createElement("div");
 				lazyimage1._fragment.c();
 				text3 = createText("\n    ");
-				div1 = createElement("div");
-				div1.textContent = "Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only shows us one-dimensional, orthogonal probes of the high-dimensional activation space.";
+				div2 = createElement("div");
+				div2.textContent = "Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only shows us one-dimensional, orthogonal probes of the high-dimensional activation space.";
 				text5 = createText("\n  ");
-				div5 = createElement("div");
+				div7 = createElement("div");
 				h41 = createElement("h4");
 				h41.textContent = "Pairwise Interactions";
 				text7 = createText("\n    ");
+				div4 = createElement("div");
 				lazyimage2._fragment.c();
 				text8 = createText("\n    ");
-				div3 = createElement("div");
+				div5 = createElement("div");
 				lazyimage3._fragment.c();
 				text9 = createText("\n    ");
-				div4 = createElement("div");
-				div4.textContent = "Pairwise interactions reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions and many of the combinations are not realistic.";
+				div6 = createElement("div");
+				div6.textContent = "Pairwise interactions reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions, and many of the combinations are not realistic.";
 				text11 = createText("\n  ");
-				div8 = createElement("div");
+				div11 = createElement("div");
 				h42 = createElement("h4");
 				h42.textContent = "Spatial Activations";
 				text13 = createText("\n    ");
+				div8 = createElement("div");
 				lazyimage4._fragment.c();
 				text14 = createText("\n    ");
-				div6 = createElement("div");
+				div9 = createElement("div");
 				lazyimage5._fragment.c();
 				text15 = createText("\n    ");
-				div7 = createElement("div");
-				div7.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given example image.";
+				div10 = createElement("div");
+				div10.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given example image.";
 				text17 = createText("\n  ");
-				div11 = createElement("div");
+				div15 = createElement("div");
 				h43 = createElement("h4");
 				h43.textContent = "Activation Atlas";
 				text19 = createText("\n    ");
+				div12 = createElement("div");
 				lazyimage6._fragment.c();
 				text20 = createText("\n    ");
-				div9 = createElement("div");
+				div13 = createElement("div");
 				lazyimage7._fragment.c();
 				text21 = createText("\n    ");
-				div10 = createElement("div");
-				div10.textContent = "Activation atlases give us a bigger picture overview by sampling more of the manifold of likely activations.";
-				h40.className = "svelte-ruuveb";
-				addLoc(h40, file$n, 2, 4, 27);
-				div0.className = "diagram svelte-ruuveb";
-				addLoc(div0, file$n, 7, 4, 148);
-				div1.className = "figcaption";
-				addLoc(div1, file$n, 10, 4, 269);
-				addLoc(div2, file$n, 1, 2, 17);
-				h41.className = "svelte-ruuveb";
-				addLoc(h41, file$n, 13, 4, 527);
-				div3.className = "diagram svelte-ruuveb";
-				addLoc(div3, file$n, 18, 4, 653);
-				div4.className = "figcaption";
-				addLoc(div4, file$n, 21, 4, 774);
-				addLoc(div5, file$n, 12, 2, 517);
-				h42.className = "svelte-ruuveb";
-				addLoc(h42, file$n, 24, 4, 1008);
-				div6.className = "diagram svelte-ruuveb";
-				addLoc(div6, file$n, 29, 4, 1130);
-				div7.className = "figcaption";
-				addLoc(div7, file$n, 32, 4, 1251);
-				addLoc(div8, file$n, 23, 2, 998);
-				h43.className = "svelte-ruuveb";
-				addLoc(h43, file$n, 35, 4, 1490);
-				div9.className = "diagram svelte-ruuveb";
-				addLoc(div9, file$n, 40, 4, 1608);
-				div10.className = "figcaption";
-				addLoc(div10, file$n, 43, 4, 1729);
-				addLoc(div11, file$n, 34, 2, 1480);
-				div12.className = "svelte-ruuveb svelte-ref-root";
-				addLoc(div12, file$n, 0, 0, 0);
+				div14 = createElement("div");
+				div14.textContent = "Activation atlases give us a bigger picture overview by sampling more of the manifold of likely activations.";
+				h40.className = "svelte-8n8v2i";
+				addLoc(h40, file$n, 2, 4, 43);
+				div0.className = "image";
+				addLoc(div0, file$n, 3, 4, 75);
+				div1.className = "diagram svelte-8n8v2i";
+				addLoc(div1, file$n, 9, 4, 207);
+				div2.className = "figcaption svelte-8n8v2i";
+				addLoc(div2, file$n, 12, 4, 328);
+				div3.className = "section svelte-8n8v2i";
+				addLoc(div3, file$n, 1, 2, 17);
+				h41.className = "svelte-8n8v2i";
+				addLoc(h41, file$n, 15, 4, 602);
+				div4.className = "image";
+				addLoc(div4, file$n, 16, 4, 637);
+				div5.className = "diagram svelte-8n8v2i";
+				addLoc(div5, file$n, 22, 4, 771);
+				div6.className = "figcaption svelte-8n8v2i";
+				addLoc(div6, file$n, 25, 4, 892);
+				div7.className = "section svelte-8n8v2i";
+				addLoc(div7, file$n, 14, 2, 576);
+				h42.className = "svelte-8n8v2i";
+				addLoc(h42, file$n, 28, 4, 1143);
+				div8.className = "image";
+				addLoc(div8, file$n, 29, 4, 1176);
+				div9.className = "diagram svelte-8n8v2i";
+				addLoc(div9, file$n, 35, 4, 1308);
+				div10.className = "figcaption svelte-8n8v2i";
+				addLoc(div10, file$n, 38, 4, 1429);
+				div11.className = "section svelte-8n8v2i";
+				addLoc(div11, file$n, 27, 2, 1117);
+				h43.className = "svelte-8n8v2i";
+				addLoc(h43, file$n, 41, 4, 1684);
+				div12.className = "image";
+				addLoc(div12, file$n, 42, 4, 1714);
+				div13.className = "diagram svelte-8n8v2i";
+				addLoc(div13, file$n, 48, 4, 1845);
+				div14.className = "figcaption svelte-8n8v2i";
+				addLoc(div14, file$n, 51, 4, 1966);
+				div15.className = "section svelte-8n8v2i";
+				addLoc(div15, file$n, 40, 2, 1658);
+				div16.className = "svelte-8n8v2i svelte-ref-root";
+				addLoc(div16, file$n, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div12, anchor);
-				append(div12, div2);
-				append(div2, h40);
-				append(div2, text1);
-				lazyimage0._mount(div2, null);
-				append(div2, text2);
-				append(div2, div0);
-				lazyimage1._mount(div0, null);
-				append(div2, text3);
-				append(div2, div1);
-				append(div12, text5);
-				append(div12, div5);
-				append(div5, h41);
-				append(div5, text7);
-				lazyimage2._mount(div5, null);
-				append(div5, text8);
-				append(div5, div3);
-				lazyimage3._mount(div3, null);
-				append(div5, text9);
-				append(div5, div4);
-				append(div12, text11);
-				append(div12, div8);
-				append(div8, h42);
-				append(div8, text13);
+				insert(target, div16, anchor);
+				append(div16, div3);
+				append(div3, h40);
+				append(div3, text1);
+				append(div3, div0);
+				lazyimage0._mount(div0, null);
+				append(div3, text2);
+				append(div3, div1);
+				lazyimage1._mount(div1, null);
+				append(div3, text3);
+				append(div3, div2);
+				append(div16, text5);
+				append(div16, div7);
+				append(div7, h41);
+				append(div7, text7);
+				append(div7, div4);
+				lazyimage2._mount(div4, null);
+				append(div7, text8);
+				append(div7, div5);
+				lazyimage3._mount(div5, null);
+				append(div7, text9);
+				append(div7, div6);
+				append(div16, text11);
+				append(div16, div11);
+				append(div11, h42);
+				append(div11, text13);
+				append(div11, div8);
 				lazyimage4._mount(div8, null);
-				append(div8, text14);
-				append(div8, div6);
-				lazyimage5._mount(div6, null);
-				append(div8, text15);
-				append(div8, div7);
-				append(div12, text17);
-				append(div12, div11);
-				append(div11, h43);
-				append(div11, text19);
-				lazyimage6._mount(div11, null);
-				append(div11, text20);
+				append(div11, text14);
 				append(div11, div9);
-				lazyimage7._mount(div9, null);
-				append(div11, text21);
+				lazyimage5._mount(div9, null);
+				append(div11, text15);
 				append(div11, div10);
-				component.refs.root = div12;
+				append(div16, text17);
+				append(div16, div15);
+				append(div15, h43);
+				append(div15, text19);
+				append(div15, div12);
+				lazyimage6._mount(div12, null);
+				append(div15, text20);
+				append(div15, div13);
+				lazyimage7._mount(div13, null);
+				append(div15, text21);
+				append(div15, div14);
+				component.refs.root = div16;
 			},
 
 			p: noop,
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div12);
+					detachNode(div16);
 				}
 
 				lazyimage0.destroy();
@@ -12711,7 +12731,7 @@
 				lazyimage5.destroy();
 				lazyimage6.destroy();
 				lazyimage7.destroy();
-				if (component.refs.root === div12) component.refs.root = null;
+				if (component.refs.root === div16) component.refs.root = null;
 			}
 		};
 	}
@@ -21248,14 +21268,15 @@
 
 		subjects.forEach(s => {
 			groups.forEach (g => {
+				let d = {
+					index: g,
+					subject: s
+				};
+				Object.assign(d, store.get().multipleLayers[s][g]);
 				new VerticalLayerStatic({
 					target: document.querySelector(`#${s}-${g}`),
 					store: store,
-					data: {
-						index: g,
-						subject: s,
-						...(store.get().multipleLayers[s][g])
-					}
+					data: d
 				});
 			});
 		});

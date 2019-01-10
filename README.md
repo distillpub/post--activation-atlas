@@ -2,11 +2,11 @@
 
 ## Bugs
 
-spread operator in object literals
+phone layout (in progress)
 
-app.html and link to it somewhere
+cache assets (in progress)
 
-cache assets
+Colab notebooks (in progress)
 
 ## Nice to haves
 
@@ -17,6 +17,8 @@ grid size radio buttons smaller
 smooth zoom between gridsizes
 
 ## Done
+app.html and link to it somewhere
+spread operator in object literals
 add hover state for notebooklink
 turn off tooltip on scroll
 restore "no pan/zoom" options on atlas
@@ -27,11 +29,10 @@ no label shadow (or labels) when zooming or panning.
 label only every nth cell if cells are too small
 add poi tour to cover caption.
 Make minimap draggable
-quicklinks in multiple layers causes weird async loading issues. (this might be fixed)
+quicklinks in multiple layers causes weird async loading issues.
 add "settings tray" to bottom of minimap
 turn off scroll wheel
 one-layer initializes with animation. Others do too...
-Colab notebooks
 in options restrict gridsize to relevant levels.
 Fix zoom.html
 mousewheel and touch zoom support
