@@ -8,6 +8,8 @@ cache assets (in progress)
 
 Colab notebooks (in progress)
 
+tooltips broken in safari
+
 ## Nice to haves
 
 grid size radio buttons smaller

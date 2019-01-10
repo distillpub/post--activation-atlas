@@ -15064,7 +15064,7 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "adversarial svelte-1ghs2gk";
+				div.className = "adversarial svelte-1jfiu3j";
 				setStyle(div, "grid-template-columns", "repeat(" + ctx.classifications.length + ", 1fr)");
 				addLoc(div, file$w, 0, 0, 0);
 			},
@@ -15114,7 +15114,7 @@
 		};
 	}
 
-	// (10:8) {#each c.rows as row, i}
+	// (13:10) {#each c.rows as row, i}
 	function create_each_block_1$2(component, ctx) {
 		var tr, td0, text0_value = ctx.i + 1, text0, text1, text2, td1, text3_value = ctx.row[0], text3, text4, td2, text5_value = f(ctx.row[1]), text5, text6, tr_class_value;
 
@@ -15124,21 +15124,21 @@
 				td0 = createElement("td");
 				text0 = createText(text0_value);
 				text1 = createText(".");
-				text2 = createText("\n          ");
+				text2 = createText("\n            ");
 				td1 = createElement("td");
 				text3 = createText(text3_value);
-				text4 = createText("\n          ");
+				text4 = createText("\n            ");
 				td2 = createElement("td");
 				text5 = createText(text5_value);
 				text6 = createText("%");
-				td0.className = "svelte-1ghs2gk";
-				addLoc(td0, file$w, 11, 10, 385);
-				td1.className = "svelte-1ghs2gk";
-				addLoc(td1, file$w, 12, 10, 414);
-				td2.className = "svelte-1ghs2gk";
-				addLoc(td2, file$w, 13, 10, 442);
-				tr.className = tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1ghs2gk";
-				addLoc(tr, file$w, 10, 8, 296);
+				td0.className = "svelte-1jfiu3j";
+				addLoc(td0, file$w, 14, 12, 482);
+				td1.className = "svelte-1jfiu3j";
+				addLoc(td1, file$w, 15, 12, 513);
+				td2.className = "svelte-1jfiu3j";
+				addLoc(td2, file$w, 16, 12, 543);
+				tr.className = tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1jfiu3j";
+				addLoc(tr, file$w, 13, 10, 391);
 			},
 
 			m: function mount(target, anchor) {
@@ -15164,7 +15164,7 @@
 					setData(text5, text5_value);
 				}
 
-				if ((changed.classifications || changed.left || changed.right) && tr_class_value !== (tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1ghs2gk")) {
+				if ((changed.classifications || changed.left || changed.right) && tr_class_value !== (tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1jfiu3j")) {
 					tr.className = tr_class_value;
 				}
 			},
@@ -15179,7 +15179,7 @@
 
 	// (2:2) {#each classifications as c}
 	function create_each_block$8(component, ctx) {
-		var div1, text0, table, text1, div0, text2_value = ctx.c.caption, text2, text3;
+		var div3, div0, text0, div1, table, text1, div2, text2_value = ctx.c.caption, text2, text3;
 
 		var lazyimage_initial_data = {
 		 	src: ctx.c.image,
@@ -15202,9 +15202,11 @@
 
 		return {
 			c: function create() {
-				div1 = createElement("div");
+				div3 = createElement("div");
+				div0 = createElement("div");
 				lazyimage._fragment.c();
 				text0 = createText("\n      ");
+				div1 = createElement("div");
 				table = createElement("table");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -15212,30 +15214,37 @@
 				}
 
 				text1 = createText("\n      ");
-				div0 = createElement("div");
+				div2 = createElement("div");
 				text2 = createText(text2_value);
 				text3 = createText("\n    ");
-				table.className = "svelte-1ghs2gk";
-				addLoc(table, file$w, 8, 6, 247);
-				div0.className = "figcaption";
-				addLoc(div0, file$w, 17, 6, 515);
-				addLoc(div1, file$w, 2, 4, 131);
+				div0.className = "image";
+				addLoc(div0, file$w, 3, 6, 157);
+				table.className = "svelte-1jfiu3j";
+				addLoc(table, file$w, 11, 8, 338);
+				div1.className = "table";
+				addLoc(div1, file$w, 10, 6, 310);
+				div2.className = "figcaption svelte-1jfiu3j";
+				addLoc(div2, file$w, 21, 6, 635);
+				div3.className = "class svelte-1jfiu3j";
+				addLoc(div3, file$w, 2, 4, 131);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
-				lazyimage._mount(div1, null);
-				append(div1, text0);
+				insert(target, div3, anchor);
+				append(div3, div0);
+				lazyimage._mount(div0, null);
+				append(div3, text0);
+				append(div3, div1);
 				append(div1, table);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].m(table, null);
 				}
 
-				append(div1, text1);
-				append(div1, div0);
-				append(div0, text2);
-				append(div1, text3);
+				append(div3, text1);
+				append(div3, div2);
+				append(div2, text2);
+				append(div3, text3);
 			},
 
 			p: function update(changed, ctx) {
@@ -15273,7 +15282,7 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div1);
+					detachNode(div3);
 				}
 
 				lazyimage.destroy();
