@@ -11362,9 +11362,9 @@
 				setStyle(div0, "width", ctx.finalWidth);
 				setStyle(div0, "height", ctx.finalHeight);
 				div0.className = "svelte-fkjf8u svelte-ref-frame";
-				addLoc(div0, file$m, 7, 2, 197);
+				addLoc(div0, file$m, 12, 2, 321);
 				div1.className = "svelte-fkjf8u svelte-ref-root";
-				addLoc(div1, file$m, 6, 0, 180);
+				addLoc(div1, file$m, 11, 0, 304);
 			},
 
 			m: function mount(target, anchor) {
@@ -16989,7 +16989,7 @@
 	}
 
 	function create_main_fragment$C(component, ctx) {
-		var svg, g2, g0, image0, g0_transform_value, g1, image1, image1_opacity_value, each1_anchor, g1_transform_value, rect0, rect0_x_value, rect0_y_value, path, path_d_value, rect1, rect1_x_value, rect1_y_value, svg_viewBox_value, text0, div4, div0, text2, div1, text4, div3, text5, div2;
+		var svg, g2, g0, image0, g0_transform_value, g1, image1, image1_opacity_value, each1_anchor, g1_transform_value, rect0, rect0_x_value, rect0_y_value, path, path_d_value, rect1, rect1_x_value, rect1_y_value, svg_viewBox_value;
 
 		var each0_value = ctx.inputs;
 
@@ -17014,13 +17014,6 @@
 		for (var i = 0; i < each2_value.length; i += 1) {
 			each2_blocks[i] = create_each_block$a(component, get_each2_context$1(ctx, each2_value, i));
 		}
-
-		var notebooklink_initial_data = { url: "" };
-		var notebooklink = new NotebookLink({
-			root: component.root,
-			store: component.store,
-			data: notebooklink_initial_data
-		});
 
 		return {
 			c: function create() {
@@ -17049,18 +17042,6 @@
 				rect0 = createSvgElement("rect");
 				path = createSvgElement("path");
 				rect1 = createSvgElement("rect");
-				text0 = createText("\n");
-				div4 = createElement("div");
-				div0 = createElement("div");
-				div0.textContent = "A randomized set of one million images is fed through the network, collecting one random spatial activation per image.";
-				text2 = createText("\n  ");
-				div1 = createElement("div");
-				div1.textContent = "The activations are fed through UMAP to reduce them to two dimensions. They are then plotted, with similar activations placed near each other.";
-				text4 = createText("\n  ");
-				div3 = createElement("div");
-				text5 = createText("We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation.\n    ");
-				div2 = createElement("div");
-				notebooklink._fragment.c();
 				setXlinkAttribute(image0, "xlink:href", "assets/images/mixed4c-layout.jpg");
 				setAttribute(image0, "width", ctx.columnWidth);
 				setAttribute(image0, "height", ctx.columnWidth);
@@ -17099,19 +17080,6 @@
 				setStyle(svg, "width", "100%");
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height);
 				addLoc(svg, file$B, 0, 0, 0);
-				div0.className = "figcaption";
-				addLoc(div0, file$B, 84, 2, 4287);
-				div1.className = "figcaption";
-				addLoc(div1, file$B, 85, 2, 4438);
-				setStyle(div2, "margin-top", "8px");
-				setStyle(div2, "text-align", "right");
-				addLoc(div2, file$B, 87, 4, 4767);
-				div3.className = "figcaption";
-				addLoc(div3, file$B, 86, 2, 4613);
-				setStyle(div4, "display", "grid");
-				setStyle(div4, "grid-column-gap", "" + ctx.columnPadding / ctx.width * 100 + "%");
-				setStyle(div4, "grid-template-columns", "1fr 1fr 1fr");
-				addLoc(div4, file$B, 83, 0, 4171);
 			},
 
 			m: function mount(target, anchor) {
@@ -17140,16 +17108,6 @@
 				append(g2, rect0);
 				append(g2, path);
 				append(g2, rect1);
-				insert(target, text0, anchor);
-				insert(target, div4, anchor);
-				append(div4, div0);
-				append(div4, text2);
-				append(div4, div1);
-				append(div4, text4);
-				append(div4, div3);
-				append(div3, text5);
-				append(div3, div2);
-				notebooklink._mount(div2, null);
 			},
 
 			p: function update(changed, ctx) {
@@ -17275,10 +17233,6 @@
 				if ((changed.width || changed.height) && svg_viewBox_value !== (svg_viewBox_value = "0 0 " + ctx.width + " " + ctx.height)) {
 					setAttribute(svg, "viewBox", svg_viewBox_value);
 				}
-
-				if (changed.columnPadding || changed.width) {
-					setStyle(div4, "grid-column-gap", "" + ctx.columnPadding / ctx.width * 100 + "%");
-				}
 			},
 
 			d: function destroy$$1(detach) {
@@ -17291,13 +17245,6 @@
 				destroyEach(each1_blocks, detach);
 
 				destroyEach(each2_blocks, detach);
-
-				if (detach) {
-					detachNode(text0);
-					detachNode(div4);
-				}
-
-				notebooklink.destroy();
 			}
 		};
 	}
@@ -21165,7 +21112,7 @@
 		new LazyComponent({
 			target: document.querySelector("#process"),
 			data: {
-				aspectRatio: 2.1,
+				aspectRatio: 2.64,
 				component: Process
 			}
 		});

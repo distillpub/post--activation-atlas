@@ -169,7 +169,6 @@
     <div id="activation-grid"></div>
     <div style="text-align: right; margin-top: 8px;">
       <span data-notebook-url="https://colab.sandbox.google.com/github/tensorflow/lucid/blob/master/notebooks/building-blocks/ActivationGrid.ipynb"></span>
-    
     </div>
   </figure>
 
@@ -189,7 +188,17 @@
 
   <p>Thankfully, we have modern dimensionality reduction techniques at our disposal. These algorithms, such as t-SNE <d-cite key="maaten2008visualizing"></d-cite> and UMAP <d-cite key="mcinnes2018umap-software"></d-cite>, can project high-dimensional data like our activation vectors into useful 2D layouts, preserving some of the local structure of the original space. This takes care of organizing our activation vectors, but we also need to aggregate into a more manageable number. We’ll do this by drawing a grid over the 2D layout we created with dimensionality reduction. For each cell in our grid, we average all the activations that lie within the boundaries of that cell, and use feature visualization to create an iconic representation.
 
-  <figure id="process" style="grid-column: page;"></figure>
+  <figure  style="grid-column: page;">
+    <div id="process"></div>
+    <div style="display: grid; grid-column-gap: 20px; grid-template-columns: 1fr 1fr 1fr;">
+      <div class="figcaption">A randomized set of one million images is fed through the network, collecting one random spatial activation per image.</div>
+      <div class="figcaption">The activations are fed through UMAP to reduce them to two dimensions. They are then plotted, with similar activations placed near each other.</div>
+      <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation.</div>
+    </div>
+    <div style="text-align: right; margin-top: 8px;">
+      <span data-notebook-url=""></span>
+    </div>
+  </figure>
 
   <p>(Technical aside: Using a normal dot product objective to visualize activation vectors at high-level layers often leads to nonsensical results. We don’t yet have a good understanding of why this is the case, but we’ve found that using objectives which emphasize angle makes the visualizations more meaningful. In practice, this means we use a multiplicative combination of cosine similarity and dot product as our objective. We’ve also found that the geometry of activation space is very stretched, and that whitening the space to unstretch it improves feature visualization. A reference implementation of this can be seen in the attached notebooks, and more general discussion can be found in this <a href="https://github.com/tensorflow/lucid/issues/116">github issue</a>.)
 

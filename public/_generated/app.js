@@ -10121,9 +10121,9 @@
 				setStyle(div0, "width", ctx.finalWidth);
 				setStyle(div0, "height", ctx.finalHeight);
 				div0.className = "svelte-fkjf8u svelte-ref-frame";
-				addLoc(div0, file$g, 7, 2, 197);
+				addLoc(div0, file$g, 12, 2, 321);
 				div1.className = "svelte-fkjf8u svelte-ref-root";
-				addLoc(div1, file$g, 6, 0, 180);
+				addLoc(div1, file$g, 11, 0, 304);
 			},
 
 			m: function mount(target, anchor) {

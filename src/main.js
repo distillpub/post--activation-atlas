@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	new LazyComponent({
 		target: document.querySelector("#process"),
 		data: {
-			aspectRatio: 2.1,
+			aspectRatio: 2.64,
 			component: Process
 		}
 	});

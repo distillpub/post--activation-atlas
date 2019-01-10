@@ -76,18 +76,8 @@
     <rect fill="none" stroke="black" stroke-width=2 x={(columnWidth + columnPadding) * 1 + iconHighlight.x * iconWidth} y={iconHighlight.y * iconWidth} width={iconWidth} height={iconWidth}/>
     <path fill="none" stroke="black" d="M{(columnWidth + columnPadding) * 1 + iconHighlight.x * iconWidth + iconWidth / 2},{iconHighlight.y * iconWidth}l0,-30 l{columnWidth + columnPadding},0 l0,25 m-5,-5 l5,5 l5,-5" />
     <rect fill="none" stroke="black" stroke-width=2 x={(columnWidth + columnPadding) * 2 + iconHighlight.x * iconWidth} y={iconHighlight.y * iconWidth} width={iconWidth} height={iconWidth}/>
-
-
   </g>
-
 </svg>
-<div style="display: grid; grid-column-gap: {columnPadding / width * 100}%; grid-template-columns: 1fr 1fr 1fr;">
-  <div class="figcaption">A randomized set of one million images is fed through the network, collecting one random spatial activation per image.</div>
-  <div class="figcaption">The activations are fed through UMAP to reduce them to two dimensions. They are then plotted, with similar activations placed near each other.</div>
-  <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation.
-    <div style="margin-top: 8px; text-align: right;"><NotebookLink url=""/></div>
-  </div>
-</div>
 
 <script>
 import {range} from "d3-array";
@@ -95,7 +85,6 @@ import {load} from 'lucid-components';
 
 export default {
   components: {
-    NotebookLink: "../library/NotebookLink.html"
   },
   data() {
     return {
