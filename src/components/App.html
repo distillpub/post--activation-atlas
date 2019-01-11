@@ -1,4 +1,4 @@
-<ResponsiveResizer {clientWidth} {clientHeight} minWidth={900}>
+<ResponsiveResizer {clientWidth} {clientHeight} minWidth={768}>
   <div class="container">
     <div class="filter" style="display: {showClassFilter ? 'block' : 'none'};">
       <Panel>
@@ -46,18 +46,20 @@
           {homeY}
           {homeScale}
         />
-        <div ref:controls class="{showOptions ? 'open' : 'closed'}">
+        <div ref:controls class="controls {showOptions ? 'open' : 'closed'}">
           <div class="nav">
-            <div class="map" style="display: {scale > 1.0 ? 'block' : 'block'};">
-              <AppMiniMap 
-                id="inceptionv1_{layerName}"
-                {layerName}
-                bind:extent
-                enableDragging={true}
-                {classHeatmap}
-                {scaleCountFactor}
-                on:drag="refs.atlas.translateTo(event.gcx, event.gcy)"
-              />
+            <div class="map">
+              <div class="map-container" style="width: 100px; height: 100px; position: absolute;">
+                <AppMiniMap 
+                  id="inceptionv1_{layerName}"
+                  {layerName}
+                  bind:extent
+                  enableDragging={true}
+                  {classHeatmap}
+                  {scaleCountFactor}
+                  on:drag="refs.atlas.translateTo(event.gcx, event.gcy)"
+                />
+              </div>
             </div>
             <div class="buttons">
               <Button on:click="refs.atlas.home(3000)"><Navigation name="home" color="white"/></Button>
@@ -68,7 +70,7 @@
           <div class="options">
             <div class="essential">
               <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
-              <label><input type=checkbox bind:checked=showLabels> attribution labels</label>
+              <label style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"><input type=checkbox bind:checked=showLabels> attribution labels</label>
             </div>
             <div ref:expand class="expand">
               <div class="grid-size">
@@ -182,12 +184,12 @@ export default {
 
   /*  */
   .filter {
-    width: 170px;
+    width: 120px;
     border-right: solid 1px rgba(0, 0, 0, 0.2);
   }
   .stack {
     overflow-y: scroll;
-    width: 170px;
+    width: 120px;
     border-right: solid 1px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
@@ -204,14 +206,15 @@ export default {
   /*  */
 
 
+
   /*  */
-  ref:controls {
+  .controls {
     position: absolute;
     box-sizing: border-box;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     right: 16px;
     top: 16px;
-    width: 160px;
+    width: 122px;
     padding: 8px;
     background-color: white;
     border-radius: 6px;
@@ -233,16 +236,19 @@ export default {
     display: flex;
     border-bottom: solid 1px rgba(0, 0, 0, 0.1);
     padding-bottom: 8px;
-    height: 104px;
   }
   ref:controls .nav .map {
-    width: 104px;
-    margin-right: 8px;
+    position: relative;
+    visibility: hidden;
+    width: 0;
+    height: 0;
   }
   ref:controls .nav .buttons {
     width: 32px;
     display: grid;
     grid-gap: 4px;
+    grid-auto-columns: auto;
+    grid-auto-flow: column;
   }
   ref:controls .expand-toggle {
     flex: 0 0 auto;
@@ -288,6 +294,27 @@ export default {
     margin-bottom: 8px;
     border-bottom: solid 1px rgba(0, 0, 0, 0.1);
   }
+  @media(min-width: 800px) {
+    .filter {
+      width: 170px;
+    }
+    .stack {
+      width: 170px;
+    }
+    .controls {
+      width: 160px;
+    }
+    ref:controls .nav .map {
+      visibility: visible;
+      height: auto;
+      width: 104px;
+      margin-right: 8px;
 
+    }
+    ref:controls .nav .buttons {
+      width: inherit;
+      grid-auto-flow: row;
+    }
+  }
 
 </style>

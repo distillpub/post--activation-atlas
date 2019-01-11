@@ -2,7 +2,7 @@
 {#each layers as layer, i}
   <label class="layer {layerName == layer ? 'selected' : ''}">
     <input type=radio bind:group=layerName value={layer}>
-    <div style="width: 50px; position: relative;">
+    <div class="thumb" style="position: relative;">
       <AtlasThumbnail layerName={layer} {classHeatmap}/>
     </div>
     <span>{layer}</span>
@@ -64,5 +64,14 @@
 }
 .layer.selected :global(canvas) {
   /* opacity: 1; */
+}
+.thumb {
+  width: 30px;
+  position: relative;
+}
+@media(min-width: 800px) {
+  .thumb {
+    width: 50px;
+  }
 }
 </style>

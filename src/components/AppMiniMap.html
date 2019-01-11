@@ -1,18 +1,6 @@
 <div ref:root>
   <Placeholder>
-    <!-- <AtlasThumbnail
-      ref:overview
-      {id}
-      {classHeatmap}
-      gridSize={1} 
-      iconCrop={0.6} 
-      {scaleCountFactor}
-      backgroundColor="#f0f0f0"
-    /> -->
-    <!-- <AtlasThumbnail 
-      {layerName}
-    /> -->
-    <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
+    <LazyImage aspectRatio={1} src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" />
     <AtlasReticle
       bind:extent
       enableDragging={true}
@@ -24,8 +12,8 @@
 <script>
   export default {
     components: {
-      // AtlasThumbnail: "../AtlasThumbnail.html",
       AtlasReticle: "../AtlasReticle.html",
+      LazyImage: "../library/LazyImage.html",
       Placeholder: "../library/Placeholder.html"
     },
     data() {
