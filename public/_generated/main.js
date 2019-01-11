@@ -18728,7 +18728,7 @@
 	    arrowHeight: 30,
 	    imgList: [],
 	    color: '#ff6600',
-	    iconHeight: 80,
+	    iconHeight: 100,
 	  }
 	}
 	const file$F = "src/SetOfIcons.html";
