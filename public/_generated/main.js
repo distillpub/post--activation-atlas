@@ -20807,21 +20807,21 @@
 				div4 = createElement("div");
 				div4.textContent = "The activations for \"streetcar\" have much stronger attributions from buildings than does \"fireboat\".";
 				setStyle(h40, "width", "" + ctx.loupeSize + "px");
-				h40.className = "svelte-562144";
+				h40.className = "svelte-1946vr6";
 				addLoc(h40, file$N, 3, 4, 25);
 				setStyle(h41, "width", "" + ctx.loupeSize + "px");
-				h41.className = "svelte-562144";
+				h41.className = "svelte-1946vr6";
 				addLoc(h41, file$N, 15, 4, 337);
 				addLoc(div0, file$N, 29, 4, 682);
-				div1.className = "figcaption svelte-562144";
+				div1.className = "figcaption svelte-1946vr6";
 				addLoc(div1, file$N, 30, 4, 698);
-				div2.className = "figcaption svelte-562144";
+				div2.className = "figcaption svelte-1946vr6";
 				addLoc(div2, file$N, 33, 4, 836);
-				div3.className = "figcaption svelte-562144";
+				div3.className = "figcaption svelte-1946vr6";
 				addLoc(div3, file$N, 36, 4, 1003);
-				div4.className = "figcaption svelte-562144";
+				div4.className = "figcaption svelte-1946vr6";
 				addLoc(div4, file$N, 39, 4, 1180);
-				div5.className = "root svelte-562144";
+				div5.className = "root svelte-1946vr6";
 				addLoc(div5, file$N, 1, 0, 1);
 			},
 
@@ -20940,7 +20940,7 @@
 				div = createElement("div");
 				lazyimage._fragment.c();
 				loupe._fragment.c();
-				div.className = "loupe svelte-562144";
+				div.className = "loupe svelte-1946vr6";
 				addLoc(div, file$N, 5, 4, 112);
 			},
 
@@ -20989,7 +20989,7 @@
 				div = createElement("div");
 				lazyimage._fragment.c();
 				loupe._fragment.c();
-				div.className = "loupe svelte-562144";
+				div.className = "loupe svelte-1946vr6";
 				addLoc(div, file$N, 17, 4, 425);
 			},
 
