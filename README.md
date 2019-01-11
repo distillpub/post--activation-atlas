@@ -12,9 +12,6 @@ tooltips broken in safari
 
 responsiveResize rewrite
 
-responsive todos: 
-  show-a-path
-
 ## Nice to haves
 
 grid size radio buttons smaller
