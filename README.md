@@ -2,8 +2,6 @@
 
 ## Bugs
 
-phone layout (in progress)
-
 cache assets (in progress)
 
 Colab notebooks (in progress)
@@ -11,8 +9,6 @@ Colab notebooks (in progress)
 tooltips broken in safari
 
 responsiveResize rewrite
-
-css scaling interferes with touch events
 
 ## Nice to haves
 
@@ -23,6 +19,8 @@ grid size radio buttons smaller
 smooth zoom between gridsizes
 
 ## Done
+css scaling interferes with touch events (give up)
+phone layout (in progress)
 option to turn off touch-to-pan
 responsiveResize for one-layer
 touch events are being filtered

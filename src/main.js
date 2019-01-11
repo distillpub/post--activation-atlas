@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		store: store,
 		target: document.querySelector("#one-layer"),
 		data: {
-			aspectRatio: 1,
+			height: "calc(100vw - 40px + 28px + 40px)",
 			component: OneLayer
 		}
 	});

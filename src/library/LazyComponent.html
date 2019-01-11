@@ -3,8 +3,6 @@
   Also allows for external loading of the component's module.
 
   component: a constructor for the component to initialize lazily.
-  url: optional url to a module.js file to load an then use to initialize
-  the component.
   componentData: The data to pass to the component when initializing.
 
   This requires us to know the size of the component before it's initialized.
@@ -85,12 +83,12 @@
         console.warn(`Require 'height'${height} or 'aspectRatio'${aspectRatio} not set on LazyComponent.html`, this)
       }
       // Import a remote component if given
-      const {url} = this.get();
-      if (url) {
-        import(url).then(c => {
-          this.set({component: c.default});
-        });
-      }
+      // const {url} = this.get();
+      // if (url) {
+      //   import(url).then(c => {
+      //     this.set({component: c.default});
+      //   });
+      // }
     },
     methods: {
       getComponent() {

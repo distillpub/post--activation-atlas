@@ -1,6 +1,8 @@
 <div ref:root>
   <Placeholder>
-    <LazyImage aspectRatio={1} src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" />
+    <div style="opacity: 0.4;">
+      <LazyImage aspectRatio={1} src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" />
+    </div>
     <AtlasReticle
       bind:extent
       enableDragging={true}
@@ -31,10 +33,5 @@ ref:root {
   height: 100%;
   box-sizing: border-box;
   padding: 1px;
-}
-img {
-  display: block;
-  width: 100%;
-  opacity: 0.4;
 }
 </style>

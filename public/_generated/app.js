@@ -446,7 +446,7 @@
 		}
 	});
 
-	var inceptionLabels = {
+	var Labels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1456,7 +1456,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: inceptionLabels.inception,
+	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1610,7 +1610,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -3066,7 +3066,7 @@
 	    display: "block", //"inline", "inline-block", "block"
 	    aspectRatio: 1, // width/height
 	    border: true,
-	    background: true,
+	    background: false,
 	  }
 	}
 	const file$9 = "src/library/LazyImage.html";
@@ -3281,7 +3281,7 @@
 	const file$a = "src/components/AppMiniMap.html";
 
 	function create_main_fragment$a(component, ctx) {
-		var div, text, atlasreticle_updating = {};
+		var div1, div0, text, atlasreticle_updating = {};
 
 		var lazyimage_initial_data = {
 		 	aspectRatio: 1,
@@ -3331,22 +3331,26 @@
 
 		return {
 			c: function create() {
-				div = createElement("div");
+				div1 = createElement("div");
+				div0 = createElement("div");
 				lazyimage._fragment.c();
 				text = createText("\n    ");
 				atlasreticle._fragment.c();
 				placeholder._fragment.c();
-				div.className = "svelte-10b429t svelte-ref-root";
-				addLoc(div, file$a, 0, 0, 0);
+				setStyle(div0, "opacity", "0.4");
+				addLoc(div0, file$a, 2, 4, 35);
+				div1.className = "svelte-15ooxw3 svelte-ref-root";
+				addLoc(div1, file$a, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-				lazyimage._mount(placeholder._slotted.default, null);
+				insert(target, div1, anchor);
+				append(placeholder._slotted.default, div0);
+				lazyimage._mount(div0, null);
 				append(placeholder._slotted.default, text);
 				atlasreticle._mount(placeholder._slotted.default, null);
-				placeholder._mount(div, null);
-				component.refs.root = div;
+				placeholder._mount(div1, null);
+				component.refs.root = div1;
 			},
 
 			p: function update(changed, _ctx) {
@@ -3369,13 +3373,13 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div);
+					detachNode(div1);
 				}
 
 				lazyimage.destroy();
 				atlasreticle.destroy();
 				placeholder.destroy();
-				if (component.refs.root === div) component.refs.root = null;
+				if (component.refs.root === div1) component.refs.root = null;
 			}
 		};
 	}
@@ -4496,9 +4500,9 @@
 
 
 
-	function labels({inceptionLabels: inceptionLabels$$1}) {
+	function labels({inceptionLabels}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels$$1.inception[k];
+	    let l = inceptionLabels.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -4507,7 +4511,7 @@
 	function data$a() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels,
+	    inceptionLabels: Labels,
 	    classHeatmap: 235
 	  }
 	}
@@ -5442,7 +5446,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: inceptionLabels.inception,
+	    labels: Labels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,

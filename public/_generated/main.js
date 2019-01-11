@@ -494,7 +494,7 @@
 		}
 	});
 
-	var inceptionLabels = {
+	var Labels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1504,7 +1504,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: inceptionLabels.inception,
+	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1658,7 +1658,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -2729,12 +2729,12 @@
 	    console.warn(`Require 'height'${height} or 'aspectRatio'${aspectRatio} not set on LazyComponent.html`, this);
 	  }
 	  // Import a remote component if given
-	  const {url} = this.get();
-	  if (url) {
-	    import(url).then(c => {
-	      this.set({component: c.default});
-	    });
-	  }
+	  // const {url} = this.get();
+	  // if (url) {
+	  //   import(url).then(c => {
+	  //     this.set({component: c.default});
+	  //   });
+	  // }
 	}
 	const file$4 = "src/library/LazyComponent.html";
 
@@ -2791,7 +2791,7 @@
 				setStyle(div, "width", ctx.finalWidth);
 				setStyle(div, "height", ctx.finalHeight);
 				div.className = "svelte-16j6f9b svelte-ref-container";
-				addLoc(div, file$4, 24, 0, 1134);
+				addLoc(div, file$4, 22, 0, 1043);
 			},
 
 			m: function mount(target, anchor) {
@@ -2846,7 +2846,7 @@
 		};
 	}
 
-	// (29:4) {:else}
+	// (27:4) {:else}
 	function create_else_block(component, ctx) {
 
 		var loading = new Loading({
@@ -2871,7 +2871,7 @@
 		};
 	}
 
-	// (27:4) {#if ready}
+	// (25:4) {#if ready}
 	function create_if_block$2(component, ctx) {
 		var switch_instance_anchor;
 
@@ -3152,7 +3152,7 @@
 	    display: "block", //"inline", "inline-block", "block"
 	    aspectRatio: 1, // width/height
 	    border: true,
-	    background: true,
+	    background: false,
 	  }
 	}
 	const file$6 = "src/library/LazyImage.html";
@@ -4236,7 +4236,7 @@
 	const file$e = "src/components/AppMiniMap.html";
 
 	function create_main_fragment$e(component, ctx) {
-		var div, text, atlasreticle_updating = {};
+		var div1, div0, text, atlasreticle_updating = {};
 
 		var lazyimage_initial_data = {
 		 	aspectRatio: 1,
@@ -4286,22 +4286,26 @@
 
 		return {
 			c: function create() {
-				div = createElement("div");
+				div1 = createElement("div");
+				div0 = createElement("div");
 				lazyimage._fragment.c();
 				text = createText("\n    ");
 				atlasreticle._fragment.c();
 				placeholder._fragment.c();
-				div.className = "svelte-10b429t svelte-ref-root";
-				addLoc(div, file$e, 0, 0, 0);
+				setStyle(div0, "opacity", "0.4");
+				addLoc(div0, file$e, 2, 4, 35);
+				div1.className = "svelte-15ooxw3 svelte-ref-root";
+				addLoc(div1, file$e, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-				lazyimage._mount(placeholder._slotted.default, null);
+				insert(target, div1, anchor);
+				append(placeholder._slotted.default, div0);
+				lazyimage._mount(div0, null);
 				append(placeholder._slotted.default, text);
 				atlasreticle._mount(placeholder._slotted.default, null);
-				placeholder._mount(div, null);
-				component.refs.root = div;
+				placeholder._mount(div1, null);
+				component.refs.root = div1;
 			},
 
 			p: function update(changed, _ctx) {
@@ -4324,13 +4328,13 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div);
+					detachNode(div1);
 				}
 
 				lazyimage.destroy();
 				atlasreticle.destroy();
 				placeholder.destroy();
-				if (component.refs.root === div) component.refs.root = null;
+				if (component.refs.root === div1) component.refs.root = null;
 			}
 		};
 	}
@@ -5451,9 +5455,9 @@
 
 
 
-	function labels({inceptionLabels: inceptionLabels$$1}) {
+	function labels({inceptionLabels}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels$$1.inception[k];
+	    let l = inceptionLabels.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -5462,7 +5466,7 @@
 	function data$d() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels,
+	    inceptionLabels: Labels,
 	    classHeatmap: 235
 	  }
 	}
@@ -6411,7 +6415,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: inceptionLabels.inception,
+	    labels: Labels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -13480,15 +13484,15 @@
 				text5 = createText("\n");
 				div4 = createElement("div");
 				notebooklink._fragment.c();
-				h4.className = "svelte-1ku0la8";
+				h4.className = "svelte-kl8ujq";
 				addLoc(h4, file$s, 0, 0, 0);
 				setStyle(div0, "position", "relative");
 				addLoc(div0, file$s, 2, 2, 112);
-				div1.className = "chooser svelte-1ku0la8";
+				div1.className = "chooser svelte-kl8ujq";
 				addLoc(div1, file$s, 6, 4, 249);
-				div2.className = "chooser-container svelte-1ku0la8";
+				div2.className = "chooser-container svelte-kl8ujq";
 				addLoc(div2, file$s, 5, 2, 213);
-				div3.className = "svelte-1ku0la8 svelte-ref-root";
+				div3.className = "svelte-kl8ujq svelte-ref-root";
 				addLoc(div3, file$s, 1, 0, 95);
 				setStyle(div4, "margin-top", "16px");
 				addLoc(div4, file$s, 16, 0, 559);
@@ -13589,9 +13593,9 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
-				input.className = "svelte-1ku0la8";
+				input.className = "svelte-kl8ujq";
 				addLoc(input, file$s, 9, 10, 405);
-				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1ku0la8";
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-kl8ujq";
 				label.title = label_title_value = ctx.c;
 				addLoc(label, file$s, 8, 8, 317);
 			},
@@ -13617,7 +13621,7 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1ku0la8")) {
+				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-kl8ujq")) {
 					label.className = label_class_value;
 				}
 
@@ -13759,26 +13763,26 @@
 					each_blocks[i].c();
 				}
 				addLoc(br0, file$t, 5, 67, 99);
-				h40.className = "svelte-1sg2jsd";
+				h40.className = "svelte-4ghdgj";
 				addLoc(h40, file$t, 5, 4, 36);
 				div0.className = "atlas";
 				addLoc(div0, file$t, 6, 4, 133);
-				div1.className = "figcaption svelte-1sg2jsd";
+				div1.className = "figcaption svelte-4ghdgj";
 				addLoc(div1, file$t, 9, 4, 254);
 				addLoc(div2, file$t, 4, 2, 26);
 				addLoc(br1, file$t, 12, 67, 649);
-				h41.className = "svelte-1sg2jsd";
+				h41.className = "svelte-4ghdgj";
 				addLoc(h41, file$t, 12, 4, 586);
 				div3.className = "atlas";
 				addLoc(div3, file$t, 13, 4, 692);
-				div4.className = "figcaption svelte-1sg2jsd";
+				div4.className = "figcaption svelte-4ghdgj";
 				addLoc(div4, file$t, 16, 4, 810);
 				addLoc(div5, file$t, 11, 2, 576);
-				div6.className = "chooser svelte-1sg2jsd";
+				div6.className = "chooser svelte-4ghdgj";
 				addLoc(div6, file$t, 19, 4, 1169);
-				div7.className = "chooser-container svelte-1sg2jsd";
+				div7.className = "chooser-container svelte-4ghdgj";
 				addLoc(div7, file$t, 18, 2, 1133);
-				div8.className = "root svelte-1sg2jsd";
+				div8.className = "root svelte-4ghdgj";
 				addLoc(div8, file$t, 2, 0, 2);
 			},
 
@@ -13896,9 +13900,9 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
-				input.className = "svelte-1sg2jsd";
+				input.className = "svelte-4ghdgj";
 				addLoc(input, file$t, 22, 10, 1332);
-				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1sg2jsd";
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-4ghdgj";
 				label.title = label_title_value = ctx.c;
 				addLoc(label, file$t, 21, 8, 1237);
 			},
@@ -13925,7 +13929,7 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.$currentClassAtlasCompareIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1sg2jsd")) {
+				if ((changed.$currentClassAtlasCompareIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-4ghdgj")) {
 					label.className = label_class_value;
 				}
 
@@ -19030,6 +19034,8 @@
 		});
 
 		var lazyimage_initial_data = {
+		 	background: false,
+		 	border: false,
 		 	aspectRatio: 1,
 		 	src: "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg",
 		 	alt: "thumbnail for " + ctx.layerName,
@@ -19102,7 +19108,7 @@
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$G, 28, 10, 716);
+				addLoc(circle, file$G, 28, 10, 750);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -19111,9 +19117,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$G, 18, 8, 469);
+				addLoc(marker0, file$G, 18, 8, 503);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$G, 39, 10, 1009);
+				addLoc(path0, file$G, 39, 10, 1043);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -19122,18 +19128,18 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$G, 30, 8, 772);
-				addLoc(defs, file$G, 17, 6, 454);
+				addLoc(marker1, file$G, 30, 8, 806);
+				addLoc(defs, file$G, 17, 6, 488);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$G, 42, 6, 1082);
+				addLoc(path1, file$G, 42, 6, 1116);
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
 				setAttribute(svg, "class", "pathArrow svelte-14ap8kx");
-				addLoc(svg, file$G, 13, 4, 365);
+				addLoc(svg, file$G, 13, 4, 399);
 				div2.className = "atlas svelte-14ap8kx";
 				addLoc(div2, file$G, 9, 2, 144);
 				div3.className = "showapath svelte-14ap8kx";
@@ -21200,7 +21206,7 @@
 			store: store,
 			target: document.querySelector("#one-layer"),
 			data: {
-				aspectRatio: 1,
+				height: "calc(100vw - 40px + 28px + 40px)",
 				component: OneLayer
 			}
 		});
