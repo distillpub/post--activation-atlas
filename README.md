@@ -10,6 +10,10 @@ Colab notebooks (in progress)
 
 tooltips broken in safari
 
+responsiveResize update
+
+responsiveResize for one-layer
+
 ## Nice to haves
 
 grid size radio buttons smaller

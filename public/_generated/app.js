@@ -8628,17 +8628,16 @@
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel, disableBehaviors} = this.get();
-	    // console.log(d3Event);
 	    if (disableBehaviors) {
 	      return false;
 	    }
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
-	      return !(event.type === "wheel" && event.ctrlKey === false) && event.button == 0;
+	      return !(event.type === "wheel" && event.ctrlKey === false) && !event.button;
 	    } else {
 	      //... just return false for button = 1 events
-	      return event.button == 0;
+	      return !event.button;
 	    }
 	  },
 	  mouseMove: function(event$$1) {

@@ -9976,17 +9976,16 @@
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel, disableBehaviors} = this.get();
-	    // console.log(d3Event);
 	    if (disableBehaviors) {
 	      return false;
 	    }
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
-	      return !(event.type === "wheel" && event.ctrlKey === false) && event.button == 0;
+	      return !(event.type === "wheel" && event.ctrlKey === false) && !event.button;
 	    } else {
 	      //... just return false for button = 1 events
-	      return event.button == 0;
+	      return !event.button;
 	    }
 	  },
 	  mouseMove: function(event$$1) {
@@ -12781,47 +12780,47 @@
 				text21 = createText("\n    ");
 				div14 = createElement("div");
 				div14.textContent = "Activation atlases give us a bigger picture overview by sampling more of the manifold of likely activations.";
-				h40.className = "svelte-ua8hik";
+				h40.className = "svelte-vcfnc8";
 				addLoc(h40, file$o, 2, 4, 43);
 				div0.className = "image";
 				addLoc(div0, file$o, 3, 4, 75);
-				div1.className = "diagram svelte-ua8hik";
+				div1.className = "diagram svelte-vcfnc8";
 				addLoc(div1, file$o, 9, 4, 207);
-				div2.className = "figcaption svelte-ua8hik";
+				div2.className = "figcaption svelte-vcfnc8";
 				addLoc(div2, file$o, 12, 4, 328);
-				div3.className = "section svelte-ua8hik";
+				div3.className = "section svelte-vcfnc8";
 				addLoc(div3, file$o, 1, 2, 17);
-				h41.className = "svelte-ua8hik";
+				h41.className = "svelte-vcfnc8";
 				addLoc(h41, file$o, 15, 4, 602);
 				div4.className = "image";
 				addLoc(div4, file$o, 16, 4, 637);
-				div5.className = "diagram svelte-ua8hik";
+				div5.className = "diagram svelte-vcfnc8";
 				addLoc(div5, file$o, 22, 4, 771);
-				div6.className = "figcaption svelte-ua8hik";
+				div6.className = "figcaption svelte-vcfnc8";
 				addLoc(div6, file$o, 25, 4, 892);
-				div7.className = "section svelte-ua8hik";
+				div7.className = "section svelte-vcfnc8";
 				addLoc(div7, file$o, 14, 2, 576);
-				h42.className = "svelte-ua8hik";
+				h42.className = "svelte-vcfnc8";
 				addLoc(h42, file$o, 28, 4, 1143);
 				div8.className = "image";
 				addLoc(div8, file$o, 29, 4, 1176);
-				div9.className = "diagram svelte-ua8hik";
+				div9.className = "diagram svelte-vcfnc8";
 				addLoc(div9, file$o, 35, 4, 1308);
-				div10.className = "figcaption svelte-ua8hik";
+				div10.className = "figcaption svelte-vcfnc8";
 				addLoc(div10, file$o, 38, 4, 1429);
-				div11.className = "section svelte-ua8hik";
+				div11.className = "section svelte-vcfnc8";
 				addLoc(div11, file$o, 27, 2, 1117);
-				h43.className = "svelte-ua8hik";
+				h43.className = "svelte-vcfnc8";
 				addLoc(h43, file$o, 41, 4, 1684);
 				div12.className = "image";
 				addLoc(div12, file$o, 42, 4, 1714);
-				div13.className = "diagram svelte-ua8hik";
+				div13.className = "diagram svelte-vcfnc8";
 				addLoc(div13, file$o, 48, 4, 1845);
-				div14.className = "figcaption svelte-ua8hik";
+				div14.className = "figcaption svelte-vcfnc8";
 				addLoc(div14, file$o, 51, 4, 1966);
-				div15.className = "section svelte-ua8hik";
+				div15.className = "section svelte-vcfnc8";
 				addLoc(div15, file$o, 40, 2, 1658);
-				div16.className = "svelte-ua8hik svelte-ref-root";
+				div16.className = "svelte-vcfnc8 svelte-ref-root";
 				addLoc(div16, file$o, 0, 0, 0);
 			},
 
@@ -15064,7 +15063,7 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "adversarial svelte-1jfiu3j";
+				div.className = "adversarial svelte-1vijrjb";
 				setStyle(div, "grid-template-columns", "repeat(" + ctx.classifications.length + ", 1fr)");
 				addLoc(div, file$w, 0, 0, 0);
 			},
@@ -15131,13 +15130,13 @@
 				td2 = createElement("td");
 				text5 = createText(text5_value);
 				text6 = createText("%");
-				td0.className = "svelte-1jfiu3j";
+				td0.className = "svelte-1vijrjb";
 				addLoc(td0, file$w, 14, 12, 482);
-				td1.className = "svelte-1jfiu3j";
+				td1.className = "svelte-1vijrjb";
 				addLoc(td1, file$w, 15, 12, 513);
-				td2.className = "svelte-1jfiu3j";
+				td2.className = "svelte-1vijrjb";
 				addLoc(td2, file$w, 16, 12, 543);
-				tr.className = tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1jfiu3j";
+				tr.className = tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1vijrjb";
 				addLoc(tr, file$w, 13, 10, 391);
 			},
 
@@ -15164,7 +15163,7 @@
 					setData(text5, text5_value);
 				}
 
-				if ((changed.classifications || changed.left || changed.right) && tr_class_value !== (tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1jfiu3j")) {
+				if ((changed.classifications || changed.left || changed.right) && tr_class_value !== (tr_class_value = "" + (ctx.row[0] === ctx.left ? 'left' : '') + " " + (ctx.row[0] === ctx.right ? 'right' : '') + " svelte-1vijrjb")) {
 					tr.className = tr_class_value;
 				}
 			},
@@ -15219,13 +15218,13 @@
 				text3 = createText("\n    ");
 				div0.className = "image";
 				addLoc(div0, file$w, 3, 6, 157);
-				table.className = "svelte-1jfiu3j";
+				table.className = "svelte-1vijrjb";
 				addLoc(table, file$w, 11, 8, 338);
 				div1.className = "table";
 				addLoc(div1, file$w, 10, 6, 310);
-				div2.className = "figcaption svelte-1jfiu3j";
+				div2.className = "figcaption svelte-1vijrjb";
 				addLoc(div2, file$w, 21, 6, 635);
-				div3.className = "class svelte-1jfiu3j";
+				div3.className = "class svelte-1vijrjb";
 				addLoc(div3, file$w, 2, 4, 131);
 			},
 
@@ -18291,7 +18290,7 @@
 		});
 
 		button0.on("click", function(event) {
-			component.refs.atlas.home();
+			component.refs.atlas.home(2000);
 		});
 
 		var navigation1_initial_data = { name: "add", color: "rgb(100, 100, 100)" };
