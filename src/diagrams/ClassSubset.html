@@ -6,9 +6,9 @@
   <div class="chooser-container">
     <div class="chooser">
       {#each $classAtlasIndices as c}
-        <label class="{$currentClassAtlasIndex === c ? 'selected' : ''}">
+        <label class="{$currentClassAtlasIndex === c ? 'selected' : ''}" title="{c}">
           <input type=radio bind:group=$currentClassAtlasIndex value={c}>
-          {$inceptionLabels[c]} ({c})
+          {$inceptionLabels[c]}
         </label>
       {/each}
     </div>
@@ -39,9 +39,6 @@ export default {
 <style>
   ref:root {
     position: relative;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    grid-gap: 20px;
   }
   h4 {
     margin-top: 0;
@@ -51,7 +48,8 @@ export default {
     width: 100%;
   }
   .chooser-container {
-    overflow-y: scroll;
+    overflow-y: hidden;
+    min-height: 100px;
     height: 100%;
     position: relative;
   }
@@ -59,6 +57,7 @@ export default {
   .chooser {
     position: absolute;
     border-left: solid 1px #ddd;
+    width: 100%;
   }
   .chooser label {
     position: relative;
@@ -66,7 +65,7 @@ export default {
     line-height: 1em;
     display: block;
     border-left: solid 3px white;
-    padding: 5px 20px 5px 16px;
+    padding: 5px 5px 5px 16px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow-y: hidden;
@@ -80,5 +79,13 @@ export default {
     color: rgb(255, 130, 0);
     background-color: rgba(255, 130, 0, 0.08);
     font-weight: bold;
+  }
+  @media(min-width: 600px) {
+    ref:root {
+      position: relative;
+      display: grid;
+      grid-template-columns: 4fr 1fr;
+      grid-gap: 20px;
+    }
   }
 </style>

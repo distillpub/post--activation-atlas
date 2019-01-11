@@ -1,6 +1,6 @@
 
 
-<div style="display: grid;grid-column-gap: 20px; grid-template-columns: 1fr 1fr 200px;">
+<div class="root">
   
   <div>
     <h4>“{@html $inceptionLabels[$currentClassAtlasCompareIndex]}” <br>filtered by top rank</h4>
@@ -19,9 +19,9 @@
   <div class="chooser-container">
     <div class="chooser">
       {#each $classAtlasIndices as c}
-        <label class="{$currentClassAtlasCompareIndex === c ? 'selected' : ''}">
+        <label class="{$currentClassAtlasCompareIndex === c ? 'selected' : ''}" title="{c}">
           <input type=radio bind:group=$currentClassAtlasCompareIndex value={c}>
-          {$inceptionLabels[c]} ({c})
+          {$inceptionLabels[c]}
         </label>
       {/each}
     </div>
@@ -43,6 +43,14 @@ export default {
 </script>
 
 <style>
+.root {
+  max-width: 1200px;
+  padding: 0 20px;
+  margin: 0 auto;
+  display: grid;
+  grid-column-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
 button {
   display: block;
 }
@@ -58,14 +66,18 @@ h4 {
 }
 
 .chooser-container {
-  overflow-y: scroll;
+  overflow-y: hidden;
   height: 100%;
   position: relative;
+  min-height: 100px;
+  grid-column: 1/3;
+  margin-top: 16px;
 }
 
 .chooser {
   position: absolute;
   border-left: solid 1px #ddd;
+  width: 100%;
 }
 .chooser label {
   position: relative;
@@ -73,7 +85,7 @@ h4 {
   line-height: 1em;
   display: block;
   border-left: solid 3px white;
-  padding: 5px 20px 5px 16px;
+  padding: 5px 5px 5px 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow-y: hidden;
@@ -87,5 +99,16 @@ h4 {
   color: rgb(255, 130, 0);
   background-color: rgba(255, 130, 0, 0.08);
   font-weight: bold;
+}
+@media(min-width: 600px) {
+  .root {
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: 1fr 1fr 120px;
+  }
+  .chooser-container {
+    grid-column: auto;
+    margin: 0;
+  }
 }
 </style>

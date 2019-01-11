@@ -11,6 +11,8 @@ const store = new MyStore({
   currentClassAtlasCompareIndex: 507,
   classChoices: [9, 622, 665, 652, 288, 233, 188, 169, 80, 76, 62, 61, 7, 355, 990, 746, 791],
   classAtlasIndices: [
+    982,
+    507,
     62,
     9,
     169,
@@ -18,8 +20,6 @@ const store = new MyStore({
     80,
     76,
     235,
-    982,
-    507,
     41,
     2,
     // 176,

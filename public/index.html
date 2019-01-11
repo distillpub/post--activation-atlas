@@ -377,7 +377,7 @@
 
   <p>If we zoom in, we can get a better look at what distinguishes the two classifications at this layer. (We've cherry-picked these examples for brevity, but you can explore all the layers and activations in detail in a explorable playground below.)
 
-  <figure id="focus-3-table" style="grid-column: page;"></figure>
+  <figure id="focus-3-table" style="grid-column: screen;"></figure>
 
   <p>If we look at a couple of input examples, we can see how buildings and water backgrounds are an easy way to differentiate between a "fireboat" and a "streetcar". 
 
@@ -405,7 +405,7 @@
 
   <p>In the previous example, we are only showing those activations whose strongest attribution is toward the class in question. This will show us activations that contribute mostly to our class in question, even if their overall strength is low (like in background detectors). In some cases, though, there are strong correlations that we'd like to see (like fish with snorkelers). These  activations on their own might contribute more strongly to a different class than the one we're interested in, but their existence can also contribute strongly to our class of interest. For these we need to choose a different filtering method.</p>
 
-  <figure id="class-filter-comparison" style="grid-column: page;"></figure>
+  <figure id="class-filter-comparison" style="grid-column: screen;"></figure>
 
   <p>Using the magnitude filtering method, let's try to compare two related classes and see if we can more easily see what distinguishes them. (We could have instead used rank, or a combination of the two, but magnitude will suffice to show us a good variety of concepts).
 

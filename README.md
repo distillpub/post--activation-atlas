@@ -13,9 +13,6 @@ tooltips broken in safari
 responsiveResize rewrite
 
 responsive todos: 
-  focus-3-table
-  class-filter-comparison
-  class-subset
   show-a-path
 
 ## Nice to haves
