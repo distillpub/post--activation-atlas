@@ -23,9 +23,7 @@
     {#if annotationValue}
       <div class="annotationTabParent" style="top:{(w * width-2)/2}px;">
         <div class="annotationTab" style="background:{color};">
-          <p class="annotation"
-            >{annotationValue} 
-          </p>
+          <div class="annotation">{annotationValue}</div>
         </div>
       </div>
     {/if}
@@ -143,12 +141,13 @@
     position: absolute;
     border-radius: 3px 0px 0px 3px;
   }
-  .annotation {
+  p.annotation {
     font-size: 12px;
-    top: -6px;
+    top: 0px;
     left: 4px;
     color: white;
     position: absolute;
     text-align: center;
+    line-height: 1em;
   }
 </style>

@@ -49,19 +49,28 @@
   .root {
     max-width: 1000px;
     margin: 1em auto;
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-flow: column;
-    grid-template-rows: auto 1fr;
+    padding: 0 20px; 
 
   }
   .main {
     position: relative;
+    margin-bottom: 16px;
   }
   h4 {
     border-bottom: solid 1px rgba(0, 0, 0, 0.1);
     padding-bottom: 8px;
     margin-top: 0;
+  }
+  @media(min-width: 600px) {
+    .root {
+      display: grid;
+      grid-gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-flow: column;
+      grid-template-rows: auto 1fr;
+    }
+    .main {
+      margin: 0;
+    }
   }
 </style>

@@ -3936,7 +3936,7 @@
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
 				addListener(div, "mousedown", mousedown_handler);
-				div.className = "root svelte-xo8icp";
+				div.className = "root svelte-1pppif8";
 				addLoc(div, file$d, 0, 0, 0);
 			},
 
@@ -3990,9 +3990,9 @@
 				if (if_block1) if_block1.c();
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
-				setAttribute(svg, "class", "svelte-xo8icp");
+				setAttribute(svg, "class", "svelte-1pppif8");
 				addLoc(svg, file$d, 4, 2, 106);
-				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp";
+				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
@@ -4044,7 +4044,7 @@
 					if_block1 = null;
 				}
 
-				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp")) {
+				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8")) {
 					div.className = div_class_value;
 				}
 
@@ -4092,7 +4092,7 @@
 		return {
 			c: function create() {
 				path = createSvgElement("path");
-				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
+				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
 				addLoc(path, file$d, 6, 6, 201);
 			},
@@ -4102,7 +4102,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp")) {
+				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8")) {
 					setAttribute(path, "class", path_class_value);
 				}
 
@@ -4121,29 +4121,29 @@
 
 	// (23:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
-		var div1, div0, p, text;
+		var div2, div1, div0, text;
 
 		return {
 			c: function create() {
+				div2 = createElement("div");
 				div1 = createElement("div");
 				div0 = createElement("div");
-				p = createElement("p");
 				text = createText(ctx.annotationValue);
-				p.className = "annotation svelte-xo8icp";
-				addLoc(p, file$d, 25, 10, 851);
-				div0.className = "annotationTab svelte-xo8icp";
-				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$d, 24, 8, 785);
-				div1.className = "annotationTabParent svelte-xo8icp";
-				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$d, 23, 6, 710);
+				div0.className = "annotation";
+				addLoc(div0, file$d, 25, 10, 851);
+				div1.className = "annotationTab svelte-1pppif8";
+				setStyle(div1, "background", ctx.color);
+				addLoc(div1, file$d, 24, 8, 785);
+				div2.className = "annotationTabParent svelte-1pppif8";
+				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
+				addLoc(div2, file$d, 23, 6, 710);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
+				insert(target, div2, anchor);
+				append(div2, div1);
 				append(div1, div0);
-				append(div0, p);
-				append(p, text);
+				append(div0, text);
 			},
 
 			p: function update(changed, ctx) {
@@ -4152,17 +4152,17 @@
 				}
 
 				if (changed.color) {
-					setStyle(div0, "background", ctx.color);
+					setStyle(div1, "background", ctx.color);
 				}
 
 				if (changed.w || changed.width) {
-					setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
+					setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
 				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div1);
+					detachNode(div2);
 				}
 			}
 		};
@@ -19385,7 +19385,7 @@
 				div = createElement("div");
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
-				div.className = "root svelte-1ejkfbm";
+				div.className = "root svelte-dv91mv";
 				addLoc(div, file$H, 0, 0, 0);
 			},
 
@@ -19456,17 +19456,17 @@
 				if (if_block) if_block.c();
 				addListener(path, "mousemove", mousemove_handler);
 				addListener(path, "mouseup", mouseup_handler);
-				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1ejkfbm");
+				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-dv91mv");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.width + ",0 L" + ctx.width + "," + ctx.height + " L0," + ctx.height + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + "  L" + ctx.right + "," + ctx.top + " z");
 				addLoc(path, file$H, 3, 4, 114);
 				setAttribute(svg, "width", ctx.width);
 				setAttribute(svg, "height", ctx.height);
-				setAttribute(svg, "class", "svelte-1ejkfbm");
+				setAttribute(svg, "class", "svelte-dv91mv");
 				addLoc(svg, file$H, 2, 2, 87);
 				addListener(div, "mousemove", mousemove_handler_1);
 				addListener(div, "mousedown", mousedown_handler);
 				addListener(div, "mouseup", mouseup_handler_1);
-				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1ejkfbm";
+				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-dv91mv";
 				setStyle(div, "box-sizing", "content-box");
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top-2.5) + "px");
@@ -19486,7 +19486,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1ejkfbm")) {
+				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-dv91mv")) {
 					setAttribute(path, "class", path_class_value);
 				}
 
@@ -19515,7 +19515,7 @@
 					if_block = null;
 				}
 
-				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1ejkfbm")) {
+				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-dv91mv")) {
 					div.className = div_class_value;
 				}
 
@@ -19566,29 +19566,29 @@
 
 	// (25:4) {#if annotationValue}
 	function create_if_block_1$2(component, ctx) {
-		var div1, div0, p, text;
+		var div2, div1, div0, text;
 
 		return {
 			c: function create() {
+				div2 = createElement("div");
 				div1 = createElement("div");
 				div0 = createElement("div");
-				p = createElement("p");
 				text = createText(ctx.annotationValue);
-				p.className = "annotation svelte-1ejkfbm";
-				addLoc(p, file$H, 27, 10, 951);
-				div0.className = "annotationTab svelte-1ejkfbm";
-				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$H, 26, 8, 885);
-				div1.className = "annotationTabParent svelte-1ejkfbm";
-				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$H, 25, 6, 810);
+				div0.className = "annotation svelte-dv91mv";
+				addLoc(div0, file$H, 27, 10, 951);
+				div1.className = "annotationTab svelte-dv91mv";
+				setStyle(div1, "background", ctx.color);
+				addLoc(div1, file$H, 26, 8, 885);
+				div2.className = "annotationTabParent svelte-dv91mv";
+				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
+				addLoc(div2, file$H, 25, 6, 810);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
+				insert(target, div2, anchor);
+				append(div2, div1);
 				append(div1, div0);
-				append(div0, p);
-				append(p, text);
+				append(div0, text);
 			},
 
 			p: function update(changed, ctx) {
@@ -19597,17 +19597,17 @@
 				}
 
 				if (changed.color) {
-					setStyle(div0, "background", ctx.color);
+					setStyle(div1, "background", ctx.color);
 				}
 
 				if (changed.w || changed.width) {
-					setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
+					setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
 				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div1);
+					detachNode(div2);
 				}
 			}
 		};
@@ -20165,7 +20165,7 @@
 	const file$L = "src/diagrams/Focus2Static.html";
 
 	function create_main_fragment$M(component, ctx) {
-		var div3, div0, text0, text1, text2, text3, div2, text4, text5, text6, div1;
+		var div6, div0, text0, text1, text2, text3, div5, div1, text4, div2, text5, div3, text6, div4;
 
 		var lazyimage0_initial_data = {
 		 	border: false,
@@ -20289,7 +20289,7 @@
 
 		return {
 			c: function create() {
-				div3 = createElement("div");
+				div6 = createElement("div");
 				div0 = createElement("div");
 				lazyimage0._fragment.c();
 				text0 = createText("\n    ");
@@ -20299,31 +20299,40 @@
 				text2 = createText("\n    ");
 				atlasreticle2._fragment.c();
 				text3 = createText("\n  ");
-				div2 = createElement("div");
+				div5 = createElement("div");
+				div1 = createElement("div");
 				lazyimage1._fragment.c();
 				loupe0._fragment.c();
 				text4 = createText("\n    ");
+				div2 = createElement("div");
 				lazyimage2._fragment.c();
 				loupe1._fragment.c();
 				text5 = createText("\n    ");
+				div3 = createElement("div");
 				lazyimage3._fragment.c();
 				loupe2._fragment.c();
 				text6 = createText("\n    ");
-				div1 = createElement("div");
-				div1.textContent = "In mixed4d we see we see the attribution toward \"fireboat\" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.";
-				div0.className = "main svelte-1smkqjl";
+				div4 = createElement("div");
+				div4.textContent = "In mixed4d we see we see the attribution toward \"fireboat\" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.";
+				div0.className = "main svelte-f72nro";
 				addLoc(div0, file$L, 2, 2, 22);
-				div1.className = "figcaption svelte-1smkqjl";
-				addLoc(div1, file$L, 51, 4, 1490);
-				div2.className = "detail svelte-1smkqjl";
-				addLoc(div2, file$L, 41, 2, 1072);
-				div3.className = "root svelte-1smkqjl";
-				addLoc(div3, file$L, 1, 0, 1);
+				div1.className = "loupe svelte-f72nro";
+				addLoc(div1, file$L, 42, 4, 1097);
+				div2.className = "loupe svelte-f72nro";
+				addLoc(div2, file$L, 47, 4, 1269);
+				div3.className = "loupe svelte-f72nro";
+				addLoc(div3, file$L, 52, 4, 1441);
+				div4.className = "figcaption svelte-f72nro";
+				addLoc(div4, file$L, 57, 4, 1613);
+				div5.className = "detail svelte-f72nro";
+				addLoc(div5, file$L, 41, 2, 1072);
+				div6.className = "root svelte-f72nro";
+				addLoc(div6, file$L, 1, 0, 1);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div3, anchor);
-				append(div3, div0);
+				insert(target, div6, anchor);
+				append(div6, div0);
 				lazyimage0._mount(div0, null);
 				append(div0, text0);
 				atlasreticle0._mount(div0, null);
@@ -20331,18 +20340,21 @@
 				atlasreticle1._mount(div0, null);
 				append(div0, text2);
 				atlasreticle2._mount(div0, null);
-				append(div3, text3);
-				append(div3, div2);
+				append(div6, text3);
+				append(div6, div5);
+				append(div5, div1);
 				lazyimage1._mount(loupe0._slotted.default, null);
-				loupe0._mount(div2, null);
-				append(div2, text4);
+				loupe0._mount(div1, null);
+				append(div5, text4);
+				append(div5, div2);
 				lazyimage2._mount(loupe1._slotted.default, null);
 				loupe1._mount(div2, null);
-				append(div2, text5);
+				append(div5, text5);
+				append(div5, div3);
 				lazyimage3._mount(loupe2._slotted.default, null);
-				loupe2._mount(div2, null);
-				append(div2, text6);
-				append(div2, div1);
+				loupe2._mount(div3, null);
+				append(div5, text6);
+				append(div5, div4);
 			},
 
 			p: function update(changed, ctx) {
@@ -20371,7 +20383,7 @@
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div3);
+					detachNode(div6);
 				}
 
 				lazyimage0.destroy();
@@ -20505,15 +20517,15 @@
 				for (var i = 0; i < each1_blocks.length; i += 1) {
 					each1_blocks[i].c();
 				}
-				h40.className = "svelte-1uisskv";
+				h40.className = "svelte-1ow7yzn";
 				addLoc(h40, file$M, 2, 2, 22);
-				div0.className = "main svelte-1uisskv";
+				div0.className = "main svelte-1ow7yzn";
 				addLoc(div0, file$M, 3, 2, 58);
-				h41.className = "svelte-1uisskv";
+				h41.className = "svelte-1ow7yzn";
 				addLoc(h41, file$M, 18, 2, 453);
-				div1.className = "main svelte-1uisskv";
+				div1.className = "main svelte-1ow7yzn";
 				addLoc(div1, file$M, 19, 2, 490);
-				div2.className = "root svelte-1uisskv";
+				div2.className = "root svelte-1ow7yzn";
 				addLoc(div2, file$M, 1, 0, 1);
 			},
 

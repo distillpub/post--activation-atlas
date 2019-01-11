@@ -40,15 +40,21 @@
     />
   </div>
   <div class="detail">
-    <Loupe label={1}>
-      <LazyImage border={false} background={false} src="assets/images/renders/focus-2-4.png" />
-    </Loupe>
-    <Loupe label={2}>
-      <LazyImage border={false} background={false} src="assets/images/renders/focus-2-3.png" />
-    </Loupe>
-    <Loupe label={3}>
-      <LazyImage border={false} background={false} src="assets/images/renders/focus-2-2.png" />
-    </Loupe>
+    <div class="loupe">
+      <Loupe label={1}>
+        <LazyImage border={false} background={false} src="assets/images/renders/focus-2-4.png" />
+      </Loupe>
+    </div>
+    <div class="loupe">
+      <Loupe label={2}>
+        <LazyImage border={false} background={false} src="assets/images/renders/focus-2-3.png" />
+      </Loupe>
+    </div>
+    <div class="loupe">
+      <Loupe label={3}>
+        <LazyImage border={false} background={false} src="assets/images/renders/focus-2-2.png" />
+      </Loupe>
+    </div>
     <div class="figcaption">In mixed4d we see we see the attribution toward "fireboat" is high in several clusters located in different positions around the atlas. One is very focused on windows, another on geysers and splashing water, and yet another on crane-like objects.</div>
   </div>
 </div>
@@ -65,25 +71,39 @@
 
 
 <style>
+  .loupe {
+    margin: 20px;
+  }
   .root {
-    max-width: 1000px;
-    margin: 1em auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    padding: 0 20px;
+    box-sizing: border-box;
   }
   .main {
     position: relative;
+    box-sizing: border-box;
   }
-  .detail {
-    position: relative;
-    display: grid;
-    align-items: center;
-    grid-gap: 30px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+  @media(min-width: 500px) {
+      .detail {
+        position: relative;
+        display: grid;
+        align-items: center;
+        /* grid-gap: 30px; */
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+      .figcaption {
+        max-width: 180px;
+        margin: 0 auto;
+      }
   }
-  .figcaption {
-    max-width: 180px;
-    margin: 0 auto;
+  
+  @media(min-width: 800px) {
+      .root {
+        max-width: 1000px;
+        margin: 1em auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      
   }
 </style>

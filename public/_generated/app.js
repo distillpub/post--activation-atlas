@@ -2481,7 +2481,7 @@
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
 				addListener(div, "mousedown", mousedown_handler);
-				div.className = "root svelte-xo8icp";
+				div.className = "root svelte-1pppif8";
 				addLoc(div, file$5, 0, 0, 0);
 			},
 
@@ -2535,9 +2535,9 @@
 				if (if_block1) if_block1.c();
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
-				setAttribute(svg, "class", "svelte-xo8icp");
+				setAttribute(svg, "class", "svelte-1pppif8");
 				addLoc(svg, file$5, 4, 2, 106);
-				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp";
+				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
@@ -2589,7 +2589,7 @@
 					if_block1 = null;
 				}
 
-				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-xo8icp")) {
+				if ((changed.round) && div_class_value !== (div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8")) {
 					div.className = div_class_value;
 				}
 
@@ -2637,7 +2637,7 @@
 		return {
 			c: function create() {
 				path = createSvgElement("path");
-				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp");
+				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
 				addLoc(path, file$5, 6, 6, 201);
 			},
@@ -2647,7 +2647,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-xo8icp")) {
+				if ((changed.background) && path_class_value !== (path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8")) {
 					setAttribute(path, "class", path_class_value);
 				}
 
@@ -2666,29 +2666,29 @@
 
 	// (23:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
-		var div1, div0, p, text;
+		var div2, div1, div0, text;
 
 		return {
 			c: function create() {
+				div2 = createElement("div");
 				div1 = createElement("div");
 				div0 = createElement("div");
-				p = createElement("p");
 				text = createText(ctx.annotationValue);
-				p.className = "annotation svelte-xo8icp";
-				addLoc(p, file$5, 25, 10, 851);
-				div0.className = "annotationTab svelte-xo8icp";
-				setStyle(div0, "background", ctx.color);
-				addLoc(div0, file$5, 24, 8, 785);
-				div1.className = "annotationTabParent svelte-xo8icp";
-				setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div1, file$5, 23, 6, 710);
+				div0.className = "annotation";
+				addLoc(div0, file$5, 25, 10, 851);
+				div1.className = "annotationTab svelte-1pppif8";
+				setStyle(div1, "background", ctx.color);
+				addLoc(div1, file$5, 24, 8, 785);
+				div2.className = "annotationTabParent svelte-1pppif8";
+				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
+				addLoc(div2, file$5, 23, 6, 710);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
+				insert(target, div2, anchor);
+				append(div2, div1);
 				append(div1, div0);
-				append(div0, p);
-				append(p, text);
+				append(div0, text);
 			},
 
 			p: function update(changed, ctx) {
@@ -2697,17 +2697,17 @@
 				}
 
 				if (changed.color) {
-					setStyle(div0, "background", ctx.color);
+					setStyle(div1, "background", ctx.color);
 				}
 
 				if (changed.w || changed.width) {
-					setStyle(div1, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
+					setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
 				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div1);
+					detachNode(div2);
 				}
 			}
 		};
