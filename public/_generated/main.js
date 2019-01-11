@@ -13470,15 +13470,15 @@
 				text5 = createText("\n");
 				div4 = createElement("div");
 				notebooklink._fragment.c();
-				h4.className = "svelte-vtsmf2";
+				h4.className = "svelte-1ku0la8";
 				addLoc(h4, file$s, 0, 0, 0);
 				setStyle(div0, "position", "relative");
 				addLoc(div0, file$s, 2, 2, 112);
-				div1.className = "chooser svelte-vtsmf2";
+				div1.className = "chooser svelte-1ku0la8";
 				addLoc(div1, file$s, 6, 4, 249);
-				div2.className = "chooser-container svelte-vtsmf2";
+				div2.className = "chooser-container svelte-1ku0la8";
 				addLoc(div2, file$s, 5, 2, 213);
-				div3.className = "svelte-vtsmf2 svelte-ref-root";
+				div3.className = "svelte-1ku0la8 svelte-ref-root";
 				addLoc(div3, file$s, 1, 0, 95);
 				setStyle(div4, "margin-top", "16px");
 				addLoc(div4, file$s, 16, 0, 559);
@@ -13579,9 +13579,9 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
-				input.className = "svelte-vtsmf2";
+				input.className = "svelte-1ku0la8";
 				addLoc(input, file$s, 9, 10, 405);
-				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-vtsmf2";
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1ku0la8";
 				label.title = label_title_value = ctx.c;
 				addLoc(label, file$s, 8, 8, 317);
 			},
@@ -13607,7 +13607,7 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-vtsmf2")) {
+				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1ku0la8")) {
 					label.className = label_class_value;
 				}
 
@@ -13749,26 +13749,26 @@
 					each_blocks[i].c();
 				}
 				addLoc(br0, file$t, 5, 67, 99);
-				h40.className = "svelte-1vijmyb";
+				h40.className = "svelte-1sg2jsd";
 				addLoc(h40, file$t, 5, 4, 36);
 				div0.className = "atlas";
 				addLoc(div0, file$t, 6, 4, 133);
-				div1.className = "figcaption svelte-1vijmyb";
+				div1.className = "figcaption svelte-1sg2jsd";
 				addLoc(div1, file$t, 9, 4, 254);
 				addLoc(div2, file$t, 4, 2, 26);
 				addLoc(br1, file$t, 12, 67, 649);
-				h41.className = "svelte-1vijmyb";
+				h41.className = "svelte-1sg2jsd";
 				addLoc(h41, file$t, 12, 4, 586);
 				div3.className = "atlas";
 				addLoc(div3, file$t, 13, 4, 692);
-				div4.className = "figcaption svelte-1vijmyb";
+				div4.className = "figcaption svelte-1sg2jsd";
 				addLoc(div4, file$t, 16, 4, 810);
 				addLoc(div5, file$t, 11, 2, 576);
-				div6.className = "chooser svelte-1vijmyb";
+				div6.className = "chooser svelte-1sg2jsd";
 				addLoc(div6, file$t, 19, 4, 1169);
-				div7.className = "chooser-container svelte-1vijmyb";
+				div7.className = "chooser-container svelte-1sg2jsd";
 				addLoc(div7, file$t, 18, 2, 1133);
-				div8.className = "root svelte-1vijmyb";
+				div8.className = "root svelte-1sg2jsd";
 				addLoc(div8, file$t, 2, 0, 2);
 			},
 
@@ -13886,9 +13886,9 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
-				input.className = "svelte-1vijmyb";
+				input.className = "svelte-1sg2jsd";
 				addLoc(input, file$t, 22, 10, 1332);
-				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1vijmyb";
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1sg2jsd";
 				label.title = label_title_value = ctx.c;
 				addLoc(label, file$t, 21, 8, 1237);
 			},
@@ -13915,7 +13915,7 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.$currentClassAtlasCompareIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1vijmyb")) {
+				if ((changed.$currentClassAtlasCompareIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-1sg2jsd")) {
 					label.className = label_class_value;
 				}
 

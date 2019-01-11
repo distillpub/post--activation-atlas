@@ -12,6 +12,8 @@ tooltips broken in safari
 
 responsiveResize rewrite
 
+css scaling interferes with touch events
+
 ## Nice to haves
 
 grid size radio buttons smaller
