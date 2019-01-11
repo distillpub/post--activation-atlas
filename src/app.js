@@ -1,5 +1,5 @@
 import store from "./Store.js";
-import App from "./components/App.html"
+import AppStandalone from "./components/AppStandalone.html"
 import Tooltip from "./library/Tooltip.html";
 import AtlasTooltip from "./components/AtlasTooltip.html";
 
@@ -19,11 +19,10 @@ store.set({
   })
 });
 
-new App({
+new AppStandalone({
   target: document.querySelector("#app"),
   store,
   data: {
-    gridSize: -1,
-    showLabels: true
+    
   }
 });

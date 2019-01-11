@@ -1,0 +1,16 @@
+<div style="width: 100%; height: 100%;" bind:clientWidth bind:clientHeight>
+  <App ref:app {clientWidth} {clientHeight} gridSize={-1} showLabels={true}/>
+</div>
+
+<script>
+export default {
+  components: {
+    App: "./App.html"
+  },
+  oncreate() {
+    setTimeout(() => {
+      this.refs.app.home(0);
+    }, 100)
+  }
+}
+</script>

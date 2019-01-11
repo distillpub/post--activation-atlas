@@ -11507,6 +11507,9 @@
 	var format_1$1 = format(".3f");
 
 	var methods$7 = {
+	  home(duration) {
+	    this.refs.atlas.home(duration);
+	  },
 	  zoomTo(x, y, scale, duration = 1000) {
 	    this.refs.atlas.zoomTo(x, y, scale, duration);
 	  },
