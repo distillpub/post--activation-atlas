@@ -20082,13 +20082,13 @@
 				text2 = createText("\n  ");
 				div2 = createElement("div");
 				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
-				div0.className = "main svelte-drlr3g";
+				div0.className = "main svelte-17cyjzl";
 				addLoc(div0, file$K, 2, 2, 22);
-				div1.className = "detail svelte-drlr3g";
+				div1.className = "detail svelte-17cyjzl";
 				addLoc(div1, file$K, 14, 2, 363);
-				div2.className = "figcaption svelte-drlr3g";
+				div2.className = "figcaption svelte-17cyjzl";
 				addLoc(div2, file$K, 19, 2, 516);
-				div3.className = "root svelte-drlr3g";
+				div3.className = "root svelte-17cyjzl";
 				addLoc(div3, file$K, 1, 0, 1);
 			},
 

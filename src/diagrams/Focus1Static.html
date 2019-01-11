@@ -34,15 +34,9 @@
 <style>
   .root {
     max-width: 1000px;
-    margin: 0 auto;
     grid-column: page;
-    display: grid;
-    grid-column-gap: 20px;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: 
-      "main detail"
-      "main caption";
+    padding: 0 20px;
+    
   }
   .main {
     grid-area: main;
@@ -55,5 +49,30 @@
   .figcaption {
     margin-top: 20px;
     grid-area: caption;
+  }
+  @media(min-width: 500px) {
+    .root {
+      display: grid;
+      grid-gap: 20px;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr auto;
+      grid-template-areas: 
+        "main main"
+        "detail caption";
+    }
+
+  }
+
+  @media(min-width: 700px) {
+    .root {
+      margin: 0 auto;
+      grid-row-gap: 0;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas: 
+        "main detail"
+        "main caption";
+    }
+
   }
 </style>

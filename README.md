@@ -12,6 +12,14 @@ tooltips broken in safari
 
 responsiveResize rewrite
 
+responsive todos: 
+  focus-2
+  focus-3
+  focus-3-table
+  class-filter-comparison
+  class-subset
+  show-a-path
+
 ## Nice to haves
 
 grid size radio buttons smaller
