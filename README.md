@@ -10,9 +10,7 @@ Colab notebooks (in progress)
 
 tooltips broken in safari
 
-responsiveResize update
-
-responsiveResize for one-layer
+responsiveResize rewrite
 
 ## Nice to haves
 
@@ -23,6 +21,9 @@ grid size radio buttons smaller
 smooth zoom between gridsizes
 
 ## Done
+option to turn off touch-to-pan
+responsiveResize for one-layer
+touch events are being filtered
 app.html and link to it somewhere
 spread operator in object literals
 add hover state for notebooklink

@@ -8621,16 +8621,21 @@
 	    msy: null,
 	    disableBehaviors: false,
 	    scrollWheel: false,
-
 	  };
 	}
 	var methods$3 = {
 	  tween,
 	  zoomEventFilter: function() {
-	    const {scrollWheel, disableBehaviors} = this.get();
+	    const {scrollWheel, touchPan, disableBehaviors} = this.get();
+	    console.log(event);
 	    if (disableBehaviors) {
 	      return false;
 	    }
+	    // if (!touchPan && d3Event.touches) {
+	    //   if (d3Event.touches.length === 1) {
+	    //     return false;
+	    //   }
+	    // }
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
@@ -8702,7 +8707,7 @@
 	};
 
 	function oncreate$2() {
-	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
+	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY, disableBehaviors} = this.get();
 	  const that = this; // needed because d3 gives "this" as the node, not component.
 	  z.wheelDelta(() => {
 	    let d = -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
@@ -8717,7 +8722,9 @@
 	    selection: selection$$1,
 	    el: this.refs.root,
 	  });
-	  z(selection$$1);
+	  if (!disableBehaviors) {
+	    z(selection$$1);
+	  }
 	  z.filter(this.zoomEventFilter.bind(this));
 	  z.on("zoom", () => { this.onzoom(that); });
 	  z.translateTo(selection$$1, homeX * minSize, homeY * minSize);
@@ -10102,9 +10109,11 @@
 
 	function data$d() {
 	  return {
+	    style: "",
+	    aspectRatio: 1,
+	    minWidth: 800,
 	    clientWidth: 1000,
 	    clientHeight: 1000,
-	    minWidth: 800,
 	  }
 	}
 	const file$g = "src/library/ResponsiveResizer.html";
@@ -10118,7 +10127,7 @@
 				div0 = createElement("div");
 				setStyle(div0, "transform", "scale(" + ctx.scale + ")");
 				setStyle(div0, "width", ctx.finalWidth);
-				setStyle(div0, "height", ctx.finalHeight);
+				setStyle(div0, "height", "" + ctx.finalHeight + ctx.style + "\n    ");
 				div0.className = "svelte-fkjf8u svelte-ref-frame";
 				addLoc(div0, file$g, 12, 2, 321);
 				div1.className = "svelte-fkjf8u svelte-ref-root";
@@ -10146,8 +10155,8 @@
 					setStyle(div0, "width", ctx.finalWidth);
 				}
 
-				if (changed.finalHeight) {
-					setStyle(div0, "height", ctx.finalHeight);
+				if (changed.finalHeight || changed.style) {
+					setStyle(div0, "height", "" + ctx.finalHeight + ctx.style + "\n    ");
 				}
 			},
 
@@ -10181,6 +10190,10 @@
 		if (!('minWidth' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'minWidth'");
 		if (!('width' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'width'");
 		if (!('clientHeight' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'clientHeight'");
+
+
+
+		if (!('style' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'style'");
 		this._intro = true;
 
 		this._slotted = options.slots || {};

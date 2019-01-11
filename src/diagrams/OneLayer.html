@@ -11,14 +11,17 @@
 </div>
 
 
-<div class="atlas" style="grid-column: screen;">
-  <Atlas id="inceptionv1_{layerName}" bind:gridSize bind:viewWidth bind:showLabels scaleCountFactor=200 {iconCrop} disableBehaviors={true}/>
+<div class="atlas" style="grid-column: screen;" bind:clientWidth bind:clientHeight>
+  <ResponsiveResizer {clientWidth} {clientHeight} minWidth={1000}>
+    <Atlas ref:atlas id="inceptionv1_{layerName}" bind:gridSize bind:showLabels scaleCountFactor=200 {iconCrop} disableBehaviors={true}/>
+  </ResponsiveResizer>
 </div>
 
 <script>
 export default {
   components: { 
-    Atlas: "../Atlas.html"
+    Atlas: "../Atlas.html",
+    ResponsiveResizer: "../library/ResponsiveResizer.html"
   },
   data() {
     return {
@@ -27,10 +30,13 @@ export default {
       iconCrop: 0.4,
     }
   },
+  oncreate() {
+    setTimeout(() => {
+      this.refs.atlas.home();
+    }, 100)
+  },
   onupdate({changed, current, previous}) {
-    if (changed.viewWidth) {
-      console.log(current.viewWidth)
-    }
+
   }
 }
 </script>
@@ -44,7 +50,7 @@ export default {
   }
   .atlas {
     position: relative;
-    height: 100vw;
+    height: calc(100vw - 40px);
     margin: 20px;
   }
   .column {

@@ -9969,16 +9969,21 @@
 	    msy: null,
 	    disableBehaviors: false,
 	    scrollWheel: false,
-
 	  };
 	}
 	var methods$5 = {
 	  tween,
 	  zoomEventFilter: function() {
-	    const {scrollWheel, disableBehaviors} = this.get();
+	    const {scrollWheel, touchPan, disableBehaviors} = this.get();
+	    console.log(event);
 	    if (disableBehaviors) {
 	      return false;
 	    }
+	    // if (!touchPan && d3Event.touches) {
+	    //   if (d3Event.touches.length === 1) {
+	    //     return false;
+	    //   }
+	    // }
 	    // If we want to suppress scroll wheel events...
 	    if (!scrollWheel) {
 	      // ... return false for scroll wheel events + button = 1 events
@@ -10050,7 +10055,7 @@
 	};
 
 	function oncreate$4() {
-	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
+	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY, disableBehaviors} = this.get();
 	  const that = this; // needed because d3 gives "this" as the node, not component.
 	  z.wheelDelta(() => {
 	    let d = -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
@@ -10065,7 +10070,9 @@
 	    selection: selection$$1,
 	    el: this.refs.root,
 	  });
-	  z(selection$$1);
+	  if (!disableBehaviors) {
+	    z(selection$$1);
+	  }
 	  z.filter(this.zoomEventFilter.bind(this));
 	  z.on("zoom", () => { this.onzoom(that); });
 	  z.translateTo(selection$$1, homeX * minSize, homeY * minSize);
@@ -11343,9 +11350,11 @@
 
 	function data$h() {
 	  return {
+	    style: "",
+	    aspectRatio: 1,
+	    minWidth: 800,
 	    clientWidth: 1000,
 	    clientHeight: 1000,
-	    minWidth: 800,
 	  }
 	}
 	const file$m = "src/library/ResponsiveResizer.html";
@@ -11359,7 +11368,7 @@
 				div0 = createElement("div");
 				setStyle(div0, "transform", "scale(" + ctx.scale + ")");
 				setStyle(div0, "width", ctx.finalWidth);
-				setStyle(div0, "height", ctx.finalHeight);
+				setStyle(div0, "height", "" + ctx.finalHeight + ctx.style + "\n    ");
 				div0.className = "svelte-fkjf8u svelte-ref-frame";
 				addLoc(div0, file$m, 12, 2, 321);
 				div1.className = "svelte-fkjf8u svelte-ref-root";
@@ -11387,8 +11396,8 @@
 					setStyle(div0, "width", ctx.finalWidth);
 				}
 
-				if (changed.finalHeight) {
-					setStyle(div0, "height", ctx.finalHeight);
+				if (changed.finalHeight || changed.style) {
+					setStyle(div0, "height", "" + ctx.finalHeight + ctx.style + "\n    ");
 				}
 			},
 
@@ -11422,6 +11431,10 @@
 		if (!('minWidth' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'minWidth'");
 		if (!('width' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'width'");
 		if (!('clientHeight' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'clientHeight'");
+
+
+
+		if (!('style' in this._state)) console.warn("<ResponsiveResizer> was created without expected data property 'style'");
 		this._intro = true;
 
 		this._slotted = options.slots || {};
@@ -17839,15 +17852,18 @@
 	    iconCrop: 0.4,
 	  }
 	}
+	function oncreate$8() {
+	  setTimeout(() => {
+	    this.refs.atlas.home();
+	  }, 100);
+	}
 	function onupdate$3({changed, current, previous}) {
-	  if (changed.viewWidth) {
-	    console.log(current.viewWidth);
-	  }
+
 	}
 	const file$C = "src/diagrams/OneLayer.html";
 
 	function create_main_fragment$D(component, ctx) {
-		var div1, div0, label0, text1, label1, input0, text2, text3, label2, input1, text4, text5, label3, input2, text6, text7, label4, input3, text8, text9, label5, input4, text10, text11, div2, atlas_updating = {};
+		var div1, div0, label0, text1, label1, input0, text2, text3, label2, input1, text4, text5, label3, input2, text6, text7, label4, input3, text8, text9, label5, input4, text10, text11, div2, atlas_updating = {}, div2_resize_listener;
 
 		function input0_change_handler() {
 			component.set({ gridSize: input0.__value });
@@ -17879,10 +17895,6 @@
 			atlas_initial_data.gridSize = ctx.gridSize ;
 			atlas_updating.gridSize = true;
 		}
-		if (ctx.viewWidth  !== void 0) {
-			atlas_initial_data.viewWidth = ctx.viewWidth ;
-			atlas_updating.viewWidth = true;
-		}
 		if (ctx.showLabels  !== void 0) {
 			atlas_initial_data.showLabels = ctx.showLabels ;
 			atlas_updating.showLabels = true;
@@ -17897,10 +17909,6 @@
 					newState.gridSize = childState.gridSize;
 				}
 
-				if (!atlas_updating.viewWidth && changed.viewWidth) {
-					newState.viewWidth = childState.viewWidth;
-				}
-
 				if (!atlas_updating.showLabels && changed.showLabels) {
 					newState.showLabels = childState.showLabels;
 				}
@@ -17910,8 +17918,26 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			atlas._bind({ gridSize: 1, viewWidth: 1, showLabels: 1 }, atlas.get());
+			atlas._bind({ gridSize: 1, showLabels: 1 }, atlas.get());
 		});
+
+		component.refs.atlas = atlas;
+
+		var responsiveresizer_initial_data = {
+		 	clientWidth: ctx.clientWidth,
+		 	clientHeight: ctx.clientHeight,
+		 	minWidth: 1000
+		 };
+		var responsiveresizer = new ResponsiveResizer({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: responsiveresizer_initial_data
+		});
+
+		function div2_resize_handler() {
+			component.set({ clientWidth: div2.clientWidth, clientHeight: div2.clientHeight });
+		}
 
 		return {
 			c: function create() {
@@ -17942,13 +17968,14 @@
 				text11 = createText("\n\n\n");
 				div2 = createElement("div");
 				atlas._fragment.c();
+				responsiveresizer._fragment.c();
 				addLoc(label0, file$C, 2, 4, 76);
 				component._bindingGroups[0].push(input0);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "radio");
 				input0.__value = 0;
 				input0.value = input0.__value;
-				input0.className = "svelte-1h549gh";
+				input0.className = "svelte-1q4832y";
 				addLoc(input0, file$C, 3, 11, 114);
 				addLoc(label1, file$C, 3, 4, 107);
 				component._bindingGroups[0].push(input1);
@@ -17956,7 +17983,7 @@
 				setAttribute(input1, "type", "radio");
 				input1.__value = 1;
 				input1.value = input1.__value;
-				input1.className = "svelte-1h549gh";
+				input1.className = "svelte-1q4832y";
 				addLoc(input1, file$C, 4, 11, 188);
 				addLoc(label2, file$C, 4, 4, 181);
 				component._bindingGroups[0].push(input2);
@@ -17964,7 +17991,7 @@
 				setAttribute(input2, "type", "radio");
 				input2.__value = 2;
 				input2.value = input2.__value;
-				input2.className = "svelte-1h549gh";
+				input2.className = "svelte-1q4832y";
 				addLoc(input2, file$C, 5, 11, 262);
 				addLoc(label3, file$C, 5, 4, 255);
 				component._bindingGroups[0].push(input3);
@@ -17972,21 +17999,22 @@
 				setAttribute(input3, "type", "radio");
 				input3.__value = 3;
 				input3.value = input3.__value;
-				input3.className = "svelte-1h549gh";
+				input3.className = "svelte-1q4832y";
 				addLoc(input3, file$C, 6, 11, 336);
 				addLoc(label4, file$C, 6, 4, 329);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "checkbox");
-				input4.className = "svelte-1h549gh";
+				input4.className = "svelte-1q4832y";
 				addLoc(input4, file$C, 8, 33, 435);
 				setStyle(label5, "float", "right");
 				addLoc(label5, file$C, 8, 4, 406);
 				setStyle(div0, "grid-column", "text");
-				div0.className = "svelte-1h549gh svelte-ref-controls";
+				div0.className = "svelte-1q4832y svelte-ref-controls";
 				addLoc(div0, file$C, 1, 2, 26);
 				div1.className = "base-grid";
 				addLoc(div1, file$C, 0, 0, 0);
-				div2.className = "atlas svelte-1h549gh";
+				component.root._beforecreate.push(div2_resize_handler);
+				div2.className = "atlas svelte-1q4832y";
 				setStyle(div2, "grid-column", "screen");
 				addLoc(div2, file$C, 13, 0, 526);
 			},
@@ -18033,7 +18061,9 @@
 				component.refs.controls = div0;
 				insert(target, text11, anchor);
 				insert(target, div2, anchor);
-				atlas._mount(div2, null);
+				atlas._mount(responsiveresizer._slotted.default, null);
+				responsiveresizer._mount(div2, null);
+				div2_resize_listener = addResizeListener(div2, div2_resize_handler);
 			},
 
 			p: function update(changed, _ctx) {
@@ -18051,16 +18081,17 @@
 					atlas_changes.gridSize = ctx.gridSize ;
 					atlas_updating.gridSize = ctx.gridSize  !== void 0;
 				}
-				if (!atlas_updating.viewWidth && changed.viewWidth) {
-					atlas_changes.viewWidth = ctx.viewWidth ;
-					atlas_updating.viewWidth = ctx.viewWidth  !== void 0;
-				}
 				if (!atlas_updating.showLabels && changed.showLabels) {
 					atlas_changes.showLabels = ctx.showLabels ;
 					atlas_updating.showLabels = ctx.showLabels  !== void 0;
 				}
 				atlas._set(atlas_changes);
 				atlas_updating = {};
+
+				var responsiveresizer_changes = {};
+				if (changed.clientWidth) responsiveresizer_changes.clientWidth = ctx.clientWidth;
+				if (changed.clientHeight) responsiveresizer_changes.clientHeight = ctx.clientHeight;
+				responsiveresizer._set(responsiveresizer_changes);
 			},
 
 			d: function destroy$$1(detach) {
@@ -18084,6 +18115,9 @@
 				}
 
 				atlas.destroy();
+				if (component.refs.atlas === atlas) component.refs.atlas = null;
+				responsiveresizer.destroy();
+				div2_resize_listener.cancel();
 			}
 		};
 	}
@@ -18099,8 +18133,9 @@
 		this._state = assign(data$s(), options.data);
 		if (!('gridSize' in this._state)) console.warn("<OneLayer> was created without expected data property 'gridSize'");
 		if (!('showLabels' in this._state)) console.warn("<OneLayer> was created without expected data property 'showLabels'");
+		if (!('clientWidth' in this._state)) console.warn("<OneLayer> was created without expected data property 'clientWidth'");
+		if (!('clientHeight' in this._state)) console.warn("<OneLayer> was created without expected data property 'clientHeight'");
 		if (!('layerName' in this._state)) console.warn("<OneLayer> was created without expected data property 'layerName'");
-		if (!('viewWidth' in this._state)) console.warn("<OneLayer> was created without expected data property 'viewWidth'");
 		if (!('iconCrop' in this._state)) console.warn("<OneLayer> was created without expected data property 'iconCrop'");
 		this._bindingGroups = [[]];
 		this._intro = true;
@@ -18109,6 +18144,7 @@
 		this._fragment = create_main_fragment$D(this, this._state);
 
 		this.root._oncreate.push(() => {
+			oncreate$8.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -18566,7 +18602,7 @@
 	  }
 	};
 
-	function oncreate$8() {
+	function oncreate$9() {
 	  this.render();
 	}
 	const file$E = "src/ClippedIcon.html";
@@ -18639,7 +18675,7 @@
 		this._fragment = create_main_fragment$F(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$8.call(this);
+			oncreate$9.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 

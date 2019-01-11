@@ -16,6 +16,7 @@
       transform: scale({scale});
       width: {finalWidth};
       height: {finalHeight};
+      {style}
     "
   >
     <slot></slot>
@@ -26,9 +27,11 @@
 export default {
   data() {
     return {
+      style: "",
+      aspectRatio: 1,
+      minWidth: 800,
       clientWidth: 1000,
       clientHeight: 1000,
-      minWidth: 800,
     }
   },
   computed: {

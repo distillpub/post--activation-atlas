@@ -37,7 +37,6 @@ export default {
       msy: null,
       disableBehaviors: false,
       scrollWheel: false,
-
     };
   },
   computed: {
@@ -68,7 +67,7 @@ export default {
   },
   
   oncreate() {
-    const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY} = this.get();
+    const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY, disableBehaviors} = this.get();
     const that = this; // needed because d3 gives "this" as the node, not component.
     z.wheelDelta(() => {
       let d = -d3Event.deltaY * (d3Event.deltaMode ? 120 : 1) / 500;
@@ -83,7 +82,9 @@ export default {
       selection,
       el: this.refs.root,
     });
-    z(selection);
+    if (!disableBehaviors) {
+      z(selection);
+    }
     z.filter(this.zoomEventFilter.bind(this));
     z.on("zoom", () => { this.onzoom(that); });
     z.translateTo(selection, homeX * minSize, homeY * minSize)
@@ -115,10 +116,16 @@ export default {
   methods: {
     tween,
     zoomEventFilter: function() {
-      const {scrollWheel, disableBehaviors} = this.get();
+      const {scrollWheel, touchPan, disableBehaviors} = this.get();
+      console.log(d3Event)
       if (disableBehaviors) {
         return false;
       }
+      // if (!touchPan && d3Event.touches) {
+      //   if (d3Event.touches.length === 1) {
+      //     return false;
+      //   }
+      // }
       // If we want to suppress scroll wheel events...
       if (!scrollWheel) {
         // ... return false for scroll wheel events + button = 1 events
