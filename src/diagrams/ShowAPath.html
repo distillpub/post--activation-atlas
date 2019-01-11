@@ -1,5 +1,5 @@
 <div class="showapath">  
-  <div>
+  <div class="arrow">
     <SetOfIcons
       {pointList}
       {layers}
@@ -9,7 +9,7 @@
   </div>
   <div class="atlas">
     <div class="thumbnail">
-      <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" style="width: 100%;display: block;">
+      <LazyImage aspectRatio={1} src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" style="width: 100%;display: block;" />
     </div>
     <svg 
       viewBox="0 0 {viewWidth} {viewHeight}"
@@ -62,6 +62,7 @@
 export default {
   components: { 
     SetOfIcons: "../SetOfIcons.html",
+    LazyImage: "../library/LazyImage.html",
     AtlasDataLoader: '../AtlasDataLoader.html', 
   },
   data() {
@@ -120,6 +121,8 @@ svg {
 }
 .atlas {
   position: relative;
+  max-width: 120px;
+  margin-top: 16px;
 }
 .pathArrow {
   opacity: 1;
@@ -130,10 +133,13 @@ svg {
 .set-of-icons {
   position: relative;
 }
-/* @media(min-width: 800px) { */
+@media(min-width: 600px) {
   .showapath {
     display: grid; grid-template-columns: 1fr 120px; 
     grid-gap: 20px;
   }
-/* } */
+  .atlas {
+    margin: 0;
+  }
+}
 </style>

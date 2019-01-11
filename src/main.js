@@ -290,13 +290,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 
 	// bokeh
-	new LazyComponent({
+	new ShowAPath({
 		target: document.querySelector("#show-a-path-0"),
 		store: store,
 		data: {
-			height: 120,
-			component: ShowAPath,
-			componentData: {
 				layerName: "mixed4c",
 				pointList: [
 					[0.161, 0.38610],
@@ -320,18 +317,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
 					[0.161, 0.5235],
 					[0.161, 0.5311]
 				],
-			}
 		}
 	});
 
 	// crowd -> single person
-	new LazyComponent({
+	new ShowAPath({
 		target: document.querySelector("#show-a-path-1"),
 		store: store,
 		data: {
-			height: 120,
-			component: ShowAPath,
-			componentData: {
 				layerName: "mixed4c",
 				pointList: [
 					[0.8777, 0.35276],
@@ -355,18 +348,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
 					[0.84276, 0.1802],
 					[0.84082, 0.17069],
 				],
-			}
 		}
 	});
 
 	// water -> ground
-	new LazyComponent({
+	new ShowAPath({
 		target: document.querySelector("#show-a-path-2"),
 		store: store,
 		data: {
-			height: 120,
-			component: ShowAPath,
-			componentData: {
 				layerName: "mixed4c",
 				pointList: [
 					[0.275, 0.775],
@@ -390,19 +379,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
 					[0.30019, 0.59059],
 					[0.29454, 0.58140]
 				],
-			}
 		}
 	});
 
 
 	// fruit
-	new LazyComponent({
+	new ShowAPath({
 		target: document.querySelector("#show-a-path-3"),
 		store: store,
 		data: {
-			height: 120,
-			component: ShowAPath,
-			componentData: {
 				layerName: "mixed4c",
 				pointList: [
 					[0.610, 0.130],
@@ -426,7 +411,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 					[0.578, 0.213],
 					[0.577, 0.219]
 				],
-			}
 		}
 	});
 

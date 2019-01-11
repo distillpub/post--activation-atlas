@@ -18728,6 +18728,7 @@
 	    arrowHeight: 30,
 	    imgList: [],
 	    color: '#ff6600',
+	    iconHeight: 80,
 	  }
 	}
 	const file$F = "src/SetOfIcons.html";
@@ -18785,9 +18786,9 @@
 				addLoc(div1, file$F, 3, 4, 257);
 				setAttribute(path, "d", "M 0 0 L 10 5 L 0 10 z");
 				setAttribute(path, "fill", ctx.color);
-				addLoc(path, file$F, 5, 6, 458);
+				addLoc(path, file$F, 5, 6, 455);
 				setStyle(svg, "position", "absolute");
-				setStyle(svg, "right", "-4px");
+				setStyle(svg, "right", "0");
 				setStyle(svg, "top", "0");
 				setAttribute(svg, "width", "10");
 				setAttribute(svg, "height", "10");
@@ -18797,7 +18798,8 @@
 				setStyle(div2, "height", "10px");
 				addLoc(div2, file$F, 1, 2, 71);
 				div3.className = "icons svelte-w4igyz";
-				addLoc(div3, file$F, 8, 2, 530);
+				setStyle(div3, "height", "" + ctx.iconHeight + "px");
+				addLoc(div3, file$F, 8, 2, 527);
 				component.root._beforecreate.push(div4_resize_handler);
 				addLoc(div4, file$F, 0, 0, 0);
 			},
@@ -18830,7 +18832,7 @@
 					setAttribute(path, "fill", ctx.color);
 				}
 
-				if (changed.imgList || changed.config) {
+				if (changed.imgList || changed.iconHeight || changed.config) {
 					each_value = ctx.imgList;
 
 					for (var i = 0; i < each_value.length; i += 1) {
@@ -18849,6 +18851,10 @@
 						each_blocks[i].d(1);
 					}
 					each_blocks.length = each_value.length;
+				}
+
+				if (changed.iconHeight) {
+					setStyle(div3, "height", "" + ctx.iconHeight + "px");
 				}
 			},
 
@@ -18871,7 +18877,7 @@
 
 		var clippedicon_initial_data = {
 		 	icon: ctx.icon,
-		 	width: 100,
+		 	width: ctx.iconHeight,
 		 	config: ctx.config
 		 };
 		var clippedicon = new ClippedIcon({
@@ -18892,6 +18898,7 @@
 			p: function update(changed, ctx) {
 				var clippedicon_changes = {};
 				if (changed.imgList) clippedicon_changes.icon = ctx.icon;
+				if (changed.iconHeight) clippedicon_changes.width = ctx.iconHeight;
 				if (changed.config) clippedicon_changes.config = ctx.config;
 				clippedicon._set(clippedicon_changes);
 			},
@@ -18919,6 +18926,7 @@
 		if (!('width' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'width'");
 		if (!('height' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'height'");
 		if (!('color' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'color'");
+		if (!('iconHeight' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'iconHeight'");
 
 		if (!('config' in this._state)) console.warn("<SetOfIcons> was created without expected data property 'config'");
 		this._intro = true;
@@ -18997,7 +19005,7 @@
 	const file$G = "src/diagrams/ShowAPath.html";
 
 	function create_main_fragment$H(component, ctx) {
-		var div3, div0, text0, div2, div1, img, img_src_value, img_alt_value, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, text2, atlasdataloader_updating = {};
+		var div3, div0, text0, div2, div1, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, text2, atlasdataloader_updating = {};
 
 		var setoficons_initial_data = {
 		 	pointList: ctx.pointList,
@@ -19009,6 +19017,18 @@
 			root: component.root,
 			store: component.store,
 			data: setoficons_initial_data
+		});
+
+		var lazyimage_initial_data = {
+		 	aspectRatio: 1,
+		 	src: "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg",
+		 	alt: "thumbnail for " + ctx.layerName,
+		 	style: "width: 100%;display: block;"
+		 };
+		var lazyimage = new LazyImage({
+			root: component.root,
+			store: component.store,
+			data: lazyimage_initial_data
 		});
 
 		var atlasdataloader_initial_data = { id: "inceptionv1_" + ctx.layerName };
@@ -19054,7 +19074,7 @@
 				text0 = createText("\n  ");
 				div2 = createElement("div");
 				div1 = createElement("div");
-				img = createElement("img");
+				lazyimage._fragment.c();
 				text1 = createText("\n    ");
 				svg = createSvgElement("svg");
 				defs = createSvgElement("defs");
@@ -19065,18 +19085,14 @@
 				path1 = createSvgElement("path");
 				text2 = createText("\n  ");
 				atlasdataloader._fragment.c();
+				div0.className = "arrow";
 				addLoc(div0, file$G, 1, 2, 28);
-				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
-				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				setStyle(img, "width", "100%");
-				setStyle(img, "display", "block");
-				addLoc(img, file$G, 11, 6, 184);
-				div1.className = "thumbnail svelte-z9iyec";
-				addLoc(div1, file$G, 10, 4, 154);
+				div1.className = "thumbnail svelte-14ap8kx";
+				addLoc(div1, file$G, 10, 4, 168);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$G, 28, 10, 678);
+				addLoc(circle, file$G, 28, 10, 716);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -19085,9 +19101,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$G, 18, 8, 431);
+				addLoc(marker0, file$G, 18, 8, 469);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$G, 39, 10, 971);
+				addLoc(path0, file$G, 39, 10, 1009);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -19096,21 +19112,21 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$G, 30, 8, 734);
-				addLoc(defs, file$G, 17, 6, 416);
+				addLoc(marker1, file$G, 30, 8, 772);
+				addLoc(defs, file$G, 17, 6, 454);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$G, 42, 6, 1044);
+				addLoc(path1, file$G, 42, 6, 1082);
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
-				setAttribute(svg, "class", "pathArrow svelte-z9iyec");
-				addLoc(svg, file$G, 13, 4, 327);
-				div2.className = "atlas svelte-z9iyec";
-				addLoc(div2, file$G, 9, 2, 130);
-				div3.className = "showapath svelte-z9iyec";
+				setAttribute(svg, "class", "pathArrow svelte-14ap8kx");
+				addLoc(svg, file$G, 13, 4, 365);
+				div2.className = "atlas svelte-14ap8kx";
+				addLoc(div2, file$G, 9, 2, 144);
+				div3.className = "showapath svelte-14ap8kx";
 				addLoc(div3, file$G, 0, 0, 0);
 			},
 
@@ -19121,7 +19137,7 @@
 				append(div3, text0);
 				append(div3, div2);
 				append(div2, div1);
-				append(div1, img);
+				lazyimage._mount(div1, null);
 				append(div2, text1);
 				append(div2, svg);
 				append(svg, defs);
@@ -19144,13 +19160,10 @@
 				if (changed.color) setoficons_changes.color = ctx.color;
 				setoficons._set(setoficons_changes);
 
-				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
-					img.src = img_src_value;
-				}
-
-				if ((changed.layerName) && img_alt_value !== (img_alt_value = "thumbnail for " + ctx.layerName)) {
-					img.alt = img_alt_value;
-				}
+				var lazyimage_changes = {};
+				if (changed.layerName) lazyimage_changes.src = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
+				if (changed.layerName) lazyimage_changes.alt = "thumbnail for " + ctx.layerName;
+				lazyimage._set(lazyimage_changes);
 
 				if ((changed.uniqueId) && marker0_id_value !== (marker0_id_value = 'head' + ctx.uniqueId)) {
 					setAttribute(marker0, "id", marker0_id_value);
@@ -19212,6 +19225,7 @@
 				}
 
 				setoficons.destroy();
+				lazyimage.destroy();
 				if (component.refs.clickPath === path1) component.refs.clickPath = null;
 				atlasdataloader.destroy();
 			}
@@ -21289,13 +21303,10 @@
 
 
 		// bokeh
-		new LazyComponent({
+		new ShowAPath({
 			target: document.querySelector("#show-a-path-0"),
 			store: store,
 			data: {
-				height: 120,
-				component: ShowAPath,
-				componentData: {
 					layerName: "mixed4c",
 					pointList: [
 						[0.161, 0.38610],
@@ -21319,18 +21330,14 @@
 						[0.161, 0.5235],
 						[0.161, 0.5311]
 					],
-				}
 			}
 		});
 
 		// crowd -> single person
-		new LazyComponent({
+		new ShowAPath({
 			target: document.querySelector("#show-a-path-1"),
 			store: store,
 			data: {
-				height: 120,
-				component: ShowAPath,
-				componentData: {
 					layerName: "mixed4c",
 					pointList: [
 						[0.8777, 0.35276],
@@ -21354,18 +21361,14 @@
 						[0.84276, 0.1802],
 						[0.84082, 0.17069],
 					],
-				}
 			}
 		});
 
 		// water -> ground
-		new LazyComponent({
+		new ShowAPath({
 			target: document.querySelector("#show-a-path-2"),
 			store: store,
 			data: {
-				height: 120,
-				component: ShowAPath,
-				componentData: {
 					layerName: "mixed4c",
 					pointList: [
 						[0.275, 0.775],
@@ -21389,19 +21392,15 @@
 						[0.30019, 0.59059],
 						[0.29454, 0.58140]
 					],
-				}
 			}
 		});
 
 
 		// fruit
-		new LazyComponent({
+		new ShowAPath({
 			target: document.querySelector("#show-a-path-3"),
 			store: store,
 			data: {
-				height: 120,
-				component: ShowAPath,
-				componentData: {
 					layerName: "mixed4c",
 					pointList: [
 						[0.610, 0.130],
@@ -21425,7 +21424,6 @@
 						[0.578, 0.213],
 						[0.577, 0.219]
 					],
-				}
 			}
 		});
 
