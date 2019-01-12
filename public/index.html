@@ -279,13 +279,19 @@
       display: grid;
       grid-column: page;
       grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 20px;
+      grid-gap: 16px 20px;
     }
     .vertical-layer-comparison h4 {
       margin-bottom: 0;
       padding-bottom: 4px;
       width: 100%;
       border-bottom: solid #CCC 1px;
+    }
+    .vertical-layer-comparison.progress h4 {
+      margin-bottom: 16px;
+    }
+    .vertical-layer-comparison.progress .figcaption {
+      margin-top: 8px;
     }
   </style>
 
@@ -325,6 +331,33 @@
     <div id="water-0"></div>
     <div id="water-1"></div>
     <div id="water-2"></div>
+  </figure>
+
+  <p>Finally, if we zoom out a little, we can see how the activation space changes from layer to layer. By looking at similar regions in three consecutive layers, we can see concepts getting refined and differentiated. In mixed4a we have very vague, generic area, which gets refined into much more specific "peninsulas".</p>
+
+  <figure class="vertical-layer-comparison progress">
+    <div>
+      <h4>Mixed4a</h4>
+      <img src="assets/images/progress-mixed4a.jpg" alt="mixed4a">
+      <div class="figcaption">
+        In mixed4a there is a vague "mammalian" area.
+        (note this layout is flipped from the actual atlas to be more consistent with the other layers)
+      </div>
+    </div>
+    <div>
+      <h4>Mixed4b</h4>
+      <img src="assets/images/progress-mixed4b.jpg" alt="mixed4b">
+      <div class="figcaption">
+        By mixed4b, animals and people have been disentangled, with some fruit and food emerging in the middle.
+      </div>
+    </div>
+    <div>
+      <h4>Mixed4c</h4>
+      <img src="assets/images/progress-mixed4c.jpg" alt="mixed4c">
+      <div class="figcaption">
+        All the concepts are further refined and differntiated into small "peninsulas".
+      </div>
+    </div>
   </figure>
 
   <p>Below you can browse many more of the layers of InceptionV1. You can see the vague, generic 
