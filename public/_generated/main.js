@@ -5048,16 +5048,443 @@
 	// 672, //wok
 	// 6, //grey whale
 
+	var vm = "shan-gpu-07-vm";
+	var id = "inceptionv1_mixed3b";
+	var build_dir = "build";
+	var cloud_dir = "gs://shancarter/activation-atlas/build";
+	var model = "InceptionV1";
+	var layer = "mixed3b";
+	var sample_type = "random";
+	var sample_images = 1000000;
+	var filter = 500000;
+	var tries = 2;
+	var tile_size = 10;
+	var grid_size = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten = "false";
+	var steps = 1024;
+	var icon_size = 80;
+	var layout = "1000_0.05_euclidean";
+	var class_filter = null;
+	var batch_size = 100;
+	var x = null;
+	var y = null;
+	var alpha = false;
+	var inceptionv1_mixed3b = {
+		vm: vm,
+		id: id,
+		build_dir: build_dir,
+		cloud_dir: cloud_dir,
+		model: model,
+		layer: layer,
+		sample_type: sample_type,
+		sample_images: sample_images,
+		filter: filter,
+		tries: tries,
+		tile_size: tile_size,
+		grid_size: grid_size,
+		whiten: whiten,
+		steps: steps,
+		icon_size: icon_size,
+		layout: layout,
+		class_filter: class_filter,
+		batch_size: batch_size,
+		x: x,
+		y: y,
+		alpha: alpha
+	};
+
+	var vm$1 = "shan-gpu-08-vm";
+	var id$1 = "inceptionv1_mixed4a";
+	var build_dir$1 = "build";
+	var cloud_dir$1 = "gs://shancarter/activation-atlas/build";
+	var model$1 = "InceptionV1";
+	var layer$1 = [
+		"mixed4a"
+	];
+	var sample_type$1 = "random";
+	var sample_images$1 = 1000000;
+	var filter$1 = null;
+	var tries$1 = 4;
+	var tile_size$1 = 10;
+	var grid_size$1 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$1 = "true";
+	var steps$1 = 1024;
+	var icon_size$1 = 80;
+	var layout$1 = "50_0.05_cosine";
+	var class_filter$1 = null;
+	var batch_size$1 = 100;
+	var x$1 = null;
+	var y$1 = null;
+	var alpha$1 = false;
+	var inceptionv1_mixed4a = {
+		vm: vm$1,
+		id: id$1,
+		build_dir: build_dir$1,
+		cloud_dir: cloud_dir$1,
+		model: model$1,
+		layer: layer$1,
+		sample_type: sample_type$1,
+		sample_images: sample_images$1,
+		filter: filter$1,
+		tries: tries$1,
+		tile_size: tile_size$1,
+		grid_size: grid_size$1,
+		whiten: whiten$1,
+		steps: steps$1,
+		icon_size: icon_size$1,
+		layout: layout$1,
+		class_filter: class_filter$1,
+		batch_size: batch_size$1,
+		x: x$1,
+		y: y$1,
+		alpha: alpha$1
+	};
+
+	var vm$2 = "shan-gpu-08-vm";
+	var id$2 = "inceptionv1_mixed4b";
+	var build_dir$2 = "build";
+	var cloud_dir$2 = "gs://shancarter/activation-atlas/build";
+	var model$2 = "InceptionV1";
+	var layer$2 = [
+		"mixed4b"
+	];
+	var sample_type$2 = "random";
+	var sample_images$2 = 1000000;
+	var filter$2 = null;
+	var tries$2 = 4;
+	var tile_size$2 = 10;
+	var grid_size$2 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$2 = "true";
+	var steps$2 = 1024;
+	var icon_size$2 = 80;
+	var layout$2 = "50_0.05_cosine";
+	var class_filter$2 = null;
+	var batch_size$2 = 100;
+	var x$2 = null;
+	var y$2 = null;
+	var alpha$2 = false;
+	var inceptionv1_mixed4b = {
+		vm: vm$2,
+		id: id$2,
+		build_dir: build_dir$2,
+		cloud_dir: cloud_dir$2,
+		model: model$2,
+		layer: layer$2,
+		sample_type: sample_type$2,
+		sample_images: sample_images$2,
+		filter: filter$2,
+		tries: tries$2,
+		tile_size: tile_size$2,
+		grid_size: grid_size$2,
+		whiten: whiten$2,
+		steps: steps$2,
+		icon_size: icon_size$2,
+		layout: layout$2,
+		class_filter: class_filter$2,
+		batch_size: batch_size$2,
+		x: x$2,
+		y: y$2,
+		alpha: alpha$2
+	};
+
+	var vm$3 = "shan-gpu-08-vm";
+	var id$3 = "inceptionv1_mixed4c";
+	var build_dir$3 = "build";
+	var cloud_dir$3 = "gs://shancarter/activation-atlas/build";
+	var model$3 = "InceptionV1";
+	var layer$3 = [
+		"mixed4c"
+	];
+	var sample_type$3 = "random";
+	var sample_images$3 = 1000000;
+	var filter$3 = null;
+	var tries$3 = 4;
+	var tile_size$3 = 10;
+	var grid_size$3 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$3 = "true";
+	var steps$3 = 1024;
+	var icon_size$3 = 80;
+	var layout$3 = "50_0.05_cosine";
+	var class_filter$3 = null;
+	var batch_size$3 = 100;
+	var x$3 = null;
+	var y$3 = null;
+	var alpha$3 = false;
+	var inceptionv1_mixed4c = {
+		vm: vm$3,
+		id: id$3,
+		build_dir: build_dir$3,
+		cloud_dir: cloud_dir$3,
+		model: model$3,
+		layer: layer$3,
+		sample_type: sample_type$3,
+		sample_images: sample_images$3,
+		filter: filter$3,
+		tries: tries$3,
+		tile_size: tile_size$3,
+		grid_size: grid_size$3,
+		whiten: whiten$3,
+		steps: steps$3,
+		icon_size: icon_size$3,
+		layout: layout$3,
+		class_filter: class_filter$3,
+		batch_size: batch_size$3,
+		x: x$3,
+		y: y$3,
+		alpha: alpha$3
+	};
+
+	var vm$4 = "shan-gpu-07-vm";
+	var id$4 = "inceptionv1_mixed4d";
+	var build_dir$4 = "build";
+	var cloud_dir$4 = "gs://shancarter/activation-atlas/build";
+	var model$4 = "InceptionV1";
+	var layer$4 = [
+		"mixed4d"
+	];
+	var sample_type$4 = "random";
+	var sample_images$4 = 1000000;
+	var filter$4 = null;
+	var tries$4 = 4;
+	var tile_size$4 = 10;
+	var grid_size$4 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$4 = "true";
+	var steps$4 = 1024;
+	var icon_size$4 = 80;
+	var layout$4 = "50_0.05_cosine";
+	var class_filter$4 = null;
+	var batch_size$4 = 100;
+	var x$4 = null;
+	var y$4 = null;
+	var alpha$4 = false;
+	var inceptionv1_mixed4d = {
+		vm: vm$4,
+		id: id$4,
+		build_dir: build_dir$4,
+		cloud_dir: cloud_dir$4,
+		model: model$4,
+		layer: layer$4,
+		sample_type: sample_type$4,
+		sample_images: sample_images$4,
+		filter: filter$4,
+		tries: tries$4,
+		tile_size: tile_size$4,
+		grid_size: grid_size$4,
+		whiten: whiten$4,
+		steps: steps$4,
+		icon_size: icon_size$4,
+		layout: layout$4,
+		class_filter: class_filter$4,
+		batch_size: batch_size$4,
+		x: x$4,
+		y: y$4,
+		alpha: alpha$4
+	};
+
+	var vm$5 = "shan-gpu-07-vm";
+	var id$5 = "inceptionv1_mixed4e";
+	var build_dir$5 = "build";
+	var cloud_dir$5 = "gs://shancarter/activation-atlas/build";
+	var model$5 = "InceptionV1";
+	var layer$5 = [
+		"mixed4e"
+	];
+	var sample_type$5 = "random";
+	var sample_images$5 = 1000000;
+	var filter$5 = null;
+	var tries$5 = 4;
+	var tile_size$5 = 10;
+	var grid_size$5 = [
+		20,
+		40,
+		80,
+		160
+	];
+	var whiten$5 = "true";
+	var steps$5 = 1024;
+	var icon_size$5 = 80;
+	var layout$5 = "50_0.05_cosine";
+	var class_filter$5 = null;
+	var batch_size$5 = 100;
+	var x$5 = null;
+	var y$5 = null;
+	var alpha$5 = false;
+	var inceptionv1_mixed4e = {
+		vm: vm$5,
+		id: id$5,
+		build_dir: build_dir$5,
+		cloud_dir: cloud_dir$5,
+		model: model$5,
+		layer: layer$5,
+		sample_type: sample_type$5,
+		sample_images: sample_images$5,
+		filter: filter$5,
+		tries: tries$5,
+		tile_size: tile_size$5,
+		grid_size: grid_size$5,
+		whiten: whiten$5,
+		steps: steps$5,
+		icon_size: icon_size$5,
+		layout: layout$5,
+		class_filter: class_filter$5,
+		batch_size: batch_size$5,
+		x: x$5,
+		y: y$5,
+		alpha: alpha$5
+	};
+
+	var vm$6 = "shan-gpu-08-vm";
+	var id$6 = "inceptionv1_mixed5a";
+	var build_dir$6 = "build";
+	var cloud_dir$6 = "gs://shancarter/activation-atlas/build";
+	var model$6 = "InceptionV1";
+	var layer$6 = [
+		"mixed5a"
+	];
+	var sample_type$6 = "random";
+	var sample_images$6 = 1000000;
+	var filter$6 = null;
+	var tries$6 = 4;
+	var tile_size$6 = 10;
+	var grid_size$6 = [
+		20,
+		40,
+		80,
+		160,
+		320
+	];
+	var whiten$6 = "true";
+	var steps$6 = 1024;
+	var icon_size$6 = 80;
+	var layout$6 = "50_0.05_cosine";
+	var class_filter$6 = null;
+	var batch_size$6 = 100;
+	var x$6 = null;
+	var y$6 = null;
+	var alpha$6 = false;
+	var inceptionv1_mixed5a = {
+		vm: vm$6,
+		id: id$6,
+		build_dir: build_dir$6,
+		cloud_dir: cloud_dir$6,
+		model: model$6,
+		layer: layer$6,
+		sample_type: sample_type$6,
+		sample_images: sample_images$6,
+		filter: filter$6,
+		tries: tries$6,
+		tile_size: tile_size$6,
+		grid_size: grid_size$6,
+		whiten: whiten$6,
+		steps: steps$6,
+		icon_size: icon_size$6,
+		layout: layout$6,
+		class_filter: class_filter$6,
+		batch_size: batch_size$6,
+		x: x$6,
+		y: y$6,
+		alpha: alpha$6
+	};
+
+	var vm$7 = "shan-gpu-07-vm";
+	var id$7 = "inceptionv1_mixed5b";
+	var build_dir$7 = "build";
+	var cloud_dir$7 = "gs://shancarter/activation-atlas/build";
+	var model$7 = "InceptionV1";
+	var layer$7 = [
+		"mixed5b"
+	];
+	var sample_type$7 = "random";
+	var sample_images$7 = 1000000;
+	var filter$7 = null;
+	var tries$7 = 4;
+	var tile_size$7 = 10;
+	var grid_size$7 = [
+		20,
+		40,
+		80,
+		160,
+		320
+	];
+	var whiten$7 = "true";
+	var steps$7 = 1024;
+	var icon_size$7 = 80;
+	var layout$7 = "50_0.05_cosine";
+	var class_filter$7 = null;
+	var batch_size$7 = 100;
+	var x$7 = null;
+	var y$7 = null;
+	var alpha$7 = false;
+	var inceptionv1_mixed5b = {
+		vm: vm$7,
+		id: id$7,
+		build_dir: build_dir$7,
+		cloud_dir: cloud_dir$7,
+		model: model$7,
+		layer: layer$7,
+		sample_type: sample_type$7,
+		sample_images: sample_images$7,
+		filter: filter$7,
+		tries: tries$7,
+		tile_size: tile_size$7,
+		grid_size: grid_size$7,
+		whiten: whiten$7,
+		steps: steps$7,
+		icon_size: icon_size$7,
+		layout: layout$7,
+		class_filter: class_filter$7,
+		batch_size: batch_size$7,
+		x: x$7,
+		y: y$7,
+		alpha: alpha$7
+	};
+
 	/* src/AtlasThumbnail.html generated by Svelte v2.15.3 */
 
 
+
+	const configs = {
+	  inceptionv1_mixed3b: inceptionv1_mixed3b,
+	  inceptionv1_mixed4a: inceptionv1_mixed4a,
+	  inceptionv1_mixed4b: inceptionv1_mixed4b,
+	  inceptionv1_mixed4c: inceptionv1_mixed4c,
+	  inceptionv1_mixed4d: inceptionv1_mixed4d,
+	  inceptionv1_mixed4e: inceptionv1_mixed4e,
+	  inceptionv1_mixed5a: inceptionv1_mixed5a,
+	  inceptionv1_mixed5b: inceptionv1_mixed5b,
+	};
 
 	function height$1({clientWidth}) {
 		return clientWidth;
 	}
 
-	function id({model, layerName}) {
-		return model + "_" + layerName;
+	function id$8({model: model$$1, layerName}) {
+		return model$$1 + "_" + layerName;
 	}
 
 	function data$b() {
@@ -5092,12 +5519,12 @@
 	        heatmapMultiplier = Math.max(0.1, value * 20);
 	        // console.log(ci, value)
 	      }
-	      const y = icon.x; //x,y switched on purpose 
-	      const x = icon.y; //x,y switched on purpose
+	      const y$$1 = icon.x; //x,y switched on purpose 
+	      const x$$1 = icon.y; //x,y switched on purpose
 	      // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-	      data[y * gridSize * 4 + x * 4 + 3] = 0.005 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
+	      data[y$$1 * gridSize * 4 + x$$1 * 4 + 3] = 40 + 0.0002 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
 	    }
 	    
 	    context.putImageData(imageData, 0, 0);
@@ -5105,22 +5532,21 @@
 	};
 
 	function oncreate$3() {
-	  const {root, id, grid} = this.get();
-	  load(`${root}/${id}/${id}.json`).then(config => {
-	    // console.log("config: ", config)
-	    if (config.class_filter == null) { config.class_filter = "None"; }
-	    if (config.filter == null) { config.filter = "None"; }
-	    if (!Array.isArray(config.layout)) {config.layout = [config.layout];}
-	    if (!Array.isArray(config.layer)) {config.layer = [config.layer];}
-	    if (!Array.isArray(config.filter)) {config.filter = [config.filter];}
-	    this.set({gridSize: config.grid_size[grid]});
-	    const url = `${root}/${id}/web/web--grid_size=${config.grid_size[grid]}--layout=${config.layout[0]}--class_filter=${config.class_filter}--filter=${config.filter[0]}--layer=${config.layer[0]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`;
-	    // console.log("config", config)
-	    load(url).then(web => {
-	      // console.log("web", web)
-	      this.set({icons: web});
-	      this.render();
-	    });
+	  const {root, id: id$$1, grid} = this.get();
+	  const config = configs[id$$1];
+	  // console.log("config: ", config)
+	  if (config.class_filter == null) { config.class_filter = "None"; }
+	  if (config.filter == null) { config.filter = "None"; }
+	  if (!Array.isArray(config.layout)) {config.layout = [config.layout];}
+	  if (!Array.isArray(config.layer)) {config.layer = [config.layer];}
+	  if (!Array.isArray(config.filter)) {config.filter = [config.filter];}
+	  this.set({gridSize: config.grid_size[grid]});
+	  const url = `${root}/${id$$1}/web/web--grid_size=${config.grid_size[grid]}--layout=${config.layout[0]}--class_filter=${config.class_filter}--filter=${config.filter[0]}--layer=${config.layer[0]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`;
+	  // console.log("config", config)
+	  load(url).then(web => {
+	    // console.log("web", web)
+	    this.set({icons: web});
+	    this.render();
 	  });
 	}
 	function onupdate({changed}) {
@@ -5235,7 +5661,7 @@
 		}
 
 		if (changed.model || changed.layerName) {
-			if (this._differs(state.id, (state.id = id(state)))) changed.id = true;
+			if (this._differs(state.id, (state.id = id$8(state)))) changed.id = true;
 		}
 	};
 
@@ -5336,6 +5762,7 @@
 		}
 
 		var atlasthumbnail_initial_data = {
+		 	grid: 0,
 		 	layerName: ctx.layer,
 		 	classHeatmap: ctx.classHeatmap
 		 };
@@ -5367,7 +5794,7 @@
 				setStyle(div, "position", "relative");
 				addLoc(div, file$g, 4, 4, 172);
 				span.className = "svelte-196wpbb";
-				addLoc(span, file$g, 7, 4, 292);
+				addLoc(span, file$g, 7, 4, 301);
 				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-196wpbb";
 				addLoc(label, file$g, 2, 2, 49);
 			},
@@ -5978,427 +6405,11 @@
 	  return range;
 	}
 
-	var vm = "shan-gpu-07-vm";
-	var id$1 = "inceptionv1_mixed3b";
-	var build_dir = "build";
-	var cloud_dir = "gs://shancarter/activation-atlas/build";
-	var model = "InceptionV1";
-	var layer = "mixed3b";
-	var sample_type = "random";
-	var sample_images = 1000000;
-	var filter = 500000;
-	var tries = 2;
-	var tile_size = 10;
-	var grid_size = [
-		20,
-		40,
-		80,
-		160
-	];
-	var whiten = "false";
-	var steps = 1024;
-	var icon_size = 80;
-	var layout = "1000_0.05_euclidean";
-	var class_filter = null;
-	var batch_size = 100;
-	var x = null;
-	var y = null;
-	var alpha = false;
-	var inceptionv1_mixed3b = {
-		vm: vm,
-		id: id$1,
-		build_dir: build_dir,
-		cloud_dir: cloud_dir,
-		model: model,
-		layer: layer,
-		sample_type: sample_type,
-		sample_images: sample_images,
-		filter: filter,
-		tries: tries,
-		tile_size: tile_size,
-		grid_size: grid_size,
-		whiten: whiten,
-		steps: steps,
-		icon_size: icon_size,
-		layout: layout,
-		class_filter: class_filter,
-		batch_size: batch_size,
-		x: x,
-		y: y,
-		alpha: alpha
-	};
-
-	var vm$1 = "shan-gpu-08-vm";
-	var id$2 = "inceptionv1_mixed4a";
-	var build_dir$1 = "build";
-	var cloud_dir$1 = "gs://shancarter/activation-atlas/build";
-	var model$1 = "InceptionV1";
-	var layer$1 = [
-		"mixed4a"
-	];
-	var sample_type$1 = "random";
-	var sample_images$1 = 1000000;
-	var filter$1 = null;
-	var tries$1 = 4;
-	var tile_size$1 = 10;
-	var grid_size$1 = [
-		20,
-		40,
-		80,
-		160
-	];
-	var whiten$1 = "true";
-	var steps$1 = 1024;
-	var icon_size$1 = 80;
-	var layout$1 = "50_0.05_cosine";
-	var class_filter$1 = null;
-	var batch_size$1 = 100;
-	var x$1 = null;
-	var y$1 = null;
-	var alpha$1 = false;
-	var inceptionv1_mixed4a = {
-		vm: vm$1,
-		id: id$2,
-		build_dir: build_dir$1,
-		cloud_dir: cloud_dir$1,
-		model: model$1,
-		layer: layer$1,
-		sample_type: sample_type$1,
-		sample_images: sample_images$1,
-		filter: filter$1,
-		tries: tries$1,
-		tile_size: tile_size$1,
-		grid_size: grid_size$1,
-		whiten: whiten$1,
-		steps: steps$1,
-		icon_size: icon_size$1,
-		layout: layout$1,
-		class_filter: class_filter$1,
-		batch_size: batch_size$1,
-		x: x$1,
-		y: y$1,
-		alpha: alpha$1
-	};
-
-	var vm$2 = "shan-gpu-08-vm";
-	var id$3 = "inceptionv1_mixed4b";
-	var build_dir$2 = "build";
-	var cloud_dir$2 = "gs://shancarter/activation-atlas/build";
-	var model$2 = "InceptionV1";
-	var layer$2 = [
-		"mixed4b"
-	];
-	var sample_type$2 = "random";
-	var sample_images$2 = 1000000;
-	var filter$2 = null;
-	var tries$2 = 4;
-	var tile_size$2 = 10;
-	var grid_size$2 = [
-		20,
-		40,
-		80,
-		160
-	];
-	var whiten$2 = "true";
-	var steps$2 = 1024;
-	var icon_size$2 = 80;
-	var layout$2 = "50_0.05_cosine";
-	var class_filter$2 = null;
-	var batch_size$2 = 100;
-	var x$2 = null;
-	var y$2 = null;
-	var alpha$2 = false;
-	var inceptionv1_mixed4b = {
-		vm: vm$2,
-		id: id$3,
-		build_dir: build_dir$2,
-		cloud_dir: cloud_dir$2,
-		model: model$2,
-		layer: layer$2,
-		sample_type: sample_type$2,
-		sample_images: sample_images$2,
-		filter: filter$2,
-		tries: tries$2,
-		tile_size: tile_size$2,
-		grid_size: grid_size$2,
-		whiten: whiten$2,
-		steps: steps$2,
-		icon_size: icon_size$2,
-		layout: layout$2,
-		class_filter: class_filter$2,
-		batch_size: batch_size$2,
-		x: x$2,
-		y: y$2,
-		alpha: alpha$2
-	};
-
-	var vm$3 = "shan-gpu-08-vm";
-	var id$4 = "inceptionv1_mixed4c";
-	var build_dir$3 = "build";
-	var cloud_dir$3 = "gs://shancarter/activation-atlas/build";
-	var model$3 = "InceptionV1";
-	var layer$3 = [
-		"mixed4c"
-	];
-	var sample_type$3 = "random";
-	var sample_images$3 = 1000000;
-	var filter$3 = null;
-	var tries$3 = 4;
-	var tile_size$3 = 10;
-	var grid_size$3 = [
-		20,
-		40,
-		80,
-		160
-	];
-	var whiten$3 = "true";
-	var steps$3 = 1024;
-	var icon_size$3 = 80;
-	var layout$3 = "50_0.05_cosine";
-	var class_filter$3 = null;
-	var batch_size$3 = 100;
-	var x$3 = null;
-	var y$3 = null;
-	var alpha$3 = false;
-	var inceptionv1_mixed4c = {
-		vm: vm$3,
-		id: id$4,
-		build_dir: build_dir$3,
-		cloud_dir: cloud_dir$3,
-		model: model$3,
-		layer: layer$3,
-		sample_type: sample_type$3,
-		sample_images: sample_images$3,
-		filter: filter$3,
-		tries: tries$3,
-		tile_size: tile_size$3,
-		grid_size: grid_size$3,
-		whiten: whiten$3,
-		steps: steps$3,
-		icon_size: icon_size$3,
-		layout: layout$3,
-		class_filter: class_filter$3,
-		batch_size: batch_size$3,
-		x: x$3,
-		y: y$3,
-		alpha: alpha$3
-	};
-
-	var vm$4 = "shan-gpu-07-vm";
-	var id$5 = "inceptionv1_mixed4d";
-	var build_dir$4 = "build";
-	var cloud_dir$4 = "gs://shancarter/activation-atlas/build";
-	var model$4 = "InceptionV1";
-	var layer$4 = [
-		"mixed4d"
-	];
-	var sample_type$4 = "random";
-	var sample_images$4 = 1000000;
-	var filter$4 = null;
-	var tries$4 = 4;
-	var tile_size$4 = 10;
-	var grid_size$4 = [
-		20,
-		40,
-		80,
-		160
-	];
-	var whiten$4 = "true";
-	var steps$4 = 1024;
-	var icon_size$4 = 80;
-	var layout$4 = "50_0.05_cosine";
-	var class_filter$4 = null;
-	var batch_size$4 = 100;
-	var x$4 = null;
-	var y$4 = null;
-	var alpha$4 = false;
-	var inceptionv1_mixed4d = {
-		vm: vm$4,
-		id: id$5,
-		build_dir: build_dir$4,
-		cloud_dir: cloud_dir$4,
-		model: model$4,
-		layer: layer$4,
-		sample_type: sample_type$4,
-		sample_images: sample_images$4,
-		filter: filter$4,
-		tries: tries$4,
-		tile_size: tile_size$4,
-		grid_size: grid_size$4,
-		whiten: whiten$4,
-		steps: steps$4,
-		icon_size: icon_size$4,
-		layout: layout$4,
-		class_filter: class_filter$4,
-		batch_size: batch_size$4,
-		x: x$4,
-		y: y$4,
-		alpha: alpha$4
-	};
-
-	var vm$5 = "shan-gpu-07-vm";
-	var id$6 = "inceptionv1_mixed4e";
-	var build_dir$5 = "build";
-	var cloud_dir$5 = "gs://shancarter/activation-atlas/build";
-	var model$5 = "InceptionV1";
-	var layer$5 = [
-		"mixed4e"
-	];
-	var sample_type$5 = "random";
-	var sample_images$5 = 1000000;
-	var filter$5 = null;
-	var tries$5 = 4;
-	var tile_size$5 = 10;
-	var grid_size$5 = [
-		20,
-		40,
-		80,
-		160
-	];
-	var whiten$5 = "true";
-	var steps$5 = 1024;
-	var icon_size$5 = 80;
-	var layout$5 = "50_0.05_cosine";
-	var class_filter$5 = null;
-	var batch_size$5 = 100;
-	var x$5 = null;
-	var y$5 = null;
-	var alpha$5 = false;
-	var inceptionv1_mixed4e = {
-		vm: vm$5,
-		id: id$6,
-		build_dir: build_dir$5,
-		cloud_dir: cloud_dir$5,
-		model: model$5,
-		layer: layer$5,
-		sample_type: sample_type$5,
-		sample_images: sample_images$5,
-		filter: filter$5,
-		tries: tries$5,
-		tile_size: tile_size$5,
-		grid_size: grid_size$5,
-		whiten: whiten$5,
-		steps: steps$5,
-		icon_size: icon_size$5,
-		layout: layout$5,
-		class_filter: class_filter$5,
-		batch_size: batch_size$5,
-		x: x$5,
-		y: y$5,
-		alpha: alpha$5
-	};
-
-	var vm$6 = "shan-gpu-08-vm";
-	var id$7 = "inceptionv1_mixed5a";
-	var build_dir$6 = "build";
-	var cloud_dir$6 = "gs://shancarter/activation-atlas/build";
-	var model$6 = "InceptionV1";
-	var layer$6 = [
-		"mixed5a"
-	];
-	var sample_type$6 = "random";
-	var sample_images$6 = 1000000;
-	var filter$6 = null;
-	var tries$6 = 4;
-	var tile_size$6 = 10;
-	var grid_size$6 = [
-		20,
-		40,
-		80,
-		160,
-		320
-	];
-	var whiten$6 = "true";
-	var steps$6 = 1024;
-	var icon_size$6 = 80;
-	var layout$6 = "50_0.05_cosine";
-	var class_filter$6 = null;
-	var batch_size$6 = 100;
-	var x$6 = null;
-	var y$6 = null;
-	var alpha$6 = false;
-	var inceptionv1_mixed5a = {
-		vm: vm$6,
-		id: id$7,
-		build_dir: build_dir$6,
-		cloud_dir: cloud_dir$6,
-		model: model$6,
-		layer: layer$6,
-		sample_type: sample_type$6,
-		sample_images: sample_images$6,
-		filter: filter$6,
-		tries: tries$6,
-		tile_size: tile_size$6,
-		grid_size: grid_size$6,
-		whiten: whiten$6,
-		steps: steps$6,
-		icon_size: icon_size$6,
-		layout: layout$6,
-		class_filter: class_filter$6,
-		batch_size: batch_size$6,
-		x: x$6,
-		y: y$6,
-		alpha: alpha$6
-	};
-
-	var vm$7 = "shan-gpu-07-vm";
-	var id$8 = "inceptionv1_mixed5b";
-	var build_dir$7 = "build";
-	var cloud_dir$7 = "gs://shancarter/activation-atlas/build";
-	var model$7 = "InceptionV1";
-	var layer$7 = [
-		"mixed5b"
-	];
-	var sample_type$7 = "random";
-	var sample_images$7 = 1000000;
-	var filter$7 = null;
-	var tries$7 = 4;
-	var tile_size$7 = 10;
-	var grid_size$7 = [
-		20,
-		40,
-		80,
-		160,
-		320
-	];
-	var whiten$7 = "true";
-	var steps$7 = 1024;
-	var icon_size$7 = 80;
-	var layout$7 = "50_0.05_cosine";
-	var class_filter$7 = null;
-	var batch_size$7 = 100;
-	var x$7 = null;
-	var y$7 = null;
-	var alpha$7 = false;
-	var inceptionv1_mixed5b = {
-		vm: vm$7,
-		id: id$8,
-		build_dir: build_dir$7,
-		cloud_dir: cloud_dir$7,
-		model: model$7,
-		layer: layer$7,
-		sample_type: sample_type$7,
-		sample_images: sample_images$7,
-		filter: filter$7,
-		tries: tries$7,
-		tile_size: tile_size$7,
-		grid_size: grid_size$7,
-		whiten: whiten$7,
-		steps: steps$7,
-		icon_size: icon_size$7,
-		layout: layout$7,
-		class_filter: class_filter$7,
-		batch_size: batch_size$7,
-		x: x$7,
-		y: y$7,
-		alpha: alpha$7
-	};
-
 	/* src/AtlasDataLoader.html generated by Svelte v2.15.3 */
 
 
 
-	const configs = {
+	const configs$1 = {
 	  inceptionv1_mixed3b: inceptionv1_mixed3b,
 	  inceptionv1_mixed4a: inceptionv1_mixed4a,
 	  inceptionv1_mixed4b: inceptionv1_mixed4b,
@@ -6428,9 +6439,9 @@
 	function onupdate$1({ changed, current, previous }) {
 	  if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
-	    const {root, id, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1} = this.get();
+	    const {root, id: id$$1, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1} = this.get();
 	    this.set({loading: true});
-	    const config = configs[id];
+	    const config = configs$1[id$$1];
 	    this.set({config});
 
 	    if (classFilter !== null) {
@@ -6446,7 +6457,7 @@
 	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size=8--layout=5_0.1_cosine,10_0.1_cosine,15_0.1_cosine--class_filter=7--filter=None--layer=mixed4a--model=InceptionV1--sample_images=1000000--sample_type=random.json
 	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size%3D16--layout%3D10_0.1_cosine--class_filter%3D1--filter%3DNone--layer%3Dmixed4a--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json
 	      // console.log(config)
-	      let gridUrls = config.grid_size.map(g => `${root}/${id}/web/web--grid_size=${g}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
+	      let gridUrls = config.grid_size.map(g => `${root}/${id$$1}/web/web--grid_size=${g}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
 	      // console.log(gridUrls)
 	      load$1(gridUrls).then(responses => {
 	        let layers = Array(responses.length);
@@ -6488,7 +6499,7 @@
 	            gd.localX = x$$1 % tileSize;
 	            gd.localY = y$$1 % tileSize;
 	            //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
-	            gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
+	            gd.url = `${root}/${id$$1}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
 	            icons[gd.grid_x][gd.grid_y] = gd;
 	          }
 	          layers[i] = icons;

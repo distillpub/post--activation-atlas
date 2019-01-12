@@ -3,7 +3,7 @@
   <label class="layer {layerName == layer ? 'selected' : ''}">
     <input type=radio bind:group=layerName value={layer}>
     <div class="thumb" style="position: relative;">
-      <AtlasThumbnail layerName={layer} {classHeatmap}/>
+      <AtlasThumbnail grid={0} layerName={layer} {classHeatmap}/>
     </div>
     <span>{layer}</span>
   </label>

@@ -7,6 +7,27 @@
 import { load } from 'lucid-components';
 import classesToKeep from './classesToKeep.js';
 
+
+import inceptionv1_mixed3b from "../public/_cache/inceptionv1_mixed3b/inceptionv1_mixed3b.json";
+import inceptionv1_mixed4a from "../public/_cache/inceptionv1_mixed4a/inceptionv1_mixed4a.json";
+import inceptionv1_mixed4b from "../public/_cache/inceptionv1_mixed4b/inceptionv1_mixed4b.json";
+import inceptionv1_mixed4c from "../public/_cache/inceptionv1_mixed4c/inceptionv1_mixed4c.json";
+import inceptionv1_mixed4d from "../public/_cache/inceptionv1_mixed4d/inceptionv1_mixed4d.json";
+import inceptionv1_mixed4e from "../public/_cache/inceptionv1_mixed4e/inceptionv1_mixed4e.json";
+import inceptionv1_mixed5a from "../public/_cache/inceptionv1_mixed5a/inceptionv1_mixed5a.json";
+import inceptionv1_mixed5b from "../public/_cache/inceptionv1_mixed5b/inceptionv1_mixed5b.json";
+
+const configs = {
+  inceptionv1_mixed3b: inceptionv1_mixed3b,
+  inceptionv1_mixed4a: inceptionv1_mixed4a,
+  inceptionv1_mixed4b: inceptionv1_mixed4b,
+  inceptionv1_mixed4c: inceptionv1_mixed4c,
+  inceptionv1_mixed4d: inceptionv1_mixed4d,
+  inceptionv1_mixed4e: inceptionv1_mixed4e,
+  inceptionv1_mixed5a: inceptionv1_mixed5a,
+  inceptionv1_mixed5b: inceptionv1_mixed5b,
+}
+
 export default {
   data() {
     return {
@@ -26,22 +47,21 @@ export default {
   },
   oncreate() {
     const {root, id, grid} = this.get();
-    load(`${root}/${id}/${id}.json`).then(config => {
-      // console.log("config: ", config)
-      if (config.class_filter == null) { config.class_filter = "None" }
-      if (config.filter == null) { config.filter = "None" }
-      if (!Array.isArray(config.layout)) {config.layout = [config.layout]}
-      if (!Array.isArray(config.layer)) {config.layer = [config.layer]}
-      if (!Array.isArray(config.filter)) {config.filter = [config.filter]}
-      this.set({gridSize: config.grid_size[grid]})
-      const url = `${root}/${id}/web/web--grid_size=${config.grid_size[grid]}--layout=${config.layout[0]}--class_filter=${config.class_filter}--filter=${config.filter[0]}--layer=${config.layer[0]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`
-      // console.log("config", config)
-      load(url).then(web => {
-        // console.log("web", web)
-        this.set({icons: web});
-        this.render();
-      })
-    })
+    const config = configs[id]
+    // console.log("config: ", config)
+    if (config.class_filter == null) { config.class_filter = "None" }
+    if (config.filter == null) { config.filter = "None" }
+    if (!Array.isArray(config.layout)) {config.layout = [config.layout]}
+    if (!Array.isArray(config.layer)) {config.layer = [config.layer]}
+    if (!Array.isArray(config.filter)) {config.filter = [config.filter]}
+    this.set({gridSize: config.grid_size[grid]})
+    const url = `${root}/${id}/web/web--grid_size=${config.grid_size[grid]}--layout=${config.layout[0]}--class_filter=${config.class_filter}--filter=${config.filter[0]}--layer=${config.layer[0]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`
+    // console.log("config", config)
+    load(url).then(web => {
+      // console.log("web", web)
+      this.set({icons: web});
+      this.render();
+    });
   },
   onupdate({changed}) {
     if (changed.classHeatmap) {
@@ -73,7 +93,7 @@ export default {
         // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
         // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
         // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-        data[y * gridSize * 4 + x * 4 + 3] = 0.005 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
+        data[y * gridSize * 4 + x * 4 + 3] = 40 + 0.0002 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
       }
       
       context.putImageData(imageData, 0, 0);
