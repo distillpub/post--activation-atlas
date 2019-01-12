@@ -1,4 +1,4 @@
-<div ref:annotation bind:clientWidth=width bind:clientHeight=height>
+<div class="set-of-icons" ref:annotation bind:clientWidth=width bind:clientHeight=height>
   <div style="position: relative;height: 10px;">
     <div style="position: absolute; left: 0px; top: 1px;background-color:{color}; border-radius: 50%; width: 8px; height: 8px;"></div>
     <div style="position: relative; top: 4px; margin: 0 4px; border-top: solid 2px {color}; "></div>
@@ -17,10 +17,17 @@
   </div>
 </div>
 
+  <AtlasDataLoader 
+    id={fullId}
+    bind:config
+    bind:layers 
+  />
+
 <script>
 export default {
   components: { 
     ClippedIcon: "./ClippedIcon.html",
+    AtlasDataLoader: './AtlasDataLoader.html', 
   },
   data() {
     return {
@@ -30,9 +37,12 @@ export default {
       imgList: [],
       color: '#ff6600',
       iconHeight: 100,
+      width: 100,
+      height: 100
     }
   },
   computed: {
+    fullId: ({layerName}) => "inceptionv1_" + layerName,
     imgList: ({pointList, layers, pathZoomIndex}) => {
         let imgList = [];
         pointList.forEach((globalPosPercent) => {

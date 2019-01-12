@@ -4,9 +4,8 @@
   {#if ready}
       <SetOfIcons
         {pointList}
-        {layers}
-        {config}
         {color}
+        {layerName}
       />
     {/if}
   </div>
@@ -54,11 +53,6 @@
       />
     </svg>
   </div>
-  <AtlasDataLoader 
-    id="inceptionv1_{layerName}"
-    bind:config
-    bind:layers 
-  />
 </div>
 </Radar>
 <script>
@@ -66,8 +60,7 @@ export default {
   components: { 
     Radar: "../library/Radar.html",
     SetOfIcons: "../SetOfIcons.html",
-    LazyImage: "../library/LazyImage.html",
-    AtlasDataLoader: '../AtlasDataLoader.html', 
+    LazyImage: "../library/LazyImage.html"
   },
   data() {
     return {
