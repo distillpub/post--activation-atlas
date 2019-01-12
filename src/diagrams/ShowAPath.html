@@ -1,11 +1,14 @@
+<Radar bind:ready>
 <div class="showapath">  
   <div class="arrow">
-    <SetOfIcons
-      {pointList}
-      {layers}
-      {config}
-      {color}
-    />
+  {#if ready}
+      <SetOfIcons
+        {pointList}
+        {layers}
+        {config}
+        {color}
+      />
+    {/if}
   </div>
   <div class="atlas">
     <div class="thumbnail">
@@ -57,10 +60,11 @@
     bind:layers 
   />
 </div>
-
+</Radar>
 <script>
 export default {
   components: { 
+    Radar: "../library/Radar.html",
     SetOfIcons: "../SetOfIcons.html",
     LazyImage: "../library/LazyImage.html",
     AtlasDataLoader: '../AtlasDataLoader.html', 

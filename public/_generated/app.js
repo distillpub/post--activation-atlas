@@ -9026,7 +9026,7 @@
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel, touchPan, disableBehaviors} = this.get();
-	    console.log(event);
+	    // console.log(d3Event)
 	    if (disableBehaviors) {
 	      return false;
 	    }

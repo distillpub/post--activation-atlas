@@ -9995,7 +9995,7 @@
 	  tween,
 	  zoomEventFilter: function() {
 	    const {scrollWheel, touchPan, disableBehaviors} = this.get();
-	    console.log(event);
+	    // console.log(d3Event)
 	    if (disableBehaviors) {
 	      return false;
 	    }
@@ -19033,19 +19033,9 @@
 	const file$G = "src/diagrams/ShowAPath.html";
 
 	function create_main_fragment$H(component, ctx) {
-		var div3, div0, text0, div2, div1, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, text2, atlasdataloader_updating = {};
+		var div3, div0, text0, div2, div1, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, text2, atlasdataloader_updating = {}, radar_updating = {};
 
-		var setoficons_initial_data = {
-		 	pointList: ctx.pointList,
-		 	layers: ctx.layers,
-		 	config: ctx.config,
-		 	color: ctx.color
-		 };
-		var setoficons = new SetOfIcons({
-			root: component.root,
-			store: component.store,
-			data: setoficons_initial_data
-		});
+		var if_block = (ctx.ready) && create_if_block$a(component, ctx);
 
 		var lazyimage_initial_data = {
 		 	background: false,
@@ -19096,11 +19086,35 @@
 			atlasdataloader._bind({ config: 1, layers: 1 }, atlasdataloader.get());
 		});
 
+		var radar_initial_data = {};
+		if (ctx.ready !== void 0) {
+			radar_initial_data.ready = ctx.ready;
+			radar_updating.ready = true;
+		}
+		var radar = new Radar({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: radar_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!radar_updating.ready && changed.ready) {
+					newState.ready = childState.ready;
+				}
+				component._set(newState);
+				radar_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			radar._bind({ ready: 1 }, radar.get());
+		});
+
 		return {
 			c: function create() {
 				div3 = createElement("div");
 				div0 = createElement("div");
-				setoficons._fragment.c();
+				if (if_block) if_block.c();
 				text0 = createText("\n  ");
 				div2 = createElement("div");
 				div1 = createElement("div");
@@ -19115,14 +19129,15 @@
 				path1 = createSvgElement("path");
 				text2 = createText("\n  ");
 				atlasdataloader._fragment.c();
+				radar._fragment.c();
 				div0.className = "arrow";
-				addLoc(div0, file$G, 1, 2, 28);
+				addLoc(div0, file$G, 2, 2, 47);
 				div1.className = "thumbnail svelte-14ap8kx";
-				addLoc(div1, file$G, 10, 4, 168);
+				addLoc(div1, file$G, 13, 4, 223);
 				setAttribute(circle, "cx", "5");
 				setAttribute(circle, "cy", "5");
 				setAttribute(circle, "r", "3");
-				addLoc(circle, file$G, 28, 10, 750);
+				addLoc(circle, file$G, 31, 10, 805);
 				setAttribute(marker0, "id", marker0_id_value = 'head' + ctx.uniqueId);
 				setAttribute(marker0, "fill", ctx.color);
 				setAttribute(marker0, "viewBox", "0 0 10 10");
@@ -19131,9 +19146,9 @@
 				setAttribute(marker0, "markerWidth", "5");
 				setAttribute(marker0, "markerHeight", "5");
 				setAttribute(marker0, "orient", "auto-start-reverse");
-				addLoc(marker0, file$G, 18, 8, 503);
+				addLoc(marker0, file$G, 21, 8, 558);
 				setAttribute(path0, "d", "M 0 0 L 10 5 L 0 10 z");
-				addLoc(path0, file$G, 39, 10, 1043);
+				addLoc(path0, file$G, 42, 10, 1098);
 				setAttribute(marker1, "id", marker1_id_value = 'arrow' + ctx.uniqueId);
 				setAttribute(marker1, "fill", ctx.color);
 				setAttribute(marker1, "viewBox", "0 0 10 10");
@@ -19142,28 +19157,28 @@
 				setAttribute(marker1, "markerWidth", "3");
 				setAttribute(marker1, "markerHeight", "3");
 				setAttribute(marker1, "orient", "auto-start-reverse");
-				addLoc(marker1, file$G, 30, 8, 806);
-				addLoc(defs, file$G, 17, 6, 488);
+				addLoc(marker1, file$G, 33, 8, 861);
+				addLoc(defs, file$G, 20, 6, 543);
 				setAttribute(path1, "d", ctx.path_d);
 				setAttribute(path1, "stroke", ctx.color);
 				setAttribute(path1, "stroke-width", "3");
 				setAttribute(path1, "fill", "transparent");
 				setAttribute(path1, "marker-end", path1_marker_end_value = "url(#" + ('arrow' + ctx.uniqueId) + ")");
 				setAttribute(path1, "marker-start", path1_marker_start_value = "url(#" + ('head' + ctx.uniqueId) + ")");
-				addLoc(path1, file$G, 42, 6, 1116);
+				addLoc(path1, file$G, 45, 6, 1171);
 				setAttribute(svg, "viewBox", svg_viewBox_value = "0 0 " + ctx.viewWidth + " " + ctx.viewHeight);
 				setAttribute(svg, "class", "pathArrow svelte-14ap8kx");
-				addLoc(svg, file$G, 13, 4, 399);
+				addLoc(svg, file$G, 16, 4, 454);
 				div2.className = "atlas svelte-14ap8kx";
-				addLoc(div2, file$G, 9, 2, 144);
+				addLoc(div2, file$G, 12, 2, 199);
 				div3.className = "showapath svelte-14ap8kx";
-				addLoc(div3, file$G, 0, 0, 0);
+				addLoc(div3, file$G, 1, 0, 19);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div3, anchor);
+				append(radar._slotted.default, div3);
 				append(div3, div0);
-				setoficons._mount(div0, null);
+				if (if_block) if_block.m(div0, null);
 				append(div3, text0);
 				append(div3, div2);
 				append(div2, div1);
@@ -19179,16 +19194,23 @@
 				component.refs.clickPath = path1;
 				append(div3, text2);
 				atlasdataloader._mount(div3, null);
+				radar._mount(target, anchor);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				var setoficons_changes = {};
-				if (changed.pointList) setoficons_changes.pointList = ctx.pointList;
-				if (changed.layers) setoficons_changes.layers = ctx.layers;
-				if (changed.config) setoficons_changes.config = ctx.config;
-				if (changed.color) setoficons_changes.color = ctx.color;
-				setoficons._set(setoficons_changes);
+				if (ctx.ready) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$a(component, ctx);
+						if_block.c();
+						if_block.m(div0, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
 
 				var lazyimage_changes = {};
 				if (changed.layerName) lazyimage_changes.src = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
@@ -19247,17 +19269,61 @@
 				}
 				atlasdataloader._set(atlasdataloader_changes);
 				atlasdataloader_updating = {};
+
+				var radar_changes = {};
+				if (!radar_updating.ready && changed.ready) {
+					radar_changes.ready = ctx.ready;
+					radar_updating.ready = ctx.ready !== void 0;
+				}
+				radar._set(radar_changes);
+				radar_updating = {};
 			},
 
 			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(div3);
-				}
-
-				setoficons.destroy();
+				if (if_block) if_block.d();
 				lazyimage.destroy();
 				if (component.refs.clickPath === path1) component.refs.clickPath = null;
 				atlasdataloader.destroy();
+				radar.destroy(detach);
+			}
+		};
+	}
+
+	// (4:2) {#if ready}
+	function create_if_block$a(component, ctx) {
+
+		var setoficons_initial_data = {
+		 	pointList: ctx.pointList,
+		 	layers: ctx.layers,
+		 	config: ctx.config,
+		 	color: ctx.color
+		 };
+		var setoficons = new SetOfIcons({
+			root: component.root,
+			store: component.store,
+			data: setoficons_initial_data
+		});
+
+		return {
+			c: function create() {
+				setoficons._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				setoficons._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				var setoficons_changes = {};
+				if (changed.pointList) setoficons_changes.pointList = ctx.pointList;
+				if (changed.layers) setoficons_changes.layers = ctx.layers;
+				if (changed.config) setoficons_changes.config = ctx.config;
+				if (changed.color) setoficons_changes.color = ctx.color;
+				setoficons._set(setoficons_changes);
+			},
+
+			d: function destroy$$1(detach) {
+				setoficons.destroy(detach);
 			}
 		};
 	}
@@ -19278,6 +19344,7 @@
 		if (!('viewHeight' in this._state)) console.warn("<ShowAPath> was created without expected data property 'viewHeight'");
 
 
+		if (!('ready' in this._state)) console.warn("<ShowAPath> was created without expected data property 'ready'");
 		if (!('layers' in this._state)) console.warn("<ShowAPath> was created without expected data property 'layers'");
 		if (!('config' in this._state)) console.warn("<ShowAPath> was created without expected data property 'config'");
 		if (!('color' in this._state)) console.warn("<ShowAPath> was created without expected data property 'color'");
@@ -19408,7 +19475,7 @@
 	function create_main_fragment$I(component, ctx) {
 		var div, div_resize_listener;
 
-		var if_block = (ctx.scale) && create_if_block$a(component, ctx);
+		var if_block = (ctx.scale) && create_if_block$b(component, ctx);
 
 		function div_resize_handler() {
 			component.set({ width: div.clientWidth, height: div.clientHeight });
@@ -19434,7 +19501,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$a(component, ctx);
+						if_block = create_if_block$b(component, ctx);
 						if_block.c();
 						if_block.m(div, null);
 					}
@@ -19456,7 +19523,7 @@
 	}
 
 	// (2:2) {#if scale}
-	function create_if_block$a(component, ctx) {
+	function create_if_block$b(component, ctx) {
 		var svg, path, path_class_value, path_d_value, text, div, div_class_value;
 
 		function mousemove_handler(event) {
@@ -19916,7 +19983,7 @@
 	function create_main_fragment$K(component, ctx) {
 		var div1, div0, slot_content_default = component._slotted.default, text;
 
-		var if_block = (ctx.label) && create_if_block$b(component, ctx);
+		var if_block = (ctx.label) && create_if_block$c(component, ctx);
 
 		return {
 			c: function create() {
@@ -19954,7 +20021,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$b(component, ctx);
+						if_block = create_if_block$c(component, ctx);
 						if_block.c();
 						if_block.m(div1, null);
 					}
@@ -19987,7 +20054,7 @@
 	}
 
 	// (5:2) {#if label}
-	function create_if_block$b(component, ctx) {
+	function create_if_block$c(component, ctx) {
 		var div, text;
 
 		return {
