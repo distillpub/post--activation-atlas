@@ -287,7 +287,20 @@
       width: 100%;
       border-bottom: solid #CCC 1px;
     }
+    .vertical-layer-comparison.progress {
+      display: block;
+      max-width: 704px;
+      padding: 0 20px;
+      margin: 0 auto;
+    }
+    .vertical-layer-comparison.progress > div {
+      display: grid;
+      grid-template-columns: 2.5fr 1fr;
+      grid-gap: 20px;
+      margin-bottom: 16px;
+    }
     .vertical-layer-comparison.progress h4 {
+      margin-top: 0;
       margin-bottom: 16px;
     }
     .vertical-layer-comparison.progress .figcaption {
@@ -335,27 +348,44 @@
 
   <p>Finally, if we zoom out a little, we can see how the broader shape of the activation space changes from layer to layer. By looking at similar regions in three consecutive layers, we can see concepts getting refined and differentiated — In mixed4a we see very vague, generic blob, which gets refined into much more specific "peninsulas" by mixed4c.</p>
 
-  <figure class="vertical-layer-comparison progress">
-    <div>
-      <h4>Mixed4a</h4>
-      <img src="assets/images/progress-mixed4a.jpg" alt="mixed4a">
-      <div class="figcaption">
-        In mixed4a there is a vague "mammalian" area.
-        (note this layout is flipped from the actual atlas to be more consistent with the other layers)
+  <figure style="grid-column: screen">
+    <div class="vertical-layer-comparison progress">
+      <div>
+        <img src="assets/images/progress-mixed4a.jpg" alt="mixed4a">
+        <div>
+          <h4>Mixed4a</h4>
+          <div class="figcaption">
+            In mixed4a there is a vague "mammalian" area.
+            (note this layout is flipped from the actual atlas to be more consistent with the other layers)
+          </div>
+        </div>
       </div>
-    </div>
-    <div>
-      <h4>Mixed4b</h4>
-      <img src="assets/images/progress-mixed4b.jpg" alt="mixed4b">
-      <div class="figcaption">
-        By mixed4b, animals and people have been disentangled, with some fruit and food emerging in the middle.
+      <div>
+        <img src="assets/images/progress-mixed4b.jpg" alt="mixed4b">
+        <div>
+          <h4>Mixed4b</h4>
+          <div class="figcaption">
+            By mixed4b, animals and people have been disentangled, with some fruit and food emerging in the middle.
+          </div>
+        </div>
       </div>
-    </div>
-    <div>
-      <h4>Mixed4c</h4>
-      <img src="assets/images/progress-mixed4c.jpg" alt="mixed4c">
-      <div class="figcaption">
-        All the concepts are further refined and differntiated into small "peninsulas".
+      <div>
+        <img src="assets/images/progress-mixed4c.jpg" alt="mixed4c">
+        <div>
+          <h4>Mixed4c</h4>
+          <div class="figcaption">
+            All the concepts are further refined and differntiated into small "peninsulas".
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src="assets/images/progress-mixed4e.jpg" alt="mixed4e">
+        <div>
+          <h4>Mixed4e</h4>
+          <div class="figcaption">
+            The specialization continues in mixed4e.
+          </div>
+        </div>
       </div>
     </div>
   </figure>
