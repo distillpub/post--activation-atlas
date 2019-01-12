@@ -7,7 +7,9 @@
 
   <div class="thumbnail">
     <div style="position: relative;">
-      <img src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}">
+      <div style="opacity: 0.4;">
+        <LazyImage border={false} background={false} src="assets/images/renders/thumbnail-{layerName}.jpg" alt="thumbnail for {layerName}" />
+      </div>
       <AtlasReticle
         aspectRatio={4/3}
         scale={homeScale}
@@ -46,11 +48,6 @@ export default {
     position: relative;
     margin: 20px auto;
     max-width: 100px;
-  }
-  img {
-    display: block;
-    width: 100%;
-    opacity: 0.4;
   }
   @media(min-width: 800px) {
     .thumbnail {

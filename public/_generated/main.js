@@ -19845,17 +19845,29 @@
 	const file$I = "src/diagrams/VerticalLayerStatic.html";
 
 	function create_main_fragment$J(component, ctx) {
-		var div4, div0, text0, div2, div1, img, img_src_value, img_alt_value, text1, text2, div3;
+		var div5, div0, text0, div3, div2, div1, text1, text2, div4;
 
-		var lazyimage_initial_data = {
+		var lazyimage0_initial_data = {
 		 	src: "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png",
 		 	aspectRatio: 4/3,
 		 	border: false
 		 };
-		var lazyimage = new LazyImage({
+		var lazyimage0 = new LazyImage({
 			root: component.root,
 			store: component.store,
-			data: lazyimage_initial_data
+			data: lazyimage0_initial_data
+		});
+
+		var lazyimage1_initial_data = {
+		 	border: false,
+		 	background: false,
+		 	src: "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg",
+		 	alt: "thumbnail for " + ctx.layerName
+		 };
+		var lazyimage1 = new LazyImage({
+			root: component.root,
+			store: component.store,
+			data: lazyimage1_initial_data
 		});
 
 		var atlasreticle_initial_data = {
@@ -19873,60 +19885,57 @@
 
 		return {
 			c: function create() {
-				div4 = createElement("div");
+				div5 = createElement("div");
 				div0 = createElement("div");
-				lazyimage._fragment.c();
+				lazyimage0._fragment.c();
 				text0 = createText("\n\n  ");
+				div3 = createElement("div");
 				div2 = createElement("div");
 				div1 = createElement("div");
-				img = createElement("img");
+				lazyimage1._fragment.c();
 				text1 = createText("\n      ");
 				atlasreticle._fragment.c();
 				text2 = createText("\n\n  ");
-				div3 = createElement("div");
-				div0.className = "atlas svelte-1gn4gx3";
+				div4 = createElement("div");
+				div0.className = "atlas svelte-1crd5r";
 				addLoc(div0, file$I, 3, 2, 23);
-				img.src = img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
-				img.alt = img_alt_value = "thumbnail for " + ctx.layerName;
-				img.className = "svelte-1gn4gx3";
-				addLoc(img, file$I, 9, 6, 231);
-				setStyle(div1, "position", "relative");
-				addLoc(div1, file$I, 8, 4, 191);
-				div2.className = "thumbnail svelte-1gn4gx3";
-				addLoc(div2, file$I, 7, 2, 163);
-				div3.className = "figcaption svelte-1gn4gx3";
-				addLoc(div3, file$I, 20, 2, 498);
-				div4.className = "root svelte-1gn4gx3";
-				addLoc(div4, file$I, 2, 0, 2);
+				setStyle(div1, "opacity", "0.4");
+				addLoc(div1, file$I, 9, 6, 231);
+				setStyle(div2, "position", "relative");
+				addLoc(div2, file$I, 8, 4, 191);
+				div3.className = "thumbnail svelte-1crd5r";
+				addLoc(div3, file$I, 7, 2, 163);
+				div4.className = "figcaption svelte-1crd5r";
+				addLoc(div4, file$I, 22, 2, 589);
+				div5.className = "root svelte-1crd5r";
+				addLoc(div5, file$I, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div4, anchor);
-				append(div4, div0);
-				lazyimage._mount(div0, null);
-				append(div4, text0);
-				append(div4, div2);
+				insert(target, div5, anchor);
+				append(div5, div0);
+				lazyimage0._mount(div0, null);
+				append(div5, text0);
+				append(div5, div3);
+				append(div3, div2);
 				append(div2, div1);
-				append(div1, img);
-				append(div1, text1);
-				atlasreticle._mount(div1, null);
-				append(div4, text2);
-				append(div4, div3);
-				div3.innerHTML = ctx.caption;
+				lazyimage1._mount(div1, null);
+				append(div2, text1);
+				atlasreticle._mount(div2, null);
+				append(div5, text2);
+				append(div5, div4);
+				div4.innerHTML = ctx.caption;
 			},
 
 			p: function update(changed, ctx) {
-				var lazyimage_changes = {};
-				if (changed.subject || changed.index) lazyimage_changes.src = "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png";
-				lazyimage._set(lazyimage_changes);
+				var lazyimage0_changes = {};
+				if (changed.subject || changed.index) lazyimage0_changes.src = "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png";
+				lazyimage0._set(lazyimage0_changes);
 
-				if ((changed.layerName) && img_src_value !== (img_src_value = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg")) {
-					img.src = img_src_value;
-				}
-
-				if ((changed.layerName) && img_alt_value !== (img_alt_value = "thumbnail for " + ctx.layerName)) {
-					img.alt = img_alt_value;
-				}
+				var lazyimage1_changes = {};
+				if (changed.layerName) lazyimage1_changes.src = "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg";
+				if (changed.layerName) lazyimage1_changes.alt = "thumbnail for " + ctx.layerName;
+				lazyimage1._set(lazyimage1_changes);
 
 				var atlasreticle_changes = {};
 				if (changed.homeScale) atlasreticle_changes.scale = ctx.homeScale;
@@ -19935,16 +19944,17 @@
 				atlasreticle._set(atlasreticle_changes);
 
 				if (changed.caption) {
-					div3.innerHTML = ctx.caption;
+					div4.innerHTML = ctx.caption;
 				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(div4);
+					detachNode(div5);
 				}
 
-				lazyimage.destroy();
+				lazyimage0.destroy();
+				lazyimage1.destroy();
 				atlasreticle.destroy();
 			}
 		};
@@ -21191,11 +21201,13 @@
 		const lazyImages = document.querySelectorAll("[data-lazy-image]");
 		for (const lazyImage of lazyImages) {
 			const url = lazyImage.getAttribute("data-lazy-image");
+			const alt = lazyImage.getAttribute("alt");
 			const aspectRatio = lazyImage.getAttribute("data-lazy-image-aspect-ratio");
 			new LazyImage({
 				target: lazyImage,
 				data: {
-					src: "assets/images/renders/" + url,
+					src: "assets/images/" + url,
+					alt: alt,
 					aspectRatio: aspectRatio ? aspectRatio : 1,
 					background: false,
 					border: false,
@@ -21680,27 +21692,40 @@
 			}
 		});
 
-		new ClassGradient({
+
+		new LazyComponent({
 			target: document.querySelector("#class-gradient-snorkel"),
 			store: store,
 			data: {
-				currentClassComparisonIndex: 0
+				aspectRatio: 1.152,
+				component: ClassGradient,
+				componentData: {
+					currentClassComparisonIndex: 0
+				}
 			}
 		});
 
-		new ClassGradient({
+		new LazyComponent({
 			target: document.querySelector("#class-gradient-frying-pan"),
 			store: store,
 			data: {
-				currentClassComparisonIndex: 2
+				aspectRatio: 1.152,
+				component: ClassGradient,
+				componentData: {
+					currentClassComparisonIndex: 2
+				}
 			}
 		});
 
-		new ClassGradient({
+		new LazyComponent({
 			target: document.querySelector("#class-gradient-shark"),
 			store: store,
 			data: {
-				currentClassComparisonIndex: 8
+				aspectRatio: 1.152,
+				component: ClassGradient,
+				componentData: {
+					currentClassComparisonIndex: 8
+				}
 			}
 		});
 

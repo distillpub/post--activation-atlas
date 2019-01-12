@@ -66,11 +66,13 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	const lazyImages = document.querySelectorAll("[data-lazy-image]");
 	for (const lazyImage of lazyImages) {
 		const url = lazyImage.getAttribute("data-lazy-image");
+		const alt = lazyImage.getAttribute("alt");
 		const aspectRatio = lazyImage.getAttribute("data-lazy-image-aspect-ratio");
 		new LazyImage({
 			target: lazyImage,
 			data: {
-				src: "assets/images/renders/" + url,
+				src: "assets/images/" + url,
+				alt: alt,
 				aspectRatio: aspectRatio ? aspectRatio : 1,
 				background: false,
 				border: false,
@@ -555,27 +557,40 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		}
 	});
 
-	new ClassGradient({
+
+	new LazyComponent({
 		target: document.querySelector("#class-gradient-snorkel"),
 		store: store,
 		data: {
-			currentClassComparisonIndex: 0
+			aspectRatio: 1.152,
+			component: ClassGradient,
+			componentData: {
+				currentClassComparisonIndex: 0
+			}
 		}
 	});
 
-	new ClassGradient({
+	new LazyComponent({
 		target: document.querySelector("#class-gradient-frying-pan"),
 		store: store,
 		data: {
-			currentClassComparisonIndex: 2
+			aspectRatio: 1.152,
+			component: ClassGradient,
+			componentData: {
+				currentClassComparisonIndex: 2
+			}
 		}
 	});
 
-	new ClassGradient({
+	new LazyComponent({
 		target: document.querySelector("#class-gradient-shark"),
 		store: store,
 		data: {
-			currentClassComparisonIndex: 8
+			aspectRatio: 1.152,
+			component: ClassGradient,
+			componentData: {
+				currentClassComparisonIndex: 8
+			}
 		}
 	});
 

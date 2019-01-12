@@ -265,8 +265,8 @@
   <p>In the previous section we focused on one layer of the network, mixed4c, which is in the middle of our network. Convolutional networks are generally deep, consisting of many layers that progressively build up more powerful abstractions. In order to get a holistic view, we must look at how the model’s abstractions develop over several layers.
 
   <figure style="display: grid; grid-column: page; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
-    <img style="width: 100%; grid-area: 1 / 1 / 2 / 4;" src="assets/images/model2.svg" alt="model">
-  </div>	  <div class="figcaption">In early layers (eg. <a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), the network seems to represents textures and simple patterns.</div>
+    <div style="width: 100%; grid-area: 1 / 1 / 2 / 4;" data-lazy-image-aspect-ratio="6.306" data-lazy-image="model2.svg" alt="model"></div>
+  <div class="figcaption">In early layers (eg. <a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), the network seems to represents textures and simple patterns.</div>
     <div class="figcaption"> By mid layers (eg. <a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), icons are evocative of individual concepts like eyes, leaves, water, that are shared among many classes.</div>
     <div class="figcaption"> In the final layers (eg. <a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>), abstractions become more closely aligned with the output classes.</div>
   </figure>
@@ -351,7 +351,7 @@
   <figure style="grid-column: screen">
     <div class="vertical-layer-comparison progress">
       <div>
-        <img src="assets/images/progress-mixed4a.jpg" alt="mixed4a">
+        <div data-lazy-image-aspect-ratio="1.7" data-lazy-image="progress-mixed4a.jpg" alt="mixed4a"></div>
         <div>
           <h4>Mixed4a</h4>
           <div class="figcaption">
@@ -361,7 +361,7 @@
         </div>
       </div>
       <div>
-        <img src="assets/images/progress-mixed4b.jpg" alt="mixed4b">
+        <div data-lazy-image-aspect-ratio="1.7" data-lazy-image="progress-mixed4b.jpg" alt="mixed4b"></div>
         <div>
           <h4>Mixed4b</h4>
           <div class="figcaption">
@@ -370,7 +370,7 @@
         </div>
       </div>
       <div>
-        <img src="assets/images/progress-mixed4c.jpg" alt="mixed4c">
+        <div data-lazy-image-aspect-ratio="1.7" data-lazy-image="progress-mixed4c.jpg" alt="mixed4c"></div>
         <div>
           <h4>Mixed4c</h4>
           <div class="figcaption">
@@ -379,7 +379,7 @@
         </div>
       </div>
       <div>
-        <img src="assets/images/progress-mixed4d.jpg" alt="mixed4d">
+        <div data-lazy-image-aspect-ratio="1.7" data-lazy-image="progress-mixed4d.jpg" alt="mixed4d"></div>
         <div>
           <h4>Mixed4d</h4>
           <div class="figcaption">
@@ -388,7 +388,7 @@
         </div>
       </div>
       <div>
-        <img src="assets/images/progress-mixed4e.jpg" alt="mixed4e">
+        <div data-lazy-image-aspect-ratio="1.7" data-lazy-image="progress-mixed4e.jpg" alt="mixed4e"></div>
         <div>
           <h4>Mixed4e</h4>
           <div class="figcaption">
@@ -424,7 +424,7 @@
   <p>Looking at an atlas of all activations can be a little overwhelming, especially when you're trying to understand on how the network goes about ranking one particular class. For instance, let's investigate how the network classifies a "fireboat".
 
   <figure style="display: grid; grid-template-columns: 3fr 1fr; grid-gap: 20px;">
-    <img src="assets/images/fireboat-01.jpg" alt="fireboat">
+    <div data-lazy-image-aspect-ratio="1.335" data-lazy-image="fireboat-01.jpg" alt="fireboat"></div>
     <figcaption>An image labeled "fireboat" from ImageNet.</figcaption>
   </figure>
 
@@ -439,9 +439,9 @@
   <p>Here we see a much different pattern.  If we look at some more input examples, this seems entirely reasonable. It's almost as if we can see a collection of the component concepts the network will use in later layers to classify "fireboat". Windows + crane + water = "fireboat".
 
   <figure style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
-    <img src="assets/images/fireboat-10.jpg" alt="fireboat">
-    <img src="assets/images/fireboat-02.jpg" alt="fireboat">
-    <img src="assets/images/fireboat-03.jpg" alt="fireboat">
+    <div data-lazy-image-aspect-ratio="1.423" data-lazy-image="fireboat-10.jpg" alt="fireboat"></div>
+    <div data-lazy-image-aspect-ratio="1.423" data-lazy-image="fireboat-02.jpg" alt="fireboat"></div>
+    <div data-lazy-image-aspect-ratio="1.423" data-lazy-image="fireboat-03.jpg" alt="fireboat"></div>
   </figure>
 
   <p>One of the clusters, the one with windows, has strong attribution to "fireboat", but taken on its own, it has an even stronger attribution toward "streetcar". So, let's go back to the atlas at mixed4d, but isolate "streetcar" and compare it to the patterns seen for "fireboat". Let's look more closely at the four highlighted areas: the three areas we highlighted for fireboat plus one additional area that is highly activated for streetcars.
@@ -455,8 +455,8 @@
   <p>If we look at a couple of input examples, we can see how buildings and water backgrounds are an easy way to differentiate between a "fireboat" and a "streetcar". 
 
   <figure style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px 20px;">
-    <img src="assets/images/fireboat-01.jpg" alt="fireboat">
-    <img src="assets/images/streetcar-01.jpg" alt="streetcar">
+    <div data-lazy-image-aspect-ratio="1.335" data-lazy-image="fireboat-01.jpg" alt="fireboat"></div>
+    <div data-lazy-image-aspect-ratio="1.325" data-lazy-image="streetcar-01.jpg" alt="streetcar"></div>
     <figcaption>Images from ImageNet</figcaption>
   </figure>
 
