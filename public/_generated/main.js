@@ -21222,6 +21222,28 @@
 		});
 
 		// 
+		// Cover
+		// 
+
+		const coverWrapper = new LazyComponent({
+			target: document.querySelector("#cover"),
+			store: store,
+			data: {
+				component: App,
+				componentData: {
+					showClassFilter: false,
+					layerName: "mixed4d",
+					showOptions: false,
+					homeX: 0.55,
+					homeY: 1 - 0.75,
+					homeScale: 5,
+					gridSize: 2,
+					scrollWheel: false,
+				}
+			}
+		});
+
+		// 
 		// Initialize lazy images
 		// 
 
@@ -21261,23 +21283,7 @@
 		// Components
 		// 
 
-		const coverWrapper = new LazyComponent({
-			target: document.querySelector("#cover"),
-			store: store,
-			data: {
-				component: App,
-				componentData: {
-					showClassFilter: false,
-					layerName: "mixed4d",
-					showOptions: false,
-					homeX: 0.55,
-					homeY: 0.75,
-					homeScale: 5,
-					gridSize: 2,
-					scrollWheel: false,
-				}
-			}
-		});
+		
 
 		const coverPoiLinks = document.querySelectorAll("[data-cover-poi]");
 		for (const link of coverPoiLinks) {
