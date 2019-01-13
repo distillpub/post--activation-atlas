@@ -38,17 +38,36 @@ export default {
       config: null,
       layers: null,
       loading: false,
-      flipX: false,
-      flipY: false,
     };
   },
   onupdate({ changed, current, previous }) {
     if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
-      const {root, id, layer, classFilter, filter, fingerprint, layout, flipX, flipY} = this.get();
+      const {root, id, layer, classFilter, filter, fingerprint, layout} = this.get();
       this.set({loading: true});
       const config = configs[id];
       this.set({config});
+      let flipX = false;
+      let flipY = false;
+
+      switch (config.layer[layer]) {
+        case "mixed4a":
+          flipX = true;
+          flipY = true;
+          break;
+        case "mixed4d":
+          flipX = true;
+          flipY = false;
+          break;
+        case "mixed5a":
+          flipX = true;
+          flipY = false;
+          break;
+        case "mixed5b":
+          flipX = true;
+          flipY = false;
+          break;
+      }
 
       if (classFilter !== null) {
   
@@ -87,10 +106,10 @@ export default {
               gd.gx = x / gridSize;
               gd.gy = y / gridSize;
               gd.gw = 1 / gridSize;
-              let tileX = Math.floor(x / tileSize);
-              let tileY = Math.floor(y / tileSize);
-              gd.localX = x % tileSize;
-              gd.localY = y % tileSize;
+              let tileX = Math.floor(gd.grid_x / tileSize);
+              let tileY = Math.floor(gd.grid_y / tileSize);
+              gd.localX = gd.grid_x % tileSize;
+              gd.localY = gd.grid_y % tileSize;
               gd.url = `${root}/${id}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter]}--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`
               icons[x][y] = gd
             }

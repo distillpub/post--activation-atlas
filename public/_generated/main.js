@@ -5501,10 +5501,30 @@
 	}
 	var methods$4 = {
 	  render() {
-	    const {grid, gridSize, icons, classHeatmap} = this.get();
+	    const {grid, gridSize, icons, classHeatmap, layerName} = this.get();
 	    const context = this.refs.canvas.getContext('2d');
 	    let imageData = context.getImageData(0, 0, gridSize, gridSize);
 	    let data = imageData.data;
+	    let flipX = false;
+	    let flipY = false;
+	    switch (layerName) {
+	      case "mixed4a":
+	        flipX = true;
+	        flipY = true;
+	        break;
+	      case "mixed4d":
+	        flipX = true;
+	        flipY = false;
+	        break;
+	      case "mixed5a":
+	        flipX = true;
+	        flipY = false;
+	        break;
+	      case "mixed5b":
+	        flipX = true;
+	        flipY = false;
+	        break;
+	    }
 	    // for (var i = 0; i < data.length; i += 4) {
 	      // data[i] = 100;
 	      // data[i + 1] = 100;
@@ -5519,8 +5539,8 @@
 	        heatmapMultiplier = Math.max(0.1, value * 20);
 	        // console.log(ci, value)
 	      }
-	      const y$$1 = icon.x; //x,y switched on purpose 
-	      const x$$1 = icon.y; //x,y switched on purpose
+	      const y$$1 = flipX ? (gridSize - icon.x - 1) : icon.x; //x,y switched on purpose 
+	      const x$$1 = flipY ? (gridSize - icon.y - 1) : icon.y; //x,y switched on purpose
 	      // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
@@ -5540,7 +5560,7 @@
 	  if (!Array.isArray(config.layout)) {config.layout = [config.layout];}
 	  if (!Array.isArray(config.layer)) {config.layer = [config.layer];}
 	  if (!Array.isArray(config.filter)) {config.filter = [config.filter];}
-	  this.set({gridSize: config.grid_size[grid]});
+	  this.set({gridSize: config.grid_size[grid], layerName: config.layer[0]});
 	  const url = `${root}/${id$$1}/web/web--grid_size=${config.grid_size[grid]}--layout=${config.layout[0]}--class_filter=${config.class_filter}--filter=${config.filter[0]}--layer=${config.layer[0]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`;
 	  // console.log("config", config)
 	  load(url).then(web => {
@@ -6434,17 +6454,36 @@
 	    config: null,
 	    layers: null,
 	    loading: false,
-	    flipX: false,
-	    flipY: false,
 	  };
 	}
 	function onupdate$1({ changed, current, previous }) {
 	  if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
-	    const {root, id: id$$1, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1, flipX, flipY} = this.get();
+	    const {root, id: id$$1, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1} = this.get();
 	    this.set({loading: true});
 	    const config = configs$1[id$$1];
 	    this.set({config});
+	    let flipX = false;
+	    let flipY = false;
+
+	    switch (config.layer[layer$$1]) {
+	      case "mixed4a":
+	        flipX = true;
+	        flipY = true;
+	        break;
+	      case "mixed4d":
+	        flipX = true;
+	        flipY = false;
+	        break;
+	      case "mixed5a":
+	        flipX = true;
+	        flipY = false;
+	        break;
+	      case "mixed5b":
+	        flipX = true;
+	        flipY = false;
+	        break;
+	    }
 
 	    if (classFilter !== null) {
 
@@ -6483,10 +6522,10 @@
 	            gd.gx = x$$1 / gridSize;
 	            gd.gy = y$$1 / gridSize;
 	            gd.gw = 1 / gridSize;
-	            let tileX = Math.floor(x$$1 / tileSize);
-	            let tileY = Math.floor(y$$1 / tileSize);
-	            gd.localX = x$$1 % tileSize;
-	            gd.localY = y$$1 % tileSize;
+	            let tileX = Math.floor(gd.grid_x / tileSize);
+	            let tileY = Math.floor(gd.grid_y / tileSize);
+	            gd.localX = gd.grid_x % tileSize;
+	            gd.localY = gd.grid_y % tileSize;
 	            gd.url = `${root}/${id$$1}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
 	            icons[x$$1][y$$1] = gd;
 	          }
