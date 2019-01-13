@@ -6433,13 +6433,15 @@
 	    layout: 0,
 	    config: null,
 	    layers: null,
-	    loading: false
+	    loading: false,
+	    flipX: false,
+	    flipY: false,
 	  };
 	}
 	function onupdate$1({ changed, current, previous }) {
 	  if (changed.layer || changed.classFilter || changed.id || changed.layout || changed.filter) {
 
-	    const {root, id: id$$1, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1} = this.get();
+	    const {root, id: id$$1, layer: layer$$1, classFilter, filter: filter$$1, fingerprint, layout: layout$$1, flipX, flipY} = this.get();
 	    this.set({loading: true});
 	    const config = configs$1[id$$1];
 	    this.set({config});
@@ -6453,12 +6455,8 @@
 	      if (!Array.isArray(config.layer)) { config.layer = [config.layer]; }
 	      if (!Array.isArray(config.layout)) { config.layout = [config.layout]; }
 	      if (!Array.isArray(config.filter)) { config.filter = [config.filter]; }
-	      // console.log(config.layout, layout, Array.isArray(config.layout))
-	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size=8--layout=5_0.1_cosine,10_0.1_cosine,15_0.1_cosine--class_filter=7--filter=None--layer=mixed4a--model=InceptionV1--sample_images=1000000--sample_type=random.json
-	      //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/web/web--grid_size%3D16--layout%3D10_0.1_cosine--class_filter%3D1--filter%3DNone--layer%3Dmixed4a--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json
-	      // console.log(config)
+
 	      let gridUrls = config.grid_size.map(g => `${root}/${id$$1}/web/web--grid_size=${g}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.json`);
-	      // console.log(gridUrls)
 	      load$1(gridUrls).then(responses => {
 	        let layers = Array(responses.length);
 	        responses.forEach((g, i) => {
@@ -6466,19 +6464,10 @@
 	          let tileSize = config.tile_size;
 	          let numRows = gridSize / tileSize;
 	          let t = [...Array(numRows).keys()];
-	          // let tiles = t.map(x => Array(numRows))
-	          // for (let x = 0; x < numRows; x++) {
-	          //   for (let y = 0; y < numRows; y++) {
-	          //     tiles[x][y] = {
-	          //       //render/render--x%3D0--y%3D0--tries%3D4--alpha%3DFalse--tile_size%3D10--whiten%3Dtrue--steps%3D1024--icon_size%3D80--grid_size%3D10--layout%3D50_0.05_cosine--class_filter%3DNone--filter%3DNone--layer%3Dmixed4d--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.jpg?_ga=2.191103914.-1445069976.1518735995
-	          //       //assets/alexnet/render/render--x=0--y=0--tries={config.tries}--tile_size={config.tile_size}--whiten={config.whiten}--steps={config.steps}--icon_size=80--grid_size=16--layout={config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer={layer}--model={config.model}--sample_images={config.sample_images}--sample_type={config.sample_type}.jpg
-	          //       url: `${root}/${id}/render/render--x=${x}--y=${y}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout}--class_filter=${config.class_filter[classFilter]}--filter=None--layer=${config.layer[layer]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`
-	          //     }
-	          //   }
-	          // }
 	          let ic = [...Array(gridSize).keys()];
 	          let icons = ic.map(x$$1 => Array(gridSize));
 	          for (const gd of g) {
+	            
 	            if (gd.x !== undefined) { gd.grid_x = gd.x; }
 	            if (gd.y !== undefined) { gd.grid_y = gd.y; }
 	            if (gd.n !== undefined) { gd.num_activations = gd.n; }
@@ -6488,9 +6477,9 @@
 	              gd.full_class_values = gd.f; 
 	              gd.full_class_indices = classesToKeep;
 	            }
-	            
-	            let x$$1 = gd.grid_x;
-	            let y$$1 = gd.grid_y;
+	            // console.log("gridSize", gridSize, gridSize - gd.grid_x, gd.grid_x)
+	            let x$$1 = flipX ? (gridSize - gd.grid_x - 1) : gd.grid_x;
+	            let y$$1 = flipY ? (gridSize - gd.grid_y - 1) : gd.grid_y;
 	            gd.gx = x$$1 / gridSize;
 	            gd.gy = y$$1 / gridSize;
 	            gd.gw = 1 / gridSize;
@@ -6498,9 +6487,8 @@
 	            let tileY = Math.floor(y$$1 / tileSize);
 	            gd.localX = x$$1 % tileSize;
 	            gd.localY = y$$1 % tileSize;
-	            //activation-atlas/o/build%2Finceptionv1_mixed4d%2Frender%2Frender--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=None--layer=mixed4d--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
 	            gd.url = `${root}/${id$$1}/render/render--x=${tileX}--y=${tileY}--tries=${config.tries}--alpha=${config.alpha ? "True" : "False"}--tile_size=${config.tile_size}--whiten=${config.whiten}--steps=${config.steps}--icon_size=${config.icon_size}--grid_size=${gridSize}--layout=${config.layout[layout$$1]}--class_filter=${config.class_filter[classFilter]}--filter=${config.filter[filter$$1]}--layer=${config.layer[layer$$1]}--model=${config.model}--sample_images=${config.sample_images}--sample_type=${config.sample_type}.jpg`;
-	            icons[gd.grid_x][gd.grid_y] = gd;
+	            icons[x$$1][y$$1] = gd;
 	          }
 	          layers[i] = icons;
 	        });
