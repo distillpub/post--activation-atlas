@@ -91,6 +91,7 @@ subjects.forEach(s => {
 
     new Atlas({
       target: e,
+      store,
       data: {
         id,
         ...defaults,

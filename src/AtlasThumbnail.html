@@ -113,7 +113,7 @@ export default {
         // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
         // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
         // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-        data[y * gridSize * 4 + x * 4 + 3] = 40 + 0.0002 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
+        data[y * gridSize * 4 + x * 4 + 3] = 40 + (gridSize > 20 ? 0.0008 : 0.00015) * gridSize * gridSize * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
       }
       
       context.putImageData(imageData, 0, 0);

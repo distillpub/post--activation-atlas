@@ -5544,7 +5544,7 @@
 	      // data[y * gridSize * 4 + x * 4 + 0] = (heatmapMultiplier) * 255 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 1] = (heatmapMultiplier) * 130 * 20;
 	      // data[y * gridSize * 4 + x * 4 + 2] = (heatmapMultiplier) * 1 * 20;
-	      data[y$$1 * gridSize * 4 + x$$1 * 4 + 3] = 40 + 0.0002 * 255 * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
+	      data[y$$1 * gridSize * 4 + x$$1 * 4 + 3] = 40 + (gridSize > 20 ? 0.0008 : 0.00015) * gridSize * gridSize * (icon.n / Math.pow((grid + 1), 2)) * heatmapMultiplier;
 	    }
 	    
 	    context.putImageData(imageData, 0, 0);
@@ -5808,14 +5808,14 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.layer;
 				input.value = input.__value;
-				input.className = "svelte-196wpbb";
+				input.className = "svelte-1tpwqxh";
 				addLoc(input, file$g, 3, 4, 114);
-				div.className = "thumb svelte-196wpbb";
+				div.className = "thumb svelte-1tpwqxh";
 				setStyle(div, "position", "relative");
 				addLoc(div, file$g, 4, 4, 172);
-				span.className = "svelte-196wpbb";
+				span.className = "svelte-1tpwqxh";
 				addLoc(span, file$g, 7, 4, 301);
-				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-196wpbb";
+				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-1tpwqxh";
 				addLoc(label, file$g, 2, 2, 49);
 			},
 
@@ -5851,7 +5851,7 @@
 					setData(text2, text2_value);
 				}
 
-				if ((changed.layerName || changed.layers) && label_class_value !== (label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-196wpbb")) {
+				if ((changed.layerName || changed.layers) && label_class_value !== (label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-1tpwqxh")) {
 					label.className = label_class_value;
 				}
 			},
