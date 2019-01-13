@@ -8,6 +8,8 @@ Colab notebooks (in progress)
 
 responsiveResize rewrite
 
+app minimap buttons weird on ipad
+
 ## Nice to haves
 
 grid size radio buttons smaller
