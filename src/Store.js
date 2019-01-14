@@ -82,7 +82,7 @@ const store = new MyStore({
       {
         layerName: "mixed5b",
         homeX: 0.8183,
-        homeY: 0.21,
+        homeY: 1 - 0.21,
         gridSize: 4,
         homeScale: 16 * 6,
       }
@@ -106,10 +106,10 @@ const store = new MyStore({
       },
       {
         layerName: "mixed5b",
-        homeX: 0.168,
-        homeY: 0.285,
-        gridSize: 4,
-        homeScale: 16 * 3 * 2,
+        homeX: 0.178,
+        homeY: 1 - 0.28,
+        // gridSize: 4,
+        // homeScale: 16 * 3 * 2,
         caption: 'Here we see foliage with textures that are specific to cabbage, and curved into rounded balls. There are full heads of cabbage rather than individual leaves.'
 
       }
@@ -130,9 +130,9 @@ const store = new MyStore({
       {
         layerName: "mixed5b",
         homeX: 0.740,
-        homeY: 0.534,
-        gridSize: 4,
-        homeScale: 16 * 6,
+        homeY: 1 - 0.52,
+        // gridSize: 3,
+        // homeScale: 16 * 6,
         caption: 'In a later layer we see activations that contain <b>both</b> of those concepts when detecting "sandbar".'
       },
     ]
@@ -167,28 +167,28 @@ const store = new MyStore({
   focus1Highlight: {
     scale:6,
     x:0.844,
-    y:0.510
+    y:1 - 0.510
   },
   focusHighlights: [
     {
       scale: 10,
       x: 0.873,
-      y: 0.415,
+      y: 1 - 0.415,
     },
     {
       scale: 10,
       x: 0.709,
-      y: 0.421,
+      y: 1 - 0.421,
     },
     {
       scale: 10,
       x: 0.221,
-      y: 0.138,
+      y: 1 - 0.138,
     },
     {
       scale: 10,
       x: 0.807,
-      y: 0.333,
+      y: 1 - 0.333,
     },
   ],
   pois: {

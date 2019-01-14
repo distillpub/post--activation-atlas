@@ -1514,7 +1514,7 @@
 	      {
 	        layerName: "mixed5b",
 	        homeX: 0.8183,
-	        homeY: 0.21,
+	        homeY: 1 - 0.21,
 	        gridSize: 4,
 	        homeScale: 16 * 6,
 	      }
@@ -1538,10 +1538,10 @@
 	      },
 	      {
 	        layerName: "mixed5b",
-	        homeX: 0.168,
-	        homeY: 0.285,
-	        gridSize: 4,
-	        homeScale: 16 * 3 * 2,
+	        homeX: 0.178,
+	        homeY: 1 - 0.28,
+	        // gridSize: 4,
+	        // homeScale: 16 * 3 * 2,
 	        caption: 'Here we see foliage with textures that are specific to cabbage, and curved into rounded balls. There are full heads of cabbage rather than individual leaves.'
 
 	      }
@@ -1562,9 +1562,9 @@
 	      {
 	        layerName: "mixed5b",
 	        homeX: 0.740,
-	        homeY: 0.534,
-	        gridSize: 4,
-	        homeScale: 16 * 6,
+	        homeY: 1 - 0.52,
+	        // gridSize: 3,
+	        // homeScale: 16 * 6,
 	        caption: 'In a later layer we see activations that contain <b>both</b> of those concepts when detecting "sandbar".'
 	      },
 	    ]
@@ -1599,28 +1599,28 @@
 	  focus1Highlight: {
 	    scale:6,
 	    x:0.844,
-	    y:0.510
+	    y:1 - 0.510
 	  },
 	  focusHighlights: [
 	    {
 	      scale: 10,
 	      x: 0.873,
-	      y: 0.415,
+	      y: 1 - 0.415,
 	    },
 	    {
 	      scale: 10,
 	      x: 0.709,
-	      y: 0.421,
+	      y: 1 - 0.421,
 	    },
 	    {
 	      scale: 10,
 	      x: 0.221,
-	      y: 0.138,
+	      y: 1 - 0.138,
 	    },
 	    {
 	      scale: 10,
 	      x: 0.807,
-	      y: 0.333,
+	      y: 1 - 0.333,
 	    },
 	  ],
 	  pois: {
@@ -9195,6 +9195,8 @@
 	        homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
 	        fontSize: 14,
 	        iconCrop: 0.3,
+	        density: 8.0,
+	        fontSize: 11,
 	        showLabels: true,
 	        textShadow: true,
 	        enableDragToPan: false,
@@ -9215,8 +9217,8 @@
 	  h.textContent = "focus-1-1";
 	  app.appendChild(h);
 	  let e = document.createElement("div");
-	  e.style.width = "1500px";
-	  e.style.height = "1500px";
+	  e.style.width = "1200px";
+	  e.style.height = "1200px";
 	  e.style.position = "relative";
 	  app.appendChild(e);
 
@@ -9232,7 +9234,7 @@
 	      iconCrop: 0.3,
 	      classHeatmap: 235,
 	      strokeColor: "rgb(150, 150, 150)",
-	      strokeThickness: 2,
+	      strokeThickness: 1.5,
 	      showLabels: false,
 	      textShadow: true,
 	      enableDragToPan: false,
@@ -9300,8 +9302,8 @@
 	  h.textContent = "focus-2-1";
 	  app.appendChild(h);
 	  let e = document.createElement("div");
-	  e.style.width = "1500px";
-	  e.style.height = "1500px";
+	  e.style.width = "1200px";
+	  e.style.height = "1200px";
 	  e.style.position = "relative";
 	  app.appendChild(e);
 
@@ -9317,7 +9319,7 @@
 	      iconCrop: 0.3,
 	      classHeatmap: 235,
 	      strokeColor: "rgb(150, 150, 150)",
-	      strokeThickness: 2,
+	      strokeThickness: 1.5,
 	      showLabels: false,
 	      textShadow: true,
 	      enableDragToPan: false,
@@ -9523,8 +9525,8 @@
 	  h.textContent = "focus-3-1";
 	  app.appendChild(h);
 	  let e = document.createElement("div");
-	  e.style.width = "1500px";
-	  e.style.height = "1500px";
+	  e.style.width = "1200px";
+	  e.style.height = "1200px";
 	  e.style.position = "relative";
 	  app.appendChild(e);
 
@@ -9540,7 +9542,7 @@
 	      iconCrop: 0.3,
 	      classHeatmap: 287,
 	      strokeColor: "rgb(150, 150, 150)",
-	      strokeThickness: 2,
+	      strokeThickness: 1.5,
 	      showLabels: false,
 	      textShadow: true,
 	      enableDragToPan: false,

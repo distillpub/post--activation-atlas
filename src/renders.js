@@ -99,6 +99,8 @@ subjects.forEach(s => {
         homeScale: d.homeScale ? d.homeScale * zoom : defaults.homeScale,
         fontSize: 14,
         iconCrop: 0.3,
+        density: 8.0,
+        fontSize: 11,
         showLabels: true,
         textShadow: true,
         enableDragToPan: false,
@@ -119,8 +121,8 @@ subjects.forEach(s => {
   h.textContent = "focus-1-1";
   app.appendChild(h);
   let e = document.createElement("div");
-  e.style.width = "1500px";
-  e.style.height = "1500px";
+  e.style.width = "1200px";
+  e.style.height = "1200px";
   e.style.position = "relative";
   app.appendChild(e);
 
@@ -136,7 +138,7 @@ subjects.forEach(s => {
       iconCrop: 0.3,
       classHeatmap: 235,
       strokeColor: "rgb(150, 150, 150)",
-      strokeThickness: 2,
+      strokeThickness: 1.5,
       showLabels: false,
       textShadow: true,
       enableDragToPan: false,
@@ -204,8 +206,8 @@ subjects.forEach(s => {
   h.textContent = "focus-2-1";
   app.appendChild(h);
   let e = document.createElement("div");
-  e.style.width = "1500px";
-  e.style.height = "1500px";
+  e.style.width = "1200px";
+  e.style.height = "1200px";
   e.style.position = "relative";
   app.appendChild(e);
 
@@ -221,7 +223,7 @@ subjects.forEach(s => {
       iconCrop: 0.3,
       classHeatmap: 235,
       strokeColor: "rgb(150, 150, 150)",
-      strokeThickness: 2,
+      strokeThickness: 1.5,
       showLabels: false,
       textShadow: true,
       enableDragToPan: false,
@@ -427,8 +429,8 @@ subjects.forEach(s => {
   h.textContent = "focus-3-1";
   app.appendChild(h);
   let e = document.createElement("div");
-  e.style.width = "1500px";
-  e.style.height = "1500px";
+  e.style.width = "1200px";
+  e.style.height = "1200px";
   e.style.position = "relative";
   app.appendChild(e);
 
@@ -444,7 +446,7 @@ subjects.forEach(s => {
       iconCrop: 0.3,
       classHeatmap: 287,
       strokeColor: "rgb(150, 150, 150)",
-      strokeThickness: 2,
+      strokeThickness: 1.5,
       showLabels: false,
       textShadow: true,
       enableDragToPan: false,

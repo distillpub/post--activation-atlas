@@ -1581,7 +1581,7 @@
 	      {
 	        layerName: "mixed5b",
 	        homeX: 0.8183,
-	        homeY: 0.21,
+	        homeY: 1 - 0.21,
 	        gridSize: 4,
 	        homeScale: 16 * 6,
 	      }
@@ -1605,10 +1605,10 @@
 	      },
 	      {
 	        layerName: "mixed5b",
-	        homeX: 0.168,
-	        homeY: 0.285,
-	        gridSize: 4,
-	        homeScale: 16 * 3 * 2,
+	        homeX: 0.178,
+	        homeY: 1 - 0.28,
+	        // gridSize: 4,
+	        // homeScale: 16 * 3 * 2,
 	        caption: 'Here we see foliage with textures that are specific to cabbage, and curved into rounded balls. There are full heads of cabbage rather than individual leaves.'
 
 	      }
@@ -1629,9 +1629,9 @@
 	      {
 	        layerName: "mixed5b",
 	        homeX: 0.740,
-	        homeY: 0.534,
-	        gridSize: 4,
-	        homeScale: 16 * 6,
+	        homeY: 1 - 0.52,
+	        // gridSize: 3,
+	        // homeScale: 16 * 6,
 	        caption: 'In a later layer we see activations that contain <b>both</b> of those concepts when detecting "sandbar".'
 	      },
 	    ]
@@ -1666,28 +1666,28 @@
 	  focus1Highlight: {
 	    scale:6,
 	    x:0.844,
-	    y:0.510
+	    y:1 - 0.510
 	  },
 	  focusHighlights: [
 	    {
 	      scale: 10,
 	      x: 0.873,
-	      y: 0.415,
+	      y: 1 - 0.415,
 	    },
 	    {
 	      scale: 10,
 	      x: 0.709,
-	      y: 0.421,
+	      y: 1 - 0.421,
 	    },
 	    {
 	      scale: 10,
 	      x: 0.221,
-	      y: 0.138,
+	      y: 1 - 0.138,
 	    },
 	    {
 	      scale: 10,
 	      x: 0.807,
-	      y: 0.333,
+	      y: 1 - 0.333,
 	    },
 	  ],
 	  pois: {
@@ -4241,6 +4241,7 @@
 		var lazyimage_initial_data = {
 		 	aspectRatio: 1,
 		 	src: "assets/images/renders/thumbnail-" + ctx.layerName + ".jpg",
+		 	border: false,
 		 	alt: "thumbnail for " + ctx.layerName
 		 };
 		var lazyimage = new LazyImage({
@@ -19875,7 +19876,7 @@
 		var div5, div0, text0, div3, div2, div1, text1, text2, div4;
 
 		var lazyimage0_initial_data = {
-		 	src: "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png",
+		 	src: "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".jpg",
 		 	aspectRatio: 4/3,
 		 	border: false
 		 };
@@ -19956,7 +19957,7 @@
 
 			p: function update(changed, ctx) {
 				var lazyimage0_changes = {};
-				if (changed.subject || changed.index) lazyimage0_changes.src = "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".png";
+				if (changed.subject || changed.index) lazyimage0_changes.src = "assets/images/renders/layers-" + ctx.subject + "-" + ctx.index + ".jpg";
 				lazyimage0._set(lazyimage0_changes);
 
 				var lazyimage1_changes = {};
@@ -20181,7 +20182,7 @@
 		var lazyimage0_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-1-1.png"
+		 	src: "assets/images/renders/focus-1-1.jpg"
 		 };
 		var lazyimage0 = new LazyImage({
 			root: component.root,
@@ -20207,7 +20208,7 @@
 		var lazyimage1_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-1-2.png"
+		 	src: "assets/images/renders/focus-1-2.jpg"
 		 };
 		var lazyimage1 = new LazyImage({
 			root: component.root,
@@ -20323,7 +20324,7 @@
 		var lazyimage0_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-1.png"
+		 	src: "assets/images/renders/focus-2-1.jpg"
 		 };
 		var lazyimage0 = new LazyImage({
 			root: component.root,
@@ -20386,7 +20387,7 @@
 		var lazyimage1_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-4.png"
+		 	src: "assets/images/renders/focus-2-4.jpg"
 		 };
 		var lazyimage1 = new LazyImage({
 			root: component.root,
@@ -20405,7 +20406,7 @@
 		var lazyimage2_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-3.png"
+		 	src: "assets/images/renders/focus-2-3.jpg"
 		 };
 		var lazyimage2 = new LazyImage({
 			root: component.root,
@@ -20424,7 +20425,7 @@
 		var lazyimage3_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-2.png"
+		 	src: "assets/images/renders/focus-2-2.jpg"
 		 };
 		var lazyimage3 = new LazyImage({
 			root: component.root,
@@ -20610,7 +20611,7 @@
 		var lazyimage0_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-1.png"
+		 	src: "assets/images/renders/focus-2-1.jpg"
 		 };
 		var lazyimage0 = new LazyImage({
 			root: component.root,
@@ -20629,7 +20630,7 @@
 		var lazyimage1_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-3-1.png"
+		 	src: "assets/images/renders/focus-3-1.jpg"
 		 };
 		var lazyimage1 = new LazyImage({
 			root: component.root,
@@ -21068,7 +21069,7 @@
 		var lazyimage_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-2-" + (ctx.i + 2) + ".png"
+		 	src: "assets/images/renders/focus-2-" + (ctx.i + 2) + ".jpg"
 		 };
 		var lazyimage = new LazyImage({
 			root: component.root,
@@ -21117,7 +21118,7 @@
 		var lazyimage_initial_data = {
 		 	border: false,
 		 	background: false,
-		 	src: "assets/images/renders/focus-3-" + (ctx.i + 2) + ".png"
+		 	src: "assets/images/renders/focus-3-" + (ctx.i + 2) + ".jpg"
 		 };
 		var lazyimage = new LazyImage({
 			root: component.root,
@@ -21234,8 +21235,8 @@
 					showClassFilter: false,
 					layerName: "mixed4d",
 					showOptions: false,
-					homeX: 0.55,
-					homeY: 1 - 0.75,
+					homeX: 0.550,
+					homeY: 0.283,
 					homeScale: 5,
 					gridSize: 2,
 					scrollWheel: false,
