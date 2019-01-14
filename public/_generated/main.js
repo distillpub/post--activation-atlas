@@ -1694,15 +1694,15 @@
 	    mammals: {
 	      layerName: "mixed4a",
 	      gridSize: 2,
-	      gcx: 0.3705,
-	      gcy: 0.9475,
+	      gcx: 1 - 0.3705,
+	      gcy: 1 - 0.9475,
 	      scale: 8
 	    },
 	    dogs: {
 	      layerName: "mixed5a",
 	      gridSize: 3,
 	      gcx: 0.589,
-	      gcy: 0.946,
+	      gcy: 1 - 0.946,
 	      scale: 10
 
 	    },
@@ -1717,7 +1717,7 @@
 	      layerName: "mixed5b",
 	      gridSize: 3,
 	      gcx: 0.35073,
-	      gcy: 0.1380,
+	      gcy: 1 - 0.1380,
 	      scale: 10
 	    },
 	    patterns: {
@@ -1731,7 +1731,7 @@
 	      layerName: "mixed5a",
 	      gridSize: 3,
 	      gcx: 0.5281,
-	      gcy: 0.0234,
+	      gcy: 1 - 0.0234,
 	      scale: 19
 	    },
 	    fabric: {
@@ -1745,8 +1745,8 @@
 	      layerName: "mixed5a",
 	      gridSize: 3,
 	      gcx: 0.743,
-	      gcy: 0.520,
-	      scale: 10
+	      gcy: 1 - 0.520,
+	      scale: 12
 	    }
 	  }
 	});
