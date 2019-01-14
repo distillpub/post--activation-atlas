@@ -6,11 +6,11 @@ cache assets (in progress)
 
 Colab notebooks (in progress)
 
-responsiveResize rewrite
-
 app minimap buttons weird on ipad
 
 ## Nice to haves
+
+responsiveResize rewrite
 
 grid size radio buttons smaller
 
