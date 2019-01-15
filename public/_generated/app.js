@@ -446,7 +446,7 @@
 		}
 	});
 
-	var Labels = {
+	var inceptionLabels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1456,7 +1456,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: Labels.inception,
+	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1610,7 +1610,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -4948,9 +4948,9 @@
 
 
 
-	function labels({inceptionLabels}) {
+	function labels({inceptionLabels: inceptionLabels$$1}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels.inception[k];
+	    let l = inceptionLabels$$1.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -4959,7 +4959,7 @@
 	function data$a() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels: Labels,
+	    inceptionLabels,
 	    classHeatmap: 235
 	  }
 	}
@@ -5478,7 +5478,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: Labels.inception,
+	    labels: inceptionLabels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -11092,31 +11092,31 @@
 				addLoc(h20, file$j, 4, 8, 192);
 				setAttribute(div0, "slot", "body");
 				addLoc(div0, file$j, 5, 8, 234);
-				div1.className = "filter svelte-iyr6kd";
+				div1.className = "filter svelte-1mmgffy";
 				setStyle(div1, "display", (ctx.showClassFilter ? 'block' : 'none'));
 				addLoc(div1, file$j, 2, 4, 94);
 				setAttribute(h21, "slot", "head");
 				addLoc(h21, file$j, 14, 8, 464);
 				setAttribute(div2, "slot", "body");
 				addLoc(div2, file$j, 15, 8, 499);
-				div3.className = "stack svelte-iyr6kd";
+				div3.className = "stack svelte-1mmgffy";
 				setStyle(div3, "display", (ctx.showLayerChooser ? 'block' : 'none'));
 				addLoc(div3, file$j, 12, 4, 366);
-				div4.className = "map-container svelte-iyr6kd";
+				div4.className = "map-container svelte-1mmgffy";
 				setStyle(div4, "width", "100px");
 				setStyle(div4, "height", "100px");
 				setStyle(div4, "position", "absolute");
 				addLoc(div4, file$j, 51, 14, 1441);
-				div5.className = "map svelte-iyr6kd";
+				div5.className = "map svelte-1mmgffy";
 				addLoc(div5, file$j, 50, 12, 1409);
-				div6.className = "buttons svelte-iyr6kd";
+				div6.className = "buttons svelte-1mmgffy";
 				addLoc(div6, file$j, 63, 12, 1916);
-				div7.className = "nav svelte-iyr6kd";
+				div7.className = "nav svelte-1mmgffy";
 				addLoc(div7, file$j, 49, 10, 1379);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
 				addLoc(input0, file$j, 71, 21, 2378);
-				label0.className = "svelte-iyr6kd";
+				label0.className = "svelte-1mmgffy";
 				addLoc(label0, file$j, 71, 14, 2371);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "checkbox");
@@ -11124,11 +11124,11 @@
 				setStyle(label1, "white-space", "nowrap");
 				setStyle(label1, "text-overflow", "ellipsis");
 				setStyle(label1, "overflow", "hidden");
-				label1.className = "svelte-iyr6kd";
+				label1.className = "svelte-1mmgffy";
 				addLoc(label1, file$j, 72, 14, 2460);
 				div8.className = "essential";
 				addLoc(div8, file$j, 70, 12, 2333);
-				h30.className = "svelte-iyr6kd";
+				h30.className = "svelte-1mmgffy";
 				addLoc(h30, file$j, 78, 18, 2784);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
@@ -11136,7 +11136,7 @@
 				input2.__value = 0;
 				input2.value = input2.__value;
 				addLoc(input2, file$j, 79, 25, 2828);
-				label2.className = "svelte-iyr6kd";
+				label2.className = "svelte-1mmgffy";
 				addLoc(label2, file$j, 79, 18, 2821);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
@@ -11144,7 +11144,7 @@
 				input3.__value = 1;
 				input3.value = input3.__value;
 				addLoc(input3, file$j, 80, 25, 2916);
-				label3.className = "svelte-iyr6kd";
+				label3.className = "svelte-1mmgffy";
 				addLoc(label3, file$j, 80, 18, 2909);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
@@ -11152,7 +11152,7 @@
 				input4.__value = 2;
 				input4.value = input4.__value;
 				addLoc(input4, file$j, 81, 25, 3004);
-				label4.className = "svelte-iyr6kd";
+				label4.className = "svelte-1mmgffy";
 				addLoc(label4, file$j, 81, 18, 2997);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
@@ -11160,7 +11160,7 @@
 				input5.__value = 3;
 				input5.value = input5.__value;
 				addLoc(input5, file$j, 82, 25, 3092);
-				label5.className = "svelte-iyr6kd";
+				label5.className = "svelte-1mmgffy";
 				addLoc(label5, file$j, 82, 18, 3085);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
@@ -11168,7 +11168,7 @@
 				input6.__value = 4;
 				input6.value = input6.__value;
 				addLoc(input6, file$j, 83, 25, 3182);
-				label6.className = "svelte-iyr6kd";
+				label6.className = "svelte-1mmgffy";
 				addLoc(label6, file$j, 83, 18, 3175);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
@@ -11176,7 +11176,7 @@
 				input7.__value = -1;
 				input7.value = input7.__value;
 				addLoc(input7, file$j, 84, 25, 3272);
-				label7.className = "svelte-iyr6kd";
+				label7.className = "svelte-1mmgffy";
 				addLoc(label7, file$j, 84, 18, 3265);
 				addLoc(div9, file$j, 86, 20, 3431);
 				addListener(input8, "change", input8_change_input_handler);
@@ -11188,9 +11188,9 @@
 				addLoc(input8, file$j, 87, 20, 3509);
 				setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
 				addLoc(div10, file$j, 85, 18, 3353);
-				div11.className = "section svelte-iyr6kd";
+				div11.className = "section svelte-1mmgffy";
 				addLoc(div11, file$j, 77, 16, 2744);
-				h31.className = "svelte-iyr6kd";
+				h31.className = "svelte-1mmgffy";
 				addLoc(h31, file$j, 91, 18, 3703);
 				addListener(input9, "change", input9_change_input_handler);
 				addListener(input9, "input", input9_change_input_handler);
@@ -11199,9 +11199,9 @@
 				input9.max = 8;
 				input9.step = 0.01;
 				addLoc(input9, file$j, 92, 18, 3760);
-				div12.className = "section svelte-iyr6kd";
+				div12.className = "section svelte-1mmgffy";
 				addLoc(div12, file$j, 90, 16, 3662);
-				h32.className = "svelte-iyr6kd";
+				h32.className = "svelte-1mmgffy";
 				addLoc(h32, file$j, 98, 18, 4139);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
@@ -11209,7 +11209,7 @@
 				input10.__value = 1;
 				input10.value = input10.__value;
 				addLoc(input10, file$j, 99, 25, 4186);
-				label8.className = "svelte-iyr6kd";
+				label8.className = "svelte-1mmgffy";
 				addLoc(label8, file$j, 99, 18, 4179);
 				component._bindingGroups[1].push(input11);
 				addListener(input11, "change", input11_change_handler);
@@ -11217,7 +11217,7 @@
 				input11.__value = -1;
 				input11.value = input11.__value;
 				addLoc(input11, file$j, 100, 25, 4299);
-				label9.className = "svelte-iyr6kd";
+				label9.className = "svelte-1mmgffy";
 				addLoc(label9, file$j, 100, 18, 4292);
 				addLoc(div13, file$j, 101, 18, 4406);
 				addListener(input12, "change", input12_change_input_handler);
@@ -11227,34 +11227,34 @@
 				input12.max = "2";
 				input12.step = "0.1";
 				addLoc(input12, file$j, 102, 18, 4477);
-				div14.className = "section svelte-iyr6kd";
+				div14.className = "section svelte-1mmgffy";
 				setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				addLoc(div14, file$j, 97, 16, 4042);
-				h33.className = "svelte-iyr6kd";
+				h33.className = "svelte-1mmgffy";
 				addLoc(h33, file$j, 105, 18, 4634);
 				addLoc(div15, file$j, 106, 18, 4670);
 				addLoc(div16, file$j, 107, 18, 4716);
 				addLoc(div17, file$j, 108, 18, 4762);
-				div18.className = "section svelte-iyr6kd";
+				div18.className = "section svelte-1mmgffy";
 				addLoc(div18, file$j, 104, 16, 4594);
 				div19.className = "grid-size";
 				addLoc(div19, file$j, 75, 14, 2687);
-				div20.className = "expand svelte-iyr6kd";
+				div20.className = "expand svelte-1mmgffy";
 				addLoc(div20, file$j, 74, 12, 2641);
-				div21.className = "options svelte-iyr6kd";
+				div21.className = "options svelte-1mmgffy";
 				addLoc(div21, file$j, 69, 10, 2299);
 				addListener(button3, "click", click_handler);
-				button3.className = "svelte-iyr6kd";
+				button3.className = "svelte-1mmgffy";
 				addLoc(button3, file$j, 114, 12, 4926);
-				div22.className = "expand-toggle svelte-iyr6kd";
+				div22.className = "expand-toggle svelte-1mmgffy";
 				addLoc(div22, file$j, 113, 10, 4886);
-				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-iyr6kd" + " svelte-ref-controls";
+				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls";
 				addLoc(div23, file$j, 48, 8, 1299);
-				div24.className = "atlas svelte-iyr6kd";
+				div24.className = "atlas svelte-1mmgffy";
 				addLoc(div24, file$j, 24, 4, 677);
-				div25.className = "main svelte-iyr6kd";
+				div25.className = "main svelte-1mmgffy";
 				addLoc(div25, file$j, 23, 2, 654);
-				div26.className = "container svelte-iyr6kd";
+				div26.className = "container svelte-1mmgffy";
 				addLoc(div26, file$j, 1, 2, 66);
 			},
 
@@ -11605,7 +11605,7 @@
 					setData(text55, text55_value);
 				}
 
-				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-iyr6kd" + " svelte-ref-controls")) {
+				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls")) {
 					div23.className = div23_class_value;
 				}
 
