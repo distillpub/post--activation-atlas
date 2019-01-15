@@ -230,6 +230,11 @@ export default {
 
   },
   oncreate() {
+    // Turn off tooltips while zooming
+    const {tooltip} = this.store.get();
+    this.refs.d3Zoom.on("zoom", () => {
+      tooltip.hide();
+    });
     // Offscreen buffer for drawing text labels;
     const labelsBufferCanvas = document.createElement("canvas");
     labelsBufferCanvas.width = 150 * 10;

@@ -159,6 +159,7 @@ export default {
     onzoom: function(that) {
       // console.log("onzoom")
       that.update();
+      that.fire("zoom");
     },
     zoomTo: function(x, y, scale = 1, duration = 1000) {
       const {selection, z, minSize, clientWidth, clientHeight} = this.get();

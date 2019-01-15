@@ -446,7 +446,7 @@
 		}
 	});
 
-	var inceptionLabels = {
+	var Labels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1456,7 +1456,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: inceptionLabels.inception,
+	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1610,7 +1610,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -4948,9 +4948,9 @@
 
 
 
-	function labels({inceptionLabels: inceptionLabels$$1}) {
+	function labels({inceptionLabels}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels$$1.inception[k];
+	    let l = inceptionLabels.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -4959,7 +4959,7 @@
 	function data$a() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels,
+	    inceptionLabels: Labels,
 	    classHeatmap: 235
 	  }
 	}
@@ -5478,7 +5478,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: inceptionLabels.inception,
+	    labels: Labels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -9096,6 +9096,7 @@
 	  onzoom: function(that) {
 	    // console.log("onzoom")
 	    that.update();
+	    that.fire("zoom");
 	  },
 	  zoomTo: function(x, y, scale = 1, duration = 1000) {
 	    const {selection: selection$$1, z, minSize, clientWidth, clientHeight} = this.get();
@@ -9650,6 +9651,11 @@
 	  };
 
 	function oncreate$4() {
+	  // Turn off tooltips while zooming
+	  const {tooltip} = this.store.get();
+	  this.refs.d3Zoom.on("zoom", () => {
+	    tooltip.hide();
+	  });
 	  // Offscreen buffer for drawing text labels;
 	  const labelsBufferCanvas = document.createElement("canvas");
 	  labelsBufferCanvas.width = 150 * 10;

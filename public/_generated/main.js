@@ -10065,6 +10065,7 @@
 	  onzoom: function(that) {
 	    // console.log("onzoom")
 	    that.update();
+	    that.fire("zoom");
 	  },
 	  zoomTo: function(x, y, scale = 1, duration = 1000) {
 	    const {selection: selection$$1, z, minSize, clientWidth, clientHeight} = this.get();
@@ -10619,6 +10620,11 @@
 	  };
 
 	function oncreate$5() {
+	  // Turn off tooltips while zooming
+	  const {tooltip} = this.store.get();
+	  this.refs.d3Zoom.on("zoom", () => {
+	    tooltip.hide();
+	  });
 	  // Offscreen buffer for drawing text labels;
 	  const labelsBufferCanvas = document.createElement("canvas");
 	  labelsBufferCanvas.width = 150 * 10;
