@@ -6,7 +6,6 @@ cache assets (in progress)
 
 Colab notebooks (in progress)
 
-app minimap buttons weird on ipad
 
 ## Nice to haves
 
@@ -19,6 +18,7 @@ grid size radio buttons smaller
 smooth zoom between gridsizes
 
 ## Done
+app minimap buttons weird on ipad
 tooltips broken in safari
 css scaling interferes with touch events (give up)
 phone layout (in progress)

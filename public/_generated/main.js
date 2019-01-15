@@ -3473,7 +3473,7 @@
 				addListener(button, "click", click_handler);
 				setStyle(button, "background-color", ctx.backgroundColor);
 				setStyle(button, "color", ctx.color);
-				button.className = "svelte-1cv5054";
+				button.className = "svelte-nm66xb";
 				addLoc(button, file$8, 0, 0, 0);
 			},
 
@@ -12061,31 +12061,31 @@
 				addLoc(h20, file$n, 4, 8, 192);
 				setAttribute(div0, "slot", "body");
 				addLoc(div0, file$n, 5, 8, 234);
-				div1.className = "filter svelte-59bocf";
+				div1.className = "filter svelte-iyr6kd";
 				setStyle(div1, "display", (ctx.showClassFilter ? 'block' : 'none'));
 				addLoc(div1, file$n, 2, 4, 94);
 				setAttribute(h21, "slot", "head");
 				addLoc(h21, file$n, 14, 8, 464);
 				setAttribute(div2, "slot", "body");
 				addLoc(div2, file$n, 15, 8, 499);
-				div3.className = "stack svelte-59bocf";
+				div3.className = "stack svelte-iyr6kd";
 				setStyle(div3, "display", (ctx.showLayerChooser ? 'block' : 'none'));
 				addLoc(div3, file$n, 12, 4, 366);
-				div4.className = "map-container svelte-59bocf";
+				div4.className = "map-container svelte-iyr6kd";
 				setStyle(div4, "width", "100px");
 				setStyle(div4, "height", "100px");
 				setStyle(div4, "position", "absolute");
 				addLoc(div4, file$n, 51, 14, 1441);
-				div5.className = "map svelte-59bocf";
+				div5.className = "map svelte-iyr6kd";
 				addLoc(div5, file$n, 50, 12, 1409);
-				div6.className = "buttons svelte-59bocf";
+				div6.className = "buttons svelte-iyr6kd";
 				addLoc(div6, file$n, 63, 12, 1916);
-				div7.className = "nav svelte-59bocf";
+				div7.className = "nav svelte-iyr6kd";
 				addLoc(div7, file$n, 49, 10, 1379);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
 				addLoc(input0, file$n, 71, 21, 2378);
-				label0.className = "svelte-59bocf";
+				label0.className = "svelte-iyr6kd";
 				addLoc(label0, file$n, 71, 14, 2371);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "checkbox");
@@ -12093,11 +12093,11 @@
 				setStyle(label1, "white-space", "nowrap");
 				setStyle(label1, "text-overflow", "ellipsis");
 				setStyle(label1, "overflow", "hidden");
-				label1.className = "svelte-59bocf";
+				label1.className = "svelte-iyr6kd";
 				addLoc(label1, file$n, 72, 14, 2460);
 				div8.className = "essential";
 				addLoc(div8, file$n, 70, 12, 2333);
-				h30.className = "svelte-59bocf";
+				h30.className = "svelte-iyr6kd";
 				addLoc(h30, file$n, 78, 18, 2784);
 				component._bindingGroups[0].push(input2);
 				addListener(input2, "change", input2_change_handler);
@@ -12105,7 +12105,7 @@
 				input2.__value = 0;
 				input2.value = input2.__value;
 				addLoc(input2, file$n, 79, 25, 2828);
-				label2.className = "svelte-59bocf";
+				label2.className = "svelte-iyr6kd";
 				addLoc(label2, file$n, 79, 18, 2821);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
@@ -12113,7 +12113,7 @@
 				input3.__value = 1;
 				input3.value = input3.__value;
 				addLoc(input3, file$n, 80, 25, 2916);
-				label3.className = "svelte-59bocf";
+				label3.className = "svelte-iyr6kd";
 				addLoc(label3, file$n, 80, 18, 2909);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
@@ -12121,7 +12121,7 @@
 				input4.__value = 2;
 				input4.value = input4.__value;
 				addLoc(input4, file$n, 81, 25, 3004);
-				label4.className = "svelte-59bocf";
+				label4.className = "svelte-iyr6kd";
 				addLoc(label4, file$n, 81, 18, 2997);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
@@ -12129,7 +12129,7 @@
 				input5.__value = 3;
 				input5.value = input5.__value;
 				addLoc(input5, file$n, 82, 25, 3092);
-				label5.className = "svelte-59bocf";
+				label5.className = "svelte-iyr6kd";
 				addLoc(label5, file$n, 82, 18, 3085);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
@@ -12137,7 +12137,7 @@
 				input6.__value = 4;
 				input6.value = input6.__value;
 				addLoc(input6, file$n, 83, 25, 3182);
-				label6.className = "svelte-59bocf";
+				label6.className = "svelte-iyr6kd";
 				addLoc(label6, file$n, 83, 18, 3175);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
@@ -12145,7 +12145,7 @@
 				input7.__value = -1;
 				input7.value = input7.__value;
 				addLoc(input7, file$n, 84, 25, 3272);
-				label7.className = "svelte-59bocf";
+				label7.className = "svelte-iyr6kd";
 				addLoc(label7, file$n, 84, 18, 3265);
 				addLoc(div9, file$n, 86, 20, 3431);
 				addListener(input8, "change", input8_change_input_handler);
@@ -12157,9 +12157,9 @@
 				addLoc(input8, file$n, 87, 20, 3509);
 				setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
 				addLoc(div10, file$n, 85, 18, 3353);
-				div11.className = "section svelte-59bocf";
+				div11.className = "section svelte-iyr6kd";
 				addLoc(div11, file$n, 77, 16, 2744);
-				h31.className = "svelte-59bocf";
+				h31.className = "svelte-iyr6kd";
 				addLoc(h31, file$n, 91, 18, 3703);
 				addListener(input9, "change", input9_change_input_handler);
 				addListener(input9, "input", input9_change_input_handler);
@@ -12168,9 +12168,9 @@
 				input9.max = 8;
 				input9.step = 0.01;
 				addLoc(input9, file$n, 92, 18, 3760);
-				div12.className = "section svelte-59bocf";
+				div12.className = "section svelte-iyr6kd";
 				addLoc(div12, file$n, 90, 16, 3662);
-				h32.className = "svelte-59bocf";
+				h32.className = "svelte-iyr6kd";
 				addLoc(h32, file$n, 98, 18, 4139);
 				component._bindingGroups[1].push(input10);
 				addListener(input10, "change", input10_change_handler);
@@ -12178,7 +12178,7 @@
 				input10.__value = 1;
 				input10.value = input10.__value;
 				addLoc(input10, file$n, 99, 25, 4186);
-				label8.className = "svelte-59bocf";
+				label8.className = "svelte-iyr6kd";
 				addLoc(label8, file$n, 99, 18, 4179);
 				component._bindingGroups[1].push(input11);
 				addListener(input11, "change", input11_change_handler);
@@ -12186,7 +12186,7 @@
 				input11.__value = -1;
 				input11.value = input11.__value;
 				addLoc(input11, file$n, 100, 25, 4299);
-				label9.className = "svelte-59bocf";
+				label9.className = "svelte-iyr6kd";
 				addLoc(label9, file$n, 100, 18, 4292);
 				addLoc(div13, file$n, 101, 18, 4406);
 				addListener(input12, "change", input12_change_input_handler);
@@ -12196,34 +12196,34 @@
 				input12.max = "2";
 				input12.step = "0.1";
 				addLoc(input12, file$n, 102, 18, 4477);
-				div14.className = "section svelte-59bocf";
+				div14.className = "section svelte-iyr6kd";
 				setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				addLoc(div14, file$n, 97, 16, 4042);
-				h33.className = "svelte-59bocf";
+				h33.className = "svelte-iyr6kd";
 				addLoc(h33, file$n, 105, 18, 4634);
 				addLoc(div15, file$n, 106, 18, 4670);
 				addLoc(div16, file$n, 107, 18, 4716);
 				addLoc(div17, file$n, 108, 18, 4762);
-				div18.className = "section svelte-59bocf";
+				div18.className = "section svelte-iyr6kd";
 				addLoc(div18, file$n, 104, 16, 4594);
 				div19.className = "grid-size";
 				addLoc(div19, file$n, 75, 14, 2687);
-				div20.className = "expand svelte-59bocf";
+				div20.className = "expand svelte-iyr6kd";
 				addLoc(div20, file$n, 74, 12, 2641);
-				div21.className = "options svelte-59bocf";
+				div21.className = "options svelte-iyr6kd";
 				addLoc(div21, file$n, 69, 10, 2299);
 				addListener(button3, "click", click_handler);
-				button3.className = "svelte-59bocf";
+				button3.className = "svelte-iyr6kd";
 				addLoc(button3, file$n, 114, 12, 4926);
-				div22.className = "expand-toggle svelte-59bocf";
+				div22.className = "expand-toggle svelte-iyr6kd";
 				addLoc(div22, file$n, 113, 10, 4886);
-				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-59bocf" + " svelte-ref-controls";
+				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-iyr6kd" + " svelte-ref-controls";
 				addLoc(div23, file$n, 48, 8, 1299);
-				div24.className = "atlas svelte-59bocf";
+				div24.className = "atlas svelte-iyr6kd";
 				addLoc(div24, file$n, 24, 4, 677);
-				div25.className = "main svelte-59bocf";
+				div25.className = "main svelte-iyr6kd";
 				addLoc(div25, file$n, 23, 2, 654);
-				div26.className = "container svelte-59bocf";
+				div26.className = "container svelte-iyr6kd";
 				addLoc(div26, file$n, 1, 2, 66);
 			},
 
@@ -12574,7 +12574,7 @@
 					setData(text55, text55_value);
 				}
 
-				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-59bocf" + " svelte-ref-controls")) {
+				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-iyr6kd" + " svelte-ref-controls")) {
 					div23.className = div23_class_value;
 				}
 
