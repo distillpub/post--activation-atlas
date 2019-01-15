@@ -37,6 +37,7 @@
           bind:autoGridSizeMultiplier
           bind:gridSize
           bind:showLabels
+          bind:enableHover
           bind:scale
           bind:gcx
           bind:gcy
@@ -69,8 +70,9 @@
           </div>
           <div class="options">
             <div class="essential">
-              <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
               <label style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"><input type=checkbox bind:checked=showLabels> attribution labels</label>
+              <label><input type=checkbox bind:checked="enableHover"> show tooltip</label>
+              <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
             </div>
             <div ref:expand class="expand">
               <div class="grid-size">

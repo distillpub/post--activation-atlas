@@ -11569,7 +11569,7 @@
 	const file$n = "src/components/App.html";
 
 	function create_main_fragment$o(component, ctx) {
-		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, div20, div19, div11, h30, text16, label2, input2, text17, text18, label3, input3, text19, text20, label4, input4, text21, text22, label5, input5, text23, text24, label6, input6, text25, text26, label7, input7, text27, text28, div10, div9, text29, raw0_before, text30, input8, text31, div12, h31, text32, raw1_before, text33, input9, text34, div14, h32, text36, label8, input10, text37, text38, label9, input11, text39, text40, div13, text41, raw2_before, text42, input12, text43, div18, h33, text45, div15, text46, text47_value = format_1$1(ctx.gcx), text47, text48, div16, text49, text50_value = format_1$1(ctx.gcy), text50, text51, div17, text52, text53_value = format_1$1(ctx.scale), text53, text54, div22, button3, text55_value = ctx.showOptions ? 'fewer options' : 'more options', text55, div23_class_value;
+		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, div20, div19, div11, h30, text18, label3, input3, text19, text20, label4, input4, text21, text22, label5, input5, text23, text24, label6, input6, text25, text26, label7, input7, text27, text28, label8, input8, text29, text30, div10, div9, text31, raw0_before, text32, input9, text33, div12, h31, text34, raw1_before, text35, input10, text36, div14, h32, text38, label9, input11, text39, text40, label10, input12, text41, text42, div13, text43, raw2_before, text44, input13, text45, div18, h33, text47, div15, text48, text49_value = format_1$1(ctx.gcx), text49, text50, div16, text51, text52_value = format_1$1(ctx.gcy), text52, text53, div17, text54, text55_value = format_1$1(ctx.scale), text55, text56, div22, button3, text57_value = ctx.showOptions ? 'fewer options' : 'more options', text57, div23_class_value;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -11685,6 +11685,12 @@
 	          ;
 			atlas_updating.showLabels = true;
 		}
+		if (ctx.enableHover
+	           !== void 0) {
+			atlas_initial_data.enableHover = ctx.enableHover
+	          ;
+			atlas_updating.enableHover = true;
+		}
 		if (ctx.scale
 	           !== void 0) {
 			atlas_initial_data.scale = ctx.scale
@@ -11747,6 +11753,10 @@
 					newState.showLabels = childState.showLabels;
 				}
 
+				if (!atlas_updating.enableHover && changed.enableHover) {
+					newState.enableHover = childState.enableHover;
+				}
+
 				if (!atlas_updating.scale && changed.scale) {
 					newState.scale = childState.scale;
 				}
@@ -11773,7 +11783,7 @@
 		});
 
 		component.root._beforecreate.push(() => {
-			atlas._bind({ density: 1, iconCrop: 1, classHeatmapMultiplier: 1, classHeatmapPositive: 1, autoGridSizeMultiplier: 1, gridSize: 1, showLabels: 1, scale: 1, gcx: 1, gcy: 1, extent: 1, scrollWheel: 1 }, atlas.get());
+			atlas._bind({ density: 1, iconCrop: 1, classHeatmapMultiplier: 1, classHeatmapPositive: 1, autoGridSizeMultiplier: 1, gridSize: 1, showLabels: 1, enableHover: 1, scale: 1, gcx: 1, gcy: 1, extent: 1, scrollWheel: 1 }, atlas.get());
 		});
 
 		component.refs.atlas = atlas;
@@ -11865,15 +11875,15 @@
 		});
 
 		function input0_change_handler() {
-			component.store.set({ scroll: input0.checked });
+			component.set({ showLabels: input0.checked });
 		}
 
 		function input1_change_handler() {
-			component.set({ showLabels: input1.checked });
+			component.set({ enableHover: input1.checked });
 		}
 
 		function input2_change_handler() {
-			component.set({ gridSize: input2.__value });
+			component.store.set({ scroll: input2.checked });
 		}
 
 		function input3_change_handler() {
@@ -11896,24 +11906,28 @@
 			component.set({ gridSize: input7.__value });
 		}
 
-		function input8_change_input_handler() {
-			component.set({ autoGridSizeMultiplier: toNumber(input8.value) });
+		function input8_change_handler() {
+			component.set({ gridSize: input8.__value });
 		}
 
 		function input9_change_input_handler() {
-			component.set({ density: toNumber(input9.value) });
+			component.set({ autoGridSizeMultiplier: toNumber(input9.value) });
 		}
 
-		function input10_change_handler() {
-			component.set({ classHeatmapPositive: input10.__value });
+		function input10_change_input_handler() {
+			component.set({ density: toNumber(input10.value) });
 		}
 
 		function input11_change_handler() {
 			component.set({ classHeatmapPositive: input11.__value });
 		}
 
-		function input12_change_input_handler() {
-			component.set({ classHeatmapMultiplier: toNumber(input12.value) });
+		function input12_change_handler() {
+			component.set({ classHeatmapPositive: input12.__value });
+		}
+
+		function input13_change_input_handler() {
+			component.set({ classHeatmapMultiplier: toNumber(input13.value) });
 		}
 
 		function click_handler(event) {
@@ -11975,93 +11989,97 @@
 				div8 = createElement("div");
 				label0 = createElement("label");
 				input0 = createElement("input");
-				text11 = createText(" scroll to zoom");
+				text11 = createText(" attribution labels");
 				text12 = createText("\n              ");
 				label1 = createElement("label");
 				input1 = createElement("input");
-				text13 = createText(" attribution labels");
-				text14 = createText("\n            ");
+				text13 = createText(" show tooltip");
+				text14 = createText("\n              ");
+				label2 = createElement("label");
+				input2 = createElement("input");
+				text15 = createText(" scroll to zoom");
+				text16 = createText("\n            ");
 				div20 = createElement("div");
 				div19 = createElement("div");
 				div11 = createElement("div");
 				h30 = createElement("h3");
 				h30.textContent = "Grid size";
-				text16 = createText("\n                  ");
-				label2 = createElement("label");
-				input2 = createElement("input");
-				text17 = createText(" 20x20");
 				text18 = createText("\n                  ");
 				label3 = createElement("label");
 				input3 = createElement("input");
-				text19 = createText(" 40x40");
+				text19 = createText(" 20x20");
 				text20 = createText("\n                  ");
 				label4 = createElement("label");
 				input4 = createElement("input");
-				text21 = createText(" 80x80");
+				text21 = createText(" 40x40");
 				text22 = createText("\n                  ");
 				label5 = createElement("label");
 				input5 = createElement("input");
-				text23 = createText(" 160x160");
+				text23 = createText(" 80x80");
 				text24 = createText("\n                  ");
 				label6 = createElement("label");
 				input6 = createElement("input");
-				text25 = createText(" 320x320");
+				text25 = createText(" 160x160");
 				text26 = createText("\n                  ");
 				label7 = createElement("label");
 				input7 = createElement("input");
-				text27 = createText(" auto");
+				text27 = createText(" 320x320");
 				text28 = createText("\n                  ");
+				label8 = createElement("label");
+				input8 = createElement("input");
+				text29 = createText(" auto");
+				text30 = createText("\n                  ");
 				div10 = createElement("div");
 				div9 = createElement("div");
-				text29 = createText("auto threshold: ");
+				text31 = createText("auto threshold: ");
 				raw0_before = createElement('noscript');
-				text30 = createText("\n                    ");
-				input8 = createElement("input");
-				text31 = createText("\n                ");
+				text32 = createText("\n                    ");
+				input9 = createElement("input");
+				text33 = createText("\n                ");
 				div12 = createElement("div");
 				h31 = createElement("h3");
-				text32 = createText("Icon density: ");
+				text34 = createText("Icon density: ");
 				raw1_before = createElement('noscript');
-				text33 = createText("\n                  ");
-				input9 = createElement("input");
-				text34 = createText("\n                ");
+				text35 = createText("\n                  ");
+				input10 = createElement("input");
+				text36 = createText("\n                ");
 				div14 = createElement("div");
 				h32 = createElement("h3");
 				h32.textContent = "Class filter";
-				text36 = createText("\n                  ");
-				label8 = createElement("label");
-				input10 = createElement("input");
-				text37 = createText(" positive influence");
 				text38 = createText("\n                  ");
 				label9 = createElement("label");
 				input11 = createElement("input");
-				text39 = createText(" negative influence");
+				text39 = createText(" positive influence");
 				text40 = createText("\n                  ");
-				div13 = createElement("div");
-				text41 = createText("Intensity: ");
-				raw2_before = createElement('noscript');
-				text42 = createText("\n                  ");
+				label10 = createElement("label");
 				input12 = createElement("input");
-				text43 = createText("\n                ");
+				text41 = createText(" negative influence");
+				text42 = createText("\n                  ");
+				div13 = createElement("div");
+				text43 = createText("Intensity: ");
+				raw2_before = createElement('noscript');
+				text44 = createText("\n                  ");
+				input13 = createElement("input");
+				text45 = createText("\n                ");
 				div18 = createElement("div");
 				h33 = createElement("h3");
 				h33.textContent = "Location";
-				text45 = createText("\n                  ");
+				text47 = createText("\n                  ");
 				div15 = createElement("div");
-				text46 = createText("x: ");
-				text47 = createText(text47_value);
-				text48 = createText("\n                  ");
+				text48 = createText("x: ");
+				text49 = createText(text49_value);
+				text50 = createText("\n                  ");
 				div16 = createElement("div");
-				text49 = createText("y: ");
-				text50 = createText(text50_value);
-				text51 = createText("\n                  ");
+				text51 = createText("y: ");
+				text52 = createText(text52_value);
+				text53 = createText("\n                  ");
 				div17 = createElement("div");
-				text52 = createText("scale: ");
-				text53 = createText(text53_value);
-				text54 = createText("\n          ");
+				text54 = createText("scale: ");
+				text55 = createText(text55_value);
+				text56 = createText("\n          ");
 				div22 = createElement("div");
 				button3 = createElement("button");
-				text55 = createText(text55_value);
+				text57 = createText(text57_value);
 				responsiveresizer._fragment.c();
 				setAttribute(h20, "slot", "head");
 				addLoc(h20, file$n, 4, 8, 192);
@@ -12081,150 +12099,155 @@
 				setStyle(div4, "width", "100px");
 				setStyle(div4, "height", "100px");
 				setStyle(div4, "position", "absolute");
-				addLoc(div4, file$n, 51, 14, 1441);
+				addLoc(div4, file$n, 52, 14, 1468);
 				div5.className = "map svelte-1mmgffy";
-				addLoc(div5, file$n, 50, 12, 1409);
+				addLoc(div5, file$n, 51, 12, 1436);
 				div6.className = "buttons svelte-1mmgffy";
-				addLoc(div6, file$n, 63, 12, 1916);
+				addLoc(div6, file$n, 64, 12, 1943);
 				div7.className = "nav svelte-1mmgffy";
-				addLoc(div7, file$n, 49, 10, 1379);
+				addLoc(div7, file$n, 50, 10, 1406);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$n, 71, 21, 2378);
+				addLoc(input0, file$n, 72, 91, 2475);
+				setStyle(label0, "white-space", "nowrap");
+				setStyle(label0, "text-overflow", "ellipsis");
+				setStyle(label0, "overflow", "hidden");
 				label0.className = "svelte-1mmgffy";
-				addLoc(label0, file$n, 71, 14, 2371);
+				addLoc(label0, file$n, 72, 14, 2398);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "checkbox");
-				addLoc(input1, file$n, 72, 91, 2537);
-				setStyle(label1, "white-space", "nowrap");
-				setStyle(label1, "text-overflow", "ellipsis");
-				setStyle(label1, "overflow", "hidden");
+				addLoc(input1, file$n, 73, 21, 2569);
 				label1.className = "svelte-1mmgffy";
-				addLoc(label1, file$n, 72, 14, 2460);
-				div8.className = "essential";
-				addLoc(div8, file$n, 70, 12, 2333);
-				h30.className = "svelte-1mmgffy";
-				addLoc(h30, file$n, 78, 18, 2784);
-				component._bindingGroups[0].push(input2);
+				addLoc(label1, file$n, 73, 14, 2562);
 				addListener(input2, "change", input2_change_handler);
-				setAttribute(input2, "type", "radio");
-				input2.__value = 0;
-				input2.value = input2.__value;
-				addLoc(input2, file$n, 79, 25, 2828);
+				setAttribute(input2, "type", "checkbox");
+				addLoc(input2, file$n, 74, 21, 2660);
 				label2.className = "svelte-1mmgffy";
-				addLoc(label2, file$n, 79, 18, 2821);
+				addLoc(label2, file$n, 74, 14, 2653);
+				div8.className = "essential";
+				addLoc(div8, file$n, 71, 12, 2360);
+				h30.className = "svelte-1mmgffy";
+				addLoc(h30, file$n, 80, 18, 2902);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
-				input3.__value = 1;
+				input3.__value = 0;
 				input3.value = input3.__value;
-				addLoc(input3, file$n, 80, 25, 2916);
+				addLoc(input3, file$n, 81, 25, 2946);
 				label3.className = "svelte-1mmgffy";
-				addLoc(label3, file$n, 80, 18, 2909);
+				addLoc(label3, file$n, 81, 18, 2939);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
-				input4.__value = 2;
+				input4.__value = 1;
 				input4.value = input4.__value;
-				addLoc(input4, file$n, 81, 25, 3004);
+				addLoc(input4, file$n, 82, 25, 3034);
 				label4.className = "svelte-1mmgffy";
-				addLoc(label4, file$n, 81, 18, 2997);
+				addLoc(label4, file$n, 82, 18, 3027);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
-				input5.__value = 3;
+				input5.__value = 2;
 				input5.value = input5.__value;
-				addLoc(input5, file$n, 82, 25, 3092);
+				addLoc(input5, file$n, 83, 25, 3122);
 				label5.className = "svelte-1mmgffy";
-				addLoc(label5, file$n, 82, 18, 3085);
+				addLoc(label5, file$n, 83, 18, 3115);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
 				setAttribute(input6, "type", "radio");
-				input6.__value = 4;
+				input6.__value = 3;
 				input6.value = input6.__value;
-				addLoc(input6, file$n, 83, 25, 3182);
+				addLoc(input6, file$n, 84, 25, 3210);
 				label6.className = "svelte-1mmgffy";
-				addLoc(label6, file$n, 83, 18, 3175);
+				addLoc(label6, file$n, 84, 18, 3203);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
 				setAttribute(input7, "type", "radio");
-				input7.__value = -1;
+				input7.__value = 4;
 				input7.value = input7.__value;
-				addLoc(input7, file$n, 84, 25, 3272);
+				addLoc(input7, file$n, 85, 25, 3300);
 				label7.className = "svelte-1mmgffy";
-				addLoc(label7, file$n, 84, 18, 3265);
-				addLoc(div9, file$n, 86, 20, 3431);
-				addListener(input8, "change", input8_change_input_handler);
-				addListener(input8, "input", input8_change_input_handler);
-				setAttribute(input8, "type", "range");
-				input8.min = 0.5;
-				input8.max = 1.4;
-				input8.step = 0.01;
-				addLoc(input8, file$n, 87, 20, 3509);
-				setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
-				addLoc(div10, file$n, 85, 18, 3353);
-				div11.className = "section svelte-1mmgffy";
-				addLoc(div11, file$n, 77, 16, 2744);
-				h31.className = "svelte-1mmgffy";
-				addLoc(h31, file$n, 91, 18, 3703);
+				addLoc(label7, file$n, 85, 18, 3293);
+				component._bindingGroups[0].push(input8);
+				addListener(input8, "change", input8_change_handler);
+				setAttribute(input8, "type", "radio");
+				input8.__value = -1;
+				input8.value = input8.__value;
+				addLoc(input8, file$n, 86, 25, 3390);
+				label8.className = "svelte-1mmgffy";
+				addLoc(label8, file$n, 86, 18, 3383);
+				addLoc(div9, file$n, 88, 20, 3549);
 				addListener(input9, "change", input9_change_input_handler);
 				addListener(input9, "input", input9_change_input_handler);
 				setAttribute(input9, "type", "range");
-				input9.min = 0.2;
-				input9.max = 8;
+				input9.min = 0.5;
+				input9.max = 1.4;
 				input9.step = 0.01;
-				addLoc(input9, file$n, 92, 18, 3760);
+				addLoc(input9, file$n, 89, 20, 3627);
+				setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
+				addLoc(div10, file$n, 87, 18, 3471);
+				div11.className = "section svelte-1mmgffy";
+				addLoc(div11, file$n, 79, 16, 2862);
+				h31.className = "svelte-1mmgffy";
+				addLoc(h31, file$n, 93, 18, 3821);
+				addListener(input10, "change", input10_change_input_handler);
+				addListener(input10, "input", input10_change_input_handler);
+				setAttribute(input10, "type", "range");
+				input10.min = 0.2;
+				input10.max = 8;
+				input10.step = 0.01;
+				addLoc(input10, file$n, 94, 18, 3878);
 				div12.className = "section svelte-1mmgffy";
-				addLoc(div12, file$n, 90, 16, 3662);
+				addLoc(div12, file$n, 92, 16, 3780);
 				h32.className = "svelte-1mmgffy";
-				addLoc(h32, file$n, 98, 18, 4139);
-				component._bindingGroups[1].push(input10);
-				addListener(input10, "change", input10_change_handler);
-				setAttribute(input10, "type", "radio");
-				input10.__value = 1;
-				input10.value = input10.__value;
-				addLoc(input10, file$n, 99, 25, 4186);
-				label8.className = "svelte-1mmgffy";
-				addLoc(label8, file$n, 99, 18, 4179);
+				addLoc(h32, file$n, 100, 18, 4257);
 				component._bindingGroups[1].push(input11);
 				addListener(input11, "change", input11_change_handler);
 				setAttribute(input11, "type", "radio");
-				input11.__value = -1;
+				input11.__value = 1;
 				input11.value = input11.__value;
-				addLoc(input11, file$n, 100, 25, 4299);
+				addLoc(input11, file$n, 101, 25, 4304);
 				label9.className = "svelte-1mmgffy";
-				addLoc(label9, file$n, 100, 18, 4292);
-				addLoc(div13, file$n, 101, 18, 4406);
-				addListener(input12, "change", input12_change_input_handler);
-				addListener(input12, "input", input12_change_input_handler);
-				setAttribute(input12, "type", "range");
-				input12.min = "0.5";
-				input12.max = "2";
-				input12.step = "0.1";
-				addLoc(input12, file$n, 102, 18, 4477);
+				addLoc(label9, file$n, 101, 18, 4297);
+				component._bindingGroups[1].push(input12);
+				addListener(input12, "change", input12_change_handler);
+				setAttribute(input12, "type", "radio");
+				input12.__value = -1;
+				input12.value = input12.__value;
+				addLoc(input12, file$n, 102, 25, 4417);
+				label10.className = "svelte-1mmgffy";
+				addLoc(label10, file$n, 102, 18, 4410);
+				addLoc(div13, file$n, 103, 18, 4524);
+				addListener(input13, "change", input13_change_input_handler);
+				addListener(input13, "input", input13_change_input_handler);
+				setAttribute(input13, "type", "range");
+				input13.min = "0.5";
+				input13.max = "2";
+				input13.step = "0.1";
+				addLoc(input13, file$n, 104, 18, 4595);
 				div14.className = "section svelte-1mmgffy";
 				setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div14, file$n, 97, 16, 4042);
+				addLoc(div14, file$n, 99, 16, 4160);
 				h33.className = "svelte-1mmgffy";
-				addLoc(h33, file$n, 105, 18, 4634);
-				addLoc(div15, file$n, 106, 18, 4670);
-				addLoc(div16, file$n, 107, 18, 4716);
-				addLoc(div17, file$n, 108, 18, 4762);
+				addLoc(h33, file$n, 107, 18, 4752);
+				addLoc(div15, file$n, 108, 18, 4788);
+				addLoc(div16, file$n, 109, 18, 4834);
+				addLoc(div17, file$n, 110, 18, 4880);
 				div18.className = "section svelte-1mmgffy";
-				addLoc(div18, file$n, 104, 16, 4594);
+				addLoc(div18, file$n, 106, 16, 4712);
 				div19.className = "grid-size";
-				addLoc(div19, file$n, 75, 14, 2687);
+				addLoc(div19, file$n, 77, 14, 2805);
 				div20.className = "expand svelte-1mmgffy";
-				addLoc(div20, file$n, 74, 12, 2641);
+				addLoc(div20, file$n, 76, 12, 2759);
 				div21.className = "options svelte-1mmgffy";
-				addLoc(div21, file$n, 69, 10, 2299);
+				addLoc(div21, file$n, 70, 10, 2326);
 				addListener(button3, "click", click_handler);
 				button3.className = "svelte-1mmgffy";
-				addLoc(button3, file$n, 114, 12, 4926);
+				addLoc(button3, file$n, 116, 12, 5044);
 				div22.className = "expand-toggle svelte-1mmgffy";
-				addLoc(div22, file$n, 113, 10, 4886);
+				addLoc(div22, file$n, 115, 10, 5004);
 				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls";
-				addLoc(div23, file$n, 48, 8, 1299);
+				addLoc(div23, file$n, 49, 8, 1326);
 				div24.className = "atlas svelte-1mmgffy";
 				addLoc(div24, file$n, 24, 4, 677);
 				div25.className = "main svelte-1mmgffy";
@@ -12274,28 +12297,28 @@
 				append(div8, label0);
 				append(label0, input0);
 
-				input0.checked = ctx.$scroll;
+				input0.checked = ctx.showLabels;
 
 				append(label0, text11);
 				append(div8, text12);
 				append(div8, label1);
 				append(label1, input1);
 
-				input1.checked = ctx.showLabels;
+				input1.checked = ctx.enableHover;
 
 				append(label1, text13);
-				append(div21, text14);
+				append(div8, text14);
+				append(div8, label2);
+				append(label2, input2);
+
+				input2.checked = ctx.$scroll;
+
+				append(label2, text15);
+				append(div21, text16);
 				append(div21, div20);
 				append(div20, div19);
 				append(div19, div11);
 				append(div11, h30);
-				append(div11, text16);
-				append(div11, label2);
-				append(label2, input2);
-
-				input2.checked = input2.__value === ctx.gridSize;
-
-				append(label2, text17);
 				append(div11, text18);
 				append(div11, label3);
 				append(label3, input3);
@@ -12332,37 +12355,37 @@
 
 				append(label7, text27);
 				append(div11, text28);
+				append(div11, label8);
+				append(label8, input8);
+
+				input8.checked = input8.__value === ctx.gridSize;
+
+				append(label8, text29);
+				append(div11, text30);
 				append(div11, div10);
 				append(div10, div9);
-				append(div9, text29);
+				append(div9, text31);
 				append(div9, raw0_before);
 				raw0_before.insertAdjacentHTML("afterend", ctx.autoGridSizeMultiplier);
-				append(div10, text30);
-				append(div10, input8);
+				append(div10, text32);
+				append(div10, input9);
 
-				input8.value = ctx.autoGridSizeMultiplier;
+				input9.value = ctx.autoGridSizeMultiplier;
 
-				append(div19, text31);
+				append(div19, text33);
 				append(div19, div12);
 				append(div12, h31);
-				append(h31, text32);
+				append(h31, text34);
 				append(h31, raw1_before);
 				raw1_before.insertAdjacentHTML("afterend", ctx.density);
-				append(div12, text33);
-				append(div12, input9);
+				append(div12, text35);
+				append(div12, input10);
 
-				input9.value = ctx.density;
+				input10.value = ctx.density;
 
-				append(div19, text34);
+				append(div19, text36);
 				append(div19, div14);
 				append(div14, h32);
-				append(div14, text36);
-				append(div14, label8);
-				append(label8, input10);
-
-				input10.checked = input10.__value === ctx.classHeatmapPositive;
-
-				append(label8, text37);
 				append(div14, text38);
 				append(div14, label9);
 				append(label9, input11);
@@ -12371,35 +12394,42 @@
 
 				append(label9, text39);
 				append(div14, text40);
+				append(div14, label10);
+				append(label10, input12);
+
+				input12.checked = input12.__value === ctx.classHeatmapPositive;
+
+				append(label10, text41);
+				append(div14, text42);
 				append(div14, div13);
-				append(div13, text41);
+				append(div13, text43);
 				append(div13, raw2_before);
 				raw2_before.insertAdjacentHTML("afterend", ctx.classHeatmapMultiplier);
-				append(div14, text42);
-				append(div14, input12);
+				append(div14, text44);
+				append(div14, input13);
 
-				input12.value = ctx.classHeatmapMultiplier;
+				input13.value = ctx.classHeatmapMultiplier;
 
-				append(div19, text43);
+				append(div19, text45);
 				append(div19, div18);
 				append(div18, h33);
-				append(div18, text45);
+				append(div18, text47);
 				append(div18, div15);
-				append(div15, text46);
-				append(div15, text47);
-				append(div18, text48);
+				append(div15, text48);
+				append(div15, text49);
+				append(div18, text50);
 				append(div18, div16);
-				append(div16, text49);
-				append(div16, text50);
-				append(div18, text51);
+				append(div16, text51);
+				append(div16, text52);
+				append(div18, text53);
 				append(div18, div17);
-				append(div17, text52);
-				append(div17, text53);
+				append(div17, text54);
+				append(div17, text55);
 				component.refs.expand = div20;
-				append(div23, text54);
+				append(div23, text56);
 				append(div23, div22);
 				append(div22, button3);
-				append(button3, text55);
+				append(button3, text57);
 				component.refs.controls = div23;
 				responsiveresizer._mount(target, anchor);
 			},
@@ -12483,6 +12513,12 @@
 					atlas_updating.showLabels = ctx.showLabels
 	           !== void 0;
 				}
+				if (!atlas_updating.enableHover && changed.enableHover) {
+					atlas_changes.enableHover = ctx.enableHover
+	          ;
+					atlas_updating.enableHover = ctx.enableHover
+	           !== void 0;
+				}
 				if (!atlas_updating.scale && changed.scale) {
 					atlas_changes.scale = ctx.scale
 	          ;
@@ -12528,20 +12564,21 @@
 				appminimap._set(appminimap_changes);
 				appminimap_updating = {};
 
-				if (changed.$scroll) input0.checked = ctx.$scroll;
-				if (changed.showLabels) input1.checked = ctx.showLabels;
-				if (changed.gridSize) input2.checked = input2.__value === ctx.gridSize;
+				if (changed.showLabels) input0.checked = ctx.showLabels;
+				if (changed.enableHover) input1.checked = ctx.enableHover;
+				if (changed.$scroll) input2.checked = ctx.$scroll;
 				if (changed.gridSize) input3.checked = input3.__value === ctx.gridSize;
 				if (changed.gridSize) input4.checked = input4.__value === ctx.gridSize;
 				if (changed.gridSize) input5.checked = input5.__value === ctx.gridSize;
 				if (changed.gridSize) input6.checked = input6.__value === ctx.gridSize;
 				if (changed.gridSize) input7.checked = input7.__value === ctx.gridSize;
+				if (changed.gridSize) input8.checked = input8.__value === ctx.gridSize;
 				if (changed.autoGridSizeMultiplier) {
 					detachAfter(raw0_before);
 					raw0_before.insertAdjacentHTML("afterend", ctx.autoGridSizeMultiplier);
 				}
 
-				if (changed.autoGridSizeMultiplier) input8.value = ctx.autoGridSizeMultiplier;
+				if (changed.autoGridSizeMultiplier) input9.value = ctx.autoGridSizeMultiplier;
 				if (changed.gridSize) {
 					setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
 				}
@@ -12551,33 +12588,33 @@
 					raw1_before.insertAdjacentHTML("afterend", ctx.density);
 				}
 
-				if (changed.density) input9.value = ctx.density;
-				if (changed.classHeatmapPositive) input10.checked = input10.__value === ctx.classHeatmapPositive;
+				if (changed.density) input10.value = ctx.density;
 				if (changed.classHeatmapPositive) input11.checked = input11.__value === ctx.classHeatmapPositive;
+				if (changed.classHeatmapPositive) input12.checked = input12.__value === ctx.classHeatmapPositive;
 				if (changed.classHeatmapMultiplier) {
 					detachAfter(raw2_before);
 					raw2_before.insertAdjacentHTML("afterend", ctx.classHeatmapMultiplier);
 				}
 
-				if (changed.classHeatmapMultiplier) input12.value = ctx.classHeatmapMultiplier;
+				if (changed.classHeatmapMultiplier) input13.value = ctx.classHeatmapMultiplier;
 				if (changed.classHeatmap) {
 					setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				}
 
-				if ((changed.gcx) && text47_value !== (text47_value = format_1$1(ctx.gcx))) {
-					setData(text47, text47_value);
+				if ((changed.gcx) && text49_value !== (text49_value = format_1$1(ctx.gcx))) {
+					setData(text49, text49_value);
 				}
 
-				if ((changed.gcy) && text50_value !== (text50_value = format_1$1(ctx.gcy))) {
-					setData(text50, text50_value);
+				if ((changed.gcy) && text52_value !== (text52_value = format_1$1(ctx.gcy))) {
+					setData(text52, text52_value);
 				}
 
-				if ((changed.scale) && text53_value !== (text53_value = format_1$1(ctx.scale))) {
-					setData(text53, text53_value);
-				}
-
-				if ((changed.showOptions) && text55_value !== (text55_value = ctx.showOptions ? 'fewer options' : 'more options')) {
+				if ((changed.scale) && text55_value !== (text55_value = format_1$1(ctx.scale))) {
 					setData(text55, text55_value);
+				}
+
+				if ((changed.showOptions) && text57_value !== (text57_value = ctx.showOptions ? 'fewer options' : 'more options')) {
+					setData(text57, text57_value);
 				}
 
 				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls")) {
@@ -12606,7 +12643,6 @@
 				button2.destroy();
 				removeListener(input0, "change", input0_change_handler);
 				removeListener(input1, "change", input1_change_handler);
-				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input2), 1);
 				removeListener(input2, "change", input2_change_handler);
 				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input3), 1);
 				removeListener(input3, "change", input3_change_handler);
@@ -12618,16 +12654,18 @@
 				removeListener(input6, "change", input6_change_handler);
 				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input7), 1);
 				removeListener(input7, "change", input7_change_handler);
-				removeListener(input8, "change", input8_change_input_handler);
-				removeListener(input8, "input", input8_change_input_handler);
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input8), 1);
+				removeListener(input8, "change", input8_change_handler);
 				removeListener(input9, "change", input9_change_input_handler);
 				removeListener(input9, "input", input9_change_input_handler);
-				component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input10), 1);
-				removeListener(input10, "change", input10_change_handler);
+				removeListener(input10, "change", input10_change_input_handler);
+				removeListener(input10, "input", input10_change_input_handler);
 				component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input11), 1);
 				removeListener(input11, "change", input11_change_handler);
-				removeListener(input12, "change", input12_change_input_handler);
-				removeListener(input12, "input", input12_change_input_handler);
+				component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input12), 1);
+				removeListener(input12, "change", input12_change_handler);
+				removeListener(input13, "change", input13_change_input_handler);
+				removeListener(input13, "input", input13_change_input_handler);
 				if (component.refs.expand === div20) component.refs.expand = null;
 				removeListener(button3, "click", click_handler);
 				if (component.refs.controls === div23) component.refs.controls = null;
@@ -12666,6 +12704,7 @@
 		if (!('classHeatmapPositive' in this._state)) console.warn("<App> was created without expected data property 'classHeatmapPositive'");
 		if (!('autoGridSizeMultiplier' in this._state)) console.warn("<App> was created without expected data property 'autoGridSizeMultiplier'");
 		if (!('showLabels' in this._state)) console.warn("<App> was created without expected data property 'showLabels'");
+		if (!('enableHover' in this._state)) console.warn("<App> was created without expected data property 'enableHover'");
 		if (!('scale' in this._state)) console.warn("<App> was created without expected data property 'scale'");
 		if (!('gcx' in this._state)) console.warn("<App> was created without expected data property 'gcx'");
 		if (!('gcy' in this._state)) console.warn("<App> was created without expected data property 'gcy'");
