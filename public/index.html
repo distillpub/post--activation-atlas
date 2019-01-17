@@ -137,6 +137,13 @@
 
   <figure id="overview" style="grid-column: page;"></figure>
 
+  <p>
+    These atlases not only reveal nuanced visual abstractions within a model, but we will also show later in the article that they can reveal high-level misunderstandings in a model that can be exploited by an adversary. For example, by looking at an activation atlas later in this article we will be able to see why a picture of a baseball can switch the classification of an image from "grey whale" to "great white shark".
+  </p>
+
+  <figure id="adversarial-teaser">
+  </figure>
+
   <p>Of course, this approach does have limitations. In particular, it’s dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, it will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations -- we’ll discuss them in much more depth later! -- Activation Atlases still give us an unprecedented overview of what neural networks can represent.
 
 </section>
