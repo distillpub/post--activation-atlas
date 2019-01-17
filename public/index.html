@@ -109,7 +109,7 @@
     <a href="#" data-cover-poi=".261,.437,12">plants</a>, and
     <a href="#" data-cover-poi=".238,.835,12">watery backgrounds</a>.
     Grid cells are labeled with the classification they most support.
-    <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote> 
+    <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote> Grid cells are also sized according to the density of the number of activations that are averaged within.
     <br><a href="app.html">View full-screen version</a>
     <div style="margin-top: 8px; text-align: right;">
       <span data-notebook-url=’’></span>
@@ -192,7 +192,7 @@
     <div style="display: grid; grid-column-gap: 20px; grid-template-columns: 1fr 1fr 1fr;">
       <div class="figcaption">A randomized set of one million images is fed through the network, collecting one random spatial activation per image.</div>
       <div class="figcaption">The activations are fed through UMAP to reduce them to two dimensions. They are then plotted, with similar activations placed near each other.</div>
-      <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation.</div>
+      <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation. We also optionally size the grid cells according to the density of the number of activations that are averaged within.</div>
     </div>
     <div style="text-align: right; margin-top: 8px;">
       <span data-notebook-url=""></span>
