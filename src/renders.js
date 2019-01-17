@@ -32,7 +32,7 @@ let app = document.querySelector("#app")
 // Atlas Thumbnails
 // 
 
-let layers = ["mixed3b", "mixed4a", "mixed4b", "mixed4c", "mixed4d", "mixed4e", "mixed5a", "mixed5b"]
+let layers = ["mixed3a", "mixed3b", "mixed4a", "mixed4b", "mixed4c", "mixed4d", "mixed4e", "mixed5a", "mixed5b"]
 layers.forEach(layer => {
 
   let h = document.createElement("h2");
