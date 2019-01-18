@@ -109,7 +109,7 @@
     <a href="#" data-cover-poi=".261,.437,12">plants</a>, and
     <a href="#" data-cover-poi=".238,.835,12">watery backgrounds</a>.
     Grid cells are labeled with the classification they most support.
-    <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote>
+    <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote> Grid cells are also sized according to the density of the number of activations that are averaged within.
     <br><a href="app.html">View full-screen version</a>
     <div style="margin-top: 8px; text-align: right;">
       <span data-notebook-url=’’></span>
@@ -136,6 +136,13 @@
   <p>In theory, showing the feature visualizations of the <a href="https://distill.pub/2017/feature-visualization/appendix/">basis neurons</a> would give us the global view of a network that we are seeking. In practice, however, neurons are rarely used by the network in isolation, and it may be difficult to understand them that way. As an analogy, while the 26 letters in the alphabet provide a basis for English, seeing how letters are commonly combined to make words gives far more insight into the concepts that can be expressed than the letters alone. Similarly, activation atlases give us a bigger picture view by showing common combinations of neurons.
 
   <figure id="overview" style="grid-column: page;"></figure>
+
+  <p>
+    These atlases not only reveal nuanced visual abstractions within a model, but we will also show later in the article that they can reveal high-level misunderstandings in a model that can be exploited by an adversary. For example, by looking at an activation atlas later in this article we will be able to see why a picture of a baseball can switch the classification of an image from "grey whale" to "great white shark".
+  </p>
+
+  <figure id="adversarial-teaser">
+  </figure>
 
   <p>Of course, this approach does have limitations. In particular, it’s dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, it will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations -- we’ll discuss them in much more depth later! -- Activation Atlases still give us an unprecedented overview of what neural networks can represent.
 
@@ -201,7 +208,7 @@
     <div style="display: grid; grid-column-gap: 20px; grid-template-columns: 1fr 1fr 1fr;">
       <div class="figcaption">A randomized set of one million images is fed through the network, collecting one random spatial activation per image.</div>
       <div class="figcaption">The activations are fed through UMAP to reduce them to two dimensions. They are then plotted, with similar activations placed near each other.</div>
-      <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation.</div>
+      <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation. We also optionally size the grid cells according to the density of the number of activations that are averaged within.</div>
     </div>
     <div style="text-align: right; margin-top: 8px;">
       <span data-notebook-url=""></span>

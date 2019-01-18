@@ -699,6 +699,42 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			}
 	});
 
+
+	new Adversarial({
+		target: document.querySelector("#adversarial-teaser"),
+		store: store,
+		data: {
+			left: "great white shark",
+			right: "grey whale",
+			aspectRatio: 996 / 656,
+			classifications: [
+				{
+					image: "assets/images/whale-03.jpg",
+					caption: "",
+					rows: [
+						["grey whale", 78.39],
+						["killer whale", 20.97],
+						["great white shark", 0.34],
+						["gar", 0.13],
+						["sea lion", 0.09],
+					]
+				},
+				{
+					image: "assets/images/whale-06.jpg",
+					caption: "",
+					rows: [
+						["great white shark", 34.35],
+						["rugby ball", 23.55],
+						["grey whale", 12.91],
+						["baseball", 10.89],
+						["killer whale", 7.70],
+					]
+				}
+			]
+		}
+	});
+
+
 	new Adversarial({
 		target: document.querySelector("#shark-grey-whale"),
 		store: store,

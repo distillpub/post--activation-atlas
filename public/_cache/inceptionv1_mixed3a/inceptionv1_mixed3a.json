@@ -7,18 +7,19 @@
   "layer": "mixed3a",
   "sample_type": "random",
   "sample_images": 1000000,
-  "filter": 200000,
-  "tries": 2,
+  "filter": 400000,
+  "tries": 4,
   "tile_size": 10,
   "grid_size": [
     20,
     40,
-    80
+    80,
+    160
   ],
   "whiten": "false",
   "steps": 1024,
   "icon_size": 80,
-  "layout": "100_0.05_euclidean",
+  "layout": "200_0.05_euclidean",
   "class_filter": null,
   "batch_size": 100,
   "x": null,

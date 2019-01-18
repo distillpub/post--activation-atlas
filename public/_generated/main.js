@@ -5057,18 +5057,19 @@
 	var layer = "mixed3a";
 	var sample_type = "random";
 	var sample_images = 1000000;
-	var filter = 200000;
-	var tries = 2;
+	var filter = 400000;
+	var tries = 4;
 	var tile_size = 10;
 	var grid_size = [
 		20,
 		40,
-		80
+		80,
+		160
 	];
 	var whiten = "false";
 	var steps = 1024;
 	var icon_size = 80;
-	var layout = "100_0.05_euclidean";
+	var layout = "200_0.05_euclidean";
 	var class_filter = null;
 	var batch_size = 100;
 	var x = null;
@@ -5098,16 +5099,16 @@
 		alpha: alpha
 	};
 
-	var vm$1 = "shan-gpu-07-vm";
+	var vm$1 = "shan-gpu-06-vm";
 	var id$1 = "inceptionv1_mixed3b";
 	var build_dir$1 = "build";
-	var cloud_dir$1 = "gs://shancarter/activation-atlas/build";
-	var model$1 = "InceptionV1";
+	var cloud_dir$1 = "gs://activation-atlas-public";
+	var model$1 = "inceptionv1";
 	var layer$1 = "mixed3b";
 	var sample_type$1 = "random";
 	var sample_images$1 = 1000000;
-	var filter$1 = 500000;
-	var tries$1 = 2;
+	var filter$1 = 400000;
+	var tries$1 = 4;
 	var tile_size$1 = 10;
 	var grid_size$1 = [
 		20,
@@ -5118,7 +5119,7 @@
 	var whiten$1 = "false";
 	var steps$1 = 1024;
 	var icon_size$1 = 80;
-	var layout$1 = "1000_0.05_euclidean";
+	var layout$1 = "200_0.05_euclidean";
 	var class_filter$1 = null;
 	var batch_size$1 = 100;
 	var x$1 = null;
@@ -5741,7 +5742,7 @@
 	function data$c() { return {
 	  layerName: "mixed4c",
 	  layers: [
-	    // "mixed3a",
+	    "mixed3a",
 	    "mixed3b",
 	    "mixed4a",
 	    "mixed4b",
@@ -12806,7 +12807,7 @@
 	const file$o = "src/diagrams/Overview.html";
 
 	function create_main_fragment$p(component, ctx) {
-		var div16, div3, h40, text1, div0, text2, div1, text3, div2, text5, div7, h41, text7, div4, text8, div5, text9, div6, text11, div11, h42, text13, div8, text14, div9, text15, div10, text17, div15, h43, text19, div12, text20, div13, text21, div14;
+		var div16, div3, h40, text1, div0, text2, div1, text3, div2, a0, text5, text6, div7, h41, text8, div4, text9, div5, text10, div6, a1, text12, text13, div11, h42, text15, div8, text16, div9, text17, div10, a2, text19, text20, div15, h43, text22, div12, text23, div13, text24, div14;
 
 		var lazyimage0_initial_data = {
 		 	src: "assets/images/overview-neuron.jpg",
@@ -12906,44 +12907,50 @@
 				lazyimage1._fragment.c();
 				text3 = createText("\n    ");
 				div2 = createElement("div");
-				div2.textContent = "Visualizing individual neurons make hidden layers somewhat meaningful, but misses interactions between neurons — it only shows us one-dimensional, orthogonal probes of the high-dimensional activation space.";
-				text5 = createText("\n  ");
+				a0 = createElement("a");
+				a0.textContent = "Visualizing individual neurons";
+				text5 = createText(" make hidden layers somewhat meaningful, but misses interactions between neurons — it only shows us one-dimensional, orthogonal probes of the high-dimensional activation space.");
+				text6 = createText("\n  ");
 				div7 = createElement("div");
 				h41 = createElement("h4");
 				h41.textContent = "Pairwise Interactions";
-				text7 = createText("\n    ");
+				text8 = createText("\n    ");
 				div4 = createElement("div");
 				lazyimage2._fragment.c();
-				text8 = createText("\n    ");
+				text9 = createText("\n    ");
 				div5 = createElement("div");
 				lazyimage3._fragment.c();
-				text9 = createText("\n    ");
+				text10 = createText("\n    ");
 				div6 = createElement("div");
-				div6.textContent = "Pairwise interactions reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions, and many of the combinations are not realistic.";
-				text11 = createText("\n  ");
+				a1 = createElement("a");
+				a1.textContent = "Pairwise interactions";
+				text12 = createText(" reveal interaction effects, but they only show two-dimensional slices of a space that has hundreds of dimensions, and many of the combinations are not realistic.");
+				text13 = createText("\n  ");
 				div11 = createElement("div");
 				h42 = createElement("h4");
 				h42.textContent = "Spatial Activations";
-				text13 = createText("\n    ");
+				text15 = createText("\n    ");
 				div8 = createElement("div");
 				lazyimage4._fragment.c();
-				text14 = createText("\n    ");
+				text16 = createText("\n    ");
 				div9 = createElement("div");
 				lazyimage5._fragment.c();
-				text15 = createText("\n    ");
+				text17 = createText("\n    ");
 				div10 = createElement("div");
-				div10.textContent = "Spatial activations show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given example image.";
-				text17 = createText("\n  ");
+				a2 = createElement("a");
+				a2.textContent = "Spatial activations";
+				text19 = createText(" show us important combinations of many neurons by sampling the sub-manifold of likely activations, but they are limited to those that occur in the given example image.");
+				text20 = createText("\n  ");
 				div15 = createElement("div");
 				h43 = createElement("h4");
 				h43.textContent = "Activation Atlas";
-				text19 = createText("\n    ");
+				text22 = createText("\n    ");
 				div12 = createElement("div");
 				lazyimage6._fragment.c();
-				text20 = createText("\n    ");
+				text23 = createText("\n    ");
 				div13 = createElement("div");
 				lazyimage7._fragment.c();
-				text21 = createText("\n    ");
+				text24 = createText("\n    ");
 				div14 = createElement("div");
 				div14.textContent = "Activation atlases give us a bigger picture overview by sampling more of the manifold of likely activations.";
 				h40.className = "svelte-vcfnc8";
@@ -12952,40 +12959,46 @@
 				addLoc(div0, file$o, 3, 4, 75);
 				div1.className = "diagram svelte-vcfnc8";
 				addLoc(div1, file$o, 9, 4, 207);
+				a0.href = "https://distill.pub/2017/feature-visualization/#optimization";
+				addLoc(a0, file$o, 12, 28, 352);
 				div2.className = "figcaption svelte-vcfnc8";
 				addLoc(div2, file$o, 12, 4, 328);
 				div3.className = "section svelte-vcfnc8";
 				addLoc(div3, file$o, 1, 2, 17);
 				h41.className = "svelte-vcfnc8";
-				addLoc(h41, file$o, 15, 4, 602);
+				addLoc(h41, file$o, 15, 4, 677);
 				div4.className = "image";
-				addLoc(div4, file$o, 16, 4, 637);
+				addLoc(div4, file$o, 16, 4, 712);
 				div5.className = "diagram svelte-vcfnc8";
-				addLoc(div5, file$o, 22, 4, 771);
+				addLoc(div5, file$o, 22, 4, 846);
+				a1.href = "https://distill.pub/2017/feature-visualization/#interaction";
+				addLoc(a1, file$o, 25, 28, 991);
 				div6.className = "figcaption svelte-vcfnc8";
-				addLoc(div6, file$o, 25, 4, 892);
+				addLoc(div6, file$o, 25, 4, 967);
 				div7.className = "section svelte-vcfnc8";
-				addLoc(div7, file$o, 14, 2, 576);
+				addLoc(div7, file$o, 14, 2, 651);
 				h42.className = "svelte-vcfnc8";
-				addLoc(h42, file$o, 28, 4, 1143);
+				addLoc(h42, file$o, 28, 4, 1292);
 				div8.className = "image";
-				addLoc(div8, file$o, 29, 4, 1176);
+				addLoc(div8, file$o, 29, 4, 1325);
 				div9.className = "diagram svelte-vcfnc8";
-				addLoc(div9, file$o, 35, 4, 1308);
+				addLoc(div9, file$o, 35, 4, 1457);
+				a2.href = "https://distill.pub/2018/building-blocks/#what-does-the-network-see";
+				addLoc(a2, file$o, 38, 28, 1602);
 				div10.className = "figcaption svelte-vcfnc8";
-				addLoc(div10, file$o, 38, 4, 1429);
+				addLoc(div10, file$o, 38, 4, 1578);
 				div11.className = "section svelte-vcfnc8";
-				addLoc(div11, file$o, 27, 2, 1117);
+				addLoc(div11, file$o, 27, 2, 1266);
 				h43.className = "svelte-vcfnc8";
-				addLoc(h43, file$o, 41, 4, 1684);
+				addLoc(h43, file$o, 41, 4, 1915);
 				div12.className = "image";
-				addLoc(div12, file$o, 42, 4, 1714);
+				addLoc(div12, file$o, 42, 4, 1945);
 				div13.className = "diagram svelte-vcfnc8";
-				addLoc(div13, file$o, 48, 4, 1845);
+				addLoc(div13, file$o, 48, 4, 2076);
 				div14.className = "figcaption svelte-vcfnc8";
-				addLoc(div14, file$o, 51, 4, 1966);
+				addLoc(div14, file$o, 51, 4, 2197);
 				div15.className = "section svelte-vcfnc8";
-				addLoc(div15, file$o, 40, 2, 1658);
+				addLoc(div15, file$o, 40, 2, 1889);
 				div16.className = "svelte-vcfnc8 svelte-ref-root";
 				addLoc(div16, file$o, 0, 0, 0);
 			},
@@ -13002,38 +13015,44 @@
 				lazyimage1._mount(div1, null);
 				append(div3, text3);
 				append(div3, div2);
-				append(div16, text5);
+				append(div2, a0);
+				append(div2, text5);
+				append(div16, text6);
 				append(div16, div7);
 				append(div7, h41);
-				append(div7, text7);
+				append(div7, text8);
 				append(div7, div4);
 				lazyimage2._mount(div4, null);
-				append(div7, text8);
+				append(div7, text9);
 				append(div7, div5);
 				lazyimage3._mount(div5, null);
-				append(div7, text9);
+				append(div7, text10);
 				append(div7, div6);
-				append(div16, text11);
+				append(div6, a1);
+				append(div6, text12);
+				append(div16, text13);
 				append(div16, div11);
 				append(div11, h42);
-				append(div11, text13);
+				append(div11, text15);
 				append(div11, div8);
 				lazyimage4._mount(div8, null);
-				append(div11, text14);
+				append(div11, text16);
 				append(div11, div9);
 				lazyimage5._mount(div9, null);
-				append(div11, text15);
+				append(div11, text17);
 				append(div11, div10);
-				append(div16, text17);
+				append(div10, a2);
+				append(div10, text19);
+				append(div16, text20);
 				append(div16, div15);
 				append(div15, h43);
-				append(div15, text19);
+				append(div15, text22);
 				append(div15, div12);
 				lazyimage6._mount(div12, null);
-				append(div15, text20);
+				append(div15, text23);
 				append(div15, div13);
 				lazyimage7._mount(div13, null);
-				append(div15, text21);
+				append(div15, text24);
 				append(div15, div14);
 				component.refs.root = div16;
 			},
@@ -21958,6 +21977,42 @@
 					]
 				}
 		});
+
+
+		new Adversarial({
+			target: document.querySelector("#adversarial-teaser"),
+			store: store,
+			data: {
+				left: "great white shark",
+				right: "grey whale",
+				aspectRatio: 996 / 656,
+				classifications: [
+					{
+						image: "assets/images/whale-03.jpg",
+						caption: "",
+						rows: [
+							["grey whale", 78.39],
+							["killer whale", 20.97],
+							["great white shark", 0.34],
+							["gar", 0.13],
+							["sea lion", 0.09],
+						]
+					},
+					{
+						image: "assets/images/whale-06.jpg",
+						caption: "",
+						rows: [
+							["great white shark", 34.35],
+							["rugby ball", 23.55],
+							["grey whale", 12.91],
+							["baseball", 10.89],
+							["killer whale", 7.70],
+						]
+					}
+				]
+			}
+		});
+
 
 		new Adversarial({
 			target: document.querySelector("#shark-grey-whale"),

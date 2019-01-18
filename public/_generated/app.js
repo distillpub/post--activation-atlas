@@ -4102,18 +4102,19 @@
 	var layer = "mixed3a";
 	var sample_type = "random";
 	var sample_images = 1000000;
-	var filter = 200000;
-	var tries = 2;
+	var filter = 400000;
+	var tries = 4;
 	var tile_size = 10;
 	var grid_size = [
 		20,
 		40,
-		80
+		80,
+		160
 	];
 	var whiten = "false";
 	var steps = 1024;
 	var icon_size = 80;
-	var layout = "100_0.05_euclidean";
+	var layout = "200_0.05_euclidean";
 	var class_filter = null;
 	var batch_size = 100;
 	var x = null;
@@ -4143,16 +4144,16 @@
 		alpha: alpha
 	};
 
-	var vm$1 = "shan-gpu-07-vm";
+	var vm$1 = "shan-gpu-06-vm";
 	var id$1 = "inceptionv1_mixed3b";
 	var build_dir$1 = "build";
-	var cloud_dir$1 = "gs://shancarter/activation-atlas/build";
-	var model$1 = "InceptionV1";
+	var cloud_dir$1 = "gs://activation-atlas-public";
+	var model$1 = "inceptionv1";
 	var layer$1 = "mixed3b";
 	var sample_type$1 = "random";
 	var sample_images$1 = 1000000;
-	var filter$1 = 500000;
-	var tries$1 = 2;
+	var filter$1 = 400000;
+	var tries$1 = 4;
 	var tile_size$1 = 10;
 	var grid_size$1 = [
 		20,
@@ -4163,7 +4164,7 @@
 	var whiten$1 = "false";
 	var steps$1 = 1024;
 	var icon_size$1 = 80;
-	var layout$1 = "1000_0.05_euclidean";
+	var layout$1 = "200_0.05_euclidean";
 	var class_filter$1 = null;
 	var batch_size$1 = 100;
 	var x$1 = null;
@@ -4786,7 +4787,7 @@
 	function data$9() { return {
 	  layerName: "mixed4c",
 	  layers: [
-	    // "mixed3a",
+	    "mixed3a",
 	    "mixed3b",
 	    "mixed4a",
 	    "mixed4b",
