@@ -75,6 +75,12 @@
       "affiliationURL": "https://ai.google/research/teams/applied-science/gas/"
     },
     {
+			"author": "Ludwig Schubert",
+      "authorURL": "https://schubert.io/",
+      "affiliation": "OpenAI",
+			"affiliationURL": "https://openai.com/"
+    },
+    {
 			"author": "Ian Johnson",
       "authorURL": "https://github.com/enjalot",
       "affiliation": "Google Cloud",
@@ -96,7 +102,7 @@
 
 <d-title>
   <h1 style="grid-column-end: page;">Exploring Neural Networks with Activation Atlases</h1>
-  <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of the features the network has learned and what concepts it typically represents.</p>
+  <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of the features the network has learned which can reveal how the network typically represents some concepts.</p>
   <figure class="app-container">
     <d-figure id="cover"></d-figure>
   </figure>
@@ -119,7 +125,7 @@
 
 <d-article>
 <section class="base-grid">
-  <h2>Introduction</h2>
+  <h2 id="introduction">Introduction</h2>
 
   <p>Neural networks can learn to classify images more accurately than any system humans directly design. This raises a natural question: What have these networks learned that allows them to classify images so well?
 
@@ -138,19 +144,19 @@
   <figure id="overview" style="grid-column: page;"></figure>
 
   <p>
-    These atlases not only reveal nuanced visual abstractions within a model, but we will also show later in the article that they can reveal high-level misunderstandings in a model that can be exploited by an adversary. For example, by looking at an activation atlas later in this article we will be able to see why a picture of a baseball can switch the classification of an image from "grey whale" to "great white shark".
+    These atlases not only reveal nuanced visual abstractions within a model, but later in the article we will also show that they can reveal high-level misunderstandings in a model that can be exploited. For example, by looking at an activation atlas we will be able to see why a picture of a baseball can switch the classification of an image from “grey whale” to “great white shark”.
   </p>
 
   <figure id="adversarial-teaser">
   </figure>
 
-  <p>Of course, this approach does have limitations. In particular, it’s dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, it will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations -- we’ll discuss them in much more depth later! -- Activation Atlases still give us an unprecedented overview of what neural networks can represent.
+  <p>Of course, this approach does have limitations. In particular, it’s dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, it will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations — we’ll discuss them in much more depth later! — Activation Atlases still give us an unprecedented overview of what neural networks can represent.
 
 </section>
 
 <section class="base-grid">
 
-  <h2>Looking at a Single Image</h2>
+  <h2 id="looking-at-a-single-image">Looking at a Single Image</h2>
 
   <p>Before we dive into Activation Atlases, let’s briefly review how we use feature visualization to make activation vectors meaningful (“see through the network’s eyes”). This technique was introduced in <a href="https://distill.pub/2018/building-blocks/">Building Blocks</a> <d-cite key="olah2018building"></d-cite>, and will be the foundation of Activation Atlases.
 
@@ -191,7 +197,7 @@
 
   <figure id="grid-detail" style="grid-column: page;"></figure>
 
-  <h2>Aggregating Multiple Images</h2>
+  <h2 id="aggregating-multiple-images">Aggregating Multiple Images</h2>
 
   <p>Activation grids show how the network sees a single image, but what if we want to see more? What if we want to understand how it reacts to millions of images?
 
@@ -275,7 +281,7 @@
 </section>
 <section class="base-grid">
 
-  <h2>Looking at Multiple Layers</h2>
+  <h2 id="looking-at-multiple-layers">Looking at Multiple Layers</h2>
 
   <p>In the previous section we focused on one layer of the network, mixed4c, which is in the middle of our network. Convolutional networks are generally deep, consisting of many layers that progressively build up more powerful abstractions. In order to get a holistic view, we must look at how the model’s abstractions develop over several layers.
 
@@ -431,7 +437,7 @@
 
 <section class="base-grid">
 
-  <h2>Focusing on a Single Classification</h2>
+  <h2 id="focusing-on-a-single-classification">Focusing on a Single Classification</h2>
 
   <p>Looking at an atlas of all activations can be a little overwhelming, especially when you're trying to understand how the network goes about ranking one particular class. For instance, let's investigate how the network classifies a "fireboat".
 
@@ -480,7 +486,7 @@
 
 </section>
 <section class="base-grid">
-  <h2>Further Isolating Classes</h2>
+  <h2 id="further-isolating-classes">Further Isolating Classes</h2>
 
   <p>Highlighting the class-specific activations in situ of a full atlas is helpful for seeing how that class relates to the full space of what a network "can see." However, if we want to really isolate the activations that contribute to a specific class we can remove all the other activations rather than just dimming them, creating what we'll call a <em>class activation atlas</em>. Similar to the general atlas, we run dimensionality reduction<d-footnote>For class activations we generally have better results from using t-SNE for the dimensionality reduction step rather than UMAP. We suspect it is because the data is much more sparse.</d-footnote> over the class-specific activation vectors in order to arrange the feature visualizations shown in the class activation atlas.
 
@@ -542,7 +548,7 @@
 </section>
 
 <section class="base-grid">
-  <h2>Conclusion and Future Work</h2>
+  <h2 id="conclusion-and-future-work">Conclusion and Future Work</h2>
 
   <p>Activation atlases give us a new way to peer into convolutional vision networks. They give us a global, hierarchical, and human-interpretable overview of concepts within the hidden layers. Not only does this allow us to better see the inner workings of these complicated systems, but it could enable entirely new interfaces for working with and thinking about images.
 
