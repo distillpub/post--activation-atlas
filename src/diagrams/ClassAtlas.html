@@ -15,39 +15,74 @@
   {/each}
   </svg>
 
+  {#each configData as cell}
+    <div class="label" style="position: absolute; height: {100 / gridSize}%; width: {100 / gridSize}%;left: {(cell.y) / gridSize * 100}%; top: {(cell.x) / gridSize * 100}%;">
+      <div title="{$inceptionLabels[cell.i[0]]}">{$inceptionLabels[cell.i[0]]}</div>
+    </div>
+  {/each}
+
 </div>
-<!-- <button on:click="set({filterType:'top'})">top</button> -->
-<!-- <button on:click="set({filterType:'winner'})">winner</button> -->
 
 <script>
   import {range} from "d3-array";
+  import { default as load } from '../library/load.js';
+
   export default {
     components: {
       LazyImage: '../library/LazyImage.html'
     },
     data() {
       return {
+        w: 500,
         filterType: "winner",
         classFilter: 62,
-        gridSize: 8
+        gridSize: 8,
+        configData: [],
+        showAttribution: false
       }
     },
     computed: {
-      root: ({filterType}) => `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/render/`,
-      // root: ({filterType}) => `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1/render/`,
+      cellSize: ({w, gridSize}) => w / gridSize,
+      root: ({filterType}) => `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/`,
       ticks: ({gridSize}) => range(1, gridSize),
-      src: ({root, classFilter, gridSize, filterType}) => `${root}render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`
+      config: ({root, classFilter, gridSize, filterType}) => `${root}web/web--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.json`,
+      src: ({root, classFilter, gridSize, filterType}) => `${root}render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`
+    },
+    onupdate({ changed, current, previous }) {
+      if (current.showAttribution && changed.config) {
+        this.set({configData: []});
+        load(current.config).then(response => {
+          console.log("response", response);
+          this.set({configData: response});
+        })
+      }
     }
   }
-  //https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_winner/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=8--layout=20_0.02_cosine--class_filter=112_winner--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
-  // https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_combined/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_combined--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
-  // https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_winner/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=1_winner--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
-  // https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=2048--icon_size=80--grid_size=8--layout=20_0.01_cosine--class_filter=112_top--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg
  </script>
 
  <style>
   ref:root {
     position: relative;
+  }
+  ref:root > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .label > div {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    padding: 4px;
+    box-sizing: border-box;
+    font-size: 9px;
+    text-shadow: 0 0 5px black;
+    line-height: 1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    color: white;
   }
   svg {
     position: absolute;

@@ -146,6 +146,7 @@
   <p>
     These atlases not only reveal nuanced visual abstractions within a model, but later in the article we will also show that they can reveal high-level misunderstandings in a model that can be exploited. For example, by looking at an activation atlas we will be able to see why a picture of a baseball can switch the classification of an image from “grey whale” to “great white shark”.
   </p>
+  <!-- https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/web/web--grid_size%3D8--layout%3D20_0.01_cosine--class_filter%3D442_top--filter%3DNone--layer%3Dmixed5b--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json -->
 
   <figure id="adversarial-teaser">
   </figure>
@@ -633,7 +634,7 @@
   <p>One might think that a true clustering algorithm, like k-means, might produce a more robust decomposition of the activation manifold. After all, centroids produced by such an algorithm are by definition close to clusters of activations the network produces, a property that discretizing the dimensionality-reduced activations doesn’t guarantee. We experimented with different clustering techniques such as k-means, spherical k-means, and DBSCAN. However, the images produced by visualizing the resulting centroids were subjectively worse and less interpretable than the technique described in this article. Also, dimensionality reduction followed by 2D binning allows for multiple levels of detail while preserving spatial consistency, which is necessary for making atlasses zoomable. Thus, we preferred that method over clustering in this article -- but finding tradeoffs between these techniques remains an open question.</p>
 
   <h3 id="author-contributions">Author Contributions</h3>
-  <p>Shan Carter wrote the majority of the article and performed all the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
+  <p>Shan Carter wrote the majority of the article and performed most of the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ludwig Schubert provided technical help throughout and performed the numerical analysis of the manual patches. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
   <h3 id="acknowledgements">Acknowledgments</h3>
   <p>Thanks to Ludwig Schubert for extensive technical advice and general support. Thanks to Kevin Quealy and Sam Greydanus for substantial editing help. Thanks to Arvind Satyanarayan and Nick Cammarata for additional feedback during development. </p>
   <p>The photo used to illustrate a sub-manifold in the introduction was taken by <a href="https://unsplash.com/photos/_STiCuGSxa8">Alexandru-Bogdan Ghita</a></p>
