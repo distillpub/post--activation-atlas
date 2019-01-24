@@ -13319,7 +13319,6 @@
 	  if (current.showAttribution && changed.config) {
 	    this.set({configData: []});
 	    load$1(current.config).then(response => {
-	      console.log("response", response);
 	      this.set({configData: response});
 	    });
 	  }

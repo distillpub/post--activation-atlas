@@ -651,7 +651,7 @@
 <section class="base-grid">
   <h2 id="conclusion-and-future-work">Conclusion and Future Work</h2>
 
-  <p>Activation atlases give us a new way to peer into convolutional vision networks. They give us a global, hierarchical, and human-interpretable overview of concepts within the hidden layers. Not only does this allow us to better see the inner workings of these complicated systems, but it could enable entirely new interfaces for working with and thinking about images.
+  <p>Activation atlases give us a new way to peer into convolutional vision networks. They give us a global, hierarchical, and human-interpretable overview of concepts within the hidden layers. Not only does this allow us to better see the inner workings of these complicated systems, but it's possible that it could enable new interfaces for working with images.
 
   <h3>Surfacing Inner Properties of Models</h3>
 
@@ -666,21 +666,19 @@
 
   <h3>New interfaces</h3>
 
-  <p>Machine learning models are usually deployed as black boxes that automate a specific task, executing it on their own. But there’s a growing sense that there might be an alternate way for us to relate to them: that instead of increasingly automating task, they could be used to augment a user. One vision of this augmentation that we find particularly compelling is the idea that the internal representations neural networks learn can be repurposed as tools <d-cite key="carter2017using,olah2015visualizing,johnson2018machine"></d-cite>. Already, we’ve seen exciting demonstrations of this in images
+  <p>Machine learning models are usually deployed as black boxes that automate a specific task, executing it on their own. But there’s a growing sense that there might be an alternate way for us to relate to them: that instead of increasingly automating a task, they could be used more directly by a person. One vision of this augmentation that we find particularly compelling is the idea that the internal representations neural networks learn can be repurposed as tools <d-cite key="carter2017using,olah2015visualizing,johnson2018machine"></d-cite>. Already, we’ve seen exciting demonstrations of this in images
   <d-cite key="isola2017image,loh2017toposketch,zhu2016generative"></d-cite>
   and music
   <d-cite key="mccurry2018latent,roberts2018hierarchical"></d-cite>
   .
 
-  <d-footnote>
-    While classification networks are generally not thought of as able to generate images, we can imagine this would be possible by constructing a grid of activations by selecting them from an atlas, then using feature inversion to generate an image from that activation pattern.
-  </d-footnote>
+  <p>We think of activation atlases as revealing a machine-learned alphabet for images — an array of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
 
-  <p>We think of activation atlases as revealing a machine-learned alphabet for images — an array of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we could imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
+  <p>While classification models are not generally thought of as being used to generate images, techniques like <d-cite key="mordvintsev2015inceptionism">deep dream</d-cite> has shown that this is entirely possible. In this particular instance, we imagine constructing a grid of activations by selecting them from an atlas (or some derivation), then optimizing an output image that would correspond to the user's constructed activation matrix.
 
-  <p>Such a tool would not necessarily be limited to creating photo-realistic images either. Techniques like style transfer <d-cite key="gatys2015neural"></d-cite> have shown us that we can use these vision networks to create nuanced visual expression outside the explicit distribution of visual data it was trained on. Activation atlases could be used to create new artistic styles without having to find an existing reference image, or they could help in guiding and modifying automated style transfer techniques.
+  <p>Such a tool would not necessarily be limited to targeting realistic images either. Techniques like style transfer <d-cite key="gatys2015neural"></d-cite> have shown us that we can use these vision networks to create nuanced visual expression outside the explicit distribution of visual data it was trained on. We speculate that activation atlases could be helpful in manipulating artistic styles without having to find an existing reference image, or they could help in guiding and modifying automated style transfer techniques.
 
-  <p>We could also use these atlases to query large image datasets. In the same way that we probe large corpuses of text with text words, we could, too, use activation atlases to find types of images in large image datasets. Using words to search for something like a “tree” is quite powerful, but as you get more specific, human language is often ill-suited to describe specific visual characteristics. In contrast, the hidden layers of neural networks are a language optimized for the sole purpose of representing visual concepts. Instead of using the proverbial thousand words to uniquely specify the image one is seeking, we can imagine someone using the language of the activation atlas.
+  <p>We could also use these atlases to query large image datasets. In the same way that we probe large corpuses of text with  words, we could, too, use activation atlases to find types of images in large image datasets. Using words to search for something like a “tree” is quite powerful, but as you get more specific, human language is often ill-suited to describe specific visual characteristics. In contrast, the hidden layers of neural networks are a language optimized for the sole purpose of representing visual concepts. Instead of using the proverbial thousand words to uniquely specify the image one is seeking, we can imagine someone using the language of the activation atlas.
 
   <p>And lastly, we can also liken activation atlases to histograms. In the same way that traditional histograms give us good summaries of large datasets, activation atlases can be used to summarize large numbers of images.
 
