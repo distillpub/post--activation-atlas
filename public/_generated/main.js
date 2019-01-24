@@ -1589,8 +1589,8 @@
 	    plant: [
 	      {
 	        layerName: "mixed3b",
-	        homeX: 0.3222,
-	        homeY: 0.6352,
+	        homeX: 0.590,
+	        homeY: 0.640,
 	        gridSize: 3,
 	        homeScale: 16 * 1.5 * 2,
 	        caption: "You'll immediately notice that the early layer is very nonspecific in comparison to the others. The icons that emerge are of patterns and splotches of color. It is suggestive of the final class, but not particularly evocative."
@@ -14061,7 +14061,7 @@
 				classatlas1._fragment.c();
 				text11 = createText("\n    ");
 				div4 = createElement("div");
-				div4.textContent = "Here we sort all the activations by the magnitude toward the class in question (independent of other classes) and take the top 2,000 activations. We see more correlated activations that could, on their own, contribute to another classification (We label each activation with the class that it contributes toward most). Notice that certain fish that are commonly seen while snorkeling now show up with that class, and a “coffee mug” now shows up with “crossword puzzle”.";
+				div4.textContent = "Here we sort all the activations by the magnitude toward the class in question (independent of other classes) and take the top 2,000 activations. We see more correlated activations that could, on their own, contribute to another classification (We label each activation with the class that it contributes toward most). Notice that certain fish that are commonly seen while snorkeling now show up with that class, and a “coffee mug” now shows up with “crossword puzzle”. Some of them appear spurious, however.";
 				text13 = createText("\n  ");
 				div7 = createElement("div");
 				div6 = createElement("div");
@@ -14086,9 +14086,9 @@
 				addLoc(div4, file$t, 16, 4, 856);
 				addLoc(div5, file$t, 11, 2, 599);
 				div6.className = "chooser svelte-4ghdgj";
-				addLoc(div6, file$t, 19, 4, 1404);
+				addLoc(div6, file$t, 19, 4, 1442);
 				div7.className = "chooser-container svelte-4ghdgj";
-				addLoc(div7, file$t, 18, 2, 1368);
+				addLoc(div7, file$t, 18, 2, 1406);
 				div8.className = "root svelte-4ghdgj";
 				addLoc(div8, file$t, 2, 0, 2);
 			},
@@ -14208,10 +14208,10 @@
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
 				input.className = "svelte-4ghdgj";
-				addLoc(input, file$t, 22, 10, 1567);
+				addLoc(input, file$t, 22, 10, 1605);
 				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-4ghdgj";
 				label.title = label_title_value = ctx.c;
-				addLoc(label, file$t, 21, 8, 1472);
+				addLoc(label, file$t, 21, 8, 1510);
 			},
 
 			m: function mount(target, anchor) {
@@ -22211,6 +22211,15 @@
 				}
 		});
 
+		// new ClassAtlas({
+		// 	target: document.querySelector("#shark-ball"),
+		// 	store,
+		// 	data: {
+		// 		classFilter: 442,
+		// 		filterType: "top",
+		// 		showAttribution: true,
+		// 	}
+		// })
 
 		// Technical Notes and Limitations
 
