@@ -620,6 +620,10 @@
   <d-cite key="mccurry2018latent,roberts2018hierarchical"></d-cite>
   .
 
+  <d-footnote>
+    While classification networks are generally not thought of as able to generate images, we can imagine this would be possible by constructing a grid of activations by selecting them from an atlas, then using feature inversion to generate an image from that activation pattern.
+  </d-footnote>
+
   <p>We think of activation atlases as revealing a machine-learned alphabet for images — an array of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we could imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
 
   <p>Such a tool would not necessarily be limited to creating photo-realistic images either. Techniques like style transfer <d-cite key="gatys2015neural"></d-cite> have shown us that we can use these vision networks to create nuanced visual expression outside the explicit distribution of visual data it was trained on. Activation atlases could be used to create new artistic styles without having to find an existing reference image, or they could help in guiding and modifying automated style transfer techniques.
