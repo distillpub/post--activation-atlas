@@ -1541,8 +1541,8 @@
 	    plant: [
 	      {
 	        layerName: "mixed3b",
-	        homeX: 0.3222,
-	        homeY: 0.6352,
+	        homeX: 0.590,
+	        homeY: 0.640,
 	        gridSize: 3,
 	        homeScale: 16 * 1.5 * 2,
 	        caption: "You'll immediately notice that the early layer is very nonspecific in comparison to the others. The icons that emerge are of patterns and splotches of color. It is suggestive of the final class, but not particularly evocative."

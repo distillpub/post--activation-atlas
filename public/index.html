@@ -61,6 +61,7 @@
   <script type="text/json">{
   "title": "Activation Atlas",
   "description": "By using feature inversion to visualize millions of activations from an image classification network, we create an explorable activation atlas of the features the network has learned and what concepts it typically represents.",
+  "password": "atlas",
   "authors": [
     {
       "author": "Shan Carter",
@@ -73,6 +74,12 @@
       "authorURL": "https://www.zanarmstrong.com/",
       "affiliation": "Google Accelerated Science",
       "affiliationURL": "https://ai.google/research/teams/applied-science/gas/"
+    },
+    {
+			"author": "Ludwig Schubert",
+      "authorURL": "https://schubert.io/",
+      "affiliation": "OpenAI",
+			"affiliationURL": "https://openai.com/"
     },
     {
 			"author": "Ian Johnson",
@@ -110,7 +117,7 @@
 
 <d-title>
   <h1 style="grid-column-end: page;">Exploring Neural Networks with Activation Atlases</h1>
-  <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of the features the network has learned and what concepts it typically represents.</p>
+  <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of the features the network has learned which can reveal how the network typically represents some concepts.</p>
   <figure class="app-container">
     <d-figure id="cover"></d-figure>
   </figure>
@@ -133,7 +140,7 @@
 
 <d-article>
 <section class="base-grid">
-  <h2>Introduction</h2>
+  <h2 id="introduction">Introduction</h2>
 
   <p>Neural networks can learn to classify images more accurately than any system humans directly design. This raises a natural question: What have these networks learned that allows them to classify images so well?
 
@@ -161,19 +168,20 @@
   <figure id="overview" style="grid-column: page;"></figure>
 
   <p>
-    These atlases not only reveal nuanced visual abstractions within a model, but we will also show later in the article that they can reveal high-level misunderstandings in a model that can be exploited by an adversary. For example, by looking at an activation atlas later in this article we will be able to see why a picture of a baseball can switch the classification of an image from "grey whale" to "great white shark".
+    These atlases not only reveal nuanced visual abstractions within a model, but later in the article we will also show that they can reveal high-level misunderstandings in a model that can be exploited. For example, by looking at an activation atlas we will be able to see why a picture of a baseball can switch the classification of an image from “grey whale” to “great white shark”.
   </p>
+  <!-- https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/web/web--grid_size%3D8--layout%3D20_0.01_cosine--class_filter%3D442_top--filter%3DNone--layer%3Dmixed5b--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json -->
 
   <figure id="adversarial-teaser">
   </figure>
 
-  <p>Of course, this approach does have limitations. In particular, it’s dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, it will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations -- we’ll discuss them in much more depth later! -- Activation Atlases still give us an unprecedented overview of what neural networks can represent.
+  <p>Of course, activation atlases do have limitations. In particular, they're dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, they will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations — we’ll discuss them in much more depth later! — Activation Atlases still give us an unprecedented overview of what neural networks can represent.
 
 </section>
 
 <section class="base-grid">
 
-  <h2>Looking at a Single Image</h2>
+  <h2 id="looking-at-a-single-image">Looking at a Single Image</h2>
 
   <p>Before we dive into Activation Atlases, let’s briefly review how we use feature visualization to make activation vectors meaningful (“see through the network’s eyes”). This technique was introduced in <a href="https://distill.pub/2018/building-blocks/">Building Blocks</a> <d-cite key="olah2018building"></d-cite>, and will be the foundation of Activation Atlases.
 
@@ -214,7 +222,7 @@
 
   <figure id="grid-detail" style="grid-column: page;"></figure>
 
-  <h2>Aggregating Multiple Images</h2>
+  <h2 id="aggregating-multiple-images">Aggregating Multiple Images</h2>
 
   <p>Activation grids show how the network sees a single image, but what if we want to see more? What if we want to understand how it reacts to millions of images?
 
@@ -323,10 +331,12 @@
 
   <figure id="show-a-path-0" style="grid-column: text/page;"></figure>
 
+  <p>It is important to note that these paths are constructed after the fact in the low-dimensional projection. They are smooth paths in this reduced projection but we don't necessarily know how the paths operate in the original higher-dimensional activation space.</p>
+
 </section>
 <section class="base-grid">
 
-  <h2>Looking at Multiple Layers</h2>
+  <h2 id="looking-at-multiple-layers">Looking at Multiple Layers</h2>
 
   <p>In the previous section we focused on one layer of the network, mixed4c, which is in the middle of our network. Convolutional networks are generally deep, consisting of many layers that progressively build up more powerful abstractions. In order to get a holistic view, we must look at how the model’s abstractions develop over several layers.
 
@@ -482,7 +492,7 @@
 
 <section class="base-grid">
 
-  <h2>Focusing on a Single Classification</h2>
+  <h2 id="focusing-on-a-single-classification">Focusing on a Single Classification</h2>
 
   <p>Looking at an atlas of all activations can be a little overwhelming, especially when you're trying to understand how the network goes about ranking one particular class. For instance, let's investigate how the network classifies a "fireboat".
 
@@ -531,7 +541,7 @@
 
 </section>
 <section class="base-grid">
-  <h2>Further Isolating Classes</h2>
+  <h2 id="further-isolating-classes">Further Isolating Classes</h2>
 
   <p>Highlighting the class-specific activations in situ of a full atlas is helpful for seeing how that class relates to the full space of what a network "can see." However, if we want to really isolate the activations that contribute to a specific class we can remove all the other activations rather than just dimming them, creating what we'll call a <em>class activation atlas</em>. Similar to the general atlas, we run dimensionality reduction<d-footnote>For class activations we generally have better results from using t-SNE for the dimensionality reduction step rather than UMAP. We suspect it is because the data is much more sparse.</d-footnote> over the class-specific activation vectors in order to arrange the feature visualizations shown in the class activation atlas.
 
@@ -578,12 +588,59 @@
     Adding a small-sized baseball does change the top classification to “great white shark”, and as it gets bigger it overpowers the classification, so the top slot goes to “baseball”.
   </p>
 
+  <p>So far we've only shown single examples of these patches. Below we show the result of all the patches we've shown, run on each image in the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the target class in about 1 in 5 images. If we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) the effectiveness jumps to about 1 in 2 images. We also compare the changes to a random noise image patch of the same size and location.</p>
+  <style>
+    #adversarial-analysis table {
+      width: 100%;
+    }
+  </style>  
+  <figure id="adversarial-analysis">
+  <h4>Patches applied to all of ImageNet</h4>
+  <table>
+    
+    <thead>
+      <tr>
+        <td></td>
+        <td>snorkel / scuba</td>
+        <td>frying pan / wok</td>
+        <td>grey whale / shark</td>
+      </tr>
+    </thead>
+    <tr>
+      <td>Fixed top left</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Dynamic position</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Random image fixed top left</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Random image dynamic position</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  </figure>
+
+  <!-- <figure id="shark-ball"></figure> -->
+
   <p>
     Our "attacks" can be seen as part of a larger trend (eg. <d-cite key="DBLP:journals/corr/abs-1712-09665,kurakin2016adversarial,engstrom2017rotation,brown2018unrestricted"></d-cite>) of researchers
     exploring input attacks on models other than the traditional epsilon ball adversarial examples <d-cite key="szegedy2013intriguing"></d-cite>.
     In many ways, our attacks are most similar to adversarial patches <d-cite key="DBLP:journals/corr/abs-1712-09665"></d-cite>, which also add a small patch to the input image.
     From this perspective, adversarial patches are far more effective, working much more reliably.
-    Instead, we see our attacks as interesting becaue they are synthesized by humans from their understanding of the model,
+    Instead, we see our attacks as interesting because they are synthesized by humans from their understanding of the model,
     and seem to be attacking the model at a higher level of abstraction.
   </p>
 
@@ -593,7 +650,7 @@
 </section>
 
 <section class="base-grid">
-  <h2>Conclusion and Future Work</h2>
+  <h2 id="conclusion-and-future-work">Conclusion and Future Work</h2>
 
   <p>Activation atlases give us a new way to peer into convolutional vision networks. They give us a global, hierarchical, and human-interpretable overview of concepts within the hidden layers. Not only does this allow us to better see the inner workings of these complicated systems, but it could enable entirely new interfaces for working with and thinking about images.
 
@@ -615,6 +672,10 @@
   and music
   <d-cite key="mccurry2018latent,roberts2018hierarchical"></d-cite>
   .
+
+  <d-footnote>
+    While classification networks are generally not thought of as able to generate images, we can imagine this would be possible by constructing a grid of activations by selecting them from an atlas, then using feature inversion to generate an image from that activation pattern.
+  </d-footnote>
 
   <p>We think of activation atlases as revealing a machine-learned alphabet for images — an array of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we could imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
 
@@ -678,7 +739,7 @@
   <p>One might think that a true clustering algorithm, like k-means, might produce a more robust decomposition of the activation manifold. After all, centroids produced by such an algorithm are by definition close to clusters of activations the network produces, a property that discretizing the dimensionality-reduced activations doesn’t guarantee. We experimented with different clustering techniques such as k-means, spherical k-means, and DBSCAN. However, the images produced by visualizing the resulting centroids were subjectively worse and less interpretable than the technique described in this article. Also, dimensionality reduction followed by 2D binning allows for multiple levels of detail while preserving spatial consistency, which is necessary for making atlasses zoomable. Thus, we preferred that method over clustering in this article -- but finding tradeoffs between these techniques remains an open question.</p>
 
   <h3 id="author-contributions">Author Contributions</h3>
-  <p>Shan Carter wrote the majority of the article and performed all the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
+  <p>Shan Carter wrote the majority of the article and performed most of the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ludwig Schubert provided technical help throughout and performed the numerical analysis of the manual patches. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
   <h3 id="acknowledgements">Acknowledgments</h3>
   <p>Thanks to Ludwig Schubert for extensive technical advice and general support. Thanks to Kevin Quealy and Sam Greydanus for substantial editing help. Thanks to Arvind Satyanarayan and Nick Cammarata for additional feedback during development. </p>
   <p>The photo used to illustrate a sub-manifold in the introduction was taken by <a href="https://unsplash.com/photos/_STiCuGSxa8">Alexandru-Bogdan Ghita</a></p>

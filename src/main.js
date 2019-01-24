@@ -14,6 +14,7 @@ import Overview from './diagrams/Overview.html';
 import ModelOverview from './diagrams/ModelOverview.html';
 import GridDetail from './diagrams/GridDetail.html';
 import ClassSubset from './diagrams/ClassSubset.html';
+import ClassAtlas from './diagrams/ClassAtlas.html';
 import ClassFilterComparison from './diagrams/ClassFilterComparison.html';
 import ClassComparison from './diagrams/ClassComparison.html';
 import ClassGradient from './diagrams/ClassGradient.html';
@@ -783,6 +784,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			}
 	});
 
+	// new ClassAtlas({
+	// 	target: document.querySelector("#shark-ball"),
+	// 	store,
+	// 	data: {
+	// 		classFilter: 442,
+	// 		filterType: "top",
+	// 		showAttribution: true,
+	// 	}
+	// })
 
 	// Technical Notes and Limitations
 
