@@ -534,11 +534,48 @@
     Adding a small-sized baseball does change the top classification to “great white shark”, and as it gets bigger it overpowers the classification, so the top slot goes to “baseball”.
   </p>
 
-  <p>So far we've only shown single examples of these patches. Below we show the result of all the patches we've shown, run on each image in the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the target class in about 1 in 5 images. If we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) the effectiveness jumps to about 1 in 2 images.</p>
-
-  <figure>
+  <p>So far we've only shown single examples of these patches. Below we show the result of all the patches we've shown, run on each image in the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the target class in about 1 in 5 images. If we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) the effectiveness jumps to about 1 in 2 images. We also compare the changes to a random noise image patch of the same size and location.</p>
+  <style>
+    #adversarial-analysis table {
+      width: 100%;
+    }
+  </style>  
+  <figure id="adversarial-analysis">
+  <h4>Patches applied to all of ImageNet</h4>
   <table>
-    Table to come...
+    
+    <thead>
+      <tr>
+        <td></td>
+        <td>snorkel / scuba</td>
+        <td>frying pan / wok</td>
+        <td>grey whale / shark</td>
+      </tr>
+    </thead>
+    <tr>
+      <td>Position fixed top left</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Position varied</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Random image fixed top left</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Random image positioned varied</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
   </table>
   </figure>
 
