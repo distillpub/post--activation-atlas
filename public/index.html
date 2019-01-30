@@ -589,47 +589,143 @@
 
   <p>So far we've only shown single examples of these patches. Below we show the result of all the patches we've shown, run on each image in the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the target class in about 1 in 5 images. If we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) the effectiveness jumps to about 1 in 2 images. We also compare the changes to a random noise image patch of the same size and location.</p>
   <style>
+    /* #adversarial-analysis {
+      grid-column: page;
+    } */
     #adversarial-analysis table {
       width: 100%;
+      text-align: right;
     }
+    #adversarial-analysis table th {
+      vertical-align: initial;
+    }
+    #adversarial-analysis table th .figcaption {
+      display: block;
+      font-weight: initial;
+    }
+    #adversarial-analysis table .detail {
+      /* padding-left: 1em; */
+      font-size: 85%;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    #adversarial-analysis table .synset {
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    #adversarial-analysis table .from,
+    #adversarial-analysis table .to {
+      white-space: nowrap;
+    }
+    #adversarial-analysis table .overall {
+      font-weight: bold;
+    }
+    @supports (font-variant-numeric: tabular-nums) {
+      #adversarial-analysis table {
+          font-variant-numeric: tabular-nums;
+      }
+    }
+    /* #adversarial-analysis th {
+      vertical-align: bottom;
+      text-align: center;
+    }
+
+    #adversarial-analysis th span {
+      -ms-writing-mode: tb-rl;
+      -webkit-writing-mode: vertical-rl;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    } */
   </style>  
   <figure id="adversarial-analysis">
-  <h4>Patches applied to all of ImageNet</h4>
-  <table>
-    
-    <thead>
-      <tr>
-        <td></td>
-        <td>snorkel / scuba</td>
-        <td>frying pan / wok</td>
-        <td>grey whale / shark</td>
-      </tr>
-    </thead>
-    <tr>
-      <td>Fixed top left</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Dynamic position</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Random image fixed top left</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Random image dynamic position</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+  <h4>Patches applied to 1000 training set examples</h4>
+    <table class="tg">
+      <colgroup>
+        <col span=3 class="vertical-header">
+        <col>
+        <col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th colspan="2">
+            <span>Success rate</span>
+            <span class="figcaption">Percentage and counts of previously correctly classified images that the attack changed to the target class.</span>
+          </th>
+          <th colspan="2">
+            <span>Probabilty change</span>
+            <span class="figcaption">Mean change in probabilty assigned to the target class.</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="tg-0pky" scope="row" rowspan="4">
+            <span>dynamic</span>
+            <span class="figcaption">This attack chooses the best size and position for each example individually.</span>
+          </th>
+          <td>overall</td>
+          <td><span class="overall">29.1%</span></td>
+          <td><span class="overall detail">677&nbsp;/&nbsp;2325</span></td>
+          <td><span class="overall">+?%</span></td>
+          <td><span class="overall from detail">?%</span><span class="overall detail">&nbsp;&rarr;&nbsp;</span><span class="overall to detail">?%</span></td>
+        </tr>
+        <tr>
+          <td><span class="synset">whale</span>&nbsp;&rarr;&nbsp;<span class="synset">shark</span></td>
+          <td><span>42.7%</span></td>
+          <td><span class="detail">373&nbsp;/&nbsp;874</span></td>
+          <td><span>+32.2%</span></td>
+          <td><span class="from detail">1.8%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">34.0%</span></td>
+        </tr>
+        <tr>
+          <td><span class="synset">snorkel</span>&nbsp;&rarr;&nbsp;<span class="synset">diver</span></td>
+          <td><span>12.7%</span></td>
+          <td><span class="detail">105&nbsp;/&nbsp;827</span></td>
+          <td><span>+9.5%</span></td>
+          <td><span class="from detail">3.7%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">13.2%</span></td>
+        </tr>
+        <tr>
+          <td><span class="synset">pan</span>&nbsp;&rarr;&nbsp;<span class="synset">wok</span></td>
+          <td><span>31.9%</span></td>
+          <td><span class="detail">199&nbsp;/&nbsp;624</span></td>
+          <td><span>+17.7%</span></td>
+          <td><span class="from detail">10.3%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">28.0%</span></td>
+        </tr>
+        <tr>
+          <th class="tg-0pky" scope="row" rowspan="4">
+            <span>static</span>
+            <span class="figcaption">This attack chooses a single size and position across all examples.</span>
+          </th>
+          <td>overall</td>
+          <td><span class="overall">13.7%</span></td>
+          <td><span class="overall detail">318&nbsp;/&nbsp;2325</span></td>
+          <td><span class="overall">+?%</span></td>
+          <td><span class="overall from detail">?%</span><span class="overall detail">&nbsp;&rarr;&nbsp;</span><span class="overall to detail">?%</span></td>
+        </tr>
+        <tr>
+          <td><span class="synset">whale</span>&nbsp;&rarr;&nbsp;<span class="synset">shark</span></td>
+          <td><span>20.8%</span></td>
+          <td><span class="detail">182&nbsp;/&nbsp;874</span></td>
+          <td><span>+18.1%</span></td>
+          <td><span class="from detail">1.8%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">20.0%</span></td>
+        </tr>
+        <tr>
+          <td><span class="synset">snorkel</span>&nbsp;&rarr;&nbsp;<span class="synset">diver</span></td>
+          <td><span>3.7%</span></td>
+          <td><span class="detail">31&nbsp;/&nbsp;827</span></td>
+          <td><span>+2.0%</span></td>
+          <td><span class="from detail">3.7%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">5.7%</span></td>
+        </tr>
+        <tr>
+          <td><span class="synset">pan</span>&nbsp;&rarr;&nbsp;<span class="synset">wok</span></td>
+          <td><span>16.8%</span></td>
+          <td><span class="detail">105&nbsp;/&nbsp;624</span></td>
+          <td><span>+6.9%</span></td>
+          <td><span class="from detail">10.3%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">17.2%</span></td>
+        </tr>
+      </tbody>
+    </table>
   </figure>
 
   <!-- <figure id="shark-ball"></figure> -->
