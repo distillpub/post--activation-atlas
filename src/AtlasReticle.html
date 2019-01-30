@@ -1,5 +1,8 @@
-<div class="root" bind:clientWidth bind:clientHeight
-  on:mousedown="mouseDown(event)"
+<div class="root" 
+  bind:clientWidth 
+  bind:clientHeight
+  on:pointerdown="down(event)"
+  style="cursor: {cursor}"
 >
   {#if extent}
   <svg width={clientWidth} height={clientHeight}>
@@ -10,16 +13,16 @@
       />
     {/if}
   </svg>
-    <div
-      class="reticle {round ? 'round' : ''}"
-      style="
-        border-color: {color};
-        top:{top - 1}px;
-        left:{left - 1}px; 
-        width:{right - left + 2}px; 
-        height:{bottom - top + 2}px; 
-        "
-    >
+  <div
+    class="reticle {round ? 'round' : ''}"
+    style="
+      border-color: {color};
+      top:{top - 1}px;
+      left:{left - 1}px; 
+      width:{right - left + 2}px; 
+      height:{bottom - top + 2}px; 
+      "
+  >
     {#if annotationValue}
       <div class="annotationTabParent" style="top:{(w * width-2)/2}px;">
         <div class="annotationTab" style="background:{color};">
@@ -41,8 +44,9 @@
         round: false,
         color: "rgb(255, 130, 0)",
         enableDragging: true,
-        mouseUpListener: null,
-        mouseMoveListener: null
+        upListener: null,
+        moveListener: null,
+        cursor: 'grab'
       }
     },
     computed: {
@@ -52,42 +56,34 @@
       bottom: ({clientHeight, extent}) => Math.min(clientHeight, extent[1][1] * clientHeight),
     },
     methods: {
-      mouseUp() {
-        const {mouseMoveListener, mouseUpListener} = this.get();
-        window.removeEventListener("mousemove", mouseMoveListener);
-        window.removeEventListener("mouseup", mouseUpListener);
+      up() {
+        const {upListener, moveListener} = this.get();
+        window.removeEventListener("pointermove", moveListener);
+        window.removeEventListener("pointerup", upListener);
+        this.set({cursor: "grab"});
       },
-      mouseDown(event) {
+      down(event) {
         event.preventDefault();
         const {enableDragging, clientWidth, clientHeight} = this.get();
-        if(enableDragging){
-          // const gcx = event.offsetX / clientWidth; 
-          // const gcy = event.offsetY / clientHeight;
-          //  this.set({
-          //     dragging: true,
-          //     gcx,
-          //     gcy,
-          //     startPos: {x: event.screenX, y: event.screenY}
-          //  });
-          //  this.fire("drag", {gcx, gcy});
-          this.mouseMove(event);
+        if (enableDragging) {
+          this.move(event);
         }
-        const mouseUpListener = this.mouseUp.bind(this);
-        const mouseMoveListener = this.mouseMove.bind(this);
-        window.addEventListener("mousemove", mouseMoveListener);
-        window.addEventListener("mouseup", mouseUpListener);
-        this.set({mouseMoveListener, mouseUpListener});
+        const upListener = this.up.bind(this);
+        window.addEventListener("pointerup", upListener);
+        const moveListener = this.move.bind(this);
+        window.addEventListener("pointermove", moveListener);
+        this.set({upListener, moveListener, cursor: "grabbing"});
       },
-      mouseMove(event) {
+      move(event) {
         const {clientWidth, clientHeight} = this.get();
         const gcx = event.offsetX / clientWidth; 
         const gcy = event.offsetY / clientHeight;
-          this.set({
-            gcx,
-            gcy,
-            startPos: {x: event.screenX, y: event.screenY}
-          });
-          this.fire("drag", {gcx, gcy});
+        this.set({
+          gcx,
+          gcy,
+          startPos: {x: event.screenX, y: event.screenY},
+        });
+        this.fire("drag", {gcx, gcy});
       },
     },
   }
