@@ -612,39 +612,39 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				right: "scuba diver",
 				classifications: [
 					{
-						image: "assets/images/snorkel-06.png",
+						image: "assets/images/snorkel-train.png",
 						caption: "Image from ImageNet labeled as “snorkel” with the classification confidences from Inceptionv1 for the top six classes.",
 						rows: [
-							["snorkel", 34.33],
-							["scuba diver", 28.16],
-							["coral reef", 12.43],
-							["loggerhead", 11.11],
-							["lionfish", 3.84],
-							["sea snake", 2.19]
+							["snorkel", 55.60],
+							["coral reef", 18.65],
+							["scuba diver", 13.49],
+							["loggerhead", 5.52],
+							["lionfish", 1.71],
+							["sea snake", 1.36]
 						]
 					},
 					{
-						image: "assets/images/teethshark-07.png",
-						caption: "By adding a picture of one of the concepts seen in the visualization above we can change the classification. With an added picture of a “shark” (also from ImageNet) the confidence of “scuba diver” classification rises and “snorkel” drops significantly.",
+						image: "assets/images/snorkel-train-medium.png",
+						caption: "By adding a picture of one of the concepts seen in the visualization above we can change the classification. With an added picture of a steam train the confidence of “scuba diver” classification rises and “snorkel” drops significantly.",
 						rows: [
-							["scuba diver", 50.30],
-							["coral reef", 22.44],
-							["tiger shark", 9.08],
-							["snorkel", 3.92],
-							["lionfish", 2.38],
-							["loggerhead", 2.12]
+							["scuba diver", 91.55],
+							["wreck", 2.39],
+							["amphibian", 1.12],
+							["snorkel", 0.70],
+							["ski", 0.62],
+							["sea snake", 0.59]
 						]
 					},
 					{
-						image: "assets/images/teethshark-05.png",
-						caption: "As the picture of the shark gets bigger, the classification for “great white shark” increases, but the relative changes in confidence of “snorkel” and “scuba diver” remain.",
+						image: "assets/images/snorkel-train-large.png",
+						caption: "As the picture of the train gets bigger, the classification for “steam locomotive” overwhelms, but “scuba diver” remains in the top five.",
 						rows: [
-							["great white shark", 81.73],
-							["tiger shark", 15.30],
-							["scuba diver", 1.62],
-							["loggerhead", 0.30],
-							["coho", 0.29],
-							["snorkel", 0.15]
+							["steam locomotive", 87.70],
+							["scuba diver", 5.61],
+							["tractor", 3.90],
+							["jeep", 0.49],
+							["wreck", 0.38],
+							["harvester", 0.33]
 						]
 					}
 				]
@@ -710,25 +710,25 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			aspectRatio: 996 / 656,
 			classifications: [
 				{
-					image: "assets/images/whale-03.jpg",
+					image: "assets/images/whale-baseball.png",
 					caption: "",
 					rows: [
-						["grey whale", 78.39],
-						["killer whale", 20.97],
-						["great white shark", 0.34],
-						["gar", 0.13],
-						["sea lion", 0.09],
+						["grey whale", 90.57],
+						["killer whale", 7.97],
+						["great white shark", 0.67],
+						["gar", 0.37],
+						["sea lion", 0.13],
 					]
 				},
 				{
-					image: "assets/images/whale-06.jpg",
+					image: "assets/images/whale-baseball-medium.png",
 					caption: "",
 					rows: [
-						["great white shark", 34.35],
-						["rugby ball", 23.55],
-						["grey whale", 12.91],
-						["baseball", 10.89],
-						["killer whale", 7.70],
+						["great white shark", 56.51],
+						["grey whale", 16.94],
+						["baseball", 8.31],
+						["killer whale", 6.18],
+						["rugby ball", 4.83],
 					]
 				}
 			]
@@ -745,39 +745,39 @@ document.addEventListener("DOMContentLoaded", (e) => {
 				aspectRatio: 996 / 656,
 				classifications: [
 					{
-						image: "assets/images/whale-03.jpg",
+						image: "assets/images/whale-baseball.png",
 						caption: "",
 						rows: [
-							["grey whale", 78.39],
-							["killer whale", 20.97],
-							["great white shark", 0.34],
-							["gar", 0.13],
-							["sea lion", 0.09],
-							["tiger shark", 0.02],
+							["grey whale", 90.57],
+							["killer whale", 7.97],
+							["great white shark", 0.67],
+							["gar", 0.37],
+							["sea lion", 0.13],
+							["albatross", 0.07],
 						]
 					},
 					{
-						image: "assets/images/whale-06.jpg",
+						image: "assets/images/whale-baseball-medium.png",
 						caption: "",
 						rows: [
-							["great white shark", 34.35],
-							["rugby ball", 23.55],
-							["grey whale", 12.91],
-							["baseball", 10.89],
-							["killer whale", 7.70],
-							["ping - pong ball", 3.42],
+							["great white shark", 56.51],
+							["grey whale", 16.94],
+							["baseball", 8.31],
+							["killer whale", 6.18],
+							["rugby ball", 4.83],
+							["ping-pong ball", 1.68],
 						]
 					},
 					{
-						image: "assets/images/whale-05.jpg",
+						image: "assets/images/whale-baseball-large.png",
 						caption: "",
 						rows: [
-							["baseball", 31.13],
-							["ping-pong ball", 22.93],
-							["great white shark", 14.01],
-							["grey whale", 8.11],
-							["rugby ball", 7.34],
-							["killer whale", 6.06],
+							["baseball", 99.95],
+							["ping-pong ball", 0.02],
+							["rugby ball", 0.02],
+							["great white shark", 0.01],
+							["tennis ball", 0.00],
+							["golf ball", 0.00],
 						]
 					},
 				]
