@@ -637,7 +637,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 					},
 					{
 						image: "assets/images/snorkel-train-large.png",
-						caption: "As the picture of the train gets bigger, the classification for “steam locomotive” overwhelms, but “scuba diver” remains in the top five.",
+						caption: "As the picture of the train gets bigger, the classification for “steam locomotive” overwhelms, but “scuba diver” remains.",
 						rows: [
 							["steam locomotive", 87.70],
 							["scuba diver", 5.61],
