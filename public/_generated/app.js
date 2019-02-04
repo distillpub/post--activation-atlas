@@ -1594,7 +1594,7 @@
 	    {
 	      id: "507_982", leftLabel: "snorkel", rightLabel: "scuba diver", left: 507, right: 982,
 	      annotation: [
-	        { pos: { x: 2, y: 7 }, desc: "shark?" },
+	        { pos: { x: 7, y: 8 }, desc: "train?" },
 	      ]
 	    },
 	    { id: "736_744", leftLabel: "head cabbage", rightLabel: "artichoke", left: 736, right: 744, annotation: [] },
@@ -3063,6 +3063,7 @@
 	    ready: false,
 	    src: "",
 	    alt: "",
+	    style: "",
 	    display: "block", //"inline", "inline-block", "block"
 	    aspectRatio: 1, // width/height
 	    border: true,
@@ -3209,6 +3210,7 @@
 				img = createElement("img");
 				img.src = ctx.src;
 				img.alt = ctx.alt;
+				img.style.cssText = ctx.style;
 				img.className = "svelte-1q1tvil svelte-ref-image";
 				addLoc(img, file$9, 4, 8, 160);
 			},
@@ -3225,6 +3227,10 @@
 
 				if (changed.alt) {
 					img.alt = ctx.alt;
+				}
+
+				if (changed.style) {
+					img.style.cssText = ctx.style;
 				}
 			},
 
@@ -3253,6 +3259,7 @@
 		if (!('aspectRatio' in this._state)) console.warn("<LazyImage> was created without expected data property 'aspectRatio'");
 		if (!('src' in this._state)) console.warn("<LazyImage> was created without expected data property 'src'");
 		if (!('alt' in this._state)) console.warn("<LazyImage> was created without expected data property 'alt'");
+		if (!('style' in this._state)) console.warn("<LazyImage> was created without expected data property 'style'");
 		this._intro = true;
 
 		this._fragment = create_main_fragment$9(this, this._state);
