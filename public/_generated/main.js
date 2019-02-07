@@ -3878,47 +3878,40 @@
 	    round: false,
 	    color: "rgb(255, 130, 0)",
 	    enableDragging: true,
-	    mouseUpListener: null,
-	    mouseMoveListener: null
+	    upListener: null,
+	    moveListener: null,
+	    cursor: 'grab'
 	  }
 	}
 	var methods$2 = {
-	  mouseUp() {
-	    const {mouseMoveListener, mouseUpListener} = this.get();
-	    window.removeEventListener("mousemove", mouseMoveListener);
-	    window.removeEventListener("mouseup", mouseUpListener);
+	  up() {
+	    const {upListener, moveListener} = this.get();
+	    window.removeEventListener("pointermove", moveListener);
+	    window.removeEventListener("pointerup", upListener);
+	    this.set({cursor: "grab"});
 	  },
-	  mouseDown(event) {
+	  down(event) {
 	    event.preventDefault();
 	    const {enableDragging, clientWidth, clientHeight} = this.get();
-	    if(enableDragging){
-	      // const gcx = event.offsetX / clientWidth; 
-	      // const gcy = event.offsetY / clientHeight;
-	      //  this.set({
-	      //     dragging: true,
-	      //     gcx,
-	      //     gcy,
-	      //     startPos: {x: event.screenX, y: event.screenY}
-	      //  });
-	      //  this.fire("drag", {gcx, gcy});
-	      this.mouseMove(event);
+	    if (enableDragging) {
+	      this.move(event);
 	    }
-	    const mouseUpListener = this.mouseUp.bind(this);
-	    const mouseMoveListener = this.mouseMove.bind(this);
-	    window.addEventListener("mousemove", mouseMoveListener);
-	    window.addEventListener("mouseup", mouseUpListener);
-	    this.set({mouseMoveListener, mouseUpListener});
+	    const upListener = this.up.bind(this);
+	    window.addEventListener("pointerup", upListener);
+	    const moveListener = this.move.bind(this);
+	    window.addEventListener("pointermove", moveListener);
+	    this.set({upListener, moveListener, cursor: "grabbing"});
 	  },
-	  mouseMove(event) {
+	  move(event) {
 	    const {clientWidth, clientHeight} = this.get();
 	    const gcx = event.offsetX / clientWidth; 
 	    const gcy = event.offsetY / clientHeight;
-	      this.set({
-	        gcx,
-	        gcy,
-	        startPos: {x: event.screenX, y: event.screenY}
-	      });
-	      this.fire("drag", {gcx, gcy});
+	    this.set({
+	      gcx,
+	      gcy,
+	      startPos: {x: event.screenX, y: event.screenY},
+	    });
+	    this.fire("drag", {gcx, gcy});
 	  },
 	};
 
@@ -3933,8 +3926,8 @@
 			component.set({ clientWidth: div.clientWidth, clientHeight: div.clientHeight });
 		}
 
-		function mousedown_handler(event) {
-			component.mouseDown(event);
+		function pointerdown_handler(event) {
+			component.down(event);
 		}
 
 		return {
@@ -3942,8 +3935,9 @@
 				div = createElement("div");
 				if (if_block) if_block.c();
 				component.root._beforecreate.push(div_resize_handler);
-				addListener(div, "mousedown", mousedown_handler);
+				addListener(div, "pointerdown", pointerdown_handler);
 				div.className = "root svelte-1pppif8";
+				setStyle(div, "cursor", ctx.cursor);
 				addLoc(div, file$d, 0, 0, 0);
 			},
 
@@ -3966,6 +3960,10 @@
 					if_block.d(1);
 					if_block = null;
 				}
+
+				if (changed.cursor) {
+					setStyle(div, "cursor", ctx.cursor);
+				}
 			},
 
 			d: function destroy$$1(detach) {
@@ -3975,12 +3973,12 @@
 
 				if (if_block) if_block.d();
 				div_resize_listener.cancel();
-				removeListener(div, "mousedown", mousedown_handler);
+				removeListener(div, "pointerdown", pointerdown_handler);
 			}
 		};
 	}
 
-	// (4:2) {#if extent}
+	// (7:2) {#if extent}
 	function create_if_block$4(component, ctx) {
 		var svg, text, div, div_class_value;
 
@@ -3992,20 +3990,20 @@
 			c: function create() {
 				svg = createSvgElement("svg");
 				if (if_block0) if_block0.c();
-				text = createText("\n    ");
+				text = createText("\n  ");
 				div = createElement("div");
 				if (if_block1) if_block1.c();
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
 				setAttribute(svg, "class", "svelte-1pppif8");
-				addLoc(svg, file$d, 4, 2, 106);
+				addLoc(svg, file$d, 7, 2, 136);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
-				addLoc(div, file$d, 12, 4, 439);
+				addLoc(div, file$d, 15, 2, 467);
 			},
 
 			m: function mount(target, anchor) {
@@ -4092,7 +4090,7 @@
 		};
 	}
 
-	// (6:4) {#if left && right && top && bottom}
+	// (9:4) {#if left && right && top && bottom}
 	function create_if_block_2(component, ctx) {
 		var path, path_class_value, path_d_value;
 
@@ -4101,7 +4099,7 @@
 				path = createSvgElement("path");
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$d, 6, 6, 201);
+				addLoc(path, file$d, 9, 6, 231);
 			},
 
 			m: function mount(target, anchor) {
@@ -4126,7 +4124,7 @@
 		};
 	}
 
-	// (23:4) {#if annotationValue}
+	// (26:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
 		var div2, div1, div0, text;
 
@@ -4137,13 +4135,13 @@
 				div0 = createElement("div");
 				text = createText(ctx.annotationValue);
 				div0.className = "annotation";
-				addLoc(div0, file$d, 25, 10, 851);
+				addLoc(div0, file$d, 28, 10, 861);
 				div1.className = "annotationTab svelte-1pppif8";
 				setStyle(div1, "background", ctx.color);
-				addLoc(div1, file$d, 24, 8, 785);
+				addLoc(div1, file$d, 27, 8, 795);
 				div2.className = "annotationTabParent svelte-1pppif8";
 				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div2, file$d, 23, 6, 710);
+				addLoc(div2, file$d, 26, 6, 720);
 			},
 
 			m: function mount(target, anchor) {
@@ -4188,6 +4186,7 @@
 		if (!('clientWidth' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'clientWidth'");
 		if (!('extent' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'extent'");
 		if (!('clientHeight' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'clientHeight'");
+		if (!('cursor' in this._state)) console.warn("<AtlasReticle> was created without expected data property 'cursor'");
 
 
 
