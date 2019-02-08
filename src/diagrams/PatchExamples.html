@@ -1,0 +1,96 @@
+{#each comparisons as comparison}
+  <!-- <div>{comparison.name}</div> -->
+  <h4>Switching “{$inceptionLabels[comparison.comparison[0]]}” to “{$inceptionLabels[comparison.comparison[1]]}”</h4>
+  <table>
+    <tr class="top-labels">
+      <td></td>
+      <td colspan="{comparison.patches.length}">patch images</td>
+      <td class="random">random noise</td>
+
+    </tr>
+    <tr>
+      <td class="label"></td>
+      {#each comparison.patches as patch, p}
+        <td>
+          <img src="assets/images/patches/{comparison.name}-{format(p + 1)}.png" alt="patch {p}"/>
+        </td>
+      {/each}
+      <td class="random">
+          <img src="assets/images/patches/random.png" alt="patch {p}"/>
+      </td>
+    </tr>
+    <tr>
+      <td class="label">probability before patch</td>
+      {#each comparison.patches as patch}
+        <td>
+        {patch.dynamic[3]}
+        </td>
+      {/each}
+      <td class="random">
+       {comparison.noise.dynamic[3]}
+      </td>
+    </tr>
+    <tr>
+      <td class="label">probability after patch</td>
+      {#each comparison.patches as patch}
+        <td>
+        {patch.dynamic[4]}
+        </td>
+      {/each}
+      <td class="random">
+       {comparison.noise.dynamic[4]}
+      </td>
+    </tr>
+  </table>
+{/each}
+
+
+
+
+<script>
+import Patches from '../Patches.js';
+
+console.log(Patches)
+
+export default {
+  data() {
+    return {
+      comparisons: Patches
+    }
+  },
+  helpers: {
+    format(n) {
+      if (n < 10) {
+        return "0" + n;
+      } else {
+        return n;
+      }
+    }
+  }
+}
+
+</script>
+
+<style>
+  table {
+    width: 100%;
+  }
+  .top-labels td {
+    border-bottom: none;
+  }
+  td {
+    width: 7.5%;
+    padding: 8px 4px;
+    line-height: 1.3em;
+    vertical-align: bottom;
+  }
+
+  td.label {
+    width: 100px;
+  }
+  td.random {
+    border-left: solid 1px #aaa;
+    margin-left: 8px;
+    padding-left: 8px;
+  }
+</style>

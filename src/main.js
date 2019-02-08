@@ -32,6 +32,8 @@ import Focus1Static from './diagrams/Focus1Static.html';
 import Focus2Static from './diagrams/Focus2Static.html';
 import Focus3Static from './diagrams/Focus3Static.html';
 import Focus3TableStatic from './diagrams/Focus3TableStatic.html';
+
+import PatchExamples from './diagrams/PatchExamples.html';
 // import FocusPlayground from './diagrams/FocusPlayground.html';
 // import ClassComparisonSingle from './diagrams/ClassComparisonSingle.html';
 
@@ -796,13 +798,19 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 	// Technical Notes and Limitations
 
+	new PatchExamples({
+		target: document.querySelector("#patch-examples"),
+		store
+	});
 
 	new Samples({
-		target: document.querySelector("#samples")
+		target: document.querySelector("#samples"),
+		store
 	});
 
 	new ClassGrids({
-		target: document.querySelector("#class-grids")
+		target: document.querySelector("#class-grids"),
+		store
 	});
 
 
