@@ -642,3 +642,48 @@ subjects.forEach(s => {
     atlas.render();
   });
 }
+
+
+// 
+// focus-3-6
+// 
+{
+
+  let h = document.createElement("h2");
+  h.textContent = "focus-3-6";
+  app.appendChild(h);
+  let e = document.createElement("div");
+  e.style.width = "1200px";
+  e.style.height = "1200px";
+  e.style.position = "relative";
+  app.appendChild(e);
+
+  let atlas = new Atlas({
+    target: e,
+    store,
+    data: {
+      homeScale: 0.999,
+      id: "inceptionv1_mixed5b",
+      gridSize: 1,
+      alphaAttributionFactor: 2,
+      classHeatmapMultiplier: 2,
+      scaleCountFactor: 500,
+      iconCrop: 0.3,
+      classHeatmap: 442,
+      strokeColor: "rgb(150, 150, 150)",
+      strokeThickness: 1.5,
+      showLabels: false,
+      textShadow: true,
+      enableDragToPan: false,
+      enableClickToZoom: false,
+      enableHover: false
+    }
+  });
+
+  let b = document.createElement("button");
+  b.textContent = "render"
+  app.appendChild(b);
+  b.addEventListener("click", () => {
+    atlas.render();
+  });
+}
