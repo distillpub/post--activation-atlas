@@ -21642,7 +21642,7 @@
 		return {
 			c: function create() {
 				h4 = createElement("h4");
-				h4.textContent = "Comparing the effectiveness of Ten Different patches";
+				h4.textContent = "Comparing the effectiveness of Ten Different patches across 1,000 training set examples";
 				text1 = createText("\n\n");
 				table = createElement("table");
 				tr0 = createElement("tr");
@@ -21698,36 +21698,36 @@
 				addLoc(h4, file$O, 3, 0, 40);
 				addListener(select, "change", select_change_handler);
 				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select_change_handler);
-				addLoc(select, file$O, 10, 8, 173);
+				addLoc(select, file$O, 10, 8, 207);
 				td0.className = "label svelte-1ik0imk";
-				addLoc(td0, file$O, 9, 4, 146);
+				addLoc(td0, file$O, 9, 4, 180);
 				td1.colSpan = td1_colspan_value = ctx.c.patches.length;
 				td1.className = "svelte-1ik0imk";
-				addLoc(td1, file$O, 16, 4, 423);
+				addLoc(td1, file$O, 16, 4, 457);
 				td2.className = "random svelte-1ik0imk";
-				addLoc(td2, file$O, 17, 4, 479);
+				addLoc(td2, file$O, 17, 4, 513);
 				tr0.className = "top-labels svelte-1ik0imk";
-				addLoc(tr0, file$O, 8, 2, 118);
+				addLoc(tr0, file$O, 8, 2, 152);
 				td3.className = "label svelte-1ik0imk";
-				addLoc(td3, file$O, 21, 4, 529);
+				addLoc(td3, file$O, 21, 4, 563);
 				img.src = "assets/images/patches/random.png";
 				img.alt = img_alt_value = "patch " + ctx.p;
-				addLoc(img, file$O, 28, 8, 742);
+				addLoc(img, file$O, 28, 8, 776);
 				td4.className = "random svelte-1ik0imk";
-				addLoc(td4, file$O, 27, 4, 714);
-				addLoc(tr1, file$O, 20, 2, 520);
+				addLoc(td4, file$O, 27, 4, 748);
+				addLoc(tr1, file$O, 20, 2, 554);
 				td5.className = "label svelte-1ik0imk";
-				addLoc(td5, file$O, 32, 4, 833);
+				addLoc(td5, file$O, 32, 4, 867);
 				td6.className = "random svelte-1ik0imk";
-				addLoc(td6, file$O, 38, 4, 982);
-				addLoc(tr2, file$O, 31, 2, 824);
+				addLoc(td6, file$O, 38, 4, 1016);
+				addLoc(tr2, file$O, 31, 2, 858);
 				td7.className = "label svelte-1ik0imk";
-				addLoc(td7, file$O, 43, 4, 1064);
+				addLoc(td7, file$O, 43, 4, 1098);
 				td8.className = "random svelte-1ik0imk";
-				addLoc(td8, file$O, 49, 4, 1212);
-				addLoc(tr3, file$O, 42, 2, 1055);
+				addLoc(td8, file$O, 49, 4, 1246);
+				addLoc(tr3, file$O, 42, 2, 1089);
 				table.className = "svelte-1ik0imk";
-				addLoc(table, file$O, 7, 0, 108);
+				addLoc(table, file$O, 7, 0, 142);
 			},
 
 			m: function mount(target, anchor) {
@@ -21924,7 +21924,7 @@
 				text4 = createText("”");
 				option.__value = ctx.i;
 				option.value = option.__value;
-				addLoc(option, file$O, 12, 6, 261);
+				addLoc(option, file$O, 12, 6, 295);
 			},
 
 			m: function mount(target, anchor) {
@@ -21964,9 +21964,9 @@
 				img = createElement("img");
 				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format$1(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				addLoc(img, file$O, 24, 8, 606);
+				addLoc(img, file$O, 24, 8, 640);
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 23, 6, 593);
+				addLoc(td, file$O, 23, 6, 627);
 			},
 
 			m: function mount(target, anchor) {
@@ -21996,7 +21996,7 @@
 			c: function create() {
 				td = createElement("td");
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 34, 6, 918);
+				addLoc(td, file$O, 34, 6, 952);
 			},
 
 			m: function mount(target, anchor) {
@@ -22026,7 +22026,7 @@
 			c: function create() {
 				td = createElement("td");
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 45, 6, 1148);
+				addLoc(td, file$O, 45, 6, 1182);
 			},
 
 			m: function mount(target, anchor) {
@@ -22683,30 +22683,33 @@
 								["loggerhead", 5.52],
 								["lionfish", 1.71],
 								["sea snake", 1.36]
+								
 							]
 						},
 						{
 							image: "assets/images/snorkel-train-medium.png",
 							caption: "By adding a picture of one of the concepts seen in the visualization above we can change the classification. With an added picture of a steam train the confidence of “scuba diver” classification rises and “snorkel” drops significantly.",
 							rows: [
-								["scuba diver", 91.55],
-								["wreck", 2.39],
-								["amphibian", 1.12],
-								["snorkel", 0.70],
-								["ski", 0.62],
-								["sea snake", 0.59]
+
+								["scuba diver", 71.28],
+								["coral reef", 14.73],
+								["snorkel", 4.49],
+								["lionfish", 3.23],
+								["sea snake", 2.40],
+								["loggerhead", 0.87],
 							]
 						},
 						{
 							image: "assets/images/snorkel-train-large.png",
 							caption: "As the picture of the train gets bigger, the classification for “steam locomotive” overwhelms, but “scuba diver” remains.",
 							rows: [
-								["steam locomotive", 87.70],
-								["scuba diver", 5.61],
-								["tractor", 3.90],
-								["jeep", 0.49],
-								["wreck", 0.38],
-								["harvester", 0.33]
+
+								["steam locomotive", 89.64],
+								["snowplow", 6.17],
+								["jeep", 0.77],
+								["tractor", 0.53],
+								["scuba diver", 0.41],
+								["passenger car", 0.35],
 							]
 						}
 					]
@@ -22720,47 +22723,51 @@
 			data: {
 					left: "frying pan",
 					right: "wok",
-					aspectRatio: 806 / 608,
+					aspectRatio: 236 / 158,
 					classifications: [
 						{
-							image: "assets/images/fry-06.png",
+							image: "assets/images/frying-pan-noodles.png",
 							caption: "Image from ImageNet labeled as “frying pan” with the classification confidences from Inceptionv1 for the top six classes.",
 							rows: [
-								["frying pan", 34.62],
-								["stove", 16.33],
-								["strainer", 11.04],
-								["wok", 9.72],
-								["caldron", 8.79],
-								["Dutch oven", 6.02],
+								["frying pan", 76.52],
+								["wok", 15.83],
+								["stove", 5.41],
+								["spatula", 1.02],
+								["Dutch oven", 0.53],
+								["mixing bowl", 0.17],
 							]
 						},
 						{
-							image: "assets/images/fry-noodles-14.png",
+							image: "assets/images/frying-pan-noodles-medium.png",
 							caption: "By adding a picture of some noodles, also from ImageNet, we can see the top classification change from “frying pan” to “wok.”",
 							rows: [
-								["wok", 48.30],
-								["frying pan", 18.64],
-								["strainer", 14.03],
-								["ladle", 4.40],
-								["stove", 2.77],
-								["caldron", 2.60],
+
+								["wok", 63.17],
+								["frying pan", 35.11],
+								["spatula", 0.64],
+								["hot pot", 0.45],
+								["mixing bowl", 0.12],
+								["stove", 0.11],
 							]
 						},
 						{
-							image: "assets/images/fry-10.png",
+							image: "assets/images/frying-pan-noodles-large.png",
 							caption: "As we make the picture of noodles larger, its influence overpowers the other classifications, but “wok” remains ranked above “frying pan”.",
 							rows: [
-								["carbonara", 87.79],
-								["strainer", 8.16],
-								["wok", 1.67],
-								["ladle", 0.45],
-								["frying pan", 0.37],
-								["French horn", 0.27],
+
+								["carbonara", 96.37],
+								["plate", 2.30],
+								["wok", 0.60],
+								["meat loaf", 0.11],
+								["dishwasher", 0.10],
+								["rotisserie", 0.06],
 							]
 						}
 					]
 				}
 		});
+
+
 
 
 		new Adversarial({
@@ -22775,22 +22782,20 @@
 						image: "assets/images/whale-baseball.png",
 						caption: "",
 						rows: [
-							["grey whale", 90.57],
-							["killer whale", 7.97],
-							["great white shark", 0.67],
-							["gar", 0.37],
-							["sea lion", 0.13],
+							["grey whale", 90.95],
+							["killer whale", 7.54],
+							["great white shark", 0.71],
+							["gar", 0.39],
 						]
 					},
 					{
 						image: "assets/images/whale-baseball-medium.png",
 						caption: "",
 						rows: [
-							["great white shark", 56.51],
-							["grey whale", 16.94],
-							["baseball", 8.31],
-							["killer whale", 6.18],
-							["rugby ball", 4.83],
+							["great white shark", 66.70],
+							["baseball", 7.36],
+							["grey whale", 4.07],
+							["sombrero", 3.22],
 						]
 					}
 				]
@@ -22810,36 +22815,36 @@
 							image: "assets/images/whale-baseball.png",
 							caption: "",
 							rows: [
-								["grey whale", 90.57],
-								["killer whale", 7.97],
-								["great white shark", 0.67],
-								["gar", 0.37],
+								["grey whale", 90.95],
+								["killer whale", 7.54],
+								["great white shark", 0.71],
+								["gar", 0.39],
 								["sea lion", 0.13],
-								["albatross", 0.07],
+								["tiger shark", 0.07],
 							]
 						},
 						{
 							image: "assets/images/whale-baseball-medium.png",
 							caption: "",
 							rows: [
-								["great white shark", 56.51],
-								["grey whale", 16.94],
-								["baseball", 8.31],
-								["killer whale", 6.18],
-								["rugby ball", 4.83],
-								["ping-pong ball", 1.68],
+								["great white shark", 66.70],
+								["baseball", 7.36],
+								["grey whale", 4.07],
+								["sombrero", 3.22],
+								["sea lion", 3.11],
+								["killer whale", 2.70],
 							]
 						},
 						{
 							image: "assets/images/whale-baseball-large.png",
 							caption: "",
 							rows: [
-								["baseball", 99.95],
-								["ping-pong ball", 0.02],
-								["rugby ball", 0.02],
-								["great white shark", 0.01],
-								["tennis ball", 0.00],
+								["baseball", 100.00],
+								["rugby ball", 0.00],
 								["golf ball", 0.00],
+								["ballplayer", 0.00],
+								["drum", 0.00],
+								["sombrero", 0.00],
 							]
 						},
 					]
