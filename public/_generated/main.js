@@ -21642,7 +21642,7 @@
 		return {
 			c: function create() {
 				h4 = createElement("h4");
-				h4.textContent = "Applying Ten Different patches to 1,000 target images";
+				h4.textContent = "Comparing the effectiveness of Ten Different patches";
 				text1 = createText("\n\n");
 				table = createElement("table");
 				tr0 = createElement("tr");
@@ -21698,36 +21698,36 @@
 				addLoc(h4, file$O, 3, 0, 40);
 				addListener(select, "change", select_change_handler);
 				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select_change_handler);
-				addLoc(select, file$O, 11, 8, 175);
+				addLoc(select, file$O, 10, 8, 173);
 				td0.className = "label svelte-1ik0imk";
-				addLoc(td0, file$O, 10, 4, 148);
+				addLoc(td0, file$O, 9, 4, 146);
 				td1.colSpan = td1_colspan_value = ctx.c.patches.length;
 				td1.className = "svelte-1ik0imk";
-				addLoc(td1, file$O, 17, 4, 425);
+				addLoc(td1, file$O, 16, 4, 423);
 				td2.className = "random svelte-1ik0imk";
-				addLoc(td2, file$O, 18, 4, 481);
+				addLoc(td2, file$O, 17, 4, 479);
 				tr0.className = "top-labels svelte-1ik0imk";
-				addLoc(tr0, file$O, 9, 2, 120);
+				addLoc(tr0, file$O, 8, 2, 118);
 				td3.className = "label svelte-1ik0imk";
-				addLoc(td3, file$O, 22, 4, 531);
+				addLoc(td3, file$O, 21, 4, 529);
 				img.src = "assets/images/patches/random.png";
 				img.alt = img_alt_value = "patch " + ctx.p;
-				addLoc(img, file$O, 29, 8, 744);
+				addLoc(img, file$O, 28, 8, 742);
 				td4.className = "random svelte-1ik0imk";
-				addLoc(td4, file$O, 28, 4, 716);
-				addLoc(tr1, file$O, 21, 2, 522);
+				addLoc(td4, file$O, 27, 4, 714);
+				addLoc(tr1, file$O, 20, 2, 520);
 				td5.className = "label svelte-1ik0imk";
-				addLoc(td5, file$O, 33, 4, 835);
+				addLoc(td5, file$O, 32, 4, 833);
 				td6.className = "random svelte-1ik0imk";
-				addLoc(td6, file$O, 39, 4, 984);
-				addLoc(tr2, file$O, 32, 2, 826);
+				addLoc(td6, file$O, 38, 4, 982);
+				addLoc(tr2, file$O, 31, 2, 824);
 				td7.className = "label svelte-1ik0imk";
-				addLoc(td7, file$O, 44, 4, 1066);
+				addLoc(td7, file$O, 43, 4, 1064);
 				td8.className = "random svelte-1ik0imk";
-				addLoc(td8, file$O, 50, 4, 1214);
-				addLoc(tr3, file$O, 43, 2, 1057);
+				addLoc(td8, file$O, 49, 4, 1212);
+				addLoc(tr3, file$O, 42, 2, 1055);
 				table.className = "svelte-1ik0imk";
-				addLoc(table, file$O, 8, 0, 110);
+				addLoc(table, file$O, 7, 0, 108);
 			},
 
 			m: function mount(target, anchor) {
@@ -21910,7 +21910,7 @@
 		};
 	}
 
-	// (13:4) {#each comparisons as comparison, i}
+	// (12:4) {#each comparisons as comparison, i}
 	function create_each_block_3$2(component, ctx) {
 		var option, text0, text1_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]], text1, text2, text3_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]], text3, text4;
 
@@ -21924,7 +21924,7 @@
 				text4 = createText("”");
 				option.__value = ctx.i;
 				option.value = option.__value;
-				addLoc(option, file$O, 13, 6, 263);
+				addLoc(option, file$O, 12, 6, 261);
 			},
 
 			m: function mount(target, anchor) {
@@ -21954,7 +21954,7 @@
 		};
 	}
 
-	// (24:4) {#each c.patches as patch, p}
+	// (23:4) {#each c.patches as patch, p}
 	function create_each_block_2$4(component, ctx) {
 		var td, img, img_src_value;
 
@@ -21964,9 +21964,9 @@
 				img = createElement("img");
 				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format$1(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				addLoc(img, file$O, 25, 8, 608);
+				addLoc(img, file$O, 24, 8, 606);
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 24, 6, 595);
+				addLoc(td, file$O, 23, 6, 593);
 			},
 
 			m: function mount(target, anchor) {
@@ -21988,7 +21988,7 @@
 		};
 	}
 
-	// (35:4) {#each c.patches as patch}
+	// (34:4) {#each c.patches as patch}
 	function create_each_block_1$7(component, ctx) {
 		var td, raw_value = ctx.patch.dynamic[3];
 
@@ -21996,7 +21996,7 @@
 			c: function create() {
 				td = createElement("td");
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 35, 6, 920);
+				addLoc(td, file$O, 34, 6, 918);
 			},
 
 			m: function mount(target, anchor) {
@@ -22018,7 +22018,7 @@
 		};
 	}
 
-	// (46:4) {#each c.patches as patch}
+	// (45:4) {#each c.patches as patch}
 	function create_each_block$e(component, ctx) {
 		var td, raw_value = ctx.patch.dynamic[4];
 
@@ -22026,7 +22026,7 @@
 			c: function create() {
 				td = createElement("td");
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 46, 6, 1150);
+				addLoc(td, file$O, 45, 6, 1148);
 			},
 
 			m: function mount(target, anchor) {
