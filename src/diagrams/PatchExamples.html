@@ -1,48 +1,58 @@
-{#each comparisons as comparison}
-  <!-- <div>{comparison.name}</div> -->
-  <h4>Switching “{$inceptionLabels[comparison.comparison[0]]}” to “{$inceptionLabels[comparison.comparison[1]]}”</h4>
-  <table>
-    <tr class="top-labels">
-      <td></td>
-      <td colspan="{comparison.patches.length}">patch images</td>
-      <td class="random">random noise</td>
 
-    </tr>
-    <tr>
-      <td class="label"></td>
-      {#each comparison.patches as patch, p}
-        <td>
-          <img src="assets/images/patches/{comparison.name}-{format(p + 1)}.png" alt="patch {p}"/>
-        </td>
-      {/each}
-      <td class="random">
-          <img src="assets/images/patches/random.png" alt="patch {p}"/>
+
+<!-- <div>{comparison.name}</div> -->
+<h4>
+  Applying Ten Different patches to 1,000 target images 
+
+</h4>
+
+<table>
+  <tr class="top-labels">
+    <td class="label">
+        <select bind:value="selectedComparison">
+    {#each comparisons as comparison, i}
+      <option value={i}>“{$inceptionLabels[comparison.comparison[0]]}” to “{$inceptionLabels[comparison.comparison[1]]}”</option>
+    {/each}
+  </select>
+    </td>
+    <td colspan="{c.patches.length}">image patches</td>
+    <td class="random">noise</td>
+
+  </tr>
+  <tr>
+    <td class="label"></td>
+    {#each c.patches as patch, p}
+      <td>
+        <img src="assets/images/patches/{c.name}-{format(p + 1)}.png" alt="patch {p}"/>
       </td>
-    </tr>
-    <tr>
-      <td class="label">probability before patch</td>
-      {#each comparison.patches as patch}
-        <td>
-        {patch.dynamic[3]}
-        </td>
-      {/each}
-      <td class="random">
-       {comparison.noise.dynamic[3]}
+    {/each}
+    <td class="random">
+        <img src="assets/images/patches/random.png" alt="patch {p}"/>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">probability before patch</td>
+    {#each c.patches as patch}
+      <td>
+      {@html patch.dynamic[3]}
       </td>
-    </tr>
-    <tr>
-      <td class="label">probability after patch</td>
-      {#each comparison.patches as patch}
-        <td>
-        {patch.dynamic[4]}
-        </td>
-      {/each}
-      <td class="random">
-       {comparison.noise.dynamic[4]}
+    {/each}
+    <td class="random">
+      {@html c.noise.dynamic[3]}
+    </td>
+  </tr>
+  <tr>
+    <td class="label">probability after patch</td>
+    {#each c.patches as patch}
+      <td>
+      {@html patch.dynamic[4]}
       </td>
-    </tr>
-  </table>
-{/each}
+    {/each}
+    <td class="random">
+      {@html c.noise.dynamic[4]}
+    </td>
+  </tr>
+</table>
 
 
 
@@ -55,8 +65,12 @@ console.log(Patches)
 export default {
   data() {
     return {
-      comparisons: Patches
+      comparisons: Patches,
+      selectedComparison: 0,
     }
+  },
+  computed: {
+    c: ({selectedComparison, comparisons}) => comparisons[selectedComparison]
   },
   helpers: {
     format(n) {
@@ -77,20 +91,22 @@ export default {
   }
   .top-labels td {
     border-bottom: none;
+    padding: 0px 8px;
+    font-size: 12px;
+    text-transform: uppercase;
   }
   td {
-    width: 7.5%;
-    padding: 8px 4px;
-    line-height: 1.3em;
-    vertical-align: bottom;
+    width: 7.2%;
+    line-height: 1.5em;
+    vertical-align: top;
   }
-
   td.label {
-    width: 100px;
+    border-right: solid 1px #aaa;
+    margin-right: 8px;
+    width: 200px;
   }
   td.random {
     border-left: solid 1px #aaa;
     margin-left: 8px;
-    padding-left: 8px;
   }
 </style>

@@ -102,6 +102,22 @@
 		node.style.setProperty(key, value);
 	}
 
+	function selectOption(select, value) {
+		for (var i = 0; i < select.options.length; i += 1) {
+			var option = select.options[i];
+
+			if (option.__value === value) {
+				option.selected = true;
+				return;
+			}
+		}
+	}
+
+	function selectValue(select) {
+		var selectedOption = select.querySelector(':checked') || select.options[0];
+		return selectedOption && selectedOption.__value;
+	}
+
 	function addResizeListener(element, fn) {
 		if (getComputedStyle(element).position === 'static') {
 			element.style.position = 'relative';
@@ -21537,9 +21553,14 @@
 
 	console.log(Patches);
 
+	function c({selectedComparison, comparisons}) {
+		return comparisons[selectedComparison];
+	}
+
 	function data$A() {
 	  return {
-	    comparisons: Patches
+	    comparisons: Patches,
+	    selectedComparison: 0,
 	  }
 	}
 	function format$1(n) {
@@ -21551,6 +21572,12 @@
 	}
 	const file$O = "src/diagrams/PatchExamples.html";
 
+	function get_each3_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.patch = list[i];
+		return child_ctx;
+	}
+
 	function get_each2_context$3(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.patch = list[i];
@@ -21560,96 +21587,386 @@
 	function get_each1_context$6(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.patch = list[i];
+		child_ctx.p = i;
 		return child_ctx;
 	}
 
 	function get_each0_context$6(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
-		child_ctx.patch = list[i];
-		child_ctx.p = i;
-		return child_ctx;
-	}
-
-	function get_each_context$b(ctx, list, i) {
-		const child_ctx = Object.create(ctx);
 		child_ctx.comparison = list[i];
+		child_ctx.i = i;
 		return child_ctx;
 	}
 
 	function create_main_fragment$P(component, ctx) {
-		var each_anchor;
+		var h4, text1, table, tr0, td0, select, select_updating = false, text2, td1, text3, td1_colspan_value, text4, td2, text6, tr1, td3, text7, text8, td4, img, img_alt_value, text9, tr2, td5, text11, text12, td6, raw0_value = ctx.c.noise.dynamic[3], text13, tr3, td7, text15, text16, td8, raw1_value = ctx.c.noise.dynamic[4];
 
-		var each_value = ctx.comparisons;
+		var each0_value = ctx.comparisons;
 
-		var each_blocks = [];
+		var each0_blocks = [];
 
-		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$e(component, get_each_context$b(ctx, each_value, i));
+		for (var i = 0; i < each0_value.length; i += 1) {
+			each0_blocks[i] = create_each_block_3$2(component, get_each0_context$6(ctx, each0_value, i));
+		}
+
+		function select_change_handler() {
+			select_updating = true;
+			component.set({ selectedComparison: selectValue(select) });
+			select_updating = false;
+		}
+
+		var each1_value = ctx.c.patches;
+
+		var each1_blocks = [];
+
+		for (var i = 0; i < each1_value.length; i += 1) {
+			each1_blocks[i] = create_each_block_2$4(component, get_each1_context$6(ctx, each1_value, i));
+		}
+
+		var each2_value = ctx.c.patches;
+
+		var each2_blocks = [];
+
+		for (var i = 0; i < each2_value.length; i += 1) {
+			each2_blocks[i] = create_each_block_1$7(component, get_each2_context$3(ctx, each2_value, i));
+		}
+
+		var each3_value = ctx.c.patches;
+
+		var each3_blocks = [];
+
+		for (var i = 0; i < each3_value.length; i += 1) {
+			each3_blocks[i] = create_each_block$e(component, get_each3_context(ctx, each3_value, i));
 		}
 
 		return {
 			c: function create() {
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
+				h4 = createElement("h4");
+				h4.textContent = "Applying Ten Different patches to 1,000 target images";
+				text1 = createText("\n\n");
+				table = createElement("table");
+				tr0 = createElement("tr");
+				td0 = createElement("td");
+				select = createElement("select");
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].c();
 				}
 
-				each_anchor = createComment();
+				text2 = createText("\n    ");
+				td1 = createElement("td");
+				text3 = createText("image patches");
+				text4 = createText("\n    ");
+				td2 = createElement("td");
+				td2.textContent = "noise";
+				text6 = createText("\n  ");
+				tr1 = createElement("tr");
+				td3 = createElement("td");
+				text7 = createText("\n    ");
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].c();
+				}
+
+				text8 = createText("\n    ");
+				td4 = createElement("td");
+				img = createElement("img");
+				text9 = createText("\n  ");
+				tr2 = createElement("tr");
+				td5 = createElement("td");
+				td5.textContent = "probability before patch";
+				text11 = createText("\n    ");
+
+				for (var i = 0; i < each2_blocks.length; i += 1) {
+					each2_blocks[i].c();
+				}
+
+				text12 = createText("\n    ");
+				td6 = createElement("td");
+				text13 = createText("\n  ");
+				tr3 = createElement("tr");
+				td7 = createElement("td");
+				td7.textContent = "probability after patch";
+				text15 = createText("\n    ");
+
+				for (var i = 0; i < each3_blocks.length; i += 1) {
+					each3_blocks[i].c();
+				}
+
+				text16 = createText("\n    ");
+				td8 = createElement("td");
+				addLoc(h4, file$O, 3, 0, 40);
+				addListener(select, "change", select_change_handler);
+				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select_change_handler);
+				addLoc(select, file$O, 11, 8, 175);
+				td0.className = "label svelte-1ik0imk";
+				addLoc(td0, file$O, 10, 4, 148);
+				td1.colSpan = td1_colspan_value = ctx.c.patches.length;
+				td1.className = "svelte-1ik0imk";
+				addLoc(td1, file$O, 17, 4, 425);
+				td2.className = "random svelte-1ik0imk";
+				addLoc(td2, file$O, 18, 4, 481);
+				tr0.className = "top-labels svelte-1ik0imk";
+				addLoc(tr0, file$O, 9, 2, 120);
+				td3.className = "label svelte-1ik0imk";
+				addLoc(td3, file$O, 22, 4, 531);
+				img.src = "assets/images/patches/random.png";
+				img.alt = img_alt_value = "patch " + ctx.p;
+				addLoc(img, file$O, 29, 8, 744);
+				td4.className = "random svelte-1ik0imk";
+				addLoc(td4, file$O, 28, 4, 716);
+				addLoc(tr1, file$O, 21, 2, 522);
+				td5.className = "label svelte-1ik0imk";
+				addLoc(td5, file$O, 33, 4, 835);
+				td6.className = "random svelte-1ik0imk";
+				addLoc(td6, file$O, 39, 4, 984);
+				addLoc(tr2, file$O, 32, 2, 826);
+				td7.className = "label svelte-1ik0imk";
+				addLoc(td7, file$O, 44, 4, 1066);
+				td8.className = "random svelte-1ik0imk";
+				addLoc(td8, file$O, 50, 4, 1214);
+				addLoc(tr3, file$O, 43, 2, 1057);
+				table.className = "svelte-1ik0imk";
+				addLoc(table, file$O, 8, 0, 110);
 			},
 
 			m: function mount(target, anchor) {
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(target, anchor);
+				insert(target, h4, anchor);
+				insert(target, text1, anchor);
+				insert(target, table, anchor);
+				append(table, tr0);
+				append(tr0, td0);
+				append(td0, select);
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].m(select, null);
 				}
 
-				insert(target, each_anchor, anchor);
+				selectOption(select, ctx.selectedComparison);
+
+				append(tr0, text2);
+				append(tr0, td1);
+				append(td1, text3);
+				append(tr0, text4);
+				append(tr0, td2);
+				append(table, text6);
+				append(table, tr1);
+				append(tr1, td3);
+				append(tr1, text7);
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].m(tr1, null);
+				}
+
+				append(tr1, text8);
+				append(tr1, td4);
+				append(td4, img);
+				append(table, text9);
+				append(table, tr2);
+				append(tr2, td5);
+				append(tr2, text11);
+
+				for (var i = 0; i < each2_blocks.length; i += 1) {
+					each2_blocks[i].m(tr2, null);
+				}
+
+				append(tr2, text12);
+				append(tr2, td6);
+				td6.innerHTML = raw0_value;
+				append(table, text13);
+				append(table, tr3);
+				append(tr3, td7);
+				append(tr3, text15);
+
+				for (var i = 0; i < each3_blocks.length; i += 1) {
+					each3_blocks[i].m(tr3, null);
+				}
+
+				append(tr3, text16);
+				append(tr3, td8);
+				td8.innerHTML = raw1_value;
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.comparisons || changed.p || changed.$inceptionLabels) {
-					each_value = ctx.comparisons;
+				if (changed.$inceptionLabels || changed.comparisons) {
+					each0_value = ctx.comparisons;
 
-					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$b(ctx, each_value, i);
+					for (var i = 0; i < each0_value.length; i += 1) {
+						const child_ctx = get_each0_context$6(ctx, each0_value, i);
 
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, child_ctx);
+						if (each0_blocks[i]) {
+							each0_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$e(component, child_ctx);
-							each_blocks[i].c();
-							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+							each0_blocks[i] = create_each_block_3$2(component, child_ctx);
+							each0_blocks[i].c();
+							each0_blocks[i].m(select, null);
 						}
 					}
 
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].d(1);
+					for (; i < each0_blocks.length; i += 1) {
+						each0_blocks[i].d(1);
 					}
-					each_blocks.length = each_value.length;
+					each0_blocks.length = each0_value.length;
+				}
+
+				if (!select_updating && changed.selectedComparison) selectOption(select, ctx.selectedComparison);
+				if ((changed.c) && td1_colspan_value !== (td1_colspan_value = ctx.c.patches.length)) {
+					td1.colSpan = td1_colspan_value;
+				}
+
+				if (changed.c) {
+					each1_value = ctx.c.patches;
+
+					for (var i = 0; i < each1_value.length; i += 1) {
+						const child_ctx = get_each1_context$6(ctx, each1_value, i);
+
+						if (each1_blocks[i]) {
+							each1_blocks[i].p(changed, child_ctx);
+						} else {
+							each1_blocks[i] = create_each_block_2$4(component, child_ctx);
+							each1_blocks[i].c();
+							each1_blocks[i].m(tr1, text8);
+						}
+					}
+
+					for (; i < each1_blocks.length; i += 1) {
+						each1_blocks[i].d(1);
+					}
+					each1_blocks.length = each1_value.length;
+				}
+
+				if ((changed.p) && img_alt_value !== (img_alt_value = "patch " + ctx.p)) {
+					img.alt = img_alt_value;
+				}
+
+				if (changed.c) {
+					each2_value = ctx.c.patches;
+
+					for (var i = 0; i < each2_value.length; i += 1) {
+						const child_ctx = get_each2_context$3(ctx, each2_value, i);
+
+						if (each2_blocks[i]) {
+							each2_blocks[i].p(changed, child_ctx);
+						} else {
+							each2_blocks[i] = create_each_block_1$7(component, child_ctx);
+							each2_blocks[i].c();
+							each2_blocks[i].m(tr2, text12);
+						}
+					}
+
+					for (; i < each2_blocks.length; i += 1) {
+						each2_blocks[i].d(1);
+					}
+					each2_blocks.length = each2_value.length;
+				}
+
+				if ((changed.c) && raw0_value !== (raw0_value = ctx.c.noise.dynamic[3])) {
+					td6.innerHTML = raw0_value;
+				}
+
+				if (changed.c) {
+					each3_value = ctx.c.patches;
+
+					for (var i = 0; i < each3_value.length; i += 1) {
+						const child_ctx = get_each3_context(ctx, each3_value, i);
+
+						if (each3_blocks[i]) {
+							each3_blocks[i].p(changed, child_ctx);
+						} else {
+							each3_blocks[i] = create_each_block$e(component, child_ctx);
+							each3_blocks[i].c();
+							each3_blocks[i].m(tr3, text16);
+						}
+					}
+
+					for (; i < each3_blocks.length; i += 1) {
+						each3_blocks[i].d(1);
+					}
+					each3_blocks.length = each3_value.length;
+				}
+
+				if ((changed.c) && raw1_value !== (raw1_value = ctx.c.noise.dynamic[4])) {
+					td8.innerHTML = raw1_value;
 				}
 			},
 
 			d: function destroy$$1(detach) {
-				destroyEach(each_blocks, detach);
-
 				if (detach) {
-					detachNode(each_anchor);
+					detachNode(h4);
+					detachNode(text1);
+					detachNode(table);
+				}
+
+				destroyEach(each0_blocks, detach);
+
+				removeListener(select, "change", select_change_handler);
+
+				destroyEach(each1_blocks, detach);
+
+				destroyEach(each2_blocks, detach);
+
+				destroyEach(each3_blocks, detach);
+			}
+		};
+	}
+
+	// (13:4) {#each comparisons as comparison, i}
+	function create_each_block_3$2(component, ctx) {
+		var option, text0, text1_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]], text1, text2, text3_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]], text3, text4;
+
+		return {
+			c: function create() {
+				option = createElement("option");
+				text0 = createText("“");
+				text1 = createText(text1_value);
+				text2 = createText("” to “");
+				text3 = createText(text3_value);
+				text4 = createText("”");
+				option.__value = ctx.i;
+				option.value = option.__value;
+				addLoc(option, file$O, 13, 6, 263);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, option, anchor);
+				append(option, text0);
+				append(option, text1);
+				append(option, text2);
+				append(option, text3);
+				append(option, text4);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.$inceptionLabels || changed.comparisons) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]])) {
+					setData(text1, text1_value);
+				}
+
+				if ((changed.$inceptionLabels || changed.comparisons) && text3_value !== (text3_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]])) {
+					setData(text3, text3_value);
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(option);
 				}
 			}
 		};
 	}
 
-	// (13:6) {#each comparison.patches as patch, p}
-	function create_each_block_3$2(component, ctx) {
+	// (24:4) {#each c.patches as patch, p}
+	function create_each_block_2$4(component, ctx) {
 		var td, img, img_src_value;
 
 		return {
 			c: function create() {
 				td = createElement("td");
 				img = createElement("img");
-				img.src = img_src_value = "assets/images/patches/" + ctx.comparison.name + "-" + format$1(ctx.p + 1) + ".png";
+				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format$1(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				addLoc(img, file$O, 14, 10, 473);
-				td.className = "svelte-jsofu2";
-				addLoc(td, file$O, 13, 8, 458);
+				addLoc(img, file$O, 25, 8, 608);
+				td.className = "svelte-1ik0imk";
+				addLoc(td, file$O, 24, 6, 595);
 			},
 
 			m: function mount(target, anchor) {
@@ -21658,7 +21975,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.comparisons) && img_src_value !== (img_src_value = "assets/images/patches/" + ctx.comparison.name + "-" + format$1(ctx.p + 1) + ".png")) {
+				if ((changed.c) && img_src_value !== (img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format$1(ctx.p + 1) + ".png")) {
 					img.src = img_src_value;
 				}
 			},
@@ -21671,57 +21988,25 @@
 		};
 	}
 
-	// (24:6) {#each comparison.patches as patch}
-	function create_each_block_2$4(component, ctx) {
-		var td, text_value = ctx.patch.dynamic[3], text;
-
-		return {
-			c: function create() {
-				td = createElement("td");
-				text = createText(text_value);
-				td.className = "svelte-jsofu2";
-				addLoc(td, file$O, 24, 8, 823);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, td, anchor);
-				append(td, text);
-			},
-
-			p: function update(changed, ctx) {
-				if ((changed.comparisons) && text_value !== (text_value = ctx.patch.dynamic[3])) {
-					setData(text, text_value);
-				}
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(td);
-				}
-			}
-		};
-	}
-
-	// (35:6) {#each comparison.patches as patch}
+	// (35:4) {#each c.patches as patch}
 	function create_each_block_1$7(component, ctx) {
-		var td, text_value = ctx.patch.dynamic[4], text;
+		var td, raw_value = ctx.patch.dynamic[3];
 
 		return {
 			c: function create() {
 				td = createElement("td");
-				text = createText(text_value);
-				td.className = "svelte-jsofu2";
-				addLoc(td, file$O, 35, 8, 1080);
+				td.className = "svelte-1ik0imk";
+				addLoc(td, file$O, 35, 6, 920);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, td, anchor);
-				append(td, text);
+				td.innerHTML = raw_value;
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.comparisons) && text_value !== (text_value = ctx.patch.dynamic[4])) {
-					setData(text, text_value);
+				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[3])) {
+					td.innerHTML = raw_value;
 				}
 			},
 
@@ -21733,279 +22018,32 @@
 		};
 	}
 
-	// (1:0) {#each comparisons as comparison}
+	// (46:4) {#each c.patches as patch}
 	function create_each_block$e(component, ctx) {
-		var h4, text0, text1_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]], text1, text2, text3_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]], text3, text4, text5, table, tr0, td0, text6, td1, text7, td1_colspan_value, text8, td2, text10, tr1, td3, text11, text12, td4, img, img_alt_value, text13, tr2, td5, text15, text16, td6, text17_value = ctx.comparison.noise.dynamic[3], text17, text18, tr3, td7, text20, text21, td8, text22_value = ctx.comparison.noise.dynamic[4], text22, text23;
-
-		var each0_value = ctx.comparison.patches;
-
-		var each0_blocks = [];
-
-		for (var i = 0; i < each0_value.length; i += 1) {
-			each0_blocks[i] = create_each_block_3$2(component, get_each0_context$6(ctx, each0_value, i));
-		}
-
-		var each1_value = ctx.comparison.patches;
-
-		var each1_blocks = [];
-
-		for (var i = 0; i < each1_value.length; i += 1) {
-			each1_blocks[i] = create_each_block_2$4(component, get_each1_context$6(ctx, each1_value, i));
-		}
-
-		var each2_value = ctx.comparison.patches;
-
-		var each2_blocks = [];
-
-		for (var i = 0; i < each2_value.length; i += 1) {
-			each2_blocks[i] = create_each_block_1$7(component, get_each2_context$3(ctx, each2_value, i));
-		}
+		var td, raw_value = ctx.patch.dynamic[4];
 
 		return {
 			c: function create() {
-				h4 = createElement("h4");
-				text0 = createText("Switching “");
-				text1 = createText(text1_value);
-				text2 = createText("” to “");
-				text3 = createText(text3_value);
-				text4 = createText("”");
-				text5 = createText("\n  ");
-				table = createElement("table");
-				tr0 = createElement("tr");
-				td0 = createElement("td");
-				text6 = createText("\n      ");
-				td1 = createElement("td");
-				text7 = createText("patch images");
-				text8 = createText("\n      ");
-				td2 = createElement("td");
-				td2.textContent = "random noise";
-				text10 = createText("\n    ");
-				tr1 = createElement("tr");
-				td3 = createElement("td");
-				text11 = createText("\n      ");
-
-				for (var i = 0; i < each0_blocks.length; i += 1) {
-					each0_blocks[i].c();
-				}
-
-				text12 = createText("\n      ");
-				td4 = createElement("td");
-				img = createElement("img");
-				text13 = createText("\n    ");
-				tr2 = createElement("tr");
-				td5 = createElement("td");
-				td5.textContent = "probability before patch";
-				text15 = createText("\n      ");
-
-				for (var i = 0; i < each1_blocks.length; i += 1) {
-					each1_blocks[i].c();
-				}
-
-				text16 = createText("\n      ");
-				td6 = createElement("td");
-				text17 = createText(text17_value);
-				text18 = createText("\n    ");
-				tr3 = createElement("tr");
-				td7 = createElement("td");
-				td7.textContent = "probability after patch";
-				text20 = createText("\n      ");
-
-				for (var i = 0; i < each2_blocks.length; i += 1) {
-					each2_blocks[i].c();
-				}
-
-				text21 = createText("\n      ");
-				td8 = createElement("td");
-				text22 = createText(text22_value);
-				text23 = createText("\n  ");
-				addLoc(h4, file$O, 2, 2, 76);
-				td0.className = "svelte-jsofu2";
-				addLoc(td0, file$O, 5, 6, 236);
-				td1.colSpan = td1_colspan_value = ctx.comparison.patches.length;
-				td1.className = "svelte-jsofu2";
-				addLoc(td1, file$O, 6, 6, 252);
-				td2.className = "random svelte-jsofu2";
-				addLoc(td2, file$O, 7, 6, 318);
-				tr0.className = "top-labels svelte-jsofu2";
-				addLoc(tr0, file$O, 4, 4, 206);
-				td3.className = "label svelte-jsofu2";
-				addLoc(td3, file$O, 11, 6, 381);
-				img.src = "assets/images/patches/random.png";
-				img.alt = img_alt_value = "patch " + ctx.p;
-				addLoc(img, file$O, 18, 10, 626);
-				td4.className = "random svelte-jsofu2";
-				addLoc(td4, file$O, 17, 6, 596);
-				addLoc(tr1, file$O, 10, 4, 370);
-				td5.className = "label svelte-jsofu2";
-				addLoc(td5, file$O, 22, 6, 725);
-				td6.className = "random svelte-jsofu2";
-				addLoc(td6, file$O, 28, 6, 889);
-				addLoc(tr2, file$O, 21, 4, 714);
-				td7.className = "label svelte-jsofu2";
-				addLoc(td7, file$O, 33, 6, 983);
-				td8.className = "random svelte-jsofu2";
-				addLoc(td8, file$O, 39, 6, 1146);
-				addLoc(tr3, file$O, 32, 4, 972);
-				table.className = "svelte-jsofu2";
-				addLoc(table, file$O, 3, 2, 194);
+				td = createElement("td");
+				td.className = "svelte-1ik0imk";
+				addLoc(td, file$O, 46, 6, 1150);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, h4, anchor);
-				append(h4, text0);
-				append(h4, text1);
-				append(h4, text2);
-				append(h4, text3);
-				append(h4, text4);
-				insert(target, text5, anchor);
-				insert(target, table, anchor);
-				append(table, tr0);
-				append(tr0, td0);
-				append(tr0, text6);
-				append(tr0, td1);
-				append(td1, text7);
-				append(tr0, text8);
-				append(tr0, td2);
-				append(table, text10);
-				append(table, tr1);
-				append(tr1, td3);
-				append(tr1, text11);
-
-				for (var i = 0; i < each0_blocks.length; i += 1) {
-					each0_blocks[i].m(tr1, null);
-				}
-
-				append(tr1, text12);
-				append(tr1, td4);
-				append(td4, img);
-				append(table, text13);
-				append(table, tr2);
-				append(tr2, td5);
-				append(tr2, text15);
-
-				for (var i = 0; i < each1_blocks.length; i += 1) {
-					each1_blocks[i].m(tr2, null);
-				}
-
-				append(tr2, text16);
-				append(tr2, td6);
-				append(td6, text17);
-				append(table, text18);
-				append(table, tr3);
-				append(tr3, td7);
-				append(tr3, text20);
-
-				for (var i = 0; i < each2_blocks.length; i += 1) {
-					each2_blocks[i].m(tr3, null);
-				}
-
-				append(tr3, text21);
-				append(tr3, td8);
-				append(td8, text22);
-				append(table, text23);
+				insert(target, td, anchor);
+				td.innerHTML = raw_value;
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.$inceptionLabels || changed.comparisons) && text1_value !== (text1_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]])) {
-					setData(text1, text1_value);
-				}
-
-				if ((changed.$inceptionLabels || changed.comparisons) && text3_value !== (text3_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]])) {
-					setData(text3, text3_value);
-				}
-
-				if ((changed.comparisons) && td1_colspan_value !== (td1_colspan_value = ctx.comparison.patches.length)) {
-					td1.colSpan = td1_colspan_value;
-				}
-
-				if (changed.comparisons) {
-					each0_value = ctx.comparison.patches;
-
-					for (var i = 0; i < each0_value.length; i += 1) {
-						const child_ctx = get_each0_context$6(ctx, each0_value, i);
-
-						if (each0_blocks[i]) {
-							each0_blocks[i].p(changed, child_ctx);
-						} else {
-							each0_blocks[i] = create_each_block_3$2(component, child_ctx);
-							each0_blocks[i].c();
-							each0_blocks[i].m(tr1, text12);
-						}
-					}
-
-					for (; i < each0_blocks.length; i += 1) {
-						each0_blocks[i].d(1);
-					}
-					each0_blocks.length = each0_value.length;
-				}
-
-				if ((changed.p) && img_alt_value !== (img_alt_value = "patch " + ctx.p)) {
-					img.alt = img_alt_value;
-				}
-
-				if (changed.comparisons) {
-					each1_value = ctx.comparison.patches;
-
-					for (var i = 0; i < each1_value.length; i += 1) {
-						const child_ctx = get_each1_context$6(ctx, each1_value, i);
-
-						if (each1_blocks[i]) {
-							each1_blocks[i].p(changed, child_ctx);
-						} else {
-							each1_blocks[i] = create_each_block_2$4(component, child_ctx);
-							each1_blocks[i].c();
-							each1_blocks[i].m(tr2, text16);
-						}
-					}
-
-					for (; i < each1_blocks.length; i += 1) {
-						each1_blocks[i].d(1);
-					}
-					each1_blocks.length = each1_value.length;
-				}
-
-				if ((changed.comparisons) && text17_value !== (text17_value = ctx.comparison.noise.dynamic[3])) {
-					setData(text17, text17_value);
-				}
-
-				if (changed.comparisons) {
-					each2_value = ctx.comparison.patches;
-
-					for (var i = 0; i < each2_value.length; i += 1) {
-						const child_ctx = get_each2_context$3(ctx, each2_value, i);
-
-						if (each2_blocks[i]) {
-							each2_blocks[i].p(changed, child_ctx);
-						} else {
-							each2_blocks[i] = create_each_block_1$7(component, child_ctx);
-							each2_blocks[i].c();
-							each2_blocks[i].m(tr3, text21);
-						}
-					}
-
-					for (; i < each2_blocks.length; i += 1) {
-						each2_blocks[i].d(1);
-					}
-					each2_blocks.length = each2_value.length;
-				}
-
-				if ((changed.comparisons) && text22_value !== (text22_value = ctx.comparison.noise.dynamic[4])) {
-					setData(text22, text22_value);
+				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[4])) {
+					td.innerHTML = raw_value;
 				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
-					detachNode(h4);
-					detachNode(text5);
-					detachNode(table);
+					detachNode(td);
 				}
-
-				destroyEach(each0_blocks, detach);
-
-				destroyEach(each1_blocks, detach);
-
-				destroyEach(each2_blocks, detach);
 			}
 		};
 	}
@@ -22022,8 +22060,12 @@
 		init(this, options);
 		this._state = assign(assign(this.store._init(["inceptionLabels"]), data$A()), options.data);
 		this.store._add(this, ["inceptionLabels"]);
+
+		this._recompute({ selectedComparison: 1, comparisons: 1 }, this._state);
+		if (!('selectedComparison' in this._state)) console.warn("<PatchExamples> was created without expected data property 'selectedComparison'");
 		if (!('comparisons' in this._state)) console.warn("<PatchExamples> was created without expected data property 'comparisons'");
 		if (!('$inceptionLabels' in this._state)) console.warn("<PatchExamples> was created without expected data property '$inceptionLabels'");
+
 		if (!('p' in this._state)) console.warn("<PatchExamples> was created without expected data property 'p'");
 		this._intro = true;
 
@@ -22035,12 +22077,21 @@
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 			this._fragment.c();
 			this._mount(options.target, options.anchor);
+
+			flush(this);
 		}
 	}
 
 	assign(PatchExamples.prototype, protoDev);
 
 	PatchExamples.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('c' in newState && !this._updatingReadonlyProperty) throw new Error("<PatchExamples>: Cannot set read-only property 'c'");
+	};
+
+	PatchExamples.prototype._recompute = function _recompute(changed, state) {
+		if (changed.selectedComparison || changed.comparisons) {
+			if (this._differs(state.c, (state.c = c(state)))) changed.c = true;
+		}
 	};
 
 	// import FocusPlayground from './diagrams/FocusPlayground.html';
