@@ -600,6 +600,10 @@
 
   <p>So far we've only shown single examples of these patches. Below we show the result of ten sample patches (each set includes the one example we explored above), run on 1,000 images from the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the image classification to the target class in about 2 in 5 images. The success rate reaches about 1 in 2 images if we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) at the most effective size. To ensure our attack isn't just blocking out evidence for the original class, we also compare each attack to a random noise image patch at its best position and size.</p>
   <style>
+    #adversarial-analysis {
+      grid-column: text;
+      margin-bottom: 0;
+    }
     #adversarial-analysis table {
       width: 100%;
       text-align: right;
@@ -735,7 +739,7 @@
 
   <!-- <figure id="shark-ball"></figure> -->
 
-  <figure id="patch-examples" style="grid-column: page;"></figure>
+  <figure id="patch-examples" style="grid-column: text;"></figure>
 
   <p>
     Our "attacks" can be seen as part of a larger trend (eg. <d-cite key="DBLP:journals/corr/abs-1712-09665,kurakin2016adversarial,engstrom2017rotation,brown2018unrestricted"></d-cite>) of researchers

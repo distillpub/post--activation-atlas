@@ -5,95 +5,134 @@
   details for each patch tested
 </h4>
 
-<table>
-  <tr class="top-labels">
-    <td class="label">
-        <select bind:value="selectedComparison">
+<div class="controls">
+  <select bind:value="selectedComparison">
     {#each comparisons as comparison, i}
-      <option value={i}>“{$inceptionLabels[comparison.comparison[0]]}” to “{$inceptionLabels[comparison.comparison[1]]}”</option>
+      <option value={i}>{$inceptionLabels[comparison.comparison[0]]} → {$inceptionLabels[comparison.comparison[1]]}</option>
     {/each}
   </select>
-    </td>
-    <td colspan="{c.patches.length}">image patches</td>
-    <td class="random">noise</td>
 
-  </tr>
-  <tr>
-    <td class="label"></td>
-    {#each c.patches as patch, p}
-      <td>
-        <img src="assets/images/patches/{c.name}-{format(p + 1)}.png" alt="patch {p}"/>
-      </td>
+  <select bind:value="selectedMethod">
+    {#each methods as method, i}
+      <option value={i}>{method} positioning</option>
     {/each}
-    <td class="random">
+  </select>
+</div>
+
+<div class="method">
+  <div class="method-description">
+    <div>
+    {#if method == "static"}
+      <div>
+        <p class="figcaption">Choosing <strong>a consistent</strong> size and corner position across all examples.</p>
+        <img src="assets/icon-static.png" alt="icon" style="width: initial;">
+      </div>
+    {:else}
+      <div>
+        <p class="figcaption">Choosing <strong>the strongest</strong> size and corner position for each example.</p>
+        <img src="assets/icon-dynamic.png" alt="icon" style="width: initial;">
+      </div>
+    {/if}
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th colspan="2">
+          <div>Success rate</div>
+          <div class="figcaption">Previously correctly classified images that the patch changed to the target class.</div>
+        </th>
+        <th colspan="2">
+          <div>Probability change</div>
+          <div class="figcaption">Mean change in probabilty assigned to the target class.</div>
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <td>
         <img src="assets/images/patches/random.png" alt="patch {p}"/>
-    </td>
-  </tr>
-  <tr>
-    <td class="label">success rate</td>
-    {#each c.patches as patch}
-      <td>
-      {@html patch.dynamic[2]}%
       </td>
-    {/each}
-    <td class="random">
-      {@html c.noise.dynamic[2]}%
-    </td>
-  </tr>
-  <tr>
-    <td class="label">mean probability before patch</td>
-    {#each c.patches as patch}
+      <td>Noise</td>
+      <td>{@html c.noise[method][2]}%</td>
+      <td>{@html c.noise[method][0]} / {@html c.noise[method][1]}</td>
+      <td>{@html c.noise[method][5]}%</td>
+      <td>{@html c.noise[method][3]}% → {@html c.noise[method][4]}%</td>
+    </tr>
+    <!-- <tr>
       <td>
-      {@html patch.dynamic[3]}%
+        average of all patches
       </td>
+      <td>{@html fp(c.totals[method][2])}</td>
+      <td>{@html fi(c.totals[method][0])} / {@html fi(c.totals[method][1])}</td>
+      <td>{@html fpp(c.totals[method][5])}%</td>
+      <td>{@html f1(c.totals[method][3])}% → {@html f1(c.totals[method][4])}%</td>
+    </tr> -->
+    {#each c.patches as patch, p}
+      <tr>
+        <td>
+          <img src="assets/images/patches/{c.name}-{format(p + 1)}.png" alt="patch {p}"/>
+        </td>
+        <td>{@html "Patch" + format(p + 1)}</td>
+        <td>{@html patch[method][2]}%</td>
+        <td>{@html patch[method][0]} / {@html patch[method][1]}</td>
+        <td>{@html patch[method][5]}%</td>
+        <td>{@html patch[method][3]}% → {@html patch[method][4]}%</td>
+      </tr>
     {/each}
-    <td class="random">
-      {@html c.noise.dynamic[3]}%
-    </td>
-  </tr>
-  <tr>
-    <td class="label">mean probability after patch</td>
-    {#each c.patches as patch}
-      <td>
-      {@html patch.dynamic[4]}%
-      </td>
-    {/each}
-    <td class="random">
-      {@html c.noise.dynamic[4]}%
-    </td>
-  </tr>
-  <tr>
-    <td class="label">mean change in probability</td>
-    {#each c.patches as patch}
-      <td>
-      {@html patch.dynamic[5]}%
-      </td>
-    {/each}
-    <td class="random">
-      {@html c.noise.dynamic[5]}%
-    </td>
-  </tr>
-</table>
 
+
+  </table>
+
+</div>
 
 
 
 <script>
 import Patches from '../Patches.js';
+import {format} from "d3-format";
+
+Patches.forEach(comparison => {
+  comparison.totals = {};
+  ["dynamic", "static"].forEach(method => {
+    let totals = [0, 0, 0, 0, 0, 0];
+    comparison.patches.forEach(patch => {
+      totals[0] += +patch[method][0];
+      totals[1] += +patch[method][1];
+      totals[3] += +patch[method][3];
+      totals[4] += +patch[method][4];
+    });
+    totals[2] = totals[0] / totals[1]
+    totals[3] = totals[3] / comparison.patches.length
+    totals[4] = totals[4] / comparison.patches.length
+    totals[5] = totals[4] - totals[3];
+    comparison.totals[method] = totals
+  });
+});
 
 console.log(Patches)
 
 export default {
   data() {
     return {
+      methods: [
+        "dynamic", "static"
+      ],
       comparisons: Patches,
       selectedComparison: 0,
+      selectedMethod: 0,
     }
   },
   computed: {
-    c: ({selectedComparison, comparisons}) => comparisons[selectedComparison]
+    c: ({selectedComparison, comparisons}) => comparisons[selectedComparison],
+    method: ({selectedMethod, methods}) => methods[selectedMethod]
   },
   helpers: {
+    f1: format(".1f"),
+    fi: format(","),
+    fp: format(".1%"),
+    fpp: format("+.1f"),
     format(n) {
       if (n < 10) {
         return "0" + n;
@@ -107,27 +146,73 @@ export default {
 </script>
 
 <style>
-  table {
+h4 {
+  margin-bottom: 10px;
+}
+.controls {
+  margin-bottom: 20px;
+}
+select {
+  width: 200px;
+}
+  .method {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    grid-gap: 20px;
+  }
+  .method h5 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+
+  .method table {
+    line-height: 1.3em;
+    flex: 1 1 auto;
     width: 100%;
   }
-  .top-labels td {
-    border-bottom: none;
-    padding: 0px 8px;
-    font-size: 12px;
-    text-transform: uppercase;
+  .method table img {
+    display: block;
+    width: 40px;
+    height: 40px;
   }
-  td {
-    width: 7.2%;
-    line-height: 1.5em;
+
+  .method th {
     vertical-align: top;
   }
-  td.label {
-    border-right: solid 1px #aaa;
-    margin-right: 8px;
-    width: 200px;
+  .method td {
+    vertical-align: middle;
   }
-  td.random {
-    border-left: solid 1px #aaa;
-    margin-left: 8px;
+  .method th .figcaption {
+    font-weight: normal;
   }
+
+  .method table td:nth-child(2) {
+    font-size: 12px;
+    width: 15%;
+  }
+
+  .method table td:nth-child(3) {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .method table td:nth-child(4),
+  .method table td:nth-child(6) {
+    color: grey;
+    font-weight: 200;
+    font-size: 12px;
+    width: 20%;
+  }
+
+  .method table td:nth-child(5) {
+    text-align: right;
+  }
+  .method table td:nth-child(6) {
+    color: grey;
+  }
+
+
+
+  
+
 </style>
