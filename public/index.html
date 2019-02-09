@@ -598,7 +598,7 @@
     Adding a small-sized baseball does change the top classification to “great white shark”, and as it gets bigger it overpowers the classification, so the top slot goes to “baseball”.
   </p>
 
-  <p>So far we've only shown single examples of these patches. Below we show the result of all the patches we've shown, run on each image in the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the image classification to the target class in about 2 in 5 images. The success rate reaches about 1 in 2 images if we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) at the most effective size. To ensure our attack isn't just blocking out evidence for the original class, we also compare each attack to a random noise image patch at its best position and size.</p>
+  <p>So far we've only shown single examples of these patches. Below we show the result of ten sample patches (each set includes the one example we explored above), run on thousands of images from the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the image classification to the target class in about 2 in 5 images. The success rate reaches about 1 in 2 images if we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) at the most effective size. To ensure our attack isn't just blocking out evidence for the original class, we also compare each attack to a random noise image patch at its best position and size.</p>
   <style>
     #adversarial-analysis table {
       width: 100%;
@@ -637,7 +637,7 @@
     }
   </style>  
   <figure id="adversarial-analysis">
-  <h4>Patches applied to 1000 training set examples</h4>
+  <h4>Average of ten patches applied to thousands of training set examples</h4>
     <table class="tg">
       <colgroup>
         <col span=3 class="vertical-header">
@@ -650,10 +650,10 @@
           <th></th>
           <th colspan="2">
             <span>Success rate</span>
-            <span class="figcaption">Percentage and counts of previously correctly classified images that the attack changed to the target class.</span>
+            <span class="figcaption">Previously correctly classified images that the patch changed to the target class.</span>
           </th>
           <th colspan="2">
-            <span>Probabilty change</span>
+            <span>Probability change</span>
             <span class="figcaption">Mean change in probabilty assigned to the target class.</span>
           </th>
         </tr>
@@ -662,7 +662,7 @@
         <tr>
           <th class="tg-0pky" scope="row" rowspan="4" style="min-width: 9em;">
             <!-- <span>strongest</span> -->
-            <p class="figcaption">Choosing the <strong>strongest size and position</strong> for each example.</p>
+            <p class="figcaption">Choosing <strong>the strongest</strong> size and corner position for each example.</p>
             <img src="assets/icon-dynamic.png">
           </th>
           <td>overall</td>
@@ -672,14 +672,14 @@
           <td><span class="overall from detail">5.3%</span><span class="overall detail">&nbsp;&rarr;&nbsp;</span><span class="overall to detail">42.2%</span></td>
         </tr>
         <tr>
-          <td><span class="synset">snorkel</span>&nbsp;&rarr;&nbsp;<span class="synset">diver</span></td>
+          <td><span class="synset">snorkel</span>&nbsp;&rarr;&nbsp;<span class="synset">scuba</span></td>
           <td><span>85.0%</span></td>
           <td><span class="detail">7,031&nbsp;/&nbsp;8270</span></td>
           <td><span>+56.8%</span></td>
           <td><span class="from detail">3.7%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">60.5%</span></td>
         </tr>
         <tr>
-          <td><span class="synset">pan</span>&nbsp;&rarr;&nbsp;<span class="synset">wok</span></td>
+          <td><span class="synset">frying pan</span>&nbsp;&rarr;&nbsp;<span class="synset">wok</span></td>
           <td><span>44.9%</span></td>
           <td><span class="detail">2799&nbsp;/&nbsp;6240</span></td>
           <td><span>+24.1%</span></td>
@@ -697,7 +697,7 @@
         <tr><th colspan="6"></th></tr>
         <tr>
           <th class="tg-0pky" scope="row" rowspan="4">
-            <p class="figcaption">Choosing a <strong>single size and position</strong> across all examples.</p>
+            <p class="figcaption">Choosing <strong>a consistent</strong> size and corner position across all examples.</p>
             <img src="assets/icon-static.png">
           </th>
           <td>overall</td>
@@ -707,14 +707,14 @@
           <td><span class="overall from detail">5.3%</span><span class="overall detail">&nbsp;&rarr;&nbsp;</span><span class="overall to detail">24.0%</span></td>
         </tr>
         <tr>
-          <td><span class="synset">snorkel</span>&nbsp;&rarr;&nbsp;<span class="synset">diver</span></td>
+          <td><span class="synset">snorkel</span>&nbsp;&rarr;&nbsp;<span class="synset">scuba</span></td>
           <td><span>65.4%</span></td>
           <td><span class="detail">5409&nbsp;/&nbsp;8270</span></td>
           <td><span>+43.0%</span></td>
           <td><span class="from detail">3.7%</span><span class="detail">&nbsp;&rarr;&nbsp;</span><span class="to detail">46.7%</span></td>
         </tr>
         <tr>
-          <td><span class="synset">pan</span>&nbsp;&rarr;&nbsp;<span class="synset">wok</span></td>
+          <td><span class="synset">frying pan</span>&nbsp;&rarr;&nbsp;<span class="synset">wok</span></td>
           <td><span>25.6%</span></td>
           <td><span class="detail">1595&nbsp;/&nbsp;6240</span></td>
           <td><span>+12.8%</span></td>
