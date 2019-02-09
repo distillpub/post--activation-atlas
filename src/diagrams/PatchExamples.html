@@ -2,7 +2,7 @@
 
 <!-- <div>{comparison.name}</div> -->
 <h4>
-  Comparing the effectiveness of Ten Different patches across 1,000 training set examples
+  details for each patch tested
 </h4>
 
 <table>
@@ -30,25 +30,47 @@
     </td>
   </tr>
   <tr>
-    <td class="label">probability before patch</td>
+    <td class="label">success rate</td>
     {#each c.patches as patch}
       <td>
-      {@html patch.dynamic[3]}
+      {@html patch.dynamic[2]}%
       </td>
     {/each}
     <td class="random">
-      {@html c.noise.dynamic[3]}
+      {@html c.noise.dynamic[2]}%
     </td>
   </tr>
   <tr>
-    <td class="label">probability after patch</td>
+    <td class="label">mean probability before patch</td>
     {#each c.patches as patch}
       <td>
-      {@html patch.dynamic[4]}
+      {@html patch.dynamic[3]}%
       </td>
     {/each}
     <td class="random">
-      {@html c.noise.dynamic[4]}
+      {@html c.noise.dynamic[3]}%
+    </td>
+  </tr>
+  <tr>
+    <td class="label">mean probability after patch</td>
+    {#each c.patches as patch}
+      <td>
+      {@html patch.dynamic[4]}%
+      </td>
+    {/each}
+    <td class="random">
+      {@html c.noise.dynamic[4]}%
+    </td>
+  </tr>
+  <tr>
+    <td class="label">mean change in probability</td>
+    {#each c.patches as patch}
+      <td>
+      {@html patch.dynamic[5]}%
+      </td>
+    {/each}
+    <td class="random">
+      {@html c.noise.dynamic[5]}%
     </td>
   </tr>
 </table>

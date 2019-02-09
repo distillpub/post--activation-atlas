@@ -1,9 +1,9 @@
-// ['num_flipped',
-// 'num_correct_before',
-// 'percentage_flipped',
-// 'prob_target_before',
-// 'prob_target_after',
-// "delta_prob']; 
+// 0 'num_flipped',
+// 1 'num_correct_before',
+// 2 'percentage_flipped',
+// 3 'prob_target_before',
+// 4 'prob_target_after',
+// 5 'delta_prob'; 
 
 
 export default [

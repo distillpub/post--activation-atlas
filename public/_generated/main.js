@@ -37,6 +37,12 @@
 		}
 	}
 
+	function detachBefore(after) {
+		while (after.previousSibling) {
+			after.parentNode.removeChild(after.previousSibling);
+		}
+	}
+
 	function detachAfter(before) {
 		while (before.nextSibling) {
 			before.parentNode.removeChild(before.nextSibling);
@@ -21481,12 +21487,12 @@
 	Focus3TableStatic.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	// ['num_flipped',
-	// 'num_correct_before',
-	// 'percentage_flipped',
-	// 'prob_target_before',
-	// 'prob_target_after',
-	// "delta_prob']; 
+	// 0 'num_flipped',
+	// 1 'num_correct_before',
+	// 2 'percentage_flipped',
+	// 3 'prob_target_before',
+	// 4 'prob_target_after',
+	// 5 'delta_prob'; 
 
 
 	var Patches = [
@@ -21572,6 +21578,18 @@
 	}
 	const file$O = "src/diagrams/PatchExamples.html";
 
+	function get_each5_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.patch = list[i];
+		return child_ctx;
+	}
+
+	function get_each4_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.patch = list[i];
+		return child_ctx;
+	}
+
 	function get_each3_context(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
 		child_ctx.patch = list[i];
@@ -21599,14 +21617,14 @@
 	}
 
 	function create_main_fragment$P(component, ctx) {
-		var h4, text1, table, tr0, td0, select, select_updating = false, text2, td1, text3, td1_colspan_value, text4, td2, text6, tr1, td3, text7, text8, td4, img, img_alt_value, text9, tr2, td5, text11, text12, td6, raw0_value = ctx.c.noise.dynamic[3], text13, tr3, td7, text15, text16, td8, raw1_value = ctx.c.noise.dynamic[4];
+		var h4, text1, table, tr0, td0, select, select_updating = false, text2, td1, text3, td1_colspan_value, text4, td2, text6, tr1, td3, text7, text8, td4, img, img_alt_value, text9, tr2, td5, text11, text12, td6, raw0_value = ctx.c.noise.dynamic[2], raw0_after, text13, text14, tr3, td7, text16, text17, td8, raw1_value = ctx.c.noise.dynamic[3], raw1_after, text18, text19, tr4, td9, text21, text22, td10, raw2_value = ctx.c.noise.dynamic[4], raw2_after, text23, text24, tr5, td11, text26, text27, td12, raw3_value = ctx.c.noise.dynamic[5], raw3_after, text28;
 
 		var each0_value = ctx.comparisons;
 
 		var each0_blocks = [];
 
 		for (var i = 0; i < each0_value.length; i += 1) {
-			each0_blocks[i] = create_each_block_3$2(component, get_each0_context$6(ctx, each0_value, i));
+			each0_blocks[i] = create_each_block_5$1(component, get_each0_context$6(ctx, each0_value, i));
 		}
 
 		function select_change_handler() {
@@ -21620,7 +21638,7 @@
 		var each1_blocks = [];
 
 		for (var i = 0; i < each1_value.length; i += 1) {
-			each1_blocks[i] = create_each_block_2$4(component, get_each1_context$6(ctx, each1_value, i));
+			each1_blocks[i] = create_each_block_4$2(component, get_each1_context$6(ctx, each1_value, i));
 		}
 
 		var each2_value = ctx.c.patches;
@@ -21628,7 +21646,7 @@
 		var each2_blocks = [];
 
 		for (var i = 0; i < each2_value.length; i += 1) {
-			each2_blocks[i] = create_each_block_1$7(component, get_each2_context$3(ctx, each2_value, i));
+			each2_blocks[i] = create_each_block_3$2(component, get_each2_context$3(ctx, each2_value, i));
 		}
 
 		var each3_value = ctx.c.patches;
@@ -21636,13 +21654,29 @@
 		var each3_blocks = [];
 
 		for (var i = 0; i < each3_value.length; i += 1) {
-			each3_blocks[i] = create_each_block$e(component, get_each3_context(ctx, each3_value, i));
+			each3_blocks[i] = create_each_block_2$4(component, get_each3_context(ctx, each3_value, i));
+		}
+
+		var each4_value = ctx.c.patches;
+
+		var each4_blocks = [];
+
+		for (var i = 0; i < each4_value.length; i += 1) {
+			each4_blocks[i] = create_each_block_1$7(component, get_each4_context(ctx, each4_value, i));
+		}
+
+		var each5_value = ctx.c.patches;
+
+		var each5_blocks = [];
+
+		for (var i = 0; i < each5_value.length; i += 1) {
+			each5_blocks[i] = create_each_block$e(component, get_each5_context(ctx, each5_value, i));
 		}
 
 		return {
 			c: function create() {
 				h4 = createElement("h4");
-				h4.textContent = "Comparing the effectiveness of Ten Different patches across 1,000 training set examples";
+				h4.textContent = "details for each patch tested";
 				text1 = createText("\n\n");
 				table = createElement("table");
 				tr0 = createElement("tr");
@@ -21674,7 +21708,7 @@
 				text9 = createText("\n  ");
 				tr2 = createElement("tr");
 				td5 = createElement("td");
-				td5.textContent = "probability before patch";
+				td5.textContent = "success rate";
 				text11 = createText("\n    ");
 
 				for (var i = 0; i < each2_blocks.length; i += 1) {
@@ -21683,51 +21717,93 @@
 
 				text12 = createText("\n    ");
 				td6 = createElement("td");
-				text13 = createText("\n  ");
+				raw0_after = createElement('noscript');
+				text13 = createText("%");
+				text14 = createText("\n  ");
 				tr3 = createElement("tr");
 				td7 = createElement("td");
-				td7.textContent = "probability after patch";
-				text15 = createText("\n    ");
+				td7.textContent = "mean probability before patch";
+				text16 = createText("\n    ");
 
 				for (var i = 0; i < each3_blocks.length; i += 1) {
 					each3_blocks[i].c();
 				}
 
-				text16 = createText("\n    ");
+				text17 = createText("\n    ");
 				td8 = createElement("td");
+				raw1_after = createElement('noscript');
+				text18 = createText("%");
+				text19 = createText("\n  ");
+				tr4 = createElement("tr");
+				td9 = createElement("td");
+				td9.textContent = "mean probability after patch";
+				text21 = createText("\n    ");
+
+				for (var i = 0; i < each4_blocks.length; i += 1) {
+					each4_blocks[i].c();
+				}
+
+				text22 = createText("\n    ");
+				td10 = createElement("td");
+				raw2_after = createElement('noscript');
+				text23 = createText("%");
+				text24 = createText("\n  ");
+				tr5 = createElement("tr");
+				td11 = createElement("td");
+				td11.textContent = "mean change in probability";
+				text26 = createText("\n    ");
+
+				for (var i = 0; i < each5_blocks.length; i += 1) {
+					each5_blocks[i].c();
+				}
+
+				text27 = createText("\n    ");
+				td12 = createElement("td");
+				raw3_after = createElement('noscript');
+				text28 = createText("%");
 				addLoc(h4, file$O, 3, 0, 40);
 				addListener(select, "change", select_change_handler);
 				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select_change_handler);
-				addLoc(select, file$O, 10, 8, 207);
+				addLoc(select, file$O, 10, 8, 149);
 				td0.className = "label svelte-1ik0imk";
-				addLoc(td0, file$O, 9, 4, 180);
+				addLoc(td0, file$O, 9, 4, 122);
 				td1.colSpan = td1_colspan_value = ctx.c.patches.length;
 				td1.className = "svelte-1ik0imk";
-				addLoc(td1, file$O, 16, 4, 457);
+				addLoc(td1, file$O, 16, 4, 399);
 				td2.className = "random svelte-1ik0imk";
-				addLoc(td2, file$O, 17, 4, 513);
+				addLoc(td2, file$O, 17, 4, 455);
 				tr0.className = "top-labels svelte-1ik0imk";
-				addLoc(tr0, file$O, 8, 2, 152);
+				addLoc(tr0, file$O, 8, 2, 94);
 				td3.className = "label svelte-1ik0imk";
-				addLoc(td3, file$O, 21, 4, 563);
+				addLoc(td3, file$O, 21, 4, 505);
 				img.src = "assets/images/patches/random.png";
 				img.alt = img_alt_value = "patch " + ctx.p;
-				addLoc(img, file$O, 28, 8, 776);
+				addLoc(img, file$O, 28, 8, 718);
 				td4.className = "random svelte-1ik0imk";
-				addLoc(td4, file$O, 27, 4, 748);
-				addLoc(tr1, file$O, 20, 2, 554);
+				addLoc(td4, file$O, 27, 4, 690);
+				addLoc(tr1, file$O, 20, 2, 496);
 				td5.className = "label svelte-1ik0imk";
-				addLoc(td5, file$O, 32, 4, 867);
+				addLoc(td5, file$O, 32, 4, 809);
 				td6.className = "random svelte-1ik0imk";
-				addLoc(td6, file$O, 38, 4, 1016);
-				addLoc(tr2, file$O, 31, 2, 858);
+				addLoc(td6, file$O, 38, 4, 947);
+				addLoc(tr2, file$O, 31, 2, 800);
 				td7.className = "label svelte-1ik0imk";
-				addLoc(td7, file$O, 43, 4, 1098);
+				addLoc(td7, file$O, 43, 4, 1030);
 				td8.className = "random svelte-1ik0imk";
-				addLoc(td8, file$O, 49, 4, 1246);
-				addLoc(tr3, file$O, 42, 2, 1089);
+				addLoc(td8, file$O, 49, 4, 1185);
+				addLoc(tr3, file$O, 42, 2, 1021);
+				td9.className = "label svelte-1ik0imk";
+				addLoc(td9, file$O, 54, 4, 1268);
+				td10.className = "random svelte-1ik0imk";
+				addLoc(td10, file$O, 60, 4, 1422);
+				addLoc(tr4, file$O, 53, 2, 1259);
+				td11.className = "label svelte-1ik0imk";
+				addLoc(td11, file$O, 65, 4, 1505);
+				td12.className = "random svelte-1ik0imk";
+				addLoc(td12, file$O, 71, 4, 1657);
+				addLoc(tr5, file$O, 64, 2, 1496);
 				table.className = "svelte-1ik0imk";
-				addLoc(table, file$O, 7, 0, 142);
+				addLoc(table, file$O, 7, 0, 84);
 			},
 
 			m: function mount(target, anchor) {
@@ -21772,19 +21848,51 @@
 
 				append(tr2, text12);
 				append(tr2, td6);
-				td6.innerHTML = raw0_value;
-				append(table, text13);
+				append(td6, raw0_after);
+				raw0_after.insertAdjacentHTML("beforebegin", raw0_value);
+				append(td6, text13);
+				append(table, text14);
 				append(table, tr3);
 				append(tr3, td7);
-				append(tr3, text15);
+				append(tr3, text16);
 
 				for (var i = 0; i < each3_blocks.length; i += 1) {
 					each3_blocks[i].m(tr3, null);
 				}
 
-				append(tr3, text16);
+				append(tr3, text17);
 				append(tr3, td8);
-				td8.innerHTML = raw1_value;
+				append(td8, raw1_after);
+				raw1_after.insertAdjacentHTML("beforebegin", raw1_value);
+				append(td8, text18);
+				append(table, text19);
+				append(table, tr4);
+				append(tr4, td9);
+				append(tr4, text21);
+
+				for (var i = 0; i < each4_blocks.length; i += 1) {
+					each4_blocks[i].m(tr4, null);
+				}
+
+				append(tr4, text22);
+				append(tr4, td10);
+				append(td10, raw2_after);
+				raw2_after.insertAdjacentHTML("beforebegin", raw2_value);
+				append(td10, text23);
+				append(table, text24);
+				append(table, tr5);
+				append(tr5, td11);
+				append(tr5, text26);
+
+				for (var i = 0; i < each5_blocks.length; i += 1) {
+					each5_blocks[i].m(tr5, null);
+				}
+
+				append(tr5, text27);
+				append(tr5, td12);
+				append(td12, raw3_after);
+				raw3_after.insertAdjacentHTML("beforebegin", raw3_value);
+				append(td12, text28);
 			},
 
 			p: function update(changed, ctx) {
@@ -21797,7 +21905,7 @@
 						if (each0_blocks[i]) {
 							each0_blocks[i].p(changed, child_ctx);
 						} else {
-							each0_blocks[i] = create_each_block_3$2(component, child_ctx);
+							each0_blocks[i] = create_each_block_5$1(component, child_ctx);
 							each0_blocks[i].c();
 							each0_blocks[i].m(select, null);
 						}
@@ -21823,7 +21931,7 @@
 						if (each1_blocks[i]) {
 							each1_blocks[i].p(changed, child_ctx);
 						} else {
-							each1_blocks[i] = create_each_block_2$4(component, child_ctx);
+							each1_blocks[i] = create_each_block_4$2(component, child_ctx);
 							each1_blocks[i].c();
 							each1_blocks[i].m(tr1, text8);
 						}
@@ -21848,7 +21956,7 @@
 						if (each2_blocks[i]) {
 							each2_blocks[i].p(changed, child_ctx);
 						} else {
-							each2_blocks[i] = create_each_block_1$7(component, child_ctx);
+							each2_blocks[i] = create_each_block_3$2(component, child_ctx);
 							each2_blocks[i].c();
 							each2_blocks[i].m(tr2, text12);
 						}
@@ -21860,8 +21968,9 @@
 					each2_blocks.length = each2_value.length;
 				}
 
-				if ((changed.c) && raw0_value !== (raw0_value = ctx.c.noise.dynamic[3])) {
-					td6.innerHTML = raw0_value;
+				if ((changed.c) && raw0_value !== (raw0_value = ctx.c.noise.dynamic[2])) {
+					detachBefore(raw0_after);
+					raw0_after.insertAdjacentHTML("beforebegin", raw0_value);
 				}
 
 				if (changed.c) {
@@ -21873,9 +21982,9 @@
 						if (each3_blocks[i]) {
 							each3_blocks[i].p(changed, child_ctx);
 						} else {
-							each3_blocks[i] = create_each_block$e(component, child_ctx);
+							each3_blocks[i] = create_each_block_2$4(component, child_ctx);
 							each3_blocks[i].c();
-							each3_blocks[i].m(tr3, text16);
+							each3_blocks[i].m(tr3, text17);
 						}
 					}
 
@@ -21885,8 +21994,61 @@
 					each3_blocks.length = each3_value.length;
 				}
 
-				if ((changed.c) && raw1_value !== (raw1_value = ctx.c.noise.dynamic[4])) {
-					td8.innerHTML = raw1_value;
+				if ((changed.c) && raw1_value !== (raw1_value = ctx.c.noise.dynamic[3])) {
+					detachBefore(raw1_after);
+					raw1_after.insertAdjacentHTML("beforebegin", raw1_value);
+				}
+
+				if (changed.c) {
+					each4_value = ctx.c.patches;
+
+					for (var i = 0; i < each4_value.length; i += 1) {
+						const child_ctx = get_each4_context(ctx, each4_value, i);
+
+						if (each4_blocks[i]) {
+							each4_blocks[i].p(changed, child_ctx);
+						} else {
+							each4_blocks[i] = create_each_block_1$7(component, child_ctx);
+							each4_blocks[i].c();
+							each4_blocks[i].m(tr4, text22);
+						}
+					}
+
+					for (; i < each4_blocks.length; i += 1) {
+						each4_blocks[i].d(1);
+					}
+					each4_blocks.length = each4_value.length;
+				}
+
+				if ((changed.c) && raw2_value !== (raw2_value = ctx.c.noise.dynamic[4])) {
+					detachBefore(raw2_after);
+					raw2_after.insertAdjacentHTML("beforebegin", raw2_value);
+				}
+
+				if (changed.c) {
+					each5_value = ctx.c.patches;
+
+					for (var i = 0; i < each5_value.length; i += 1) {
+						const child_ctx = get_each5_context(ctx, each5_value, i);
+
+						if (each5_blocks[i]) {
+							each5_blocks[i].p(changed, child_ctx);
+						} else {
+							each5_blocks[i] = create_each_block$e(component, child_ctx);
+							each5_blocks[i].c();
+							each5_blocks[i].m(tr5, text27);
+						}
+					}
+
+					for (; i < each5_blocks.length; i += 1) {
+						each5_blocks[i].d(1);
+					}
+					each5_blocks.length = each5_value.length;
+				}
+
+				if ((changed.c) && raw3_value !== (raw3_value = ctx.c.noise.dynamic[5])) {
+					detachBefore(raw3_after);
+					raw3_after.insertAdjacentHTML("beforebegin", raw3_value);
 				}
 			},
 
@@ -21906,12 +22068,16 @@
 				destroyEach(each2_blocks, detach);
 
 				destroyEach(each3_blocks, detach);
+
+				destroyEach(each4_blocks, detach);
+
+				destroyEach(each5_blocks, detach);
 			}
 		};
 	}
 
 	// (12:4) {#each comparisons as comparison, i}
-	function create_each_block_3$2(component, ctx) {
+	function create_each_block_5$1(component, ctx) {
 		var option, text0, text1_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]], text1, text2, text3_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]], text3, text4;
 
 		return {
@@ -21924,7 +22090,7 @@
 				text4 = createText("”");
 				option.__value = ctx.i;
 				option.value = option.__value;
-				addLoc(option, file$O, 12, 6, 295);
+				addLoc(option, file$O, 12, 6, 237);
 			},
 
 			m: function mount(target, anchor) {
@@ -21955,7 +22121,7 @@
 	}
 
 	// (23:4) {#each c.patches as patch, p}
-	function create_each_block_2$4(component, ctx) {
+	function create_each_block_4$2(component, ctx) {
 		var td, img, img_src_value;
 
 		return {
@@ -21964,9 +22130,9 @@
 				img = createElement("img");
 				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format$1(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				addLoc(img, file$O, 24, 8, 640);
+				addLoc(img, file$O, 24, 8, 582);
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 23, 6, 627);
+				addLoc(td, file$O, 23, 6, 569);
 			},
 
 			m: function mount(target, anchor) {
@@ -21989,24 +22155,29 @@
 	}
 
 	// (34:4) {#each c.patches as patch}
-	function create_each_block_1$7(component, ctx) {
-		var td, raw_value = ctx.patch.dynamic[3];
+	function create_each_block_3$2(component, ctx) {
+		var td, raw_value = ctx.patch.dynamic[2], raw_after, text;
 
 		return {
 			c: function create() {
 				td = createElement("td");
+				raw_after = createElement('noscript');
+				text = createText("%");
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 34, 6, 952);
+				addLoc(td, file$O, 34, 6, 882);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, td, anchor);
-				td.innerHTML = raw_value;
+				append(td, raw_after);
+				raw_after.insertAdjacentHTML("beforebegin", raw_value);
+				append(td, text);
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[3])) {
-					td.innerHTML = raw_value;
+				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[2])) {
+					detachBefore(raw_after);
+					raw_after.insertAdjacentHTML("beforebegin", raw_value);
 				}
 			},
 
@@ -22019,24 +22190,99 @@
 	}
 
 	// (45:4) {#each c.patches as patch}
-	function create_each_block$e(component, ctx) {
-		var td, raw_value = ctx.patch.dynamic[4];
+	function create_each_block_2$4(component, ctx) {
+		var td, raw_value = ctx.patch.dynamic[3], raw_after, text;
 
 		return {
 			c: function create() {
 				td = createElement("td");
+				raw_after = createElement('noscript');
+				text = createText("%");
 				td.className = "svelte-1ik0imk";
-				addLoc(td, file$O, 45, 6, 1182);
+				addLoc(td, file$O, 45, 6, 1120);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, td, anchor);
-				td.innerHTML = raw_value;
+				append(td, raw_after);
+				raw_after.insertAdjacentHTML("beforebegin", raw_value);
+				append(td, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[3])) {
+					detachBefore(raw_after);
+					raw_after.insertAdjacentHTML("beforebegin", raw_value);
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(td);
+				}
+			}
+		};
+	}
+
+	// (56:4) {#each c.patches as patch}
+	function create_each_block_1$7(component, ctx) {
+		var td, raw_value = ctx.patch.dynamic[4], raw_after, text;
+
+		return {
+			c: function create() {
+				td = createElement("td");
+				raw_after = createElement('noscript');
+				text = createText("%");
+				td.className = "svelte-1ik0imk";
+				addLoc(td, file$O, 56, 6, 1357);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, td, anchor);
+				append(td, raw_after);
+				raw_after.insertAdjacentHTML("beforebegin", raw_value);
+				append(td, text);
 			},
 
 			p: function update(changed, ctx) {
 				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[4])) {
-					td.innerHTML = raw_value;
+					detachBefore(raw_after);
+					raw_after.insertAdjacentHTML("beforebegin", raw_value);
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(td);
+				}
+			}
+		};
+	}
+
+	// (67:4) {#each c.patches as patch}
+	function create_each_block$e(component, ctx) {
+		var td, raw_value = ctx.patch.dynamic[5], raw_after, text;
+
+		return {
+			c: function create() {
+				td = createElement("td");
+				raw_after = createElement('noscript');
+				text = createText("%");
+				td.className = "svelte-1ik0imk";
+				addLoc(td, file$O, 67, 6, 1592);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, td, anchor);
+				append(td, raw_after);
+				raw_after.insertAdjacentHTML("beforebegin", raw_value);
+				append(td, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.c) && raw_value !== (raw_value = ctx.patch.dynamic[5])) {
+					detachBefore(raw_after);
+					raw_after.insertAdjacentHTML("beforebegin", raw_value);
 				}
 			},
 
