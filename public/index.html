@@ -561,42 +561,34 @@
 
   <figure id="class-gradient-snorkel" style="grid-column: text;"></figure>
 
-  <p>In this comparison we can see some bird-like creatures and clear tubes on the left, implying a correlation with "snorkel", and some shark-like creatures and something round, shiny, and metallic on the right, implying correlation with "scuba diver". Let's take an image from the ImageNet dataset labeled as "snorkel" and add something that resembles this icon to see how it affects the classification scores.
+  <p>In this comparison we can see some bird-like creatures and clear tubes on the left, implying a correlation with "snorkel", and some shark-like creatures and something round, shiny, and metallic on the right, implying correlation with "scuba diver" (This activation has a strong attribution toward the class "steam locomotive"). Let's take an image from the ImageNet dataset labeled as "snorkel" and add something that resembles this icon to see how it affects the classification scores.
 
   <figure id="snorkel-scuba-diver" style="grid-column: page"></figure>
 
-  <p>We can do something similar with two other closely related classes, "frying pan" and "wok" — two classes where we would  be hard-pressed to identify any differences at first blush.
-
-  <figure id="class-gradient-frying-pan" style="grid-column: text"></figure>
-
-  <p>We can see that there are fewer differences between these classes, but one stands out — the type of related foods present. On the right we can clearly see something resembling noodles. Let's take a picture from ImageNet labeled as "frying pan" and add an inset of some noodles.
-
-  <figure id="frying-pan-wok" style="grid-column: page"></figure>
-
-  <p>
-    Here, we suspect that the training set simply contained more images of woks with noodles than frying pans with noodles--an example of spurious correlation.
-  </p>
-  <p>
-    We also observe a failure mode that we believe is qualitatively different: "multi-use" features. Let’s look at the differences between a “grey whale” and a “great white shark” to see an example of this issue.
-  </p>
+  <p>The failure mode here seems to be that the model is using it's detectors for the class "steam locomotive" to identify air tanks to help classify "scuba diver". We'll call these "multi-use" features -- detectors that react to very different concepts that are nonetheless visually similar. Let’s look at the differences between a “grey whale” and a “great white shark” to see another example of this issue.
 
   <figure id="class-gradient-shark" style="grid-column: text;"></figure>
   
-  <p>
-    In this example we see something particularly odd: There is an icon that looks strangely like the red stitching on a baseball. We suspect that in normal images this is used to detect a shark’s white teeth and pink inner mouth. However, a similar icon also shows up in the <a href="#focus-playground">activation atlas at layer mixed5b filtered to "great white shark"</a> and it's attribution points towards all sorts of balls, the top one being "baseball".
+  <p>In this example we see another detector that seems to be playing two roles: detecting red stitching on a baseball and a sharks's white teeth and pink inner mouth. This detector also shows up in the <a href="#focus-playground">activation atlas at layer mixed5b filtered to "great white shark"</a> and it's attribution points towards all sorts of balls, the top one being "baseball".
     
-  <p>
-    We suspect the cause for this are "multi-use" neurons which react to very different concepts that are nonetheless visually similar. Their activations are attributed to two or more classes which can usually be differentiated by other means. 
-    
-  <p>
-   Let’s do an experiment by adding a picture of a baseball to a picture of a “grey whale” from ImageNet.
+
+   <p>Let’s add a picture of a baseball to a picture of a “grey whale” from ImageNet and see how it effects the classification.
 
   <figure id="shark-grey-whale" style="grid-column: page"></figure>
 
-  <p>
-    The results follow the pattern in previous examples pretty closely.
+  <p>The results follow the pattern in previous examples pretty closely.
     Adding a small-sized baseball does change the top classification to “great white shark”, and as it gets bigger it overpowers the classification, so the top slot goes to “baseball”.
-  </p>
+
+  <p>Let's look at one more example: "frying pan" and "wok".
+
+  <figure id="class-gradient-frying-pan" style="grid-column: text"></figure>
+
+  <p>One difference stands out here — the type of related foods present. On the right we can clearly see something resembling noodles (which have a strong attribution toward the class "carbonara"). Let's take a picture from ImageNet labeled as "frying pan" and add an inset of some noodles.
+
+  <figure id="frying-pan-wok" style="grid-column: page"></figure>
+
+  <p>Here the patch was not as effective at lowering the initial classification, which makes sense since the noodle-like icons were plotted more toward the center of the visualization thus they had less of a difference in attribution. We suspect that the training set simply contained more images of woks with noodles than frying pans with noodles.
+  <!-- — an example of spurious correlation. -->
 
   <p>So far we've only shown single examples of these patches. Below we show the result of ten sample patches (each set includes the one example we explored above), run on 1,000 images from the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the image classification to the target class in about 2 in 5 images. The success rate reaches about 1 in 2 images if we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) at the most effective size. To ensure our attack isn't just blocking out evidence for the original class, we also compare each attack to a random noise image patch at its best position and size.</p>
   <style>
