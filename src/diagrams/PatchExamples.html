@@ -5,22 +5,12 @@
   details for each patch tested
 </h4>
 
-<div class="controls">
-  <select bind:value="selectedComparison">
-    {#each comparisons as comparison, i}
-      <option value={i}>{$inceptionLabels[comparison.comparison[0]]} → {$inceptionLabels[comparison.comparison[1]]}</option>
-    {/each}
-  </select>
+<!-- <div class="controls">
 
-  <select bind:value="selectedMethod">
-    {#each methods as method, i}
-      <option value={i}>{method} positioning</option>
-    {/each}
-  </select>
-</div>
+</div> -->
 
 <div class="method">
-  <div class="method-description">
+  <!-- <div class="method-description">
     <div>
     {#if method == "static"}
       <div>
@@ -34,12 +24,31 @@
       </div>
     {/if}
     </div>
-  </div>
+  </div> -->
+
   <table>
     <thead>
       <tr>
-        <th></th>
-        <th></th>
+        <th colspan="2">
+          <select bind:value="selectedComparison">
+            {#each comparisons as comparison, i}
+              <option value={i}>{$inceptionLabels[comparison.comparison[0]]} → {$inceptionLabels[comparison.comparison[1]]}</option>
+            {/each}
+          </select>
+
+          <select bind:value="selectedMethod">
+            {#each methods as method, i}
+              <option value={i}>
+                {#if i === 0}
+                  Strongest size and corner position 
+                {:else}
+                  Consistent size and corner position 
+                {/if}
+              </option>
+            {/each}
+          </select>
+        
+        </th>
         <th colspan="2">
           <div>Success rate</div>
           <div class="figcaption">Previously correctly classified images that the patch changed to the target class.</div>
@@ -50,16 +59,7 @@
         </th>
       </tr>
     </thead>
-    <tr>
-      <td>
-        <img src="assets/images/patches/random.png" alt="patch {p}"/>
-      </td>
-      <td>Noise</td>
-      <td>{@html c.noise[method][2]}%</td>
-      <td>{@html c.noise[method][0]} / {@html c.noise[method][1]}</td>
-      <td>{@html c.noise[method][5]}%</td>
-      <td>{@html c.noise[method][3]}% → {@html c.noise[method][4]}%</td>
-    </tr>
+
     <!-- <tr>
       <td>
         average of all patches
@@ -74,14 +74,23 @@
         <td>
           <img src="assets/images/patches/{c.name}-{format(p + 1)}.png" alt="patch {p}"/>
         </td>
-        <td>{@html "Patch" + format(p + 1)}</td>
+        <td>{@html "Patch " + format(p + 1)}</td>
         <td>{@html patch[method][2]}%</td>
         <td>{@html patch[method][0]} / {@html patch[method][1]}</td>
         <td>{@html patch[method][5]}%</td>
         <td>{@html patch[method][3]}% → {@html patch[method][4]}%</td>
       </tr>
     {/each}
-
+    <tr>
+      <td>
+        <img src="assets/images/patches/random.png" alt="patch {p}"/>
+      </td>
+      <td>Noise</td>
+      <td>{@html c.noise[method][2]}%</td>
+      <td>{@html c.noise[method][0]} / {@html c.noise[method][1]}</td>
+      <td>{@html c.noise[method][5]}%</td>
+      <td>{@html c.noise[method][3]}% → {@html c.noise[method][4]}%</td>
+    </tr>
 
   </table>
 
@@ -148,17 +157,24 @@ export default {
 <style>
 h4 {
   margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 }
 .controls {
   margin-bottom: 20px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  padding-top: 10px;
+  display: grid;
+  grid-template-columns: 200px 200px;
+  grid-gap: 10px;
 }
 select {
-  width: 200px;
+  width: 100%;
+  max-width: 220px;
 }
   .method {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    grid-gap: 20px;
   }
   .method h5 {
     margin-top: 0;
@@ -178,6 +194,7 @@ select {
 
   .method th {
     vertical-align: top;
+    padding-bottom: 16px;
   }
   .method td {
     vertical-align: middle;
@@ -185,15 +202,27 @@ select {
   .method th .figcaption {
     font-weight: normal;
   }
+   .method table td:nth-child(1),
+    .method table th:nth-child(1) {
+      padding-left: 0;
+    }
+
+  .method table td:nth-child(1) {
+    width: 40px;
+  }
 
   .method table td:nth-child(2) {
-    font-size: 12px;
-    width: 15%;
+    font-size: 13px;
   }
 
   .method table td:nth-child(3) {
-    font-weight: bold;
     text-align: right;
+  }
+
+  .method table td:nth-child(3),
+  .method table td:nth-child(5) {
+    text-align: right;
+    width: 70px;
   }
 
   .method table td:nth-child(4),
@@ -204,9 +233,7 @@ select {
     width: 20%;
   }
 
-  .method table td:nth-child(5) {
-    text-align: right;
-  }
+
   .method table td:nth-child(6) {
     color: grey;
   }

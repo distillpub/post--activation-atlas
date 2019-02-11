@@ -21636,7 +21636,7 @@
 	}
 
 	function create_main_fragment$P(component, ctx) {
-		var h4, text1, div0, select0, select0_updating = false, text2, select1, select1_updating = false, text3, div7, div2, div1, text4, table, thead, tr0, th0, text5, th1, text6, th2, div3, text8, div4, text10, th3, div5, text12, div6, text14, tr1, td0, img, img_alt_value, text15, td1, text17, td2, raw0_value = ctx.c.noise[ctx.method][2], raw0_after, text18, text19, td3, raw1_value = ctx.c.noise[ctx.method][0], raw1_after, text20, raw2_value = ctx.c.noise[ctx.method][1], raw2_before, text21, td4, raw3_value = ctx.c.noise[ctx.method][5], raw3_after, text22, text23, td5, raw4_value = ctx.c.noise[ctx.method][3], raw4_after, text24, raw5_value = ctx.c.noise[ctx.method][4], raw5_before, raw5_after, text25, text26;
+		var h4, text1, div4, table, thead, tr0, th0, select0, select0_updating = false, text2, select1, select1_updating = false, text3, th1, div0, text5, div1, text7, th2, div2, text9, div3, text11, text12, tr1, td0, img, img_alt_value, text13, td1, text15, td2, raw0_value = ctx.c.noise[ctx.method][2], raw0_after, text16, text17, td3, raw1_value = ctx.c.noise[ctx.method][0], raw1_after, text18, raw2_value = ctx.c.noise[ctx.method][1], raw2_before, text19, td4, raw3_value = ctx.c.noise[ctx.method][5], raw3_after, text20, text21, td5, raw4_value = ctx.c.noise[ctx.method][3], raw4_after, text22, raw5_value = ctx.c.noise[ctx.method][4], raw5_before, raw5_after, text23;
 
 		var each0_value = ctx.comparisons;
 
@@ -21666,14 +21666,6 @@
 			select1_updating = false;
 		}
 
-		function select_block_type(ctx) {
-			if (ctx.method == "static") return create_if_block$d;
-			return create_else_block$2;
-		}
-
-		var current_block_type = select_block_type(ctx);
-		var if_block = current_block_type(component, ctx);
-
 		var each2_value = ctx.c.patches;
 
 		var each2_blocks = [];
@@ -21686,140 +21678,131 @@
 			c: function create() {
 				h4 = createElement("h4");
 				h4.textContent = "details for each patch tested";
-				text1 = createText("\n\n");
-				div0 = createElement("div");
+				text1 = createText("\n\n\n\n");
+				div4 = createElement("div");
+				table = createElement("table");
+				thead = createElement("thead");
+				tr0 = createElement("tr");
+				th0 = createElement("th");
 				select0 = createElement("select");
 
 				for (var i = 0; i < each0_blocks.length; i += 1) {
 					each0_blocks[i].c();
 				}
 
-				text2 = createText("\n\n  ");
+				text2 = createText("\n\n          ");
 				select1 = createElement("select");
 
 				for (var i = 0; i < each1_blocks.length; i += 1) {
 					each1_blocks[i].c();
 				}
 
-				text3 = createText("\n\n");
-				div7 = createElement("div");
-				div2 = createElement("div");
-				div1 = createElement("div");
-				if_block.c();
-				text4 = createText("\n  ");
-				table = createElement("table");
-				thead = createElement("thead");
-				tr0 = createElement("tr");
-				th0 = createElement("th");
-				text5 = createText("\n        ");
+				text3 = createText("\n        ");
 				th1 = createElement("th");
-				text6 = createText("\n        ");
+				div0 = createElement("div");
+				div0.textContent = "Success rate";
+				text5 = createText("\n          ");
+				div1 = createElement("div");
+				div1.textContent = "Previously correctly classified images that the patch changed to the target class.";
+				text7 = createText("\n        ");
 				th2 = createElement("th");
+				div2 = createElement("div");
+				div2.textContent = "Probability change";
+				text9 = createText("\n          ");
 				div3 = createElement("div");
-				div3.textContent = "Success rate";
-				text8 = createText("\n          ");
-				div4 = createElement("div");
-				div4.textContent = "Previously correctly classified images that the patch changed to the target class.";
-				text10 = createText("\n        ");
-				th3 = createElement("th");
-				div5 = createElement("div");
-				div5.textContent = "Probability change";
-				text12 = createText("\n          ");
-				div6 = createElement("div");
-				div6.textContent = "Mean change in probabilty assigned to the target class.";
-				text14 = createText("\n    ");
-				tr1 = createElement("tr");
-				td0 = createElement("td");
-				img = createElement("img");
-				text15 = createText("\n      ");
-				td1 = createElement("td");
-				td1.textContent = "Noise";
-				text17 = createText("\n      ");
-				td2 = createElement("td");
-				raw0_after = createElement('noscript');
-				text18 = createText("%");
-				text19 = createText("\n      ");
-				td3 = createElement("td");
-				raw1_after = createElement('noscript');
-				text20 = createText(" / ");
-				raw2_before = createElement('noscript');
-				text21 = createText("\n      ");
-				td4 = createElement("td");
-				raw3_after = createElement('noscript');
-				text22 = createText("%");
-				text23 = createText("\n      ");
-				td5 = createElement("td");
-				raw4_after = createElement('noscript');
-				text24 = createText("% → ");
-				raw5_before = createElement('noscript');
-				raw5_after = createElement('noscript');
-				text25 = createText("%");
-				text26 = createText("\n    \n    ");
+				div3.textContent = "Mean change in probabilty assigned to the target class.";
+				text11 = createText("\n\n    \n    ");
 
 				for (var i = 0; i < each2_blocks.length; i += 1) {
 					each2_blocks[i].c();
 				}
-				h4.className = "svelte-1va7hgh";
+
+				text12 = createText("\n    ");
+				tr1 = createElement("tr");
+				td0 = createElement("td");
+				img = createElement("img");
+				text13 = createText("\n      ");
+				td1 = createElement("td");
+				td1.textContent = "Noise";
+				text15 = createText("\n      ");
+				td2 = createElement("td");
+				raw0_after = createElement('noscript');
+				text16 = createText("%");
+				text17 = createText("\n      ");
+				td3 = createElement("td");
+				raw1_after = createElement('noscript');
+				text18 = createText(" / ");
+				raw2_before = createElement('noscript');
+				text19 = createText("\n      ");
+				td4 = createElement("td");
+				raw3_after = createElement('noscript');
+				text20 = createText("%");
+				text21 = createText("\n      ");
+				td5 = createElement("td");
+				raw4_after = createElement('noscript');
+				text22 = createText("% → ");
+				raw5_before = createElement('noscript');
+				raw5_after = createElement('noscript');
+				text23 = createText("%");
+				h4.className = "svelte-psmgil";
 				addLoc(h4, file$O, 3, 0, 40);
 				addListener(select0, "change", select0_change_handler);
 				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select0_change_handler);
-				select0.className = "svelte-1va7hgh";
-				addLoc(select0, file$O, 8, 2, 109);
+				select0.className = "svelte-psmgil";
+				addLoc(select0, file$O, 32, 10, 783);
 				addListener(select1, "change", select1_change_handler);
 				if (!('selectedMethod' in ctx)) component.root._beforecreate.push(select1_change_handler);
-				select1.className = "svelte-1va7hgh";
-				addLoc(select1, file$O, 14, 2, 343);
-				div0.className = "controls svelte-1va7hgh";
-				addLoc(div0, file$O, 7, 0, 84);
-				addLoc(div1, file$O, 23, 4, 559);
-				div2.className = "method-description svelte-1va7hgh";
-				addLoc(div2, file$O, 22, 2, 522);
-				th0.className = "svelte-1va7hgh";
-				addLoc(th0, file$O, 40, 8, 1120);
-				th1.className = "svelte-1va7hgh";
-				addLoc(th1, file$O, 41, 8, 1138);
-				addLoc(div3, file$O, 43, 10, 1183);
-				div4.className = "figcaption svelte-1va7hgh";
-				addLoc(div4, file$O, 44, 10, 1217);
+				select1.className = "svelte-psmgil";
+				addLoc(select1, file$O, 38, 10, 1057);
+				th0.colSpan = "2";
+				th0.className = "svelte-psmgil";
+				addLoc(th0, file$O, 31, 8, 756);
+				addLoc(div0, file$O, 52, 10, 1475);
+				div1.className = "figcaption svelte-psmgil";
+				addLoc(div1, file$O, 53, 10, 1509);
+				th1.colSpan = "2";
+				th1.className = "svelte-psmgil";
+				addLoc(th1, file$O, 51, 8, 1448);
+				addLoc(div2, file$O, 56, 10, 1671);
+				div3.className = "figcaption svelte-psmgil";
+				addLoc(div3, file$O, 57, 10, 1711);
 				th2.colSpan = "2";
-				th2.className = "svelte-1va7hgh";
-				addLoc(th2, file$O, 42, 8, 1156);
-				addLoc(div5, file$O, 47, 10, 1379);
-				div6.className = "figcaption svelte-1va7hgh";
-				addLoc(div6, file$O, 48, 10, 1419);
-				th3.colSpan = "2";
-				th3.className = "svelte-1va7hgh";
-				addLoc(th3, file$O, 46, 8, 1352);
-				addLoc(tr0, file$O, 39, 6, 1107);
-				addLoc(thead, file$O, 38, 4, 1093);
+				th2.className = "svelte-psmgil";
+				addLoc(th2, file$O, 55, 8, 1644);
+				addLoc(tr0, file$O, 30, 6, 743);
+				addLoc(thead, file$O, 29, 4, 729);
 				img.src = "assets/images/patches/random.png";
 				img.alt = img_alt_value = "patch " + ctx.p;
-				img.className = "svelte-1va7hgh";
-				addLoc(img, file$O, 54, 8, 1572);
-				td0.className = "svelte-1va7hgh";
-				addLoc(td0, file$O, 53, 6, 1559);
-				td1.className = "svelte-1va7hgh";
-				addLoc(td1, file$O, 56, 6, 1652);
-				td2.className = "svelte-1va7hgh";
-				addLoc(td2, file$O, 57, 6, 1673);
-				td3.className = "svelte-1va7hgh";
-				addLoc(td3, file$O, 58, 6, 1716);
-				td4.className = "svelte-1va7hgh";
-				addLoc(td4, file$O, 59, 6, 1787);
-				td5.className = "svelte-1va7hgh";
-				addLoc(td5, file$O, 60, 6, 1830);
-				addLoc(tr1, file$O, 52, 4, 1548);
-				table.className = "svelte-1va7hgh";
-				addLoc(table, file$O, 37, 2, 1081);
-				div7.className = "method svelte-1va7hgh";
-				addLoc(div7, file$O, 21, 0, 499);
+				img.className = "svelte-psmgil";
+				addLoc(img, file$O, 85, 8, 2669);
+				td0.className = "svelte-psmgil";
+				addLoc(td0, file$O, 84, 6, 2656);
+				td1.className = "svelte-psmgil";
+				addLoc(td1, file$O, 87, 6, 2749);
+				td2.className = "svelte-psmgil";
+				addLoc(td2, file$O, 88, 6, 2770);
+				td3.className = "svelte-psmgil";
+				addLoc(td3, file$O, 89, 6, 2813);
+				td4.className = "svelte-psmgil";
+				addLoc(td4, file$O, 90, 6, 2884);
+				td5.className = "svelte-psmgil";
+				addLoc(td5, file$O, 91, 6, 2927);
+				addLoc(tr1, file$O, 83, 4, 2645);
+				table.className = "svelte-psmgil";
+				addLoc(table, file$O, 28, 2, 717);
+				div4.className = "method svelte-psmgil";
+				addLoc(div4, file$O, 11, 0, 125);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, h4, anchor);
 				insert(target, text1, anchor);
-				insert(target, div0, anchor);
-				append(div0, select0);
+				insert(target, div4, anchor);
+				append(div4, table);
+				append(table, thead);
+				append(thead, tr0);
+				append(tr0, th0);
+				append(th0, select0);
 
 				for (var i = 0; i < each0_blocks.length; i += 1) {
 					each0_blocks[i].m(select0, null);
@@ -21827,8 +21810,8 @@
 
 				selectOption(select0, ctx.selectedComparison);
 
-				append(div0, text2);
-				append(div0, select1);
+				append(th0, text2);
+				append(th0, select1);
 
 				for (var i = 0; i < each1_blocks.length; i += 1) {
 					each1_blocks[i].m(select1, null);
@@ -21836,65 +21819,54 @@
 
 				selectOption(select1, ctx.selectedMethod);
 
-				insert(target, text3, anchor);
-				insert(target, div7, anchor);
-				append(div7, div2);
-				append(div2, div1);
-				if_block.m(div1, null);
-				append(div7, text4);
-				append(div7, table);
-				append(table, thead);
-				append(thead, tr0);
-				append(tr0, th0);
-				append(tr0, text5);
+				append(tr0, text3);
 				append(tr0, th1);
-				append(tr0, text6);
+				append(th1, div0);
+				append(th1, text5);
+				append(th1, div1);
+				append(tr0, text7);
 				append(tr0, th2);
+				append(th2, div2);
+				append(th2, text9);
 				append(th2, div3);
-				append(th2, text8);
-				append(th2, div4);
-				append(tr0, text10);
-				append(tr0, th3);
-				append(th3, div5);
-				append(th3, text12);
-				append(th3, div6);
-				append(table, text14);
-				append(table, tr1);
-				append(tr1, td0);
-				append(td0, img);
-				append(tr1, text15);
-				append(tr1, td1);
-				append(tr1, text17);
-				append(tr1, td2);
-				append(td2, raw0_after);
-				raw0_after.insertAdjacentHTML("beforebegin", raw0_value);
-				append(td2, text18);
-				append(tr1, text19);
-				append(tr1, td3);
-				append(td3, raw1_after);
-				raw1_after.insertAdjacentHTML("beforebegin", raw1_value);
-				append(td3, text20);
-				append(td3, raw2_before);
-				raw2_before.insertAdjacentHTML("afterend", raw2_value);
-				append(tr1, text21);
-				append(tr1, td4);
-				append(td4, raw3_after);
-				raw3_after.insertAdjacentHTML("beforebegin", raw3_value);
-				append(td4, text22);
-				append(tr1, text23);
-				append(tr1, td5);
-				append(td5, raw4_after);
-				raw4_after.insertAdjacentHTML("beforebegin", raw4_value);
-				append(td5, text24);
-				append(td5, raw5_before);
-				raw5_before.insertAdjacentHTML("afterend", raw5_value);
-				append(td5, raw5_after);
-				append(td5, text25);
-				append(table, text26);
+				append(table, text11);
 
 				for (var i = 0; i < each2_blocks.length; i += 1) {
 					each2_blocks[i].m(table, null);
 				}
+
+				append(table, text12);
+				append(table, tr1);
+				append(tr1, td0);
+				append(td0, img);
+				append(tr1, text13);
+				append(tr1, td1);
+				append(tr1, text15);
+				append(tr1, td2);
+				append(td2, raw0_after);
+				raw0_after.insertAdjacentHTML("beforebegin", raw0_value);
+				append(td2, text16);
+				append(tr1, text17);
+				append(tr1, td3);
+				append(td3, raw1_after);
+				raw1_after.insertAdjacentHTML("beforebegin", raw1_value);
+				append(td3, text18);
+				append(td3, raw2_before);
+				raw2_before.insertAdjacentHTML("afterend", raw2_value);
+				append(tr1, text19);
+				append(tr1, td4);
+				append(td4, raw3_after);
+				raw3_after.insertAdjacentHTML("beforebegin", raw3_value);
+				append(td4, text20);
+				append(tr1, text21);
+				append(tr1, td5);
+				append(td5, raw4_after);
+				raw4_after.insertAdjacentHTML("beforebegin", raw4_value);
+				append(td5, text22);
+				append(td5, raw5_before);
+				raw5_before.insertAdjacentHTML("afterend", raw5_value);
+				append(td5, raw5_after);
+				append(td5, text23);
 			},
 
 			p: function update(changed, ctx) {
@@ -21924,19 +21896,15 @@
 				if (changed.methods) {
 					each1_value = ctx.methods;
 
-					for (var i = 0; i < each1_value.length; i += 1) {
+					for (var i = each1_blocks.length; i < each1_value.length; i += 1) {
 						const child_ctx = get_each1_context$6(ctx, each1_value, i);
 
-						if (each1_blocks[i]) {
-							each1_blocks[i].p(changed, child_ctx);
-						} else {
-							each1_blocks[i] = create_each_block_1$7(component, child_ctx);
-							each1_blocks[i].c();
-							each1_blocks[i].m(select1, null);
-						}
+						each1_blocks[i] = create_each_block_1$7(component, child_ctx);
+						each1_blocks[i].c();
+						each1_blocks[i].m(select1, null);
 					}
 
-					for (; i < each1_blocks.length; i += 1) {
+					for (i = each1_value.length; i < each1_blocks.length; i += 1) {
 						each1_blocks[i].d(1);
 					}
 					each1_blocks.length = each1_value.length;
@@ -21944,11 +21912,25 @@
 
 				if (!select1_updating && changed.selectedMethod) selectOption(select1, ctx.selectedMethod);
 
-				if (current_block_type !== (current_block_type = select_block_type(ctx))) {
-					if_block.d(1);
-					if_block = current_block_type(component, ctx);
-					if_block.c();
-					if_block.m(div1, null);
+				if (changed.c || changed.method) {
+					each2_value = ctx.c.patches;
+
+					for (var i = 0; i < each2_value.length; i += 1) {
+						const child_ctx = get_each2_context$3(ctx, each2_value, i);
+
+						if (each2_blocks[i]) {
+							each2_blocks[i].p(changed, child_ctx);
+						} else {
+							each2_blocks[i] = create_each_block$e(component, child_ctx);
+							each2_blocks[i].c();
+							each2_blocks[i].m(table, text12);
+						}
+					}
+
+					for (; i < each2_blocks.length; i += 1) {
+						each2_blocks[i].d(1);
+					}
+					each2_blocks.length = each2_value.length;
 				}
 
 				if ((changed.p) && img_alt_value !== (img_alt_value = "patch " + ctx.p)) {
@@ -21984,34 +21966,13 @@
 					detachBetween(raw5_before, raw5_after);
 					raw5_before.insertAdjacentHTML("afterend", raw5_value);
 				}
-
-				if (changed.c || changed.method) {
-					each2_value = ctx.c.patches;
-
-					for (var i = 0; i < each2_value.length; i += 1) {
-						const child_ctx = get_each2_context$3(ctx, each2_value, i);
-
-						if (each2_blocks[i]) {
-							each2_blocks[i].p(changed, child_ctx);
-						} else {
-							each2_blocks[i] = create_each_block$e(component, child_ctx);
-							each2_blocks[i].c();
-							each2_blocks[i].m(table, null);
-						}
-					}
-
-					for (; i < each2_blocks.length; i += 1) {
-						each2_blocks[i].d(1);
-					}
-					each2_blocks.length = each2_value.length;
-				}
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
 					detachNode(h4);
 					detachNode(text1);
-					detachNode(div0);
+					detachNode(div4);
 				}
 
 				destroyEach(each0_blocks, detach);
@@ -22021,19 +21982,13 @@
 				destroyEach(each1_blocks, detach);
 
 				removeListener(select1, "change", select1_change_handler);
-				if (detach) {
-					detachNode(text3);
-					detachNode(div7);
-				}
-
-				if_block.d();
 
 				destroyEach(each2_blocks, detach);
 			}
 		};
 	}
 
-	// (10:4) {#each comparisons as comparison, i}
+	// (34:12) {#each comparisons as comparison, i}
 	function create_each_block_2$4(component, ctx) {
 		var option, text0_value = ctx.$inceptionLabels[ctx.comparison.comparison[0]], text0, text1, text2_value = ctx.$inceptionLabels[ctx.comparison.comparison[1]], text2;
 
@@ -22045,7 +22000,7 @@
 				text2 = createText(text2_value);
 				option.__value = ctx.i;
 				option.value = option.__value;
-				addLoc(option, file$O, 10, 6, 197);
+				addLoc(option, file$O, 34, 14, 887);
 			},
 
 			m: function mount(target, anchor) {
@@ -22073,127 +22028,87 @@
 		};
 	}
 
-	// (16:4) {#each methods as method, i}
+	// (44:16) {:else}
+	function create_else_block$2(component, ctx) {
+		var text;
+
+		return {
+			c: function create() {
+				text = createText("Consistent size and corner position");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (42:16) {#if i === 0}
+	function create_if_block$d(component, ctx) {
+		var text;
+
+		return {
+			c: function create() {
+				text = createText("Strongest size and corner position");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (40:12) {#each methods as method, i}
 	function create_each_block_1$7(component, ctx) {
-		var option, text0_value = ctx.method, text0, text1;
+		var option;
+
+		function select_block_type(ctx) {
+			if (ctx.i === 0) return create_if_block$d;
+			return create_else_block$2;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(component, ctx);
 
 		return {
 			c: function create() {
 				option = createElement("option");
-				text0 = createText(text0_value);
-				text1 = createText(" positioning");
+				if_block.c();
 				option.__value = ctx.i;
 				option.value = option.__value;
-				addLoc(option, file$O, 16, 6, 419);
+				addLoc(option, file$O, 40, 14, 1149);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, option, anchor);
-				append(option, text0);
-				append(option, text1);
-			},
-
-			p: function update(changed, ctx) {
-				if ((changed.methods) && text0_value !== (text0_value = ctx.method)) {
-					setData(text0, text0_value);
-				}
+				if_block.m(option, null);
 			},
 
 			d: function destroy$$1(detach) {
 				if (detach) {
 					detachNode(option);
 				}
-			}
-		};
-	}
 
-	// (30:4) {:else}
-	function create_else_block$2(component, ctx) {
-		var div, p, text0, strong, text2, text3, img;
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				p = createElement("p");
-				text0 = createText("Choosing ");
-				strong = createElement("strong");
-				strong.textContent = "the strongest";
-				text2 = createText(" size and corner position for each example.");
-				text3 = createText("\n        ");
-				img = createElement("img");
-				addLoc(strong, file$O, 31, 39, 879);
-				p.className = "figcaption";
-				addLoc(p, file$O, 31, 8, 848);
-				img.src = "assets/icon-dynamic.png";
-				img.alt = "icon";
-				setStyle(img, "width", "initial");
-				addLoc(img, file$O, 32, 8, 965);
-				addLoc(div, file$O, 30, 6, 834);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-				append(div, p);
-				append(p, text0);
-				append(p, strong);
-				append(p, text2);
-				append(div, text3);
-				append(div, img);
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(div);
-				}
-			}
-		};
-	}
-
-	// (25:4) {#if method == "static"}
-	function create_if_block$d(component, ctx) {
-		var div, p, text0, strong, text2, text3, img;
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				p = createElement("p");
-				text0 = createText("Choosing ");
-				strong = createElement("strong");
-				strong.textContent = "a consistent";
-				text2 = createText(" size and corner position across all examples.");
-				text3 = createText("\n        ");
-				img = createElement("img");
-				addLoc(strong, file$O, 26, 39, 645);
-				p.className = "figcaption";
-				addLoc(p, file$O, 26, 8, 614);
-				img.src = "assets/icon-static.png";
-				img.alt = "icon";
-				setStyle(img, "width", "initial");
-				addLoc(img, file$O, 27, 8, 733);
-				addLoc(div, file$O, 25, 6, 600);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-				append(div, p);
-				append(p, text0);
-				append(p, strong);
-				append(p, text2);
-				append(div, text3);
-				append(div, img);
-			},
-
-			d: function destroy$$1(detach) {
-				if (detach) {
-					detachNode(div);
-				}
+				if_block.d();
 			}
 		};
 	}
 
 	// (72:4) {#each c.patches as patch, p}
 	function create_each_block$e(component, ctx) {
-		var tr, td0, img, img_src_value, text0, td1, raw0_value = "Patch" + format_1$3(ctx.p + 1), text1, td2, raw1_value = ctx.patch[ctx.method][2], raw1_after, text2, text3, td3, raw2_value = ctx.patch[ctx.method][0], raw2_after, text4, raw3_value = ctx.patch[ctx.method][1], raw3_before, text5, td4, raw4_value = ctx.patch[ctx.method][5], raw4_after, text6, text7, td5, raw5_value = ctx.patch[ctx.method][3], raw5_after, text8, raw6_value = ctx.patch[ctx.method][4], raw6_before, raw6_after, text9, text10;
+		var tr, td0, img, img_src_value, text0, td1, raw0_value = "Patch " + format_1$3(ctx.p + 1), text1, td2, raw1_value = ctx.patch[ctx.method][2], raw1_after, text2, text3, td3, raw2_value = ctx.patch[ctx.method][0], raw2_after, text4, raw3_value = ctx.patch[ctx.method][1], raw3_before, text5, td4, raw4_value = ctx.patch[ctx.method][5], raw4_after, text6, text7, td5, raw5_value = ctx.patch[ctx.method][3], raw5_after, text8, raw6_value = ctx.patch[ctx.method][4], raw6_before, raw6_after, text9;
 
 		return {
 			c: function create() {
@@ -22222,24 +22137,23 @@
 				raw6_before = createElement('noscript');
 				raw6_after = createElement('noscript');
 				text9 = createText("%");
-				text10 = createText("\n      ");
 				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format_1$3(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				img.className = "svelte-1va7hgh";
-				addLoc(img, file$O, 74, 10, 2317);
-				td0.className = "svelte-1va7hgh";
-				addLoc(td0, file$O, 73, 8, 2302);
-				td1.className = "svelte-1va7hgh";
-				addLoc(td1, file$O, 76, 8, 2419);
-				td2.className = "svelte-1va7hgh";
-				addLoc(td2, file$O, 77, 8, 2468);
-				td3.className = "svelte-1va7hgh";
-				addLoc(td3, file$O, 78, 8, 2511);
-				td4.className = "svelte-1va7hgh";
-				addLoc(td4, file$O, 79, 8, 2580);
-				td5.className = "svelte-1va7hgh";
-				addLoc(td5, file$O, 80, 8, 2623);
-				addLoc(tr, file$O, 72, 6, 2289);
+				img.className = "svelte-psmgil";
+				addLoc(img, file$O, 74, 10, 2247);
+				td0.className = "svelte-psmgil";
+				addLoc(td0, file$O, 73, 8, 2232);
+				td1.className = "svelte-psmgil";
+				addLoc(td1, file$O, 76, 8, 2349);
+				td2.className = "svelte-psmgil";
+				addLoc(td2, file$O, 77, 8, 2399);
+				td3.className = "svelte-psmgil";
+				addLoc(td3, file$O, 78, 8, 2442);
+				td4.className = "svelte-psmgil";
+				addLoc(td4, file$O, 79, 8, 2511);
+				td5.className = "svelte-psmgil";
+				addLoc(td5, file$O, 80, 8, 2554);
+				addLoc(tr, file$O, 72, 6, 2219);
 			},
 
 			m: function mount(target, anchor) {
@@ -22275,7 +22189,6 @@
 				raw6_before.insertAdjacentHTML("afterend", raw6_value);
 				append(td5, raw6_after);
 				append(td5, text9);
-				append(tr, text10);
 			},
 
 			p: function update(changed, ctx) {
@@ -22341,6 +22254,7 @@
 		if (!('selectedMethod' in this._state)) console.warn("<PatchExamples> was created without expected data property 'selectedMethod'");
 		if (!('methods' in this._state)) console.warn("<PatchExamples> was created without expected data property 'methods'");
 		if (!('$inceptionLabels' in this._state)) console.warn("<PatchExamples> was created without expected data property '$inceptionLabels'");
+
 
 		if (!('p' in this._state)) console.warn("<PatchExamples> was created without expected data property 'p'");
 		this._intro = true;
