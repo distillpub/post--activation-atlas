@@ -21764,51 +21764,51 @@
 				raw5_before = createElement('noscript');
 				raw5_after = createElement('noscript');
 				text20 = createText("%");
-				h4.className = "svelte-na0gwc";
+				h4.className = "svelte-q4mobk";
 				addLoc(h4, file$O, 71, 0, 2273);
 				addListener(select0, "change", select0_change_handler);
 				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select0_change_handler);
-				select0.className = "svelte-na0gwc";
+				select0.className = "svelte-q4mobk";
 				addLoc(select0, file$O, 101, 12, 3039);
 				addListener(select1, "change", select1_change_handler);
 				if (!('selectedMethod' in ctx)) component.root._beforecreate.push(select1_change_handler);
-				select1.className = "svelte-na0gwc";
+				select1.className = "svelte-q4mobk";
 				addLoc(select1, file$O, 107, 12, 3323);
-				div0.className = "controls svelte-na0gwc";
+				div0.className = "controls svelte-q4mobk";
 				addLoc(div0, file$O, 100, 10, 3004);
-				th0.className = "svelte-na0gwc";
+				th0.className = "svelte-q4mobk";
 				addLoc(th0, file$O, 99, 8, 2989);
-				div1.className = "title svelte-na0gwc";
+				div1.className = "title svelte-q4mobk";
 				addLoc(div1, file$O, 123, 10, 3779);
 				th1.colSpan = "2";
-				th1.className = "svelte-na0gwc";
+				th1.className = "svelte-q4mobk";
 				addLoc(th1, file$O, 122, 8, 3752);
-				div2.className = "title svelte-na0gwc";
+				div2.className = "title svelte-q4mobk";
 				addLoc(div2, file$O, 126, 10, 3866);
 				th2.colSpan = "2";
-				th2.className = "svelte-na0gwc";
+				th2.className = "svelte-q4mobk";
 				addLoc(th2, file$O, 125, 8, 3839);
 				addLoc(tr0, file$O, 98, 6, 2976);
 				addLoc(thead, file$O, 97, 4, 2962);
 				img.src = "assets/images/patches/random.png";
 				img.alt = img_alt_value = "patch " + ctx.p;
-				img.className = "svelte-na0gwc";
+				img.className = "svelte-q4mobk";
 				addLoc(img, file$O, 154, 8, 4786);
 				addLoc(div3, file$O, 155, 8, 4856);
-				td0.className = "svelte-na0gwc";
+				td0.className = "svelte-q4mobk";
 				addLoc(td0, file$O, 153, 6, 4773);
-				td1.className = "svelte-na0gwc";
+				td1.className = "svelte-q4mobk";
 				addLoc(td1, file$O, 157, 6, 4898);
-				td2.className = "svelte-na0gwc";
+				td2.className = "svelte-q4mobk";
 				addLoc(td2, file$O, 158, 6, 4941);
-				td3.className = "svelte-na0gwc";
+				td3.className = "svelte-q4mobk";
 				addLoc(td3, file$O, 159, 6, 5012);
-				td4.className = "svelte-na0gwc";
+				td4.className = "svelte-q4mobk";
 				addLoc(td4, file$O, 160, 6, 5055);
 				addLoc(tr1, file$O, 152, 4, 4762);
-				table.className = "svelte-na0gwc";
+				table.className = "svelte-q4mobk";
 				addLoc(table, file$O, 96, 2, 2950);
-				div4.className = "method svelte-na0gwc";
+				div4.className = "method svelte-q4mobk";
 				addLoc(div4, file$O, 79, 0, 2358);
 			},
 
@@ -22040,7 +22040,7 @@
 			c: function create() {
 				h4 = createElement("h4");
 				h4.textContent = "Consistent corner position";
-				h4.className = "svelte-na0gwc";
+				h4.className = "svelte-q4mobk";
 				addLoc(h4, file$O, 13, 2, 336);
 			},
 
@@ -22064,7 +22064,7 @@
 			c: function create() {
 				h4 = createElement("h4");
 				h4.textContent = "Dynamic corner position";
-				h4.className = "svelte-na0gwc";
+				h4.className = "svelte-q4mobk";
 				addLoc(h4, file$O, 11, 2, 291);
 			},
 
@@ -22094,12 +22094,12 @@
 				div0.textContent = "Choosing the strongest size and corner position for each example.";
 				img.src = "assets/icon-dynamic.png";
 				img.alt = "icon";
-				img.className = "svelte-na0gwc";
+				img.className = "svelte-q4mobk";
 				addLoc(img, file$O, 29, 12, 820);
-				div0.className = "figcaption svelte-na0gwc";
+				div0.className = "figcaption svelte-q4mobk";
 				addLoc(div0, file$O, 31, 14, 899);
 				addLoc(div1, file$O, 30, 12, 879);
-				div2.className = "description svelte-na0gwc";
+				div2.className = "description svelte-q4mobk";
 				addLoc(div2, file$O, 28, 10, 782);
 			},
 
@@ -22133,12 +22133,12 @@
 				div0.textContent = "Choosing a consistent size and corner position across all examples.";
 				img.src = "assets/icon-static.png";
 				img.alt = "icon";
-				img.className = "svelte-na0gwc";
+				img.className = "svelte-q4mobk";
 				addLoc(img, file$O, 22, 12, 544);
-				div0.className = "figcaption svelte-na0gwc";
+				div0.className = "figcaption svelte-q4mobk";
 				addLoc(div0, file$O, 24, 14, 622);
 				addLoc(div1, file$O, 23, 12, 602);
-				div2.className = "description svelte-na0gwc";
+				div2.className = "description svelte-q4mobk";
 				addLoc(div2, file$O, 21, 10, 506);
 			},
 
@@ -22166,7 +22166,7 @@
 			c: function create() {
 				div = createElement("div");
 				div.textContent = "Previously correctly classified images that the patch changed to the target class.";
-				div.className = "explanation figcaption svelte-na0gwc";
+				div.className = "explanation figcaption svelte-q4mobk";
 				addLoc(div, file$O, 40, 12, 1189);
 			},
 
@@ -22190,7 +22190,7 @@
 			c: function create() {
 				div = createElement("div");
 				div.textContent = "Mean probability assigned to the target class before and after patch.";
-				div.className = "explanation figcaption svelte-na0gwc";
+				div.className = "explanation figcaption svelte-q4mobk";
 				addLoc(div, file$O, 46, 12, 1471);
 			},
 
@@ -22228,15 +22228,15 @@
 				raw5_after = createElement('noscript');
 				text5 = createText(" → ");
 				raw6_before = createElement('noscript');
-				td0.className = "svelte-na0gwc";
+				td0.className = "svelte-q4mobk";
 				addLoc(td0, file$O, 54, 8, 1707);
-				td1.className = "svelte-na0gwc";
+				td1.className = "svelte-q4mobk";
 				addLoc(td1, file$O, 57, 8, 1848);
-				td2.className = "svelte-na0gwc";
+				td2.className = "svelte-q4mobk";
 				addLoc(td2, file$O, 58, 8, 1906);
-				td3.className = "svelte-na0gwc";
+				td3.className = "svelte-q4mobk";
 				addLoc(td3, file$O, 59, 8, 2007);
-				td4.className = "svelte-na0gwc";
+				td4.className = "svelte-q4mobk";
 				addLoc(td4, file$O, 60, 8, 2066);
 				addLoc(tr, file$O, 53, 6, 1694);
 			},
@@ -22369,24 +22369,24 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				th0.className = "svelte-na0gwc";
+				th0.className = "svelte-q4mobk";
 				addLoc(th0, file$O, 19, 8, 456);
-				div0.className = "title svelte-na0gwc";
+				div0.className = "title svelte-q4mobk";
 				addLoc(div0, file$O, 38, 10, 1103);
 				th1.colSpan = "2";
-				th1.className = "svelte-na0gwc";
+				th1.className = "svelte-q4mobk";
 				addLoc(th1, file$O, 37, 8, 1076);
-				div1.className = "title svelte-na0gwc";
+				div1.className = "title svelte-q4mobk";
 				addLoc(div1, file$O, 44, 10, 1379);
 				th2.colSpan = "2";
-				th2.className = "svelte-na0gwc";
+				th2.className = "svelte-q4mobk";
 				addLoc(th2, file$O, 43, 8, 1352);
 				addLoc(tr, file$O, 18, 6, 443);
 				addLoc(thead, file$O, 17, 6, 429);
 				addLoc(tbody, file$O, 51, 4, 1642);
-				table.className = "svelte-na0gwc";
+				table.className = "svelte-q4mobk";
 				addLoc(table, file$O, 16, 4, 415);
-				div2.className = "method details svelte-na0gwc";
+				div2.className = "method details svelte-q4mobk";
 				addLoc(div2, file$O, 15, 2, 382);
 			},
 
@@ -22643,18 +22643,18 @@
 				text9 = createText("%");
 				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format_1$3(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				img.className = "svelte-na0gwc";
+				img.className = "svelte-q4mobk";
 				addLoc(img, file$O, 143, 10, 4360);
 				addLoc(div, file$O, 144, 10, 4450);
-				td0.className = "svelte-na0gwc";
+				td0.className = "svelte-q4mobk";
 				addLoc(td0, file$O, 142, 8, 4345);
-				td1.className = "svelte-na0gwc";
+				td1.className = "svelte-q4mobk";
 				addLoc(td1, file$O, 146, 8, 4516);
-				td2.className = "svelte-na0gwc";
+				td2.className = "svelte-q4mobk";
 				addLoc(td2, file$O, 147, 8, 4559);
-				td3.className = "svelte-na0gwc";
+				td3.className = "svelte-q4mobk";
 				addLoc(td3, file$O, 148, 8, 4628);
-				td4.className = "svelte-na0gwc";
+				td4.className = "svelte-q4mobk";
 				addLoc(td4, file$O, 149, 8, 4671);
 				addLoc(tr, file$O, 141, 6, 4332);
 			},
