@@ -1,4 +1,72 @@
 
+<!-- <h4>
+  Average of ten patches applied to 1,000 training set examples
+</h4>
+
+<p>Previously correctly classified images that the patch changed to the target class.
+
+Mean change in probabilty assigned to the target class. </p> -->
+
+{#each methods as method}
+  {#if method == "dynamic"}
+  <h4>Dynamic corner position</h4>
+  {:else}
+  <h4>Consistent corner position</h4>
+  {/if}
+  <div class="method details">
+    <table>
+      <thead>
+      <tr>
+        <th>
+          {#if method == "static"}
+          <div class="description">
+            <img src="assets/icon-static.png" alt="icon">
+            <div>
+              <div class="figcaption">Choosing a consistent size and corner position across all examples.</div>
+            </div>
+          </div>
+        {:else}
+          <div class="description">
+            <img src="assets/icon-dynamic.png" alt="icon">
+            <div>
+              <div class="figcaption">Choosing the strongest size and corner position for each example.</div>
+            </div>
+          </div>
+        {/if}
+        
+        </th>
+        <th colspan="2">
+          <div class="title">Success rate</div>
+          {#if method == "dynamic"}
+            <div class="explanation figcaption">Previously correctly classified images that the patch changed to the target class.</div>
+          {/if}
+        </th>
+        <th colspan="2">
+          <div class="title">Probability change</div>
+          {#if method == "dynamic"}
+            <div class="explanation figcaption">Mean probability assigned to the target class before and after patch.</div>
+          {/if}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {#each comparisons as comparison}
+      <tr>
+        <td>
+          {@html $inceptionLabels[comparison.comparison[0]] + " → " + $inceptionLabels[comparison.comparison[1]]}
+        </td>
+        <td>{@html fp(comparison.totals[method][2])}</td>
+        <td>{@html fi(comparison.totals[method][0])} / {@html fi(comparison.totals[method][1])}</td>
+        <td>{@html fpp(comparison.totals[method][5])}</td>
+        <td>{@html fp(comparison.totals[method][3])} → {@html fp(comparison.totals[method][4])}</td>
+      </tr>
+      {/each}
+    </tbody>
+    
+    </table>
+  </div>
+
+{/each}
 
 <!-- <div>{comparison.name}</div> -->
 <h4>
@@ -29,33 +97,34 @@
   <table>
     <thead>
       <tr>
-        <th colspan="2">
-          <select bind:value="selectedComparison">
-            {#each comparisons as comparison, i}
-              <option value={i}>{$inceptionLabels[comparison.comparison[0]]} → {$inceptionLabels[comparison.comparison[1]]}</option>
-            {/each}
-          </select>
+        <th>
+          <div class="controls">
+            <select bind:value="selectedComparison">
+              {#each comparisons as comparison, i}
+                <option value={i}>{$inceptionLabels[comparison.comparison[0]]} → {$inceptionLabels[comparison.comparison[1]]}</option>
+              {/each}
+            </select>
 
-          <select bind:value="selectedMethod">
-            {#each methods as method, i}
-              <option value={i}>
-                {#if i === 0}
-                  Strongest size and corner position 
-                {:else}
-                  Consistent size and corner position 
-                {/if}
-              </option>
-            {/each}
-          </select>
+            <select bind:value="selectedMethod">
+              {#each methods as method, i}
+                <option value={i}>
+                  {#if i === 0}
+                    Strongest size and corner position 
+                  {:else}
+                    Consistent size and corner position 
+                  {/if}
+                </option>
+              {/each}
+            </select>
+          </div>
+
         
         </th>
         <th colspan="2">
-          <div>Success rate</div>
-          <div class="figcaption">Previously correctly classified images that the patch changed to the target class.</div>
+          <div class="title">Success rate</div>
         </th>
         <th colspan="2">
-          <div>Probability change</div>
-          <div class="figcaption">Mean change in probabilty assigned to the target class.</div>
+          <div class="title">Probability change</div>
         </th>
       </tr>
     </thead>
@@ -73,8 +142,8 @@
       <tr>
         <td>
           <img src="assets/images/patches/{c.name}-{format(p + 1)}.png" alt="patch {p}"/>
+          <div>{@html "Patch " + format(p + 1)}</div>
         </td>
-        <td>{@html "Patch " + format(p + 1)}</td>
         <td>{@html patch[method][2]}%</td>
         <td>{@html patch[method][0]} / {@html patch[method][1]}</td>
         <td>{@html patch[method][5]}%</td>
@@ -84,8 +153,8 @@
     <tr>
       <td>
         <img src="assets/images/patches/random.png" alt="patch {p}"/>
+        <div>Random noise</div>
       </td>
-      <td>Noise</td>
       <td>{@html c.noise[method][2]}%</td>
       <td>{@html c.noise[method][0]} / {@html c.noise[method][1]}</td>
       <td>{@html c.noise[method][5]}%</td>
@@ -113,8 +182,8 @@ Patches.forEach(comparison => {
       totals[4] += +patch[method][4];
     });
     totals[2] = totals[0] / totals[1]
-    totals[3] = totals[3] / comparison.patches.length
-    totals[4] = totals[4] / comparison.patches.length
+    totals[3] = totals[3] / comparison.patches.length / 100
+    totals[4] = totals[4] / comparison.patches.length / 100
     totals[5] = totals[4] - totals[3];
     comparison.totals[method] = totals
   });
@@ -141,7 +210,7 @@ export default {
     f1: format(".1f"),
     fi: format(","),
     fp: format(".1%"),
-    fpp: format("+.1f"),
+    fpp: format("+.1%"),
     format(n) {
       if (n < 10) {
         return "0" + n;
@@ -156,25 +225,30 @@ export default {
 
 <style>
 h4 {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   padding-bottom: 10px;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  margin-top: 0;
 }
 .controls {
-  margin-bottom: 20px;
-  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
-  padding-bottom: 10px;
-  border-top: solid 1px rgba(0, 0, 0, 0.1);
-  padding-top: 10px;
-  display: grid;
-  grid-template-columns: 200px 200px;
-  grid-gap: 10px;
+  margin-bottom: 8px;
 }
 select {
   width: 100%;
   max-width: 220px;
 }
-  .method {
+  .description {
+    display: grid;
+    grid-template-columns: 50px 150px;
+    grid-gap: 20px;
+    /* margin-bottom: 8px; */
+    /* font-style: italic; */
+  }
+  .method table .description img {
+    width: 49px;
+    height: 49px;
+    margin-top: 8px;
+    display: block;
   }
   .method h5 {
     margin-top: 0;
@@ -185,6 +259,8 @@ select {
     line-height: 1.3em;
     flex: 1 1 auto;
     width: 100%;
+    margin-bottom: 3em;
+    border-bottom: none;
   }
   .method table img {
     display: block;
@@ -192,41 +268,63 @@ select {
     height: 40px;
   }
 
+  .method table th,
+  .method table td {
+    font-size: 14px;
+  }
+
   .method th {
-    vertical-align: top;
-    padding-bottom: 16px;
+    vertical-align: bottom;
+    border-bottom: none;
+    padding-bottom: 10px;
+  }
+  .method .title {
+    /* text-transform: uppercase; */
+    /* font-weight: 500; */
   }
   .method td {
     vertical-align: middle;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .explanation {
+    /* font-weight: normal;
+    font-size: 12px;
+    color: grey; */
   }
   .method th .figcaption {
     font-weight: normal;
+    line-height: 1.6em;
   }
-   .method table td:nth-child(1),
-    .method table th:nth-child(1) {
-      padding-left: 0;
-    }
+  .method table th:nth-child(1) {
+    padding-left: 0;
+    vertical-align: top;
+  }
 
   .method table td:nth-child(1) {
-    width: 40px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    padding: 0;
+  }
+  .method.details table td:nth-child(1) {
+    display: table-cell;
+    /* text-align: right; */
   }
 
   .method table td:nth-child(2) {
-    font-size: 13px;
+    text-align: right;
   }
 
-  .method table td:nth-child(3) {
+  .method table td:nth-child(2),
+  .method table td:nth-child(4) {
     text-align: right;
+    width: 45px;
   }
 
   .method table td:nth-child(3),
   .method table td:nth-child(5) {
-    text-align: right;
-    width: 70px;
-  }
-
-  .method table td:nth-child(4),
-  .method table td:nth-child(6) {
     color: grey;
     font-weight: 200;
     font-size: 12px;
@@ -234,7 +332,7 @@ select {
   }
 
 
-  .method table td:nth-child(6) {
+  .method table td:nth-child(5) {
     color: grey;
   }
 
