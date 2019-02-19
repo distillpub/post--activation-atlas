@@ -60,7 +60,7 @@
 <d-front-matter>
   <script type="text/json">{
   "title": "Activation Atlas",
-  "description": "By using feature inversion to visualize millions of activations from an image classification network, we create an explorable activation atlas of the features the network has learned and what concepts it typically represents.",
+  "description": "By using feature inversion to visualize millions of activations from an image classification network, we create an explorable activation atlas of features the network has learned and what concepts it typically represents.",
   "password": "atlas",
   "authors": [
     {
@@ -117,7 +117,7 @@
 
 <d-title>
   <h1 style="grid-column-end: page;">Exploring Neural Networks with Activation Atlases</h1>
-  <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of the features the network has learned which can reveal how the network typically represents some concepts.</p>
+  <p>By using feature inversion to visualize millions of activations from an image classification network, we create an explorable <em>activation atlas</em> of features the network has learned which can reveal how the network typically represents some concepts.</p>
   <figure class="app-container">
     <d-figure id="cover"></d-figure>
   </figure>
@@ -143,9 +143,9 @@
 
   <p>Neural networks can learn to classify images more accurately than any system humans directly design. This raises a natural question: What have these networks learned that allows them to classify images so well?
 
-  <p>Feature visualization is a promising thread of research that tries to answer this question by letting us “see through the eyes” of the network <d-cite key="erhan2009visualizing,olah2017feature,simonyan2013deep,nguyen2015deep,mordvintsev2015inceptionism,nguyen2016plug"></d-cite>. It began with research into <a href="https://distill.pub/2017/feature-visualization/">visualizing individual neurons</a> (what do they respond to?). Because neurons don’t work in isolation, this naturally led to applying feature visualization to <a>simple combinations of neurons</a>. But there was still a problem -- what combinations of neurons should we be studying? A natural answer (foreshadowed by work on model inversion <d-cite key="mahendran2015understanding"></d-cite>) is to  <a href="https://distill.pub/2018/building-blocks/#ActivationGridSingle">visualize activations</a> <d-cite key="olah2018building"></d-cite>, the combination of neurons firing in response to a particular input.
+  <p>Feature visualization is a thread of research that tries to answer this question by letting us “see through the eyes” of the network <d-cite key="erhan2009visualizing,olah2017feature,simonyan2013deep,nguyen2015deep,mordvintsev2015inceptionism,nguyen2016plug"></d-cite>. It began with research into <a href="https://distill.pub/2017/feature-visualization/">visualizing individual neurons</a> and trying to determine what they respond to. Because neurons don’t work in isolation, this led to applying feature visualization to <a>simple combinations of neurons</a>. But there was still a problem — what combinations of neurons should we be studying? A natural answer (foreshadowed by work on model inversion <d-cite key="mahendran2015understanding"></d-cite>) is to  <a href="https://distill.pub/2018/building-blocks/#ActivationGridSingle">visualize activations</a> <d-cite key="olah2018building"></d-cite>, the combination of neurons firing in response to a particular input.
 
-  <p>These approaches are exciting because they can make the hidden layers of networks comprehensible. These layers are the heart of how neural networks outperform more traditional approaches to machine learning and historically, we’ve had almost no understanding of what happens in them<d-footnote>With the exception of the first hidden layer.</d-footnote>. Feature visualization changes this by connecting hidden layers back to the input, making them meaningful.
+  <p>These approaches are exciting because they can make the hidden layers of networks comprehensible. These layers are the heart of how neural networks outperform more traditional approaches to machine learning and historically, we’ve little understanding of what happens in them<d-footnote>With the exception of the first hidden layer.</d-footnote>. Feature visualization addresses this by connecting hidden layers back to the input, making them meaningful.
 
   <p>Unfortunately, visualizing activations has a major weakness — it is limited to seeing only how the network sees a single input. Because of this, it doesn’t give us a big picture view of the network. When what we want is a map of an entire forest, inspecting one tree at a time will not suffice.
 
@@ -160,21 +160,21 @@
     This reveals a broader picture of what the neuron detects but is still focused on individual neurons.
   </p>
 
-  <p>In this article we introduce <em>activation atlases</em> to this quiver of techniques. (An example is shown at the top of this article.) Broadly speaking, we use a technique similar to the one in CNN codes, but instead of showing input data, we show feature visualizations of averaged activations. By combining these two techniques, we can get the best of both worlds. We can see the forest through the eyes of the network.
+  <p>In this article we introduce <em>activation atlases</em> to this quiver of techniques. (An example is shown at the top of this article.) Broadly speaking, we use a technique similar to the one in CNN codes, but instead of showing input data, we show feature visualizations of averaged activations. By combining these two techniques, we can get the advantages of each in one view — a global map seen through the eyes of the network.
 
   <p>In theory, showing the feature visualizations of the <a href="https://distill.pub/2017/feature-visualization/appendix/">basis neurons</a> would give us the global view of a network that we are seeking. In practice, however, neurons are rarely used by the network in isolation, and it may be difficult to understand them that way. As an analogy, while the 26 letters in the alphabet provide a basis for English, seeing how letters are commonly combined to make words gives far more insight into the concepts that can be expressed than the letters alone. Similarly, activation atlases give us a bigger picture view by showing common combinations of neurons.
 
   <figure id="overview" style="grid-column: page;"></figure>
 
   <p>
-    These atlases not only reveal nuanced visual abstractions within a model, but later in the article we will also show that they can reveal high-level misunderstandings in a model that can be exploited. For example, by looking at an activation atlas we will be able to see why a picture of a baseball can switch the classification of an image from “grey whale” to “great white shark”.
+    These atlases not only reveal visual abstractions within a model, but later in the article we will show that they can reveal high-level misunderstandings in a model that can be exploited. For example, by looking at an activation atlas we will be able to see why a picture of a baseball can switch the classification of an image from “grey whale” to “great white shark”.
   </p>
   <!-- https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_top/web/web--grid_size%3D8--layout%3D20_0.01_cosine--class_filter%3D442_top--filter%3DNone--layer%3Dmixed5b--model%3DInceptionV1--sample_images%3D1000000--sample_type%3Drandom.json -->
 
   <figure id="adversarial-teaser">
   </figure>
 
-  <p>Of course, activation atlases do have limitations. In particular, they're dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, they will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations — we’ll discuss them in much more depth later! — Activation Atlases still give us an unprecedented overview of what neural networks can represent.
+  <p>Of course, activation atlases do have limitations. In particular, they're dependent on the distribution of the data we choose to sample activations from (in our examples, we use one million images chosen at random from the ImageNet dataset <d-cite key="deng2009imagenet"></d-cite> training data).  As a result, they will only show the activations that exist within the distribution of the sample data. However, while it’s important to be aware of these limitations — we’ll discuss them in much more depth later! — Activation Atlases still give us a new kind of overview of what neural networks can represent.
 
 </section>
 
@@ -191,20 +191,19 @@
   </p>
 
   <p>
-    InceptionV1 consists of a number of layers, which we refer to as 3a, 3b, 4a, etc. Each layer successively builds of the previous layers.
-    Each layer actually has several component parts, but for this article we’ll focus on these larger groups.
+    InceptionV1 consists of a number of layers, which we refer to as "mixed3a", "mixed3b", "mixed4a", etc., and sometimes shortened to just "3a". Each layer successively builds on the previous layers. 
   </p>
 
   <figure style="grid-column: page;">
     <div id="model-overview" ></div>
-    <div class="figcaption">InceptionV1 builds up its understanding of images over several layers (see <a href="https://distill.pub/2017/feature-visualization/appendix/">overview</a> from <d-cite key="olah2017feature"></d-cite>). It was trained on ImageNet ILSVRC <d-cite key="deng2009imagenet"></d-cite>.</div>
+    <div class="figcaption">InceptionV1 builds up its understanding of images over several layers (see <a href="https://distill.pub/2017/feature-visualization/appendix/">overview</a> from <d-cite key="olah2017feature"></d-cite>). It was trained on ImageNet ILSVRC <d-cite key="deng2009imagenet"></d-cite>. Each layer actually has several component parts, but for this article we’ll focus on these larger groups.</div>
   </figure>
 
-  <p>To visualize how InceptionV1 sees an image, the first step is to feed the image into the network and run it up to the layer of interest. Then we collect the activations -- the numerical values of how much each neuron fired. If a neuron is excited by what it is shown, it's activation value will be positive.
+  <p>To visualize how InceptionV1 sees an image, the first step is to feed the image into the network and run it through to the layer of interest. Then we collect the activations — the numerical values of how much each neuron fired. If a neuron is excited by what it is shown, it's activation value will be positive.
 
   <p>Unfortunately these vectors of activation values are just vectors of unitless numbers and not particularly interpretable by people. This is where <a href="https://distill.pub/2017/feature-visualization/">feature visualization</a> comes in.
 
-  Roughly speaking, we can think of feature visualization as creating an idealized image of what the network thinks would produce a particular activation vector.  Whereas we normally use a network to transform an image into an activation vector, in feature visualization we go the opposite direction. Starting with an activation vector at a particular layer, we create a feature visualization image through an iterative optimization process.
+  Roughly speaking, we can think of feature visualization as creating an idealized image of what the network thinks would produce a particular activation vector.  Whereas we normally use a network to transform an image into an activation vector, in feature visualization we go in the opposite direction. Starting with an activation vector at a particular layer, we create an image through an iterative optimization process.
 
   <p>Because InceptionV1 is a <a href="http://colah.github.io/posts/2014-07-Conv-Nets-Modular/">convolutional network</a>, there is not just one activation vector per layer per image.
   This means that the same neurons are run on each patch of the previous layer.
@@ -225,13 +224,11 @@
 
   <p>Activation grids show how the network sees a single image, but what if we want to see more? What if we want to understand how it reacts to millions of images?
 
-  <p>Of course, we could look at activation grids for many images, one by one. But looking at millions of examples doesn’t scale, and human brains aren’t good at comparing lots of examples without structure. In the same way that we need tools like histograms in order to understand millions of numbers, we need a way to aggregate and organize activations if we want to see meaningful patterns in millions of them.
+  <p>Of course, we could look at individual activation grids for those images one by one. But looking at millions of examples doesn’t scale, and human brains aren’t good at comparing lots of examples without structure. In the same way that we need a tool like a histogram in order to understand millions of numbers, we need a way to aggregate and organize activations if we want to see meaningful patterns in millions of them.
 
-  <p>Let's start by collecting activations from one million images. We'll randomly select one spatial activation per image -- a vector representing how the network understands a single patch. <d-footnote>We avoid the edges due to boundary effects.</d-footnote>
+  <p>Let's start by collecting activations from one million images. We'll randomly select one spatial activation per image.<d-footnote>We avoid the edges due to boundary effects.</d-footnote> This gives us one million activation vectors. Each of the vectors is high-dimensional, perhaps 512 dimensions! With such a complex set of data, we need to organize and aggregate it if we want a big picture view.
 
-  <p>This gives us one million activation vectors. Each of the vectors is high-dimensional, perhaps 512 dimensions! With such a complex set of data, we need to organize and aggregate it if we want a big picture view.
-
-  <p>Thankfully, we have modern dimensionality reduction techniques at our disposal. These algorithms, such as t-SNE <d-cite key="maaten2008visualizing"></d-cite> and UMAP <d-cite key="mcinnes2018umap-software"></d-cite>, can project high-dimensional data like our activation vectors into useful 2D layouts, preserving some of the local structure of the original space. This takes care of organizing our activation vectors, but we also need to aggregate into a more manageable number. We’ll do this by drawing a grid over the 2D layout we created with dimensionality reduction. For each cell in our grid, we average all the activations that lie within the boundaries of that cell, and use feature visualization to create an iconic representation.
+  <p>Thankfully, we have modern dimensionality reduction techniques at our disposal. These algorithms, such as t-SNE <d-cite key="maaten2008visualizing"></d-cite> and UMAP <d-cite key="mcinnes2018umap-software"></d-cite>, can project high-dimensional data like our collection of activation vectors into useful 2D layouts, preserving some of the local structure of the original space. This takes care of organizing our activation vectors, but we also need to aggregate into a more manageable number of elements (one million dots would be hard to interprete). We’ll do this by drawing a grid over the 2D layout we created with dimensionality reduction. For each cell in our grid, we average all the activations that lie within the boundaries of that cell, and use feature visualization to create an iconic representation.
 
   <figure  style="grid-column: page;">
     <div id="process"></div>
@@ -257,8 +254,8 @@
   </p>
 
   <p>
-    For each activation vector, we also compute an attribution vector.
-    The attribution vector has an entry for each class, and approximates the amount the activation vector influenced the logit for each class.
+    For each activation vector, we also compute an <em>attribution</em> vector.
+    The attribution vector has an entry for each class, and approximates the amount that the activation vector influenced the logit for each class.
     Attribution vectors generally depend on the surrounding context.
     We follow Building Blocks <d-cite key="olah2018building"></d-cite> in computing the attribution of the activation vector at a position,
     $h_{x,y}$, to a class logit, $\text{logit}_c$ as $h_{x,y} \cdot \nabla_{h_{x,y}} \text{logit}_c$.
@@ -271,7 +268,7 @@
 
   <p>
     This average attribution can be thought of as showing what classes that cell tends to support, marginalizing over contexts.
-    At early layers, the average attribution is very small and the top classes are farily arbitrary because low-level visual features like textures tend to not be very discriminative without context.
+    At early layers, the average attribution is very small and the top classes are fairly arbitrary because low-level visual features like textures tend to not be very discriminative without context.
   </p>
 
   <p>So, how well does this work? Well, let’s try applying it to InceptionV1 <d-cite key="szegedy2015going"></d-cite> at <a href="https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html">layer mixed4c</a>.
@@ -282,7 +279,7 @@
 
   <p>This atlas can can be a bit overwhelming at first glance -- there’s a lot going on! This diversity is a reflection of the variety of abstractions and concepts the model has developed. Let’s take a tour to examine this atlas in more depth.
 
-  <p>If we look at the top-left of the atlas we see what look like animal heads. There is some differentiation between different types of animals, but it seems to be more a collection of elements of generic mammals -- eyes, fur, noses -- rather than a collection of different classes of animals. We've also added labels that show which class each averaged activation most contributes to. Because this is still early in the network many of the labels won't be very precise.
+  <p>If we look at the top-left of the atlas we see what look like animal heads. There is some differentiation between different types of animals, but it seems to be more a collection of elements of generic mammals -- eyes, fur, noses -- rather than a collection of different classes of animals. We've also added labels that show which class each averaged activation most contributes to. Please note, in some areas of a layer this early in the network these attribution labels can be somewhat chaotic.
 
   <figure id="layer-annotation-1" style="grid-column: text/page;"></figure>
 
@@ -290,14 +287,14 @@
 
   <figure id="layer-annotation-2" style="grid-column: text/page;"></figure>
 
-  <p>Below the fur, we find different animal feet resting on different types of grounds.
+  <p>Below this, we find different animal legs and feet resting on different types of grounds.
   <figure id="layer-annotation-3" style="grid-column: text/page;"></figure>
 
-  <p>Below the feet we start to lose any identifiable parts of animals, and see just different types of grounds and floors. We see attribution toward environments like "sandbar" and also toward things that are found on the ground, like "doormat" or "ant".
+  <p>Below the feet we start to lose any identifiable parts of animals, and see isolated grounds and floors. We see attribution toward environments like "sandbar" and also toward things that are found on the ground, like "doormat" or "ant".
 
   <figure id="layer-annotation-4" style="grid-column: text/page;"></figure>
 
-  <p>These sandy, rocky backgrounds slowly blend into beaches and bodies of water. Here we see lakes and oceans, both above and below water. Though the network does have certain classes like "seashore", here we see attribution toward many sea animals, without any visual references to the animals themselves. While not unexpected, it is reassuring to see that the activations that are used to identify the sea for the class "seashore" are the same ones used when classifying "starfish" or "sea lion". There is also no real distinction at this point between lakes and ocean -- "lakeside" and "hippopotamus" attributions are intermingled with "starfish" and "stingray".
+  <p>These sandy, rocky backgrounds slowly blend into beaches and bodies of water. Here we see lakes and oceans, both above and below water. Though the network does have certain classes like "seashore", we see attribution toward many sea animals, without any visual references to the animals themselves. While not unexpected, it is reassuring to see that the activations that are used to identify the sea for the class "seashore" are the same ones used when classifying "starfish" or "sea lion". There is also no real distinction at this point between lakes and ocean -- "lakeside" and "hippopotamus" attributions are intermingled with "starfish" and "stingray".
 
   <figure id="layer-annotation-5" style="grid-column: text/page;"></figure>
 
@@ -305,7 +302,7 @@
 
   <figure id="layer-annotation-6" style="grid-column: text/page;"></figure>
 
-  <p>Moving upward, we can see many variations of humans. There are very few classes that specifically identify people in ImageNet, but people are present in lots of the images. We see attribution toward things people use ("flute", "banjo"), clothes that people wear ("jean", "cowboy boot") and activities that people participate in ("basketball").
+  <p>Moving upward, we see many variations of people. There are very few classes that specifically identify people in ImageNet, but people are present in lots of the images. We see attribution toward things people use ("flute", "banjo"), clothes that people wear ("jean", "cowboy boot") and activities that people participate in ("basketball").
 
   <figure id="layer-annotation-7" style="grid-column: text/page;"></figure>
 
@@ -346,7 +343,7 @@
   </figure>
 
 
-  <p>To start, let's compare three layers from different areas of the network to try to get a sense for the different personalities of each -- one very early layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), one layer from the middle (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), and the final layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>) before the logits. We'll focus on areas of each layer that most contribute to the classification of "cabbage".
+  <p>To start, let's compare three layers from different areas of the network to try to get a sense for the different personalities of each -- one very early layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”>mixed3b</a>), one layer from the middle (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”>mixed4c</a>), and the final layer (<a href=”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”>mixed5b</a>) before the logits. We'll focus on areas of each layer that contribute to the classification of "cabbage".
 
   <style>
     .vertical-layer-comparison {
@@ -588,11 +585,11 @@
   <figure id="frying-pan-wok" style="grid-column: page"></figure>
 
   <p>Here the patch was not as effective at lowering the initial classification, which makes sense since the noodle-like icons were plotted more toward the center of the visualization thus they had less of a difference in attribution. We suspect that the training set simply contained more images of woks with noodles than frying pans with noodles.
-  <!-- — an example of spurious correlation. -->
 
   <h3>Testing dozens of patches on thousands of images</h3>
 
   <p>So far we've only shown single examples of these patches. Below we show the result of ten sample patches (each set includes the one example we explored above), run on 1,000 images from the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the image classification to the target class in about 2 in 5 images. The success rate reaches about 1 in 2 images if we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) at the most effective size. To ensure our attack isn't just blocking out evidence for the original class, we also compare each attack to a random noise image patch.</p>
+  
   <style>
     #adversarial-analysis {
       display: none;
@@ -635,6 +632,7 @@
       }
     }
   </style>  
+<!--   
   <figure id="adversarial-analysis">
   <h4>Average of ten patches applied to 1,000 training set examples</h4>
     <table class="tg">
@@ -660,7 +658,6 @@
       <tbody>
         <tr>
           <th class="tg-0pky" scope="row" rowspan="4" style="min-width: 9em;">
-            <!-- <span>strongest</span> -->
             <p class="figcaption">Choosing <strong>the strongest</strong> size and corner position for each example.</p>
             <img src="assets/icon-dynamic.png">
           </th>
@@ -730,7 +727,7 @@
         
       </tbody>
     </table>
-  </figure>
+  </figure> -->
 
   <!-- <figure id="shark-ball"></figure> -->
 
@@ -740,13 +737,12 @@
     Our "attacks" can be seen as part of a larger trend (eg. <d-cite key="DBLP:journals/corr/abs-1712-09665,kurakin2016adversarial,engstrom2017rotation,brown2018unrestricted"></d-cite>) of researchers
     exploring input attacks on models other than the traditional epsilon ball adversarial examples <d-cite key="szegedy2013intriguing"></d-cite>.
     In many ways, our attacks are most similar to adversarial patches <d-cite key="DBLP:journals/corr/abs-1712-09665"></d-cite>, which also add a small patch to the input image.
-    From this perspective, adversarial patches are far more effective, working much more reliably.
-    Instead, we see our attacks as interesting because they are synthesized by humans from their understanding of the model,
+    From this perspective, adversarial patches are far more effective, working much more reliably. Instead, we see our attacks as interesting because they are synthesized by humans from their understanding of the model,
     and seem to be attacking the model at a higher level of abstraction.
   </p>
 
   <p>
-    You can make your own comparisons and search for your own patches here: <span data-notebook-url=’’></span>
+    We also want to emphasize that not all class comparisons reveal these type of patches and not all icons in the visualization have the same (or any) effectiveness. If wanted to find these patches more systematically, a different approach would most likely be more effective. However, the class activation atlas technique was what allowed us to discover the mere existence of these patches. If you'd like to explore your own comparisons and search for your own patches, we've provided a notebook to get you started: <span data-notebook-url=’’></span>
   </p>
 </section>
 
@@ -759,11 +755,11 @@
 
   <p>The vast majority of neural network research focuses on quantitative evaluations of network behavior. How accurate is the model? What’s the precision-recall curve?
 
-  <p>While these questions can describe how the network behaves in specific situations, it doesn’t give us a good understanding of <em>why</em> it behaves the way it does. To truly understand why a network behaves the way it does, we would need to fully understand the rich inner world of the network — it’s hidden layers. For example, the way InceptionV1 builds up a classifier for a fireboat from component parts in mixed4d. Understanding like this can help us build confidence in our models and surfaces places where it isn’t doing what we want.
+  <p>While these questions can describe how the network behaves in specific situations, it doesn’t give us a great understanding of <em>why</em> it behaves the way it does. To truly understand why a network behaves the way it does, we would need to fully understand the rich inner world of the network — it’s hidden layers. For example, the way InceptionV1 builds up a classifier for a fireboat from component parts in mixed4d. Understanding like this can help us build confidence in our models and can surface places where it isn’t doing what we want.
 
-  <p>Engaging with this inner world also invites us to do deep learning research in a new way. Normally, each neural network experiment gives only a few bits of feedback -- whether the loss went up or down -- to inform the next round of experiments. We design architectures by almost blind trial and error, guided by vague intuitions that we build up over years. But neural network research doesn’t have to be like this. In the future, we hope that researchers will get rich feedback on what each layer in their model is doing. In retrospect, the modern approach will seem like stumbling in the dark.
+  <p>Engaging with this inner world also invites us to do deep learning research in a new way. Normally, each neural network experiment gives only a few bits of feedback — whether the loss went up or down — to inform the next round of experiments. We design architectures by almost blind trial and error, guided by vague intuitions that we build up over years. In the future, we hope that researchers will get rich feedback on what each layer in their model is doing in a way that will make our current approach seem like stumbling in the dark.
 
-  <p>Activation atlases, as they presently stand, are inadequate to really help researchers iterate on models because they aren’t comparable. If you look at atlases for two slightly different models, it’s hard to take away anything. In future work, we will explore how similar visualizations can compare models, showing similarities and differences beyond error rates.
+  <p>Activation atlases, as they presently stand, are inadequate to really help researchers iterate on models, in part because they aren’t comparable. If you look at atlases for two slightly different models, it’s hard to take away anything. In future work, we will explore how similar visualizations can compare models, showing similarities and differences beyond error rates.
 
 
   <h3>New interfaces</h3>
@@ -774,7 +770,7 @@
   <d-cite key="mccurry2018latent,roberts2018hierarchical"></d-cite>
   .
 
-  <p>We think of activation atlases as revealing a machine-learned alphabet for images — an array of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
+  <p>We think of activation atlases as revealing a machine-learned alphabet for images — a collection of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
 
   <p>While classification models are not generally thought of as being used to generate images, techniques like <d-cite key="mordvintsev2015inceptionism">deep dream</d-cite> has shown that this is entirely possible. In this particular instance, we imagine constructing a grid of activations by selecting them from an atlas (or some derivation), then optimizing an output image that would correspond to the user's constructed activation matrix.
 
