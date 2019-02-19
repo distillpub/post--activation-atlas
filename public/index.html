@@ -279,7 +279,7 @@
 
   <p>This atlas can can be a bit overwhelming at first glance -- there’s a lot going on! This diversity is a reflection of the variety of abstractions and concepts the model has developed. Let’s take a tour to examine this atlas in more depth.
 
-  <p>If we look at the top-left of the atlas we see what look like animal heads. There is some differentiation between different types of animals, but it seems to be more a collection of elements of generic mammals -- eyes, fur, noses -- rather than a collection of different classes of animals. We've also added labels that show which class each averaged activation most contributes to. Please note, in some areas of a layer this early in the network these attribution labels can be somewhat chaotic.
+  <p>If we look at the top-left of the atlas we see what look like animal heads. There is some differentiation between different types of animals, but it seems to be more a collection of elements of generic mammals -- eyes, fur, noses -- rather than a collection of different classes of animals. We've also added labels that show which class each averaged activation most contributes to. Please note, in some areas of a layer this early in the network these attribution labels can be somewhat chaotic. <d-footenote>In early layers the attribution vectors have a small magnitude since they don't have a consistent effect on the output.</d-footenote>
 
   <figure id="layer-annotation-1" style="grid-column: text/page;"></figure>
 
@@ -562,7 +562,7 @@
 
   <figure id="snorkel-scuba-diver" style="grid-column: page"></figure>
 
-  <p>The failure mode here seems to be that the model is using it's detectors for the class "steam locomotive" to identify air tanks to help classify "scuba diver". We'll call these "multi-use" features -- detectors that react to very different concepts that are nonetheless visually similar. Let’s look at the differences between a “grey whale” and a “great white shark” to see another example of this issue.
+  <p>The failure mode here seems to be that the model is using its detectors for the class "steam locomotive" to identify air tanks to help classify "scuba diver". We'll call these "multi-use" features -- detectors that react to very different concepts that are nonetheless visually similar. Let’s look at the differences between a “grey whale” and a “great white shark” to see another example of this issue.
 
   <figure id="class-gradient-shark" style="grid-column: text;"></figure>
   
