@@ -73,6 +73,7 @@
               <label style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"><input type=checkbox bind:checked=showLabels> attribution labels</label>
               <label><input type=checkbox bind:checked="enableHover"> show tooltip</label>
               <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
+              <button style="font-size: 10px;" href="#" on:click="copyShareLink()">copy shareable link</button>
             </div>
             <div ref:expand class="expand">
               <div class="grid-size">
@@ -124,6 +125,9 @@
 
 <script>
 import {format as f} from "d3-format";
+import {locationWithoutQuery} from "../util.js";
+
+const formatFloat = f(".3f");
 
 export default {
   components: { 
@@ -151,6 +155,20 @@ export default {
       homeScale: 1
     }
   },
+  oncreate() {
+    const query = new URLSearchParams(window.location.search);
+    if (query.has("layer")) {
+      const layerName = decodeURIComponent(query.get("layer"));
+      this.set({layerName});
+    }
+    if (query.has("poi")) {
+      const poiString = query.get("poi");
+      const parts = poiString.split(",").map(parseFloat);
+      setTimeout(() => {
+        this.zoomTo(...parts, 4000);
+      }, 1000);
+    }
+  },
   computed: {
     realGridSize: ({gridSize}) => (gridSize + 1) * 20,
     scaleCountFactor: ({iconScaleFactor, realGridSize}) =>  1000000 / (realGridSize * realGridSize * iconScaleFactor)
@@ -167,10 +185,21 @@ export default {
       this.set({
         showOptions: !showOptions
       });
+    },
+    copyShareLink() {
+      const {layerName} = this.get();
+      const {gcx, gcy, scale} = this.refs.atlas.get();
+      const query = `layer=${encodeURIComponent(layerName)}&poi=${[gcx, gcy, scale].map(formatFloat).join(",")}`;
+      const url = locationWithoutQuery() + "?" + query;
+      navigator.clipboard.writeText(url).then(function() {
+        console.log("Copied to clipboard");
+      }, function() {
+        console.error("Unable to copy to clipboard");
+      });
     }
   },
   helpers: {
-    format: f(".3f")
+    format: formatFloat
   }
 }
 </script>

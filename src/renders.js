@@ -645,12 +645,12 @@ subjects.forEach(s => {
 
 
 // 
-// focus-3-6
+// focus-aaaa
 // 
 {
 
   let h = document.createElement("h2");
-  h.textContent = "focus-3-6";
+  h.textContent = "focus-aaaa";
   app.appendChild(h);
   let e = document.createElement("div");
   e.style.width = "1200px";
@@ -685,5 +685,57 @@ subjects.forEach(s => {
   app.appendChild(b);
   b.addEventListener("click", () => {
     atlas.render();
+  });
+}
+
+
+
+// 
+// focus-atlas-large
+// 
+{
+
+  let h = document.createElement("h2");
+  h.textContent = "focus-atlas-large";
+  app.appendChild(h);
+  let e = document.createElement("div");
+  e.style.width = "2400px";
+  e.style.height = "2400px";
+  e.style.position = "relative";
+  app.appendChild(e);
+
+  let atlas = new Atlas({
+    target: e,
+    store,
+    data: {
+      homeScale: 0.999,
+      id: "inceptionv1_mixed4c",
+      gridSize: 1,
+      alphaAttributionFactor: 2,
+      classHeatmapMultiplier: 2,
+      scaleCountFactor: 500,
+      iconCrop: 0.3,
+      strokeColor: "rgb(150, 150, 150)",
+      strokeThickness: 1.5,
+      showLabels: false,
+      textShadow: false,
+      enableDragToPan: false,
+      enableClickToZoom: false,
+      enableHover: false
+    }
+  });
+
+  let b = document.createElement("button");
+  b.textContent = "download"
+  app.appendChild(b);
+  b.addEventListener("click", () => {
+    let canvas = e.querySelector("canvas");
+    canvas.crossOrigin = "Anonymous";
+    let imgDataURL    = canvas.toDataURL("image/png");
+    let link = document.createElement('a');
+    link.crossOrigin = "Anonymous";
+    link.download = 'atlas-canvas.png';
+    link.href = imgDataURL;
+    link.click();
   });
 }
