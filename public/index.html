@@ -143,7 +143,7 @@
 
   <p>Neural networks can learn to classify images more accurately than any system humans directly design. This raises a natural question: What have these networks learned that allows them to classify images so well?
 
-  <p>Feature visualization is a thread of research that tries to answer this question by letting us “see through the eyes” of the network <d-cite key="erhan2009visualizing,olah2017feature,simonyan2013deep,nguyen2015deep,mordvintsev2015inceptionism,nguyen2016plug"></d-cite>. It began with research into <a href="https://distill.pub/2017/feature-visualization/">visualizing individual neurons</a> and trying to determine what they respond to. Because neurons don’t work in isolation, this led to applying feature visualization to <a>simple combinations of neurons</a>. But there was still a problem — what combinations of neurons should we be studying? A natural answer (foreshadowed by work on model inversion <d-cite key="mahendran2015understanding"></d-cite>) is to  <a href="https://distill.pub/2018/building-blocks/#ActivationGridSingle">visualize activations</a> <d-cite key="olah2018building"></d-cite>, the combination of neurons firing in response to a particular input.
+  <p>Feature visualization is a thread of research that tries to answer this question by letting us “see through the eyes” of the network <d-cite key="erhan2009visualizing,olah2017feature,simonyan2013deep,nguyen2015deep,mordvintsev2015inceptionism,nguyen2016plug"></d-cite>. It began with research into <a href="https://distill.pub/2017/feature-visualization/">visualizing individual neurons</a> and trying to determine what they respond to. Because neurons don’t work in isolation, this led to applying feature visualization to <a href="https://distill.pub/2017/feature-visualization/#interaction">simple combinations of neurons</a>. But there was still a problem — what combinations of neurons should we be studying? A natural answer (foreshadowed by work on model inversion <d-cite key="mahendran2015understanding"></d-cite>) is to  <a href="https://distill.pub/2018/building-blocks/#ActivationGridSingle">visualize activations</a> <d-cite key="olah2018building"></d-cite>, the combination of neurons firing in response to a particular input.
 
   <p>These approaches are exciting because they can make the hidden layers of networks comprehensible. These layers are the heart of how neural networks outperform more traditional approaches to machine learning and historically, we’ve little understanding of what happens in them<d-footnote>With the exception of the first hidden layer.</d-footnote>. Feature visualization addresses this by connecting hidden layers back to the input, making them meaningful.
 
@@ -207,7 +207,7 @@
 
   <p>Because InceptionV1 is a <a href="http://colah.github.io/posts/2014-07-Conv-Nets-Modular/">convolutional network</a>, there is not just one activation vector per layer per image.
   This means that the same neurons are run on each patch of the previous layer.
-  Thus, when we pass an entire image through the network, each neuron will be evaluated hundreds of times, once for each overlapping patch of the image. We can consider the vectors of how much each neuron fired for each path separately.
+  Thus, when we pass an entire image through the network, each neuron will be evaluated hundreds of times, once for each overlapping patch of the image. We can consider the vectors of how much each neuron fired for each patch separately.
 
   <figure style="grid-column: page;">
     <div id="activation-grid"></div>
@@ -259,7 +259,7 @@
     Attribution vectors generally depend on the surrounding context.
     We follow Building Blocks <d-cite key="olah2018building"></d-cite> in computing the attribution of the activation vector at a position,
     $h_{x,y}$, to a class logit, $\text{logit}_c$ as $h_{x,y} \cdot \nabla_{h_{x,y}} \text{logit}_c$.
-    That is, we estimate that the effect of a neuron on a logit is the rate at which increasing the neuron effects the logit.
+    That is, we estimate that the effect of a neuron on a logit is the rate at which increasing the neuron affects the logit.
     This is similar to Grad-CAM <d-cite key="selvaraju2016grad"></d-cite>, but without the spatial averaging of the gradient.
     Instead, we reduce noise in the gradient by using a continuous relaxation of the gradient for max pooling in computing the gradient (as in <d-cite key="olah2018building"></d-cite>).
     (A detailed reference implementation can be found in <a href="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/building-blocks/AttrSpatial.ipynb">this notebook</a>.)
@@ -770,7 +770,7 @@
   <d-cite key="mccurry2018latent,roberts2018hierarchical"></d-cite>
   .
 
-  <p>We think of activation atlases as revealing a machine-learned alphabet for images — a collection of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from this machine-learned language system for images. Imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
+  <p>We think of activation atlases as revealing a machine-learned alphabet for images — a collection of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from this machine-learned language system for images. Similar to GAN painting <d-cite key="bau2018gandissect"></d-cite>, imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
 
   <p>While classification models are not generally thought of as being used to generate images, techniques like <d-cite key="mordvintsev2015inceptionism">deep dream</d-cite> has shown that this is entirely possible. In this particular instance, we imagine constructing a grid of activations by selecting them from an atlas (or some derivation), then optimizing an output image that would correspond to the user's constructed activation matrix.
 
