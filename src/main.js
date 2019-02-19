@@ -663,7 +663,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		data: {
 				left: "frying pan",
 				right: "wok",
-				aspectRatio: 236 / 158,
+				aspectRatio: 236.0 / 158.0,
 				classifications: [
 					{
 						image: "assets/images/frying-pan-noodles.png",
