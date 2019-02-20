@@ -73,7 +73,7 @@
               <label style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"><input type=checkbox bind:checked=showLabels> attribution labels</label>
               <label><input type=checkbox bind:checked="enableHover"> show tooltip</label>
               <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
-              <button style="font-size: 10px;" href="#" on:click="copyShareLink()">copy shareable link</button>
+              <button style="font-size: 10px; display: {shareLink ? 'block' : 'none'};" href="#" on:click="copyShareLink()">Copy link to this view</button>
             </div>
             <div ref:expand class="expand">
               <div class="grid-size">
@@ -152,7 +152,8 @@ export default {
       showOptions: true,
       homeX: .5,
       homeY: .5,
-      homeScale: 1
+      homeScale: 1,
+      shareLink: false,
     }
   },
   oncreate() {

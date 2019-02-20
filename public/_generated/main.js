@@ -516,7 +516,7 @@
 		}
 	});
 
-	var inceptionLabels = {
+	var Labels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1526,7 +1526,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: inceptionLabels.inception,
+	  inceptionLabels: Labels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1680,7 +1680,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -5987,9 +5987,9 @@
 
 
 
-	function labels({inceptionLabels: inceptionLabels$$1}) {
+	function labels({inceptionLabels}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels$$1.inception[k];
+	    let l = inceptionLabels.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -5998,7 +5998,7 @@
 	function data$d() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels,
+	    inceptionLabels: Labels,
 	    classHeatmap: 235
 	  }
 	}
@@ -6532,7 +6532,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: inceptionLabels.inception,
+	    labels: Labels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -11635,7 +11635,8 @@
 	    showOptions: true,
 	    homeX: .5,
 	    homeY: .5,
-	    homeScale: 1
+	    homeScale: 1,
+	    shareLink: false,
 	  }
 	}
 	var format_1$1 = formatFloat;
@@ -11683,7 +11684,7 @@
 	const file$n = "src/components/App.html";
 
 	function create_main_fragment$o(component, ctx) {
-		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1$1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1$1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1$1(ctx.scale), text57, text58, div22, button4, text59_value = ctx.showOptions ? 'fewer options' : 'more options', text59, div23_class_value;
+		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text17, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1$1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1$1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1$1(ctx.scale), text57, text58, div22, button4, text59_value = ctx.showOptions ? 'fewer options' : 'more options', text59, div23_class_value;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -12118,7 +12119,7 @@
 				text15 = createText(" scroll to zoom");
 				text16 = createText("\n              ");
 				button3 = createElement("button");
-				button3.textContent = "copy shareable link";
+				text17 = createText("Copy link to this view");
 				text18 = createText("\n            ");
 				div20 = createElement("div");
 				div19 = createElement("div");
@@ -12247,130 +12248,131 @@
 				addLoc(label2, file$n, 74, 14, 2653);
 				addListener(button3, "click", click_handler);
 				setStyle(button3, "font-size", "10px");
+				setStyle(button3, "display", (ctx.shareLink ? 'block' : 'none'));
 				setAttribute(button3, "href", "#");
 				addLoc(button3, file$n, 75, 14, 2742);
 				div8.className = "essential";
 				addLoc(div8, file$n, 71, 12, 2360);
 				h30.className = "svelte-1mmgffy";
-				addLoc(h30, file$n, 81, 18, 3014);
+				addLoc(h30, file$n, 81, 18, 3058);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 0;
 				input3.value = input3.__value;
-				addLoc(input3, file$n, 82, 25, 3058);
+				addLoc(input3, file$n, 82, 25, 3102);
 				label3.className = "svelte-1mmgffy";
-				addLoc(label3, file$n, 82, 18, 3051);
+				addLoc(label3, file$n, 82, 18, 3095);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 1;
 				input4.value = input4.__value;
-				addLoc(input4, file$n, 83, 25, 3146);
+				addLoc(input4, file$n, 83, 25, 3190);
 				label4.className = "svelte-1mmgffy";
-				addLoc(label4, file$n, 83, 18, 3139);
+				addLoc(label4, file$n, 83, 18, 3183);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 2;
 				input5.value = input5.__value;
-				addLoc(input5, file$n, 84, 25, 3234);
+				addLoc(input5, file$n, 84, 25, 3278);
 				label5.className = "svelte-1mmgffy";
-				addLoc(label5, file$n, 84, 18, 3227);
+				addLoc(label5, file$n, 84, 18, 3271);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
 				setAttribute(input6, "type", "radio");
 				input6.__value = 3;
 				input6.value = input6.__value;
-				addLoc(input6, file$n, 85, 25, 3322);
+				addLoc(input6, file$n, 85, 25, 3366);
 				label6.className = "svelte-1mmgffy";
-				addLoc(label6, file$n, 85, 18, 3315);
+				addLoc(label6, file$n, 85, 18, 3359);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
 				setAttribute(input7, "type", "radio");
 				input7.__value = 4;
 				input7.value = input7.__value;
-				addLoc(input7, file$n, 86, 25, 3412);
+				addLoc(input7, file$n, 86, 25, 3456);
 				label7.className = "svelte-1mmgffy";
-				addLoc(label7, file$n, 86, 18, 3405);
+				addLoc(label7, file$n, 86, 18, 3449);
 				component._bindingGroups[0].push(input8);
 				addListener(input8, "change", input8_change_handler);
 				setAttribute(input8, "type", "radio");
 				input8.__value = -1;
 				input8.value = input8.__value;
-				addLoc(input8, file$n, 87, 25, 3502);
+				addLoc(input8, file$n, 87, 25, 3546);
 				label8.className = "svelte-1mmgffy";
-				addLoc(label8, file$n, 87, 18, 3495);
-				addLoc(div9, file$n, 89, 20, 3661);
+				addLoc(label8, file$n, 87, 18, 3539);
+				addLoc(div9, file$n, 89, 20, 3705);
 				addListener(input9, "change", input9_change_input_handler);
 				addListener(input9, "input", input9_change_input_handler);
 				setAttribute(input9, "type", "range");
 				input9.min = 0.5;
 				input9.max = 1.4;
 				input9.step = 0.01;
-				addLoc(input9, file$n, 90, 20, 3739);
+				addLoc(input9, file$n, 90, 20, 3783);
 				setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
-				addLoc(div10, file$n, 88, 18, 3583);
+				addLoc(div10, file$n, 88, 18, 3627);
 				div11.className = "section svelte-1mmgffy";
-				addLoc(div11, file$n, 80, 16, 2974);
+				addLoc(div11, file$n, 80, 16, 3018);
 				h31.className = "svelte-1mmgffy";
-				addLoc(h31, file$n, 94, 18, 3933);
+				addLoc(h31, file$n, 94, 18, 3977);
 				addListener(input10, "change", input10_change_input_handler);
 				addListener(input10, "input", input10_change_input_handler);
 				setAttribute(input10, "type", "range");
 				input10.min = 0.2;
 				input10.max = 8;
 				input10.step = 0.01;
-				addLoc(input10, file$n, 95, 18, 3990);
+				addLoc(input10, file$n, 95, 18, 4034);
 				div12.className = "section svelte-1mmgffy";
-				addLoc(div12, file$n, 93, 16, 3892);
+				addLoc(div12, file$n, 93, 16, 3936);
 				h32.className = "svelte-1mmgffy";
-				addLoc(h32, file$n, 101, 18, 4369);
+				addLoc(h32, file$n, 101, 18, 4413);
 				component._bindingGroups[1].push(input11);
 				addListener(input11, "change", input11_change_handler);
 				setAttribute(input11, "type", "radio");
 				input11.__value = 1;
 				input11.value = input11.__value;
-				addLoc(input11, file$n, 102, 25, 4416);
+				addLoc(input11, file$n, 102, 25, 4460);
 				label9.className = "svelte-1mmgffy";
-				addLoc(label9, file$n, 102, 18, 4409);
+				addLoc(label9, file$n, 102, 18, 4453);
 				component._bindingGroups[1].push(input12);
 				addListener(input12, "change", input12_change_handler);
 				setAttribute(input12, "type", "radio");
 				input12.__value = -1;
 				input12.value = input12.__value;
-				addLoc(input12, file$n, 103, 25, 4529);
+				addLoc(input12, file$n, 103, 25, 4573);
 				label10.className = "svelte-1mmgffy";
-				addLoc(label10, file$n, 103, 18, 4522);
-				addLoc(div13, file$n, 104, 18, 4636);
+				addLoc(label10, file$n, 103, 18, 4566);
+				addLoc(div13, file$n, 104, 18, 4680);
 				addListener(input13, "change", input13_change_input_handler);
 				addListener(input13, "input", input13_change_input_handler);
 				setAttribute(input13, "type", "range");
 				input13.min = "0.5";
 				input13.max = "2";
 				input13.step = "0.1";
-				addLoc(input13, file$n, 105, 18, 4707);
+				addLoc(input13, file$n, 105, 18, 4751);
 				div14.className = "section svelte-1mmgffy";
 				setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div14, file$n, 100, 16, 4272);
+				addLoc(div14, file$n, 100, 16, 4316);
 				h33.className = "svelte-1mmgffy";
-				addLoc(h33, file$n, 108, 18, 4864);
-				addLoc(div15, file$n, 109, 18, 4900);
-				addLoc(div16, file$n, 110, 18, 4946);
-				addLoc(div17, file$n, 111, 18, 4992);
+				addLoc(h33, file$n, 108, 18, 4908);
+				addLoc(div15, file$n, 109, 18, 4944);
+				addLoc(div16, file$n, 110, 18, 4990);
+				addLoc(div17, file$n, 111, 18, 5036);
 				div18.className = "section svelte-1mmgffy";
-				addLoc(div18, file$n, 107, 16, 4824);
+				addLoc(div18, file$n, 107, 16, 4868);
 				div19.className = "grid-size";
-				addLoc(div19, file$n, 78, 14, 2917);
+				addLoc(div19, file$n, 78, 14, 2961);
 				div20.className = "expand svelte-1mmgffy";
-				addLoc(div20, file$n, 77, 12, 2871);
+				addLoc(div20, file$n, 77, 12, 2915);
 				div21.className = "options svelte-1mmgffy";
 				addLoc(div21, file$n, 70, 10, 2326);
 				addListener(button4, "click", click_handler_1);
 				button4.className = "svelte-1mmgffy";
-				addLoc(button4, file$n, 117, 12, 5156);
+				addLoc(button4, file$n, 117, 12, 5200);
 				div22.className = "expand-toggle svelte-1mmgffy";
-				addLoc(div22, file$n, 116, 10, 5116);
+				addLoc(div22, file$n, 116, 10, 5160);
 				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls";
 				addLoc(div23, file$n, 49, 8, 1326);
 				div24.className = "atlas svelte-1mmgffy";
@@ -12441,6 +12443,7 @@
 				append(label2, text15);
 				append(div8, text16);
 				append(div8, button3);
+				append(button3, text17);
 				append(div21, text18);
 				append(div21, div20);
 				append(div20, div19);
@@ -12694,6 +12697,10 @@
 				if (changed.showLabels) input0.checked = ctx.showLabels;
 				if (changed.enableHover) input1.checked = ctx.enableHover;
 				if (changed.$scroll) input2.checked = ctx.$scroll;
+				if (changed.shareLink) {
+					setStyle(button3, "display", (ctx.shareLink ? 'block' : 'none'));
+				}
+
 				if (changed.gridSize) input3.checked = input3.__value === ctx.gridSize;
 				if (changed.gridSize) input4.checked = input4.__value === ctx.gridSize;
 				if (changed.gridSize) input5.checked = input5.__value === ctx.gridSize;
@@ -12843,6 +12850,7 @@
 		if (!('homeScale' in this._state)) console.warn("<App> was created without expected data property 'homeScale'");
 		if (!('showOptions' in this._state)) console.warn("<App> was created without expected data property 'showOptions'");
 
+		if (!('shareLink' in this._state)) console.warn("<App> was created without expected data property 'shareLink'");
 		this._bindingGroups = [[], []];
 		this._intro = true;
 
