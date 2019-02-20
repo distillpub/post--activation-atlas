@@ -165,6 +165,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	// });
 
 	new Overview({ target: document.querySelector("#overview") });
+	document.querySelector("#attribution-math-1").textContent = "$h_{x,y}$: $h_{x,y} \\cdot v$"
+	document.querySelector("#attribution-math-2").textContent = "$(h_{x,y} \\cdot v)^{n+1} / (||h_{x,y} \\cdot v|| \\cdot ||v||)^{n}$"
+	document.querySelector("#attribution-math-3").textContent = "$h_{x,y}$"
+	document.querySelector("#attribution-math-4").textContent = "$\\text{logit}_c$";
+	document.querySelector("#attribution-math-5").textContent = "$h_{x,y} \\cdot \\nabla_{h_{x,y}} \\text{logit}_c$"
 
 	new ModelOverview({ target: document.querySelector("#model-overview") });
 

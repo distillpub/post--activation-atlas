@@ -1,4 +1,4 @@
-<div class="root" bind:clientWidth style="display: {display}; padding-bottom: {100 / aspectRatio}%">
+<div class="root" style="display: {display}; padding-bottom: {100 / aspectRatio}%">
   <div class="container">
     <slot></slot>
   </div>
@@ -15,8 +15,8 @@
       }
     },
     computed: {
-      width: ({clientWidth}) => clientWidth,
-      height: ({width, aspectRatio}) => width / aspectRatio
+      // width: ({clientWidth}) => clientWidth,
+      // height: ({width, aspectRatio}) => width / aspectRatio
     }
   }
 </script>

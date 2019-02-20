@@ -16,6 +16,30 @@ console.log(`Running in production: ${production}`);
 // production && buble({ include: ['src/**', 'node_modules/svelte/shared.js'] }),
 // production && uglify()
 
+
+// import * as sv from 'svelte';
+
+
+function indexify(options = {}) {
+	require('svelte/ssr/register');
+	const fs = require("fs");
+
+	const name = "rollup-plugin-indexify";
+	
+	// const { compile, preprocess } = require('svelte');
+
+	return {
+		name: name,
+		ongenerate: function (object) {
+			const ssr = require(options.input);
+			const data = {};
+			const { html, css, head } = ssr.render(data)
+			fs.writeFileSync(options.output, html);
+		}
+	}
+}
+
+
 export default [
 	{
 		input: "src/main.js",
@@ -26,6 +50,10 @@ export default [
 		},
 		context: "window",
 		plugins: [
+			indexify({
+				input: "./src/index.html",
+				output: "./public/index.html"
+			}), 
 			json(),
 			svelte({
 				dev: !production,
