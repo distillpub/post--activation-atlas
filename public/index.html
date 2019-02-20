@@ -584,7 +584,7 @@
 
   <figure id="frying-pan-wok" style="grid-column: page"></figure>
 
-  <p>Here the patch was not as effective at lowering the initial classification, which makes sense since the noodle-like icons were plotted more toward the center of the visualization thus they had less of a difference in attribution. We suspect that the training set simply contained more images of woks with noodles than frying pans with noodles.
+  <p>Here the patch was not as effective at lowering the initial classification, which makes sense since the noodle-like icons were plotted more toward the center of the visualization thus having less of a difference in attribution. We suspect that the training set simply contained more images of woks with noodles than frying pans with noodles.
 
   <h3>Testing dozens of patches on thousands of images</h3>
 
@@ -742,7 +742,7 @@
   </p>
 
   <p>
-    We also want to emphasize that not all class comparisons reveal these type of patches and not all icons in the visualization have the same (or any) effectiveness. If wanted to find these patches more systematically, a different approach would most likely be more effective. However, the class activation atlas technique was what allowed us to discover the mere existence of these patches. If you'd like to explore your own comparisons and search for your own patches, we've provided a notebook to get you started: <span data-notebook-url=’’></span>
+    We also want to emphasize that not all class comparisons reveal these type of patches and not all icons in the visualization have the same (or any) effectiveness and we've only tested them on one model. If wanted to find these patches more systematically, a different approach would most likely be more effective. However, the class activation atlas technique was what revealed the existence of these patches before we knew to look for them. If you'd like to explore your own comparisons and search for your own patches, we've provided a notebook to get you started: <span data-notebook-url=’’></span>
   </p>
 </section>
 
@@ -755,7 +755,7 @@
 
   <p>The vast majority of neural network research focuses on quantitative evaluations of network behavior. How accurate is the model? What’s the precision-recall curve?
 
-  <p>While these questions can describe how the network behaves in specific situations, it doesn’t give us a great understanding of <em>why</em> it behaves the way it does. To truly understand why a network behaves the way it does, we would need to fully understand the rich inner world of the network — it’s hidden layers. For example, the way InceptionV1 builds up a classifier for a fireboat from component parts in mixed4d. Understanding like this can help us build confidence in our models and can surface places where it isn’t doing what we want.
+  <p>While these questions can describe how the network behaves in specific situations, it doesn’t give us a great understanding of <em>why</em> it behaves the way it does. To truly understand why a network behaves the way it does, we would need to fully understand the rich inner world of the network — it’s hidden layers. For example, understanding better how InceptionV1 builds up a classifier for a fireboat from component parts in mixed4d can help us build confidence in our models and can surface places where it isn’t doing what we want.
 
   <p>Engaging with this inner world also invites us to do deep learning research in a new way. Normally, each neural network experiment gives only a few bits of feedback — whether the loss went up or down — to inform the next round of experiments. We design architectures by almost blind trial and error, guided by vague intuitions that we build up over years. In the future, we hope that researchers will get rich feedback on what each layer in their model is doing in a way that will make our current approach seem like stumbling in the dark.
 
@@ -770,7 +770,7 @@
   <d-cite key="mccurry2018latent,roberts2018hierarchical"></d-cite>
   .
 
-  <p>We think of activation atlases as revealing a machine-learned alphabet for images — a collection of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from this machine-learned language system for images. Similar to GAN painting <d-cite key="bau2018gandissect"></d-cite>, imagine using an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
+  <p>We think of activation atlases as revealing a machine-learned alphabet for images — a collection of simple, atomic concepts that are combined and recombined to form much more complex visual ideas. In the same way that we use word processors to turn letters into words, and words into sentences, we can imagine a tool that would allow us to create images from a machine-learned language system for images. Similar to GAN painting <d-cite key="bau2018gandissect"></d-cite>, imagine using something like an activation atlas as a palette -- one could dip a brush into a “tree” activation and paint with it. A palette of concepts rather than colors.
 
   <p>While classification models are not generally thought of as being used to generate images, techniques like <d-cite key="mordvintsev2015inceptionism">deep dream</d-cite> has shown that this is entirely possible. In this particular instance, we imagine constructing a grid of activations by selecting them from an atlas (or some derivation), then optimizing an output image that would correspond to the user's constructed activation matrix.
 
