@@ -4019,6 +4019,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -4568,7 +4569,8 @@
 	    layout: 0,
 	    gridSize: 10,
 	    classHeatmap: -1,
-	    icons: []
+	    icons: [],
+	    clientWidth: 45
 	  };
 	}
 	var methods$2 = {
@@ -4649,11 +4651,7 @@
 	const file$b = "src/AtlasThumbnail.html";
 
 	function create_main_fragment$c(component, ctx) {
-		var div, canvas, div_resize_listener;
-
-		function div_resize_handler() {
-			component.set({ clientWidth: div.offsetWidth });
-		}
+		var div, canvas;
 
 		return {
 			c: function create() {
@@ -4661,11 +4659,9 @@
 				canvas = createElement("canvas");
 				canvas.width = ctx.gridSize;
 				canvas.height = ctx.gridSize;
-				setStyle(canvas, "width", "" + ctx.clientWidth + "px");
-				setStyle(canvas, "height", "" + ctx.height + "px");
+				setStyle(canvas, "width", "100%");
 				canvas.className = "svelte-sjakuy";
-				addLoc(canvas, file$b, 2, 2, 68);
-				component.root._beforecreate.push(div_resize_handler);
+				addLoc(canvas, file$b, 2, 2, 37);
 				setStyle(div, "height", "" + ctx.height + "px");
 				addLoc(div, file$b, 1, 0, 1);
 			},
@@ -4674,7 +4670,6 @@
 				insert(target, div, anchor);
 				append(div, canvas);
 				component.refs.canvas = canvas;
-				div_resize_listener = addResizeListener(div, div_resize_handler);
 			},
 
 			p: function update(changed, ctx) {
@@ -4683,12 +4678,7 @@
 					canvas.height = ctx.gridSize;
 				}
 
-				if (changed.clientWidth) {
-					setStyle(canvas, "width", "" + ctx.clientWidth + "px");
-				}
-
 				if (changed.height) {
-					setStyle(canvas, "height", "" + ctx.height + "px");
 					setStyle(div, "height", "" + ctx.height + "px");
 				}
 			},
@@ -4699,7 +4689,6 @@
 				}
 
 				if (component.refs.canvas === canvas) component.refs.canvas = null;
-				div_resize_listener.cancel();
 			}
 		};
 	}

@@ -20,7 +20,9 @@
   available and any height values given are ignored.
  -->
 
-<div ref:container bind:offsetWidth="clientWidth" bind:offsetHeight="clientHeight" style="width: {finalWidth}; height: {finalHeight};">
+<svelte:window on:resize="measure()" />
+
+<div ref:container style="width: {finalWidth}; height: {finalHeight};">
   <Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
     {#if finalReady}
       <svelte:component ref:component this={component} {clientWidth} {clientHeight} {...componentData} />
@@ -48,8 +50,8 @@
         width: null,
         aspectRatio: null,
         minHeight: null,
-        clientWidth: 0,
-        clientHeight: 0
+        clientWidth: 500,
+        clientHeight: 500
       }
     },
     computed: {
@@ -84,16 +86,22 @@
       if (!height && !aspectRatio) {
         console.warn(`Require 'height'${height} or 'aspectRatio'${aspectRatio} not set on LazyComponent.html`, this)
       }
-      // this.set({
-      //   clientWidth: this.refs.container.offsetWidth,
-      //   clientHeight: this.refs.container.offsetHeight,
-      // })
+      setTimeout(() => this.measure(), 10);
+      // this.measure();
+      
     },
     methods: {
+      measure() {
+        this.set({
+          clientWidth: this.refs.container.offsetWidth,
+          clientHeight: this.refs.container.offsetHeight,
+        })
+      },
       getComponent() {
         return this.refs.component;
       }
-    }
+    },
+
   }
 </script>
 

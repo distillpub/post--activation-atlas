@@ -2730,11 +2730,17 @@
 	    width: null,
 	    aspectRatio: null,
 	    minHeight: null,
-	    clientWidth: 0,
-	    clientHeight: 0
+	    clientWidth: 500,
+	    clientHeight: 500
 	  }
 	}
 	var methods$1 = {
+	  measure() {
+	    this.set({
+	      clientWidth: this.refs.container.offsetWidth,
+	      clientHeight: this.refs.container.offsetHeight,
+	    });
+	  },
 	  getComponent() {
 	    return this.refs.component;
 	  }
@@ -2746,15 +2752,18 @@
 	  if (!height && !aspectRatio) {
 	    console.warn(`Require 'height'${height} or 'aspectRatio'${aspectRatio} not set on LazyComponent.html`, this);
 	  }
-	  // this.set({
-	  //   clientWidth: this.refs.container.offsetWidth,
-	  //   clientHeight: this.refs.container.offsetHeight,
-	  // })
+	  setTimeout(() => this.measure(), 10);
+	  // this.measure();
+	  
 	}
 	const file$4 = "src/library/LazyComponent.html";
 
 	function create_main_fragment$4(component, ctx) {
-		var div, if_block_anchor, radar_updating = {}, div_resize_listener;
+		var div, if_block_anchor, radar_updating = {};
+
+		function onwindowresize(event) {
+			component.measure();	}
+		window.addEventListener("resize", onwindowresize);
 
 		function select_block_type(ctx) {
 			if (ctx.finalReady) return create_if_block$2;
@@ -2792,21 +2801,16 @@
 			radar._bind({ ready: 1 }, radar.get());
 		});
 
-		function div_resize_handler() {
-			component.set({ clientWidth: div.offsetWidth, clientHeight: div.offsetHeight });
-		}
-
 		return {
 			c: function create() {
 				div = createElement("div");
 				if_block.c();
 				if_block_anchor = createComment();
 				radar._fragment.c();
-				component.root._beforecreate.push(div_resize_handler);
 				setStyle(div, "width", ctx.finalWidth);
 				setStyle(div, "height", ctx.finalHeight);
 				div.className = "svelte-16j6f9b svelte-ref-container";
-				addLoc(div, file$4, 22, 0, 1043);
+				addLoc(div, file$4, 24, 0, 1084);
 			},
 
 			m: function mount(target, anchor) {
@@ -2814,7 +2818,6 @@
 				if_block.m(radar._slotted.default, null);
 				append(radar._slotted.default, if_block_anchor);
 				radar._mount(div, null);
-				div_resize_listener = addResizeListener(div, div_resize_handler);
 				component.refs.container = div;
 			},
 
@@ -2849,19 +2852,20 @@
 			},
 
 			d: function destroy$$1(detach) {
+				window.removeEventListener("resize", onwindowresize);
+
 				if (detach) {
 					detachNode(div);
 				}
 
 				if_block.d();
 				radar.destroy();
-				div_resize_listener.cancel();
 				if (component.refs.container === div) component.refs.container = null;
 			}
 		};
 	}
 
-	// (27:4) {:else}
+	// (29:4) {:else}
 	function create_else_block(component, ctx) {
 
 		var loading = new Loading({
@@ -2886,7 +2890,7 @@
 		};
 	}
 
-	// (25:4) {#if finalReady}
+	// (27:4) {#if finalReady}
 	function create_if_block$2(component, ctx) {
 		var switch_instance_anchor;
 
@@ -2988,12 +2992,12 @@
 		if (!('height' in this._state)) console.warn("<LazyComponent> was created without expected data property 'height'");
 		if (!('aspectRatio' in this._state)) console.warn("<LazyComponent> was created without expected data property 'aspectRatio'");
 		if (!('minHeight' in this._state)) console.warn("<LazyComponent> was created without expected data property 'minHeight'");
-		if (!('clientHeight' in this._state)) console.warn("<LazyComponent> was created without expected data property 'clientHeight'");
 
 
 		if (!('offscreen' in this._state)) console.warn("<LazyComponent> was created without expected data property 'offscreen'");
 		if (!('onscreen' in this._state)) console.warn("<LazyComponent> was created without expected data property 'onscreen'");
 
+		if (!('clientHeight' in this._state)) console.warn("<LazyComponent> was created without expected data property 'clientHeight'");
 		if (!('componentData' in this._state)) console.warn("<LazyComponent> was created without expected data property 'componentData'");
 		this._intro = true;
 
@@ -4989,6 +4993,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -5538,7 +5543,8 @@
 	    layout: 0,
 	    gridSize: 10,
 	    classHeatmap: -1,
-	    icons: []
+	    icons: [],
+	    clientWidth: 45
 	  };
 	}
 	var methods$4 = {
@@ -5619,11 +5625,7 @@
 	const file$f = "src/AtlasThumbnail.html";
 
 	function create_main_fragment$g(component, ctx) {
-		var div, canvas, div_resize_listener;
-
-		function div_resize_handler() {
-			component.set({ clientWidth: div.offsetWidth });
-		}
+		var div, canvas;
 
 		return {
 			c: function create() {
@@ -5631,11 +5633,9 @@
 				canvas = createElement("canvas");
 				canvas.width = ctx.gridSize;
 				canvas.height = ctx.gridSize;
-				setStyle(canvas, "width", "" + ctx.clientWidth + "px");
-				setStyle(canvas, "height", "" + ctx.height + "px");
+				setStyle(canvas, "width", "100%");
 				canvas.className = "svelte-sjakuy";
-				addLoc(canvas, file$f, 2, 2, 68);
-				component.root._beforecreate.push(div_resize_handler);
+				addLoc(canvas, file$f, 2, 2, 37);
 				setStyle(div, "height", "" + ctx.height + "px");
 				addLoc(div, file$f, 1, 0, 1);
 			},
@@ -5644,7 +5644,6 @@
 				insert(target, div, anchor);
 				append(div, canvas);
 				component.refs.canvas = canvas;
-				div_resize_listener = addResizeListener(div, div_resize_handler);
 			},
 
 			p: function update(changed, ctx) {
@@ -5653,12 +5652,7 @@
 					canvas.height = ctx.gridSize;
 				}
 
-				if (changed.clientWidth) {
-					setStyle(canvas, "width", "" + ctx.clientWidth + "px");
-				}
-
 				if (changed.height) {
-					setStyle(canvas, "height", "" + ctx.height + "px");
 					setStyle(div, "height", "" + ctx.height + "px");
 				}
 			},
@@ -5669,7 +5663,6 @@
 				}
 
 				if (component.refs.canvas === canvas) component.refs.canvas = null;
-				div_resize_listener.cancel();
 			}
 		};
 	}
