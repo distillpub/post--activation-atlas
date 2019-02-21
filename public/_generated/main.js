@@ -3923,6 +3923,7 @@
 				addListener(div, "pointerdown", pointerdown_handler);
 				div.className = "root svelte-1pppif8";
 				setStyle(div, "cursor", ctx.cursor);
+				setStyle(div, "position", "absolute");
 				addLoc(div, file$d, 0, 0, 0);
 			},
 
@@ -3981,14 +3982,14 @@
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
 				setAttribute(svg, "class", "svelte-1pppif8");
-				addLoc(svg, file$d, 7, 2, 136);
+				addLoc(svg, file$d, 7, 2, 157);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
-				addLoc(div, file$d, 15, 2, 467);
+				addLoc(div, file$d, 15, 2, 488);
 			},
 
 			m: function mount(target, anchor) {
@@ -4084,7 +4085,7 @@
 				path = createSvgElement("path");
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$d, 9, 6, 231);
+				addLoc(path, file$d, 9, 6, 252);
 			},
 
 			m: function mount(target, anchor) {
@@ -4120,13 +4121,13 @@
 				div0 = createElement("div");
 				text = createText(ctx.annotationValue);
 				div0.className = "annotation";
-				addLoc(div0, file$d, 28, 10, 861);
+				addLoc(div0, file$d, 28, 10, 882);
 				div1.className = "annotationTab svelte-1pppif8";
 				setStyle(div1, "background", ctx.color);
-				addLoc(div1, file$d, 27, 8, 795);
+				addLoc(div1, file$d, 27, 8, 816);
 				div2.className = "annotationTabParent svelte-1pppif8";
 				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div2, file$d, 26, 6, 720);
+				addLoc(div2, file$d, 26, 6, 741);
 			},
 
 			m: function mount(target, anchor) {
