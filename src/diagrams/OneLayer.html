@@ -11,7 +11,7 @@
 </div>
 
 
-<div class="atlas" style="grid-column: screen;" bind:clientWidth bind:clientHeight>
+<div class="atlas" style="grid-column: screen;" bind:offsetWidth="clientWidth" bind:offsetHeight="clientHeight">
   <ResponsiveResizer {clientWidth} {clientHeight} minWidth={1000}>
     <Atlas ref:atlas id="inceptionv1_{layerName}" bind:gridSize bind:showLabels scaleCountFactor=200 {iconCrop} disableBehaviors={true}/>
   </ResponsiveResizer>

@@ -1,6 +1,6 @@
 <div class="root" 
-  bind:clientWidth 
-  bind:clientHeight
+  bind:offsetWidth="clientWidth" 
+  bind:offsetHeight="clientHeight"
   on:pointerdown="down(event)"
   style="cursor: {cursor}; position: absolute;"
 >

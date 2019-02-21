@@ -20,7 +20,7 @@
   available and any height values given are ignored.
  -->
 
-<div ref:container bind:clientWidth bind:clientHeight style="width: {finalWidth}; height: {finalHeight};">
+<div ref:container bind:offsetWidth="clientWidth" bind:offsetHeight="clientHeight" style="width: {finalWidth}; height: {finalHeight};">
   <Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
     {#if ready}
       <svelte:component ref:component this={component} {clientWidth} {clientHeight} {...componentData} />

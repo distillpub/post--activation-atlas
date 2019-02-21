@@ -2465,7 +2465,7 @@
 		var if_block = (ctx.extent) && create_if_block(component, ctx);
 
 		function div_resize_handler() {
-			component.set({ clientWidth: div.clientWidth, clientHeight: div.clientHeight });
+			component.set({ clientWidth: div.offsetWidth, clientHeight: div.offsetHeight });
 		}
 
 		function pointerdown_handler(event) {
@@ -2539,14 +2539,14 @@
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
 				setAttribute(svg, "class", "svelte-1pppif8");
-				addLoc(svg, file$5, 7, 2, 157);
+				addLoc(svg, file$5, 7, 2, 186);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
-				addLoc(div, file$5, 15, 2, 488);
+				addLoc(div, file$5, 15, 2, 517);
 			},
 
 			m: function mount(target, anchor) {
@@ -2642,7 +2642,7 @@
 				path = createSvgElement("path");
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$5, 9, 6, 252);
+				addLoc(path, file$5, 9, 6, 281);
 			},
 
 			m: function mount(target, anchor) {
@@ -2678,13 +2678,13 @@
 				div0 = createElement("div");
 				text = createText(ctx.annotationValue);
 				div0.className = "annotation";
-				addLoc(div0, file$5, 28, 10, 882);
+				addLoc(div0, file$5, 28, 10, 911);
 				div1.className = "annotationTab svelte-1pppif8";
 				setStyle(div1, "background", ctx.color);
-				addLoc(div1, file$5, 27, 8, 816);
+				addLoc(div1, file$5, 27, 8, 845);
 				div2.className = "annotationTabParent svelte-1pppif8";
 				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div2, file$5, 26, 6, 741);
+				addLoc(div2, file$5, 26, 6, 770);
 			},
 
 			m: function mount(target, anchor) {
@@ -4019,7 +4019,6 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
-	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -4653,7 +4652,7 @@
 		var div, canvas, div_resize_listener;
 
 		function div_resize_handler() {
-			component.set({ clientWidth: div.clientWidth });
+			component.set({ clientWidth: div.offsetWidth });
 		}
 
 		return {
@@ -4665,7 +4664,7 @@
 				setStyle(canvas, "width", "" + ctx.clientWidth + "px");
 				setStyle(canvas, "height", "" + ctx.height + "px");
 				canvas.className = "svelte-sjakuy";
-				addLoc(canvas, file$b, 2, 2, 54);
+				addLoc(canvas, file$b, 2, 2, 68);
 				component.root._beforecreate.push(div_resize_handler);
 				setStyle(div, "height", "" + ctx.height + "px");
 				addLoc(div, file$b, 1, 0, 1);
@@ -9202,7 +9201,7 @@
 		var div, slot_content_default = component._slotted.default, div_resize_listener;
 
 		function div_resize_handler() {
-			component.set({ clientWidth: div.clientWidth, clientHeight: div.clientHeight });
+			component.set({ clientWidth: div.offsetWidth, clientHeight: div.offsetHeight });
 		}
 
 		function mousemove_handler(event$$1) {
@@ -9877,7 +9876,7 @@
 		component.refs.d3Zoom = d3zoom;
 
 		function div_resize_handler() {
-			component.set({ viewWidth: div.clientWidth, viewHeight: div.clientHeight });
+			component.set({ viewWidth: div.offsetWidth, viewHeight: div.offsetHeight });
 		}
 
 		return {
@@ -11893,7 +11892,7 @@
 		component.refs.app = app;
 
 		function div_resize_handler() {
-			component.set({ clientWidth: div.clientWidth, clientHeight: div.clientHeight });
+			component.set({ clientWidth: div.offsetWidth, clientHeight: div.offsetHeight });
 		}
 
 		return {
