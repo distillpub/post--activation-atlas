@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		}
 	})
 
-	new LazyComponent({
+	new Process({
 		target: document.querySelector("#process"),
 		data: {
 			aspectRatio: 2.64,
@@ -191,13 +191,13 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		}
 	});
 
-	new LazyComponent({
+	new OneLayer({
 		store: store,
 		target: document.querySelector("#one-layer"),
-		data: {
+		// data: {
 			height: "calc(100vw - 40px + 28px + 40px)",
 			component: OneLayer
-		}
+		// }
 	});
 
 	new LazyComponent({
@@ -574,39 +574,39 @@ document.addEventListener("DOMContentLoaded", (e) => {
 	});
 
 
-	new LazyComponent({
+	new ClassGradient({
 		target: document.querySelector("#class-gradient-snorkel"),
 		store: store,
 		data: {
 			aspectRatio: 1.152,
 			component: ClassGradient,
-			componentData: {
+			// componentData: {
 				currentClassComparisonIndex: 0
-			}
+			// }
 		}
 	});
 
-	new LazyComponent({
+	new ClassGradient({
 		target: document.querySelector("#class-gradient-frying-pan"),
 		store: store,
 		data: {
 			aspectRatio: 1.152,
 			component: ClassGradient,
-			componentData: {
+			// componentData: {
 				currentClassComparisonIndex: 2
-			}
+			// }
 		}
 	});
 
-	new LazyComponent({
+	new ClassGradient({
 		target: document.querySelector("#class-gradient-shark"),
 		store: store,
 		data: {
 			aspectRatio: 1.152,
 			component: ClassGradient,
-			componentData: {
+			// componentData: {
 				currentClassComparisonIndex: 8
-			}
+			// }
 		}
 	});
 

@@ -31,7 +31,7 @@
 
 <svelte:document on:mousemove="mousemove(event)" on:scroll="hide()"/>
 
-<div ref:root bind:clientHeight {style}>
+<div ref:root {style}>
   {#if component}
     <svelte:component this={component} ref:component/>
   {/if}
@@ -43,18 +43,19 @@
       return {
         visible: false,
         width: 150,
+        height: 200,
         component: null,
       }
     },
     computed: {
-      style: ({x, width, y, clientHeight, visible}) => {
+      style: ({x, width, y, height, visible}) => {
         if (visible === false) {
-          return "visibility: hidden;";
+          return "display: none;";
         } else {
           const scrollLeft = document.documentElement.scrollLeft;
           const scrollTop = document.documentElement.scrollTop;
           const rightEdge = document.documentElement.clientWidth - width;
-          const bottomEdge = document.documentElement.clientHeight - clientHeight;
+          const bottomEdge = document.documentElement.clientHeight - height;
           let left = Math.min(x, rightEdge);
           let top = Math.min(y, bottomEdge);
           if (x >= rightEdge && y >= bottomEdge) {

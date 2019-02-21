@@ -1,29 +1,17 @@
-<div class="root" bind:clientWidth="width" bind:clientHeight="height">
+<div class="root" >
   {#if scale}
-  <svg {width} {height}>
-    <path
-      class="{background ? '' : 'transparent'}"
-      on:mousemove="mouseMove(event)"
-      on:mouseup="mouseUp(event)"
-      d="M0,0 L{width},0 L{width},{height} L0,{height} z M{left},{top} L{left},{bottom} L{right},{bottom}  L{right},{top} z"
-    />
-  </svg>
   <div
     class="reticle {round ? 'round' : ''}"
-    on:mousemove="mouseMove(event)"
-    on:mousedown="mouseDown(event)"
-    on:mouseup="mouseUp(event)"
     style="box-sizing:content-box;
       border-color: {color};
-      top:{top-2.5}px;
-      left:{left-2.5}px; 
-      width:{(right-left-1)}px; 
-      height:{(bottom-top-1)}px; 
-      cursor:{enableDragging ? 'move' : 'default'}
+      top:{top}%;
+      left:{left}%; 
+      width:{right-left}%; 
+      height:{bottom-top}%;
       "
   >
     {#if annotationValue}
-      <div class="annotationTabParent" style="top:{(w * width-2)/2}px;">
+      <div class="annotationTabParent" style="top:50%;">
         <div class="annotationTab" style="background:{color};">
           <div class="annotation"
             >{annotationValue} 
@@ -52,40 +40,15 @@
     computed: {
       h: ({scale}) => 1 / scale,
       w: ({scale, aspectRatio}) => 1 / scale * aspectRatio,
-      l: ({gcx, w, width}) => (gcx - w / 2),
-      t: ({gcy, h, height, aspectRatio}) => (gcy - h / 2),
+      l: ({gcx, w}) => (gcx - w / 2),
+      t: ({gcy, h, aspectRatio}) => (gcy - h / 2),
       r: ({l, w}) => l + w, 
       b: ({t, h}) => t + h,
-      left: ({l, width, gcx, gcy, scale, aspectRatio, w, r}) => l * width,
-      right: ({r, width}) => r * width,
-      top: ({t, height}) => t * height,
-      bottom: ({b, height}) => b * height,
-    },
-    methods: {
-      mouseUp() {
-        const { startPos, height, width, scale, aspectRatio, gcx, gcy} = this.get();
-        this.set({dragging: false})
-      },
-      mouseDown(event) {
-        const {enableDragging} = this.get();
-        if(enableDragging){
-          event.preventDefault();
-          this.set({dragging: true, startPos: {x: event.screenX, y: event.screenY}})
-        }
-      },
-      mouseMove(event) {
-        const {dragging, startPos, scale, width, aspectRatio, height, left, top} = this.get();
-        if(dragging){
-           this.set({
-              gcx: (event.screenX - startPos.x + left) / width + 1 / scale * aspectRatio / 2, 
-              gcy: (event.screenY - startPos.y + top) / height + 1 / scale / 2, 
-           })
-           this.set({
-            startPos: {x: event.screenX, y: event.screenY}
-           })
-        }
-      },
-    },
+      left: ({l}) => l * 100,
+      right: ({r}) => r * 100,
+      top: ({t}) => t * 100,
+      bottom: ({b}) => b * 100,
+    }
   }
 </script>
 
