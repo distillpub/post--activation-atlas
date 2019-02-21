@@ -19,6 +19,8 @@
   bind:offsetHeight=viewHeight
 >
   <D3Zoom ref:d3Zoom
+    clientWidth={viewWidth}
+    clientHeight={viewHeight}
     bind:scale
     bind:translateX
     bind:translateY

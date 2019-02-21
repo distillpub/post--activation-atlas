@@ -22,7 +22,7 @@
 
 <div ref:container bind:offsetWidth="clientWidth" bind:offsetHeight="clientHeight" style="width: {finalWidth}; height: {finalHeight};">
   <Radar bind:ready="radarReady" :offscreen :onscreen height="100%">
-    {#if ready}
+    {#if finalReady}
       <svelte:component ref:component this={component} {clientWidth} {clientHeight} {...componentData} />
     {:else}
       <Loading />
@@ -47,11 +47,13 @@
         height: null,
         width: null,
         aspectRatio: null,
-        minHeight: null
+        minHeight: null,
+        clientWidth: 0,
+        clientHeight: 0
       }
     },
     computed: {
-      ready: ({radarReady, component}) => (radarReady && component) ? true : false,
+      finalReady: ({radarReady, component, clientWidth}) => (clientWidth && radarReady && component) ? true : false,
       finalWidth: ({width}) => {
         if (width) {
           if (typeof width == "number") { return width + "px" }
@@ -82,13 +84,10 @@
       if (!height && !aspectRatio) {
         console.warn(`Require 'height'${height} or 'aspectRatio'${aspectRatio} not set on LazyComponent.html`, this)
       }
-      // Import a remote component if given
-      // const {url} = this.get();
-      // if (url) {
-      //   import(url).then(c => {
-      //     this.set({component: c.default});
-      //   });
-      // }
+      // this.set({
+      //   clientWidth: this.refs.container.offsetWidth,
+      //   clientHeight: this.refs.container.offsetHeight,
+      // })
     },
     methods: {
       getComponent() {

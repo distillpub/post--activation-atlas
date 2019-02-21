@@ -191,13 +191,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
 		}
 	});
 
-	new OneLayer({
+
+	new LazyComponent({
 		store: store,
 		target: document.querySelector("#one-layer"),
-		// data: {
+		data: {
 			height: "calc(100vw - 40px + 28px + 40px)",
 			component: OneLayer
-		// }
+		}
 	});
 
 	new LazyComponent({
@@ -287,8 +288,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			height: 300,
 			component: LayerAnnotation,
 			componentData: {
-				homeX: 0.837,
-				homeY: 0.239
+				homeX: 0.80,
+				homeY: 0.19
 			},
 		}
 	});

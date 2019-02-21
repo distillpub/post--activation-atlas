@@ -1,8 +1,6 @@
 <div 
   ref:root 
   class="d3zoom" 
-  bind:offsetWidth="clientWidth"
-  bind:offsetHeight="clientHeight"
   on:mousemove="mouseMove(event)"
   on:mousedown="set({msx: null, msy: null})"
   on:mouseout="set({msx: null, msy: null})"

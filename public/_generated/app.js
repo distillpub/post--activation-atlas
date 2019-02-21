@@ -9198,11 +9198,7 @@
 	const file$f = "src/library/D3Zoom.html";
 
 	function create_main_fragment$g(component, ctx) {
-		var div, slot_content_default = component._slotted.default, div_resize_listener;
-
-		function div_resize_handler() {
-			component.set({ clientWidth: div.offsetWidth, clientHeight: div.offsetHeight });
-		}
+		var div, slot_content_default = component._slotted.default;
 
 		function mousemove_handler(event$$1) {
 			component.mouseMove(event$$1);
@@ -9219,7 +9215,6 @@
 		return {
 			c: function create$$1() {
 				div = createElement("div");
-				component.root._beforecreate.push(div_resize_handler);
 				addListener(div, "mousemove", mousemove_handler);
 				addListener(div, "mousedown", mousedown_handler);
 				addListener(div, "mouseout", mouseout_handler);
@@ -9234,7 +9229,6 @@
 					append(div, slot_content_default);
 				}
 
-				div_resize_listener = addResizeListener(div, div_resize_handler);
 				component.refs.root = div;
 			},
 
@@ -9249,7 +9243,6 @@
 					reinsertChildren(div, slot_content_default);
 				}
 
-				div_resize_listener.cancel();
 				removeListener(div, "mousemove", mousemove_handler);
 				removeListener(div, "mousedown", mousedown_handler);
 				removeListener(div, "mouseout", mouseout_handler);
@@ -9754,6 +9747,8 @@
 		var if_block1 = (ctx.showHoverIcon) && create_if_block$2(component, ctx);
 
 		var d3zoom_initial_data = {
+		 	clientWidth: ctx.viewWidth,
+		 	clientHeight: ctx.viewHeight,
 		 	homeX: ctx.homeX,
 		 	homeY: ctx.homeY,
 		 	homeScale: ctx.homeScale
@@ -9896,11 +9891,11 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$g, 35, 4, 537);
+				addLoc(canvas0, file$g, 37, 4, 595);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$g, 39, 4, 663);
+				addLoc(canvas1, file$g, 41, 4, 721);
 				component.root._beforecreate.push(div_resize_handler);
 				div.className = "svelte-w9b5xg svelte-ref-root";
 				addLoc(div, file$g, 16, 0, 200);
@@ -9978,6 +9973,8 @@
 				}
 
 				var d3zoom_changes = {};
+				if (changed.viewWidth) d3zoom_changes.clientWidth = ctx.viewWidth;
+				if (changed.viewHeight) d3zoom_changes.clientHeight = ctx.viewHeight;
 				if (changed.homeX) d3zoom_changes.homeX = ctx.homeX;
 				if (changed.homeY) d3zoom_changes.homeY = ctx.homeY;
 				if (changed.homeScale) d3zoom_changes.homeScale = ctx.homeScale;
@@ -10184,7 +10181,7 @@
 		};
 	}
 
-	// (44:4) {#if showHoverIcon}
+	// (46:4) {#if showHoverIcon}
 	function create_if_block$2(component, ctx) {
 		var div;
 
@@ -10196,7 +10193,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$g, 44, 4, 819);
+				addLoc(div, file$g, 46, 4, 877);
 			},
 
 			m: function mount(target, anchor) {
