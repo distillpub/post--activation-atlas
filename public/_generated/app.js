@@ -446,7 +446,7 @@
 		}
 	});
 
-	var Labels = {
+	var inceptionLabels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1456,7 +1456,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: Labels.inception,
+	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1610,7 +1610,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -4982,9 +4982,9 @@
 
 
 
-	function labels({inceptionLabels}) {
+	function labels({inceptionLabels: inceptionLabels$$1}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels.inception[k];
+	    let l = inceptionLabels$$1.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -4993,7 +4993,7 @@
 	function data$a() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels: Labels,
+	    inceptionLabels,
 	    classHeatmap: 235
 	  }
 	}
@@ -5513,7 +5513,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: Labels.inception,
+	    labels: inceptionLabels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -10674,7 +10674,7 @@
 	const file$j = "src/components/App.html";
 
 	function create_main_fragment$k(component, ctx) {
-		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text17, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1(ctx.scale), text57, text58, div22, button4, text59_value = ctx.showOptions ? 'fewer options' : 'more options', text59, div23_class_value;
+		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text17, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1(ctx.scale), text57, text58, div22, button4, raw3_value = ctx.showOptions ? 'fewer options' : 'more options', div23_class_value;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -11191,7 +11191,6 @@
 				text58 = createText("\n          ");
 				div22 = createElement("div");
 				button4 = createElement("button");
-				text59 = createText(text59_value);
 				responsiveresizer._fragment.c();
 				setAttribute(h20, "slot", "head");
 				addLoc(h20, file$j, 4, 8, 192);
@@ -11549,7 +11548,7 @@
 				append(div23, text58);
 				append(div23, div22);
 				append(div22, button4);
-				append(button4, text59);
+				button4.innerHTML = raw3_value;
 				component.refs.controls = div23;
 				responsiveresizer._mount(target, anchor);
 			},
@@ -11737,8 +11736,8 @@
 					setData(text57, text57_value);
 				}
 
-				if ((changed.showOptions) && text59_value !== (text59_value = ctx.showOptions ? 'fewer options' : 'more options')) {
-					setData(text59, text59_value);
+				if ((changed.showOptions) && raw3_value !== (raw3_value = ctx.showOptions ? 'fewer options' : 'more options')) {
+					button4.innerHTML = raw3_value;
 				}
 
 				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls")) {

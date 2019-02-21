@@ -11630,7 +11630,7 @@
 	const file$n = "src/components/App.html";
 
 	function create_main_fragment$o(component, ctx) {
-		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text17, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1$1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1$1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1$1(ctx.scale), text57, text58, div22, button4, text59_value = ctx.showOptions ? 'fewer options' : 'more options', text59, div23_class_value;
+		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text17, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1$1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1$1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1$1(ctx.scale), text57, text58, div22, button4, raw3_value = ctx.showOptions ? 'fewer options' : 'more options', div23_class_value;
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
@@ -12147,7 +12147,6 @@
 				text58 = createText("\n          ");
 				div22 = createElement("div");
 				button4 = createElement("button");
-				text59 = createText(text59_value);
 				responsiveresizer._fragment.c();
 				setAttribute(h20, "slot", "head");
 				addLoc(h20, file$n, 4, 8, 192);
@@ -12505,7 +12504,7 @@
 				append(div23, text58);
 				append(div23, div22);
 				append(div22, button4);
-				append(button4, text59);
+				button4.innerHTML = raw3_value;
 				component.refs.controls = div23;
 				responsiveresizer._mount(target, anchor);
 			},
@@ -12693,8 +12692,8 @@
 					setData(text57, text57_value);
 				}
 
-				if ((changed.showOptions) && text59_value !== (text59_value = ctx.showOptions ? 'fewer options' : 'more options')) {
-					setData(text59, text59_value);
+				if ((changed.showOptions) && raw3_value !== (raw3_value = ctx.showOptions ? 'fewer options' : 'more options')) {
+					button4.innerHTML = raw3_value;
 				}
 
 				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls")) {
