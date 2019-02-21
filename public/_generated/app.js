@@ -2422,10 +2422,18 @@
 	    enableDragging: true,
 	    upListener: null,
 	    moveListener: null,
-	    cursor: 'grab'
+	    cursor: 'grab',
+	    clientWidth: 98,
+	    clientHeight: 98
 	  }
 	}
 	var methods = {
+	  measure() {
+	    this.set({
+	      clientWidth: this.refs.root.offsetWidth,
+	      clientHeight: this.refs.root.offsetHeight,
+	    });
+	  },
 	  up() {
 	    const {upListener, moveListener} = this.get();
 	    window.removeEventListener("pointermove", moveListener);
@@ -2457,16 +2465,19 @@
 	  },
 	};
 
+	function oncreate() {
+	  setTimeout(() => this.measure(), 10);
+	}
 	const file$5 = "src/AtlasReticle.html";
 
 	function create_main_fragment$5(component, ctx) {
-		var div, div_resize_listener;
+		var div;
+
+		function onwindowresize(event) {
+			component.measure();	}
+		window.addEventListener("resize", onwindowresize);
 
 		var if_block = (ctx.extent) && create_if_block(component, ctx);
-
-		function div_resize_handler() {
-			component.set({ clientWidth: div.offsetWidth, clientHeight: div.offsetHeight });
-		}
 
 		function pointerdown_handler(event) {
 			component.down(event);
@@ -2476,18 +2487,17 @@
 			c: function create() {
 				div = createElement("div");
 				if (if_block) if_block.c();
-				component.root._beforecreate.push(div_resize_handler);
 				addListener(div, "pointerdown", pointerdown_handler);
 				div.className = "root svelte-1pppif8";
 				setStyle(div, "cursor", ctx.cursor);
 				setStyle(div, "position", "absolute");
-				addLoc(div, file$5, 0, 0, 0);
+				addLoc(div, file$5, 3, 0, 42);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
 				if (if_block) if_block.m(div, null);
-				div_resize_listener = addResizeListener(div, div_resize_handler);
+				component.refs.root = div;
 			},
 
 			p: function update(changed, ctx) {
@@ -2510,18 +2520,20 @@
 			},
 
 			d: function destroy$$1(detach) {
+				window.removeEventListener("resize", onwindowresize);
+
 				if (detach) {
 					detachNode(div);
 				}
 
 				if (if_block) if_block.d();
-				div_resize_listener.cancel();
 				removeListener(div, "pointerdown", pointerdown_handler);
+				if (component.refs.root === div) component.refs.root = null;
 			}
 		};
 	}
 
-	// (7:2) {#if extent}
+	// (10:2) {#if extent}
 	function create_if_block(component, ctx) {
 		var svg, text, div, div_class_value;
 
@@ -2539,14 +2551,14 @@
 				setAttribute(svg, "width", ctx.clientWidth);
 				setAttribute(svg, "height", ctx.clientHeight);
 				setAttribute(svg, "class", "svelte-1pppif8");
-				addLoc(svg, file$5, 7, 2, 186);
+				addLoc(svg, file$5, 10, 2, 173);
 				div.className = div_class_value = "reticle " + (ctx.round ? 'round' : '') + " svelte-1pppif8";
 				setStyle(div, "border-color", ctx.color);
 				setStyle(div, "top", "" + (ctx.top - 1) + "px");
 				setStyle(div, "left", "" + (ctx.left - 1) + "px");
 				setStyle(div, "width", "" + (ctx.right - ctx.left + 2) + "px");
 				setStyle(div, "height", "" + (ctx.bottom - ctx.top + 2) + "px");
-				addLoc(div, file$5, 15, 2, 517);
+				addLoc(div, file$5, 18, 2, 504);
 			},
 
 			m: function mount(target, anchor) {
@@ -2633,7 +2645,7 @@
 		};
 	}
 
-	// (9:4) {#if left && right && top && bottom}
+	// (12:4) {#if left && right && top && bottom}
 	function create_if_block_2(component, ctx) {
 		var path, path_class_value, path_d_value;
 
@@ -2642,7 +2654,7 @@
 				path = createSvgElement("path");
 				setAttribute(path, "class", path_class_value = "" + (ctx.background ? '' : 'transparent') + " svelte-1pppif8");
 				setAttribute(path, "d", path_d_value = "M0,0 L" + ctx.clientWidth + ",0 L" + ctx.clientWidth + "," + ctx.clientHeight + " L0," + ctx.clientHeight + " z M" + ctx.left + "," + ctx.top + " L" + ctx.left + "," + ctx.bottom + " L" + ctx.right + "," + ctx.bottom + " L" + ctx.right + "," + ctx.top + " z");
-				addLoc(path, file$5, 9, 6, 281);
+				addLoc(path, file$5, 12, 6, 268);
 			},
 
 			m: function mount(target, anchor) {
@@ -2667,7 +2679,7 @@
 		};
 	}
 
-	// (26:4) {#if annotationValue}
+	// (29:4) {#if annotationValue}
 	function create_if_block_1(component, ctx) {
 		var div2, div1, div0, text;
 
@@ -2678,13 +2690,13 @@
 				div0 = createElement("div");
 				text = createText(ctx.annotationValue);
 				div0.className = "annotation";
-				addLoc(div0, file$5, 28, 10, 911);
+				addLoc(div0, file$5, 31, 10, 898);
 				div1.className = "annotationTab svelte-1pppif8";
 				setStyle(div1, "background", ctx.color);
-				addLoc(div1, file$5, 27, 8, 845);
+				addLoc(div1, file$5, 30, 8, 832);
 				div2.className = "annotationTabParent svelte-1pppif8";
 				setStyle(div2, "top", "" + (ctx.w * ctx.width-2)/2 + "px");
-				addLoc(div2, file$5, 26, 6, 770);
+				addLoc(div2, file$5, 29, 6, 757);
 			},
 
 			m: function mount(target, anchor) {
@@ -2723,6 +2735,7 @@
 		}
 
 		init(this, options);
+		this.refs = {};
 		this._state = assign(data$2(), options.data);
 
 		this._recompute({ clientWidth: 1, extent: 1, clientHeight: 1 }, this._state);
@@ -2743,6 +2756,11 @@
 		this._intro = true;
 
 		this._fragment = create_main_fragment$5(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
 
 		if (options.target) {
 			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2786,7 +2804,7 @@
 	    offscreen: true
 	  }
 	}
-	function oncreate() {
+	function oncreate$1() {
 	  this.refs.element.addEventListener("ready", event => {
 	    this.set({ready: true});
 	  });
@@ -2864,7 +2882,7 @@
 		this._fragment = create_main_fragment$6(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate.call(this);
+			oncreate$1.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -3615,7 +3633,7 @@
 	  }
 	};
 
-	function oncreate$1() {
+	function oncreate$2() {
 	  const done = (e) => {
 	    this.set({loaded: true});
 	    const {img} = this.get();
@@ -3719,7 +3737,7 @@
 		this._state = assign$1(data$7(), options.data);
 		this._recompute({ width: 1, height: 1 }, this._state);
 
-		var _oncreate = oncreate$1.bind(this);
+		var _oncreate = oncreate$2.bind(this);
 
 		if (!options.root) {
 			this._oncreate = [];
@@ -4625,7 +4643,7 @@
 	  }
 	};
 
-	function oncreate$2() {
+	function oncreate$3() {
 	  const {root, id: id$$1, grid} = this.get();
 	  const config = configs[id$$1];
 	  // console.log("config: ", config)
@@ -4715,7 +4733,7 @@
 		this._fragment = create_main_fragment$c(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$2.call(this);
+			oncreate$3.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -9151,7 +9169,7 @@
 	  }
 	};
 
-	function oncreate$3() {
+	function oncreate$4() {
 	  const {z, scaleExtent, minSize, clientWidth, clientHeight, homeScale, homeX, homeY, disableBehaviors} = this.get();
 	  const that = this; // needed because d3 gives "this" as the node, not component.
 	  z.wheelDelta(() => {
@@ -9271,7 +9289,7 @@
 		this._fragment = create_main_fragment$g(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$3.call(this);
+			oncreate$4.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -9660,7 +9678,7 @@
 	    }
 	  };
 
-	function oncreate$4() {
+	function oncreate$5() {
 	  // Turn off tooltips while zooming
 	  const {tooltip} = this.store.get();
 	  this.refs.d3Zoom.on("zoom", () => {
@@ -9880,11 +9898,11 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$g, 37, 4, 595);
+				addLoc(canvas0, file$g, 37, 4, 599);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$g, 41, 4, 721);
+				addLoc(canvas1, file$g, 41, 4, 725);
 				component.root._beforecreate.push(div_resize_handler);
 				div.className = "svelte-w9b5xg svelte-ref-root";
 				addLoc(div, file$g, 16, 0, 200);
@@ -10182,7 +10200,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$g, 46, 4, 877);
+				addLoc(div, file$g, 46, 4, 881);
 			},
 
 			m: function mount(target, anchor) {
@@ -10271,7 +10289,7 @@
 		this._fragment = create_main_fragment$h(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$4.call(this);
+			oncreate$5.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -10627,7 +10645,7 @@
 	  }
 	};
 
-	function oncreate$5() {
+	function oncreate$6() {
 	  const query = new URLSearchParams(window.location.search);
 	  if (query.has("layer")) {
 	    const layerName = decodeURIComponent(query.get("layer"));
@@ -11819,7 +11837,7 @@
 		this._fragment = create_main_fragment$k(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$5.call(this);
+			oncreate$6.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 
@@ -11852,7 +11870,7 @@
 
 	/* src/components/AppStandalone.html generated by Svelte v2.15.3 */
 
-	function oncreate$6() {
+	function oncreate$7() {
 	  setTimeout(() => {
 	    this.refs.app.home(0);
 	  }, 100);
@@ -11932,7 +11950,7 @@
 		this._fragment = create_main_fragment$l(this, this._state);
 
 		this.root._oncreate.push(() => {
-			oncreate$6.call(this);
+			oncreate$7.call(this);
 			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
 		});
 

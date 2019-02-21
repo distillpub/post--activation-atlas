@@ -1,6 +1,9 @@
-<div class="root" 
-  bind:offsetWidth="clientWidth" 
-  bind:offsetHeight="clientHeight"
+
+<svelte:window on:resize="measure()" />
+
+<div 
+  ref:root
+  class="root" 
   on:pointerdown="down(event)"
   style="cursor: {cursor}; position: absolute;"
 >
@@ -46,7 +49,9 @@
         enableDragging: true,
         upListener: null,
         moveListener: null,
-        cursor: 'grab'
+        cursor: 'grab',
+        clientWidth: 98,
+        clientHeight: 98
       }
     },
     computed: {
@@ -55,7 +60,16 @@
       top: ({clientHeight, extent}) => Math.min(clientHeight, Math.max(1e-6, extent[1][0] * clientHeight)),
       bottom: ({clientHeight, extent}) => Math.min(clientHeight, extent[1][1] * clientHeight),
     },
+    oncreate() {
+      setTimeout(() => this.measure(), 10);
+    },
     methods: {
+      measure() {
+        this.set({
+          clientWidth: this.refs.root.offsetWidth,
+          clientHeight: this.refs.root.offsetHeight,
+        })
+      },
       up() {
         const {upListener, moveListener} = this.get();
         window.removeEventListener("pointermove", moveListener);
