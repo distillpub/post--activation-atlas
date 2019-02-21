@@ -124,38 +124,6 @@
 		return selectedOption && selectedOption.__value;
 	}
 
-	function addResizeListener(element, fn) {
-		if (getComputedStyle(element).position === 'static') {
-			element.style.position = 'relative';
-		}
-
-		const object = document.createElement('object');
-		object.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;');
-		object.type = 'text/html';
-
-		let win;
-
-		object.onload = () => {
-			win = object.contentDocument.defaultView;
-			win.addEventListener('resize', fn);
-		};
-
-		if (/Trident/.test(navigator.userAgent)) {
-			element.appendChild(object);
-			object.data = 'about:blank';
-		} else {
-			object.data = 'about:blank';
-			element.appendChild(object);
-		}
-
-		return {
-			cancel: () => {
-				win && win.removeEventListener && win.removeEventListener('resize', fn);
-				element.removeChild(object);
-			}
-		};
-	}
-
 	function getSpreadUpdate(levels, updates) {
 		var update = {};
 
@@ -10444,6 +10412,9 @@
 	  return {
 	    ready: true,
 	    id: "inceptionv1_mixed4c",
+
+	    // viewWidth: 500,
+	    // viewHeight: 500,
 	    
 	    config: null,
 	    layers: null,
@@ -10489,6 +10460,12 @@
 	  }
 	}
 	var methods$6 = {
+	  measure() {
+	    this.set({
+	      viewWidth: this.refs.root.offsetWidth,
+	      viewHeight: this.refs.root.offsetHeight,
+	    });
+	  },
 	  fullscreen() {
 	    this.refs.root.webkitRequestFullscreen();
 	  },
@@ -10678,6 +10655,10 @@
 	  labelsBufferCanvas.height = (Math.ceil(1002 / 10) + 1) * 20;
 	  const labelsBufferContext = labelsBufferCanvas.getContext("2d");
 	  this.set({labelsBufferCanvas, labelsBufferContext});
+	  setTimeout(() => {
+	    this.measure();
+	    this.home();
+	  }, 10);
 	}
 	function onupdate$2({changed, current, previous}) {
 	  // console.log("atlas", changed, current.scale)
@@ -10712,7 +10693,11 @@
 	const file$k = "src/Atlas.html";
 
 	function create_main_fragment$l(component, ctx) {
-		var radar_updating = {}, text0, text1, div, canvas0, canvas0_width_value, canvas0_height_value, text2, canvas1, canvas1_width_value, canvas1_height_value, text3, if_block1_anchor, d3zoom_updating = {}, div_resize_listener;
+		var radar_updating = {}, text0, text1, div, canvas0, canvas0_width_value, canvas0_height_value, text2, canvas1, canvas1_width_value, canvas1_height_value, text3, if_block1_anchor, d3zoom_updating = {};
+
+		function onwindowresize(event) {
+			component.measure();	}
+		window.addEventListener("resize", onwindowresize);
 
 		var radar_initial_data = {};
 		if (ctx.ready  !== void 0) {
@@ -10865,14 +10850,10 @@
 
 		component.refs.d3Zoom = d3zoom;
 
-		function div_resize_handler() {
-			component.set({ viewWidth: div.offsetWidth, viewHeight: div.offsetHeight });
-		}
-
 		return {
 			c: function create() {
 				radar._fragment.c();
-				text0 = createText("\n\n");
+				text0 = createText("\n\n\n");
 				if (if_block0) if_block0.c();
 				text1 = createText("\n\n");
 				div = createElement("div");
@@ -10886,14 +10867,13 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$k, 37, 4, 599);
+				addLoc(canvas0, file$k, 37, 4, 576);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$k, 41, 4, 725);
-				component.root._beforecreate.push(div_resize_handler);
+				addLoc(canvas1, file$k, 41, 4, 702);
 				div.className = "svelte-w9b5xg svelte-ref-root";
-				addLoc(div, file$k, 16, 0, 200);
+				addLoc(div, file$k, 18, 0, 241);
 			},
 
 			m: function mount(target, anchor) {
@@ -10911,7 +10891,6 @@
 				if (if_block1) if_block1.m(d3zoom._slotted.default, null);
 				append(d3zoom._slotted.default, if_block1_anchor);
 				d3zoom._mount(div, null);
-				div_resize_listener = addResizeListener(div, div_resize_handler);
 				component.refs.root = div;
 			},
 
@@ -11038,6 +11017,8 @@
 			},
 
 			d: function destroy$$1(detach) {
+				window.removeEventListener("resize", onwindowresize);
+
 				radar.destroy(detach);
 				if (detach) {
 					detachNode(text0);
@@ -11054,13 +11035,12 @@
 				if (if_block1) if_block1.d();
 				d3zoom.destroy();
 				if (component.refs.d3Zoom === d3zoom) component.refs.d3Zoom = null;
-				div_resize_listener.cancel();
 				if (component.refs.root === div) component.refs.root = null;
 			}
 		};
 	}
 
-	// (3:0) {#if ready}
+	// (5:0) {#if ready}
 	function create_if_block_1$1(component, ctx) {
 		var atlasdataloader_updating = {};
 
@@ -11188,7 +11168,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$k, 46, 4, 881);
+				addLoc(div, file$k, 46, 4, 858);
 			},
 
 			m: function mount(target, anchor) {

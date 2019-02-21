@@ -1,4 +1,6 @@
+<svelte:window on:resize="measure()" />
 <Radar bind:ready />
+
 
 {#if ready}
   <AtlasDataLoader 
@@ -15,8 +17,6 @@
 {/if}
 
 <div ref:root
-  bind:offsetWidth="viewWidth"
-  bind:offsetHeight="viewHeight"
 >
   <D3Zoom ref:d3Zoom
     clientWidth={viewWidth}
@@ -65,6 +65,9 @@ export default {
     return {
       ready: true,
       id: "inceptionv1_mixed4c",
+
+      // viewWidth: 500,
+      // viewHeight: 500,
       
       config: null,
       layers: null,
@@ -243,8 +246,18 @@ export default {
     labelsBufferCanvas.height = (Math.ceil(1002 / 10) + 1) * 20;
     const labelsBufferContext = labelsBufferCanvas.getContext("2d");
     this.set({labelsBufferCanvas, labelsBufferContext});
+    setTimeout(() => {
+      this.measure();
+      this.home();
+    }, 10);
   },
   methods: {
+    measure() {
+      this.set({
+        viewWidth: this.refs.root.offsetWidth,
+        viewHeight: this.refs.root.offsetHeight,
+      })
+    },
     fullscreen() {
       this.refs.root.webkitRequestFullscreen();
     },

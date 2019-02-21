@@ -9456,6 +9456,9 @@
 	  return {
 	    ready: true,
 	    id: "inceptionv1_mixed4c",
+
+	    // viewWidth: 500,
+	    // viewHeight: 500,
 	    
 	    config: null,
 	    layers: null,
@@ -9501,6 +9504,12 @@
 	  }
 	}
 	var methods$4 = {
+	  measure() {
+	    this.set({
+	      viewWidth: this.refs.root.offsetWidth,
+	      viewHeight: this.refs.root.offsetHeight,
+	    });
+	  },
 	  fullscreen() {
 	    this.refs.root.webkitRequestFullscreen();
 	  },
@@ -9690,6 +9699,10 @@
 	  labelsBufferCanvas.height = (Math.ceil(1002 / 10) + 1) * 20;
 	  const labelsBufferContext = labelsBufferCanvas.getContext("2d");
 	  this.set({labelsBufferCanvas, labelsBufferContext});
+	  setTimeout(() => {
+	    this.measure();
+	    this.home();
+	  }, 10);
 	}
 	function onupdate$2({changed, current, previous}) {
 	  // console.log("atlas", changed, current.scale)
@@ -9724,7 +9737,11 @@
 	const file$g = "src/Atlas.html";
 
 	function create_main_fragment$h(component, ctx) {
-		var radar_updating = {}, text0, text1, div, canvas0, canvas0_width_value, canvas0_height_value, text2, canvas1, canvas1_width_value, canvas1_height_value, text3, if_block1_anchor, d3zoom_updating = {}, div_resize_listener;
+		var radar_updating = {}, text0, text1, div, canvas0, canvas0_width_value, canvas0_height_value, text2, canvas1, canvas1_width_value, canvas1_height_value, text3, if_block1_anchor, d3zoom_updating = {};
+
+		function onwindowresize(event) {
+			component.measure();	}
+		window.addEventListener("resize", onwindowresize);
 
 		var radar_initial_data = {};
 		if (ctx.ready  !== void 0) {
@@ -9877,14 +9894,10 @@
 
 		component.refs.d3Zoom = d3zoom;
 
-		function div_resize_handler() {
-			component.set({ viewWidth: div.offsetWidth, viewHeight: div.offsetHeight });
-		}
-
 		return {
 			c: function create() {
 				radar._fragment.c();
-				text0 = createText("\n\n");
+				text0 = createText("\n\n\n");
 				if (if_block0) if_block0.c();
 				text1 = createText("\n\n");
 				div = createElement("div");
@@ -9898,14 +9911,13 @@
 				canvas0.width = canvas0_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas0.height = canvas0_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas0.className = "svelte-w9b5xg svelte-ref-canvas";
-				addLoc(canvas0, file$g, 37, 4, 599);
+				addLoc(canvas0, file$g, 37, 4, 576);
 				canvas1.width = canvas1_width_value = ctx.viewWidth * ctx.screenResolution;
 				canvas1.height = canvas1_height_value = ctx.viewHeight * ctx.screenResolution;
 				canvas1.className = "svelte-w9b5xg svelte-ref-labelsCanvas";
-				addLoc(canvas1, file$g, 41, 4, 725);
-				component.root._beforecreate.push(div_resize_handler);
+				addLoc(canvas1, file$g, 41, 4, 702);
 				div.className = "svelte-w9b5xg svelte-ref-root";
-				addLoc(div, file$g, 16, 0, 200);
+				addLoc(div, file$g, 18, 0, 241);
 			},
 
 			m: function mount(target, anchor) {
@@ -9923,7 +9935,6 @@
 				if (if_block1) if_block1.m(d3zoom._slotted.default, null);
 				append(d3zoom._slotted.default, if_block1_anchor);
 				d3zoom._mount(div, null);
-				div_resize_listener = addResizeListener(div, div_resize_handler);
 				component.refs.root = div;
 			},
 
@@ -10050,6 +10061,8 @@
 			},
 
 			d: function destroy$$1(detach) {
+				window.removeEventListener("resize", onwindowresize);
+
 				radar.destroy(detach);
 				if (detach) {
 					detachNode(text0);
@@ -10066,13 +10079,12 @@
 				if (if_block1) if_block1.d();
 				d3zoom.destroy();
 				if (component.refs.d3Zoom === d3zoom) component.refs.d3Zoom = null;
-				div_resize_listener.cancel();
 				if (component.refs.root === div) component.refs.root = null;
 			}
 		};
 	}
 
-	// (3:0) {#if ready}
+	// (5:0) {#if ready}
 	function create_if_block_1$1(component, ctx) {
 		var atlasdataloader_updating = {};
 
@@ -10200,7 +10212,7 @@
 				setStyle(div, "width", "" + ctx.hoverIconW + "px");
 				setStyle(div, "height", "" + ctx.hoverIconW + "px");
 				div.className = "svelte-w9b5xg svelte-ref-hover";
-				addLoc(div, file$g, 46, 4, 881);
+				addLoc(div, file$g, 46, 4, 858);
 			},
 
 			m: function mount(target, anchor) {
