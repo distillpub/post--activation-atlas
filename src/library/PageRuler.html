@@ -1,0 +1,30 @@
+<div class="base-grid">
+  <div ref:screen bind:offsetWidth="$screenWidth" style="grid-column: screen;"></div>
+  <div ref:page bind:offsetWidth="$pageWidth" style="grid-column: page;"></div>
+  <div ref:text bind:offsetWidth="$textWidth" style="grid-column: text;"></div>
+</div>
+
+<script>
+
+export default {
+  oncreate() {
+    this.measure();
+  },
+  methods: {
+    measure() {
+    }
+  }
+}
+</script>
+
+<style>
+  .base-grid {
+    position: fixed;
+    width: 100%;
+    visibility: hidden;
+    contain: strict;
+  }
+  ref:screen { border: solid 1px magenta; }
+  ref:page { border: solid 1px cyan; }
+  ref:text { border: solid 1px yellow; }
+</style>

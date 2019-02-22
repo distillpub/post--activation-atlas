@@ -1,6 +1,7 @@
 import store from "./Store.js";
 
 import Tooltip from "./library/Tooltip.html";
+import PageRuler from "./library/PageRuler.html";
 import AtlasTooltip from "./components/AtlasTooltip.html";
 
 import LazyComponent from './library/LazyComponent.html';
@@ -48,43 +49,50 @@ import PatchExamples from './diagrams/PatchExamples.html';
 // 	}
 // });
 
+new PageRuler({
+	target: document.querySelector("body"),
+	store
+});
+
+// A global tooltip
+store.set({
+	tooltip: new Tooltip({
+		target: document.body,
+		store,
+		data: {
+			width: 250,
+			component: AtlasTooltip
+		}
+	})
+});
+
+// 
+// Cover
+// 
+
+const coverWrapper = new LazyComponent({
+	target: document.querySelector("#cover"),
+	store: store,
+	data: {
+		component: App,
+		componentData: {
+			showClassFilter: false,
+			layerName: "mixed4d",
+			showOptions: false,
+			// homeX: 0.550,
+			// homeY: 0.283,
+			homeX: 0.661,
+			homeY: 0.278,
+			homeScale: 5,
+			gridSize: 2,
+			scrollWheel: false,
+		}
+	}
+});
+
 document.addEventListener("DOMContentLoaded", (e) => {
 
-	// A global tooltip
-	store.set({
-		tooltip: new Tooltip({
-			target: document.body,
-			store,
-			data: {
-				width: 250,
-				component: AtlasTooltip
-			}
-		})
-	});
 
-	// 
-	// Cover
-	// 
-
-	const coverWrapper = new LazyComponent({
-		target: document.querySelector("#cover"),
-		store: store,
-		data: {
-			component: App,
-			componentData: {
-				showClassFilter: false,
-				layerName: "mixed4d",
-				showOptions: false,
-				// homeX: 0.550,
-				// homeY: 0.283,
-				homeX: 0.661,
-				homeY: 0.278,
-				homeScale: 5,
-				gridSize: 2,
-				scrollWheel: false,
-			}
-		}
-	});
 
 	// 
 	// Initialize lazy images
