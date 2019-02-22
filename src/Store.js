@@ -143,7 +143,7 @@ const store = new MyStore({
     {
       id: "507_982", leftLabel: "snorkel", rightLabel: "scuba diver", left: 507, right: 982,
       annotation: [
-        { pos: { x: 7, y: 8 }, desc: "train?" },
+        { pos: { x: 7, y: 8 }, desc: "locomotive?" },
       ]
     },
     { id: "736_744", leftLabel: "head cabbage", rightLabel: "artichoke", left: 736, right: 744, annotation: [] },

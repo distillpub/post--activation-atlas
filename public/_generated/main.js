@@ -1664,7 +1664,7 @@
 	    {
 	      id: "507_982", leftLabel: "snorkel", rightLabel: "scuba diver", left: 507, right: 982,
 	      annotation: [
-	        { pos: { x: 7, y: 8 }, desc: "train?" },
+	        { pos: { x: 7, y: 8 }, desc: "locomotive?" },
 	      ]
 	    },
 	    { id: "736_744", leftLabel: "head cabbage", rightLabel: "artichoke", left: 736, right: 744, annotation: [] },
@@ -15385,14 +15385,14 @@
 				circle0 = createSvgElement("circle");
 				circle1 = createSvgElement("circle");
 				setAttribute(line, "x1", line_x__value = (ctx.annotation.pos.y + 0.5) * ctx.cellWidth + ctx.cellWidth / 2 * ctx.Math.sqrt(2));
-				setAttribute(line, "x2", line_x__value_1 = ctx.width + 10);
+				setAttribute(line, "x2", line_x__value_1 = ctx.width + 5);
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.4");
 				addLoc(line, file$w, 80, 12, 3283);
-				setAttribute(text1, "x", text1_x_value = ctx.width + 20);
+				setAttribute(text1, "x", text1_x_value = ctx.width + 10);
 				setAttribute(text1, "alignment-baseline", "middle");
 				setAttribute(text1, "class", "svelte-1jr0ob8");
-				addLoc(text1, file$w, 81, 12, 3428);
+				addLoc(text1, file$w, 81, 12, 3427);
 				setAttribute(g0, "transform", g0_transform_value = "translate(0, " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
 				addLoc(g0, file$w, 79, 10, 3202);
 				setAttribute(circle0, "r", circle0_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
@@ -15400,14 +15400,14 @@
 				setAttribute(circle0, "stroke", "white");
 				setAttribute(circle0, "stroke-opacity", "0.5");
 				setAttribute(circle0, "stroke-width", "5");
-				addLoc(circle0, file$w, 84, 12, 3645);
+				addLoc(circle0, file$w, 84, 12, 3644);
 				setAttribute(circle1, "r", circle1_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle1, "fill", "none");
 				setAttribute(circle1, "stroke", "black");
 				setAttribute(circle1, "stroke-opacity", "1");
-				addLoc(circle1, file$w, 85, 12, 3765);
+				addLoc(circle1, file$w, 85, 12, 3764);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.annotation.pos.y + 0.5) * ctx.cellWidth + ", " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g1, file$w, 83, 10, 3527);
+				addLoc(g1, file$w, 83, 10, 3526);
 			},
 
 			m: function mount(target, anchor) {
@@ -15425,7 +15425,7 @@
 					setAttribute(line, "x1", line_x__value);
 				}
 
-				if ((changed.width) && line_x__value_1 !== (line_x__value_1 = ctx.width + 10)) {
+				if ((changed.width) && line_x__value_1 !== (line_x__value_1 = ctx.width + 5)) {
 					setAttribute(line, "x2", line_x__value_1);
 				}
 
@@ -15433,7 +15433,7 @@
 					setData(text0, text0_value);
 				}
 
-				if ((changed.width) && text1_x_value !== (text1_x_value = ctx.width + 20)) {
+				if ((changed.width) && text1_x_value !== (text1_x_value = ctx.width + 10)) {
 					setAttribute(text1, "x", text1_x_value);
 				}
 

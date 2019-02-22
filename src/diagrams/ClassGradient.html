@@ -78,8 +78,8 @@
       {#if comparison.annotation}
         {#each comparison.annotation as annotation,iter}
           <g transform="translate(0, {(annotation.pos.x + 0.5) * cellWidth})">
-            <line x1={(annotation.pos.y + 0.5) * cellWidth + cellWidth / 2 * Math.sqrt(2)} x2={width + 10} stroke="black" stroke-opacity="0.4"/>
-            <text x={width + 20} alignment-baseline="middle">{annotation.desc}</text>
+            <line x1={(annotation.pos.y + 0.5) * cellWidth + cellWidth / 2 * Math.sqrt(2)} x2={width + 5} stroke="black" stroke-opacity="0.4"/>
+            <text x={width + 10} alignment-baseline="middle">{annotation.desc}</text>
           </g>
           <g transform="translate({(annotation.pos.y + 0.5) * cellWidth}, {(annotation.pos.x + 0.5) * cellWidth})">
             <circle r={cellWidth / 2 * Math.sqrt(2)} fill="none" stroke="white" stroke-opacity="0.5" stroke-width="5"/>
