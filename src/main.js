@@ -79,8 +79,9 @@ const coverWrapper = new LazyComponent({
 			showClassFilter: false,
 			layerName: "mixed4d",
 			showOptions: false,
-			// homeX: 0.550,
-			// homeY: 0.283,
+			// loadTarget: {
+			// 	x: .661, y: .278, scale: 5
+			// },
 			homeX: 0.661,
 			homeY: 0.278,
 			homeScale: 5,

@@ -446,7 +446,7 @@
 		}
 	});
 
-	var Labels = {
+	var inceptionLabels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1456,7 +1456,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: Labels.inception,
+	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1610,7 +1610,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -4982,9 +4982,9 @@
 
 
 
-	function labels({inceptionLabels}) {
+	function labels({inceptionLabels: inceptionLabels$$1}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels.inception[k];
+	    let l = inceptionLabels$$1.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -4993,7 +4993,7 @@
 	function data$a() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels: Labels,
+	    inceptionLabels,
 	    classHeatmap: 235
 	  }
 	}
@@ -5513,7 +5513,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: Labels.inception,
+	    labels: inceptionLabels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -10658,10 +10658,16 @@
 	};
 
 	function oncreate$6() {
+	  const {loadTarget} = this.get();
 	  const query = new URLSearchParams(window.location.search);
 	  if (query.has("layer")) {
 	    const layerName = decodeURIComponent(query.get("layer"));
 	    this.set({layerName});
+	  }
+	  if (loadTarget) {
+	    setTimeout(() => {
+	    this.zoomTo(loadTarget.x, loadTarget.y, loadTarget.scale, 10000);
+	    }, 1000);
 	  }
 	  if (query.has("poi")) {
 	    const poiString = query.get("poi");

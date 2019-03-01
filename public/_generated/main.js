@@ -11771,10 +11771,16 @@
 	};
 
 	function oncreate$8() {
+	  const {loadTarget} = this.get();
 	  const query = new URLSearchParams(window.location.search);
 	  if (query.has("layer")) {
 	    const layerName = decodeURIComponent(query.get("layer"));
 	    this.set({layerName});
+	  }
+	  if (loadTarget) {
+	    setTimeout(() => {
+	    this.zoomTo(loadTarget.x, loadTarget.y, loadTarget.scale, 10000);
+	    }, 1000);
 	  }
 	  if (query.has("poi")) {
 	    const poiString = query.get("poi");
@@ -22869,8 +22875,9 @@
 				showClassFilter: false,
 				layerName: "mixed4d",
 				showOptions: false,
-				// homeX: 0.550,
-				// homeY: 0.283,
+				// loadTarget: {
+				// 	x: .661, y: .278, scale: 5
+				// },
 				homeX: 0.661,
 				homeY: 0.278,
 				homeScale: 5,
