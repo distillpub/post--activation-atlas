@@ -13956,7 +13956,9 @@
 			each_blocks[i] = create_each_block$4(component, get_each_context$3(ctx, each_value, i));
 		}
 
-		var notebooklink_initial_data = { url: "" };
+		var notebooklink_initial_data = {
+		 	url: "https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/class-activation-atlas.ipynb"
+		 };
 		var notebooklink = new NotebookLink({
 			root: component.root,
 			store: component.store,
