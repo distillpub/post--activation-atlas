@@ -63,7 +63,7 @@
         Each grid cell is labeled with the classification it most supports.
         <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote>
         <div style="margin-top: 16px;">
-          <NotebookLink url="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb"/>
+          <span data-notebook-url="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb"></span>
         </div>
       </div>
     </div>
@@ -75,11 +75,11 @@ export default {
   components: { 
     Atlas: "../Atlas.html",
     AtlasNav: "../AtlasNav.html",
-    AtlasReticle: "../AtlasReticle.html",
-    NotebookLink: "../library/NotebookLink.html"
+    AtlasReticle: "../AtlasReticle.html"
   },
   data()  {
     return {
+      url: "https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb",
       layer_name: "mixed5a",
       layer: 0,
       gcx: 0.2,

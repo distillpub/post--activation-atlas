@@ -4,7 +4,7 @@
   There are three levels of emphasis available as well: 0, 1, 2 with 1 default.
  -->
 
-<a href="{url}"class="root emphasis-{emphasis}">
+<a href={url} class="root emphasis-{emphasis}">
   <svg viewBox="0 0 18 18">
     <path d="M14,2c0-0.3-0.2-0.5-0.5-0.5S13,1.7,13,2v12c0,0.6-0.4,1-1,1H3.1c-0.3,0-0.5-0.1-0.7-0.3L1.7,14h8.8c0.8,0,1.5-0.7,1.5-1.5
       l0-11C12,0.7,11.3,0,10.5,0l-9,0C0.7,0,0,0.7,0,1.5v12.1c0,0.3,0.1,0.5,0.3,0.7l1.4,1.4C1.9,15.9,2.1,16,2.4,16h10.1
@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      url: "",
+      url: "https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb",
       text: "Try in a notebook",
       emphasis: 1, // 0,1,2
     }

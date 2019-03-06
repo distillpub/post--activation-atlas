@@ -3477,7 +3477,7 @@
 
 	function data$5() {
 	  return {
-	    url: "",
+	    url: "https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb",
 	    text: "Try in a notebook",
 	    emphasis: 1, // 0,1,2
 	  }
@@ -3497,12 +3497,12 @@
 				text1 = createText(ctx.text);
 				setAttribute(path, "d", "M14,2c0-0.3-0.2-0.5-0.5-0.5S13,1.7,13,2v12c0,0.6-0.4,1-1,1H3.1c-0.3,0-0.5-0.1-0.7-0.3L1.7,14h8.8c0.8,0,1.5-0.7,1.5-1.5\n      l0-11C12,0.7,11.3,0,10.5,0l-9,0C0.7,0,0,0.7,0,1.5v12.1c0,0.3,0.1,0.5,0.3,0.7l1.4,1.4C1.9,15.9,2.1,16,2.4,16h10.1\n      c0.8,0,1.5-0.7,1.5-1.5l0-1.8C14,9,14,2,14,2z M9.1,9.6c0,0.3-0.2,0.5-0.5,0.5H5.4c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h3.1\n      C8.8,9.1,9.1,9.3,9.1,9.6z M2.3,4.7C2.1,4.5,2.1,4.2,2.3,4C2.5,3.8,2.8,3.8,3,4l2.8,2.6L3,9.3C2.9,9.4,2.8,9.4,2.7,9.4\n      c-0.1,0-0.3-0.1-0.4-0.2c-0.2-0.2-0.2-0.5,0-0.7l2-1.9L2.3,4.7z");
 				setAttribute(path, "class", "svelte-7z3jn3");
-				addLoc(path, file$8, 8, 4, 263);
+				addLoc(path, file$8, 8, 4, 262);
 				setAttribute(svg, "viewBox", "0 0 18 18");
 				setAttribute(svg, "class", "svelte-7z3jn3");
-				addLoc(svg, file$8, 7, 2, 233);
+				addLoc(svg, file$8, 7, 2, 232);
 				span.className = "svelte-7z3jn3";
-				addLoc(span, file$8, 14, 2, 842);
+				addLoc(span, file$8, 14, 2, 841);
 				a.href = ctx.url;
 				a.className = a_class_value = "root emphasis-" + ctx.emphasis + " svelte-7z3jn3";
 				addLoc(a, file$8, 6, 0, 182);
@@ -5136,6 +5136,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
