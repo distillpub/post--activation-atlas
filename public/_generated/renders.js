@@ -9615,10 +9615,9 @@
 	    target: e,
 	    store,
 	    data: {
-	      homeScale: 1.0,
+	      homeScale: 0.999,
 	      id: "inceptionv1_mixed4c",
 	      gridSize: 1,
-	      density: 32,
 	      alphaAttributionFactor: 2,
 	      classHeatmapMultiplier: 2,
 	      scaleCountFactor: 500,
