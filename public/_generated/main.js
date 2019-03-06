@@ -5136,7 +5136,6 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
-	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -21618,7 +21617,7 @@
 	  });
 	});
 
-	console.log(Patches);
+	// console.log(Patches)
 
 	function c({selectedComparison, comparisons}) {
 		return comparisons[selectedComparison];
@@ -21805,51 +21804,51 @@
 				raw5_before = createElement('noscript');
 				raw5_after = createElement('noscript');
 				text20 = createText("%");
-				h4.className = "svelte-q4mobk";
+				h4.className = "svelte-3dx3cf";
 				addLoc(h4, file$P, 71, 0, 2273);
 				addListener(select0, "change", select0_change_handler);
 				if (!('selectedComparison' in ctx)) component.root._beforecreate.push(select0_change_handler);
-				select0.className = "svelte-q4mobk";
+				select0.className = "svelte-3dx3cf";
 				addLoc(select0, file$P, 101, 12, 3039);
 				addListener(select1, "change", select1_change_handler);
 				if (!('selectedMethod' in ctx)) component.root._beforecreate.push(select1_change_handler);
-				select1.className = "svelte-q4mobk";
+				select1.className = "svelte-3dx3cf";
 				addLoc(select1, file$P, 107, 12, 3323);
-				div0.className = "controls svelte-q4mobk";
+				div0.className = "controls svelte-3dx3cf";
 				addLoc(div0, file$P, 100, 10, 3004);
-				th0.className = "svelte-q4mobk";
+				th0.className = "svelte-3dx3cf";
 				addLoc(th0, file$P, 99, 8, 2989);
-				div1.className = "title svelte-q4mobk";
+				div1.className = "title svelte-3dx3cf";
 				addLoc(div1, file$P, 123, 10, 3779);
 				th1.colSpan = "2";
-				th1.className = "svelte-q4mobk";
+				th1.className = "svelte-3dx3cf";
 				addLoc(th1, file$P, 122, 8, 3752);
-				div2.className = "title svelte-q4mobk";
+				div2.className = "title svelte-3dx3cf";
 				addLoc(div2, file$P, 126, 10, 3866);
 				th2.colSpan = "2";
-				th2.className = "svelte-q4mobk";
+				th2.className = "svelte-3dx3cf";
 				addLoc(th2, file$P, 125, 8, 3839);
 				addLoc(tr0, file$P, 98, 6, 2976);
 				addLoc(thead, file$P, 97, 4, 2962);
 				img.src = "assets/images/patches/random.png";
 				img.alt = img_alt_value = "patch " + ctx.p;
-				img.className = "svelte-q4mobk";
+				img.className = "svelte-3dx3cf";
 				addLoc(img, file$P, 154, 8, 4786);
 				addLoc(div3, file$P, 155, 8, 4856);
-				td0.className = "svelte-q4mobk";
+				td0.className = "svelte-3dx3cf";
 				addLoc(td0, file$P, 153, 6, 4773);
-				td1.className = "svelte-q4mobk";
+				td1.className = "svelte-3dx3cf";
 				addLoc(td1, file$P, 157, 6, 4898);
-				td2.className = "svelte-q4mobk";
+				td2.className = "svelte-3dx3cf";
 				addLoc(td2, file$P, 158, 6, 4941);
-				td3.className = "svelte-q4mobk";
+				td3.className = "svelte-3dx3cf";
 				addLoc(td3, file$P, 159, 6, 5012);
-				td4.className = "svelte-q4mobk";
+				td4.className = "svelte-3dx3cf";
 				addLoc(td4, file$P, 160, 6, 5055);
 				addLoc(tr1, file$P, 152, 4, 4762);
-				table.className = "svelte-q4mobk";
+				table.className = "svelte-3dx3cf";
 				addLoc(table, file$P, 96, 2, 2950);
-				div4.className = "method svelte-q4mobk";
+				div4.className = "method svelte-3dx3cf";
 				addLoc(div4, file$P, 79, 0, 2358);
 			},
 
@@ -22081,7 +22080,7 @@
 			c: function create() {
 				h4 = createElement("h4");
 				h4.textContent = "Consistent corner position";
-				h4.className = "svelte-q4mobk";
+				h4.className = "svelte-3dx3cf";
 				addLoc(h4, file$P, 13, 2, 336);
 			},
 
@@ -22105,7 +22104,7 @@
 			c: function create() {
 				h4 = createElement("h4");
 				h4.textContent = "Dynamic corner position";
-				h4.className = "svelte-q4mobk";
+				h4.className = "svelte-3dx3cf";
 				addLoc(h4, file$P, 11, 2, 291);
 			},
 
@@ -22135,12 +22134,12 @@
 				div0.textContent = "Choosing the strongest size and corner position for each example.";
 				img.src = "assets/icon-dynamic.png";
 				img.alt = "icon";
-				img.className = "svelte-q4mobk";
+				img.className = "svelte-3dx3cf";
 				addLoc(img, file$P, 29, 12, 820);
-				div0.className = "figcaption svelte-q4mobk";
+				div0.className = "figcaption svelte-3dx3cf";
 				addLoc(div0, file$P, 31, 14, 899);
 				addLoc(div1, file$P, 30, 12, 879);
-				div2.className = "description svelte-q4mobk";
+				div2.className = "description svelte-3dx3cf";
 				addLoc(div2, file$P, 28, 10, 782);
 			},
 
@@ -22174,12 +22173,12 @@
 				div0.textContent = "Choosing a consistent size and corner position across all examples.";
 				img.src = "assets/icon-static.png";
 				img.alt = "icon";
-				img.className = "svelte-q4mobk";
+				img.className = "svelte-3dx3cf";
 				addLoc(img, file$P, 22, 12, 544);
-				div0.className = "figcaption svelte-q4mobk";
+				div0.className = "figcaption svelte-3dx3cf";
 				addLoc(div0, file$P, 24, 14, 622);
 				addLoc(div1, file$P, 23, 12, 602);
-				div2.className = "description svelte-q4mobk";
+				div2.className = "description svelte-3dx3cf";
 				addLoc(div2, file$P, 21, 10, 506);
 			},
 
@@ -22207,7 +22206,7 @@
 			c: function create() {
 				div = createElement("div");
 				div.textContent = "Previously correctly classified images that the patch changed to the target class.";
-				div.className = "explanation figcaption svelte-q4mobk";
+				div.className = "explanation figcaption svelte-3dx3cf";
 				addLoc(div, file$P, 40, 12, 1189);
 			},
 
@@ -22231,7 +22230,7 @@
 			c: function create() {
 				div = createElement("div");
 				div.textContent = "Mean probability assigned to the target class before and after patch.";
-				div.className = "explanation figcaption svelte-q4mobk";
+				div.className = "explanation figcaption svelte-3dx3cf";
 				addLoc(div, file$P, 46, 12, 1471);
 			},
 
@@ -22269,15 +22268,15 @@
 				raw5_after = createElement('noscript');
 				text5 = createText(" → ");
 				raw6_before = createElement('noscript');
-				td0.className = "svelte-q4mobk";
+				td0.className = "svelte-3dx3cf";
 				addLoc(td0, file$P, 54, 8, 1707);
-				td1.className = "svelte-q4mobk";
+				td1.className = "svelte-3dx3cf";
 				addLoc(td1, file$P, 57, 8, 1848);
-				td2.className = "svelte-q4mobk";
+				td2.className = "svelte-3dx3cf";
 				addLoc(td2, file$P, 58, 8, 1906);
-				td3.className = "svelte-q4mobk";
+				td3.className = "svelte-3dx3cf";
 				addLoc(td3, file$P, 59, 8, 2007);
-				td4.className = "svelte-q4mobk";
+				td4.className = "svelte-3dx3cf";
 				addLoc(td4, file$P, 60, 8, 2066);
 				addLoc(tr, file$P, 53, 6, 1694);
 			},
@@ -22410,24 +22409,24 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				th0.className = "svelte-q4mobk";
+				th0.className = "svelte-3dx3cf";
 				addLoc(th0, file$P, 19, 8, 456);
-				div0.className = "title svelte-q4mobk";
+				div0.className = "title svelte-3dx3cf";
 				addLoc(div0, file$P, 38, 10, 1103);
 				th1.colSpan = "2";
-				th1.className = "svelte-q4mobk";
+				th1.className = "svelte-3dx3cf";
 				addLoc(th1, file$P, 37, 8, 1076);
-				div1.className = "title svelte-q4mobk";
+				div1.className = "title svelte-3dx3cf";
 				addLoc(div1, file$P, 44, 10, 1379);
 				th2.colSpan = "2";
-				th2.className = "svelte-q4mobk";
+				th2.className = "svelte-3dx3cf";
 				addLoc(th2, file$P, 43, 8, 1352);
 				addLoc(tr, file$P, 18, 6, 443);
 				addLoc(thead, file$P, 17, 6, 429);
 				addLoc(tbody, file$P, 51, 4, 1642);
-				table.className = "svelte-q4mobk";
+				table.className = "svelte-3dx3cf";
 				addLoc(table, file$P, 16, 4, 415);
-				div2.className = "method details svelte-q4mobk";
+				div2.className = "method details svelte-3dx3cf";
 				addLoc(div2, file$P, 15, 2, 382);
 			},
 
@@ -22684,18 +22683,18 @@
 				text9 = createText("%");
 				img.src = img_src_value = "assets/images/patches/" + ctx.c.name + "-" + format_1$3(ctx.p + 1) + ".png";
 				img.alt = "patch " + ctx.p;
-				img.className = "svelte-q4mobk";
+				img.className = "svelte-3dx3cf";
 				addLoc(img, file$P, 143, 10, 4360);
 				addLoc(div, file$P, 144, 10, 4450);
-				td0.className = "svelte-q4mobk";
+				td0.className = "svelte-3dx3cf";
 				addLoc(td0, file$P, 142, 8, 4345);
-				td1.className = "svelte-q4mobk";
+				td1.className = "svelte-3dx3cf";
 				addLoc(td1, file$P, 146, 8, 4516);
-				td2.className = "svelte-q4mobk";
+				td2.className = "svelte-3dx3cf";
 				addLoc(td2, file$P, 147, 8, 4559);
-				td3.className = "svelte-q4mobk";
+				td3.className = "svelte-3dx3cf";
 				addLoc(td3, file$P, 148, 8, 4628);
-				td4.className = "svelte-q4mobk";
+				td4.className = "svelte-3dx3cf";
 				addLoc(td4, file$P, 149, 8, 4671);
 				addLoc(tr, file$P, 141, 6, 4332);
 			},
