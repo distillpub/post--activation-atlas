@@ -4,3 +4,4 @@ cache.py
 gradients/
 render/
 web/
+.firebase/

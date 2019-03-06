@@ -4037,6 +4037,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -11991,7 +11992,7 @@
 	    return "display: none;";
 	  } else {
 	    const scrollLeft = document.documentElement.scrollLeft;
-	    const scrollTop = document.documentElement.scrollTop;
+	    const scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
 	    const rightEdge = document.documentElement.clientWidth - width;
 	    const bottomEdge = document.documentElement.clientHeight - height;
 	    let left = Math.min(x, rightEdge);
