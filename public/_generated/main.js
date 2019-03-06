@@ -5136,6 +5136,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
