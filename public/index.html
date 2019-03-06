@@ -60,6 +60,7 @@
   <script type="text/json">{
   "title": "Activation Atlas",
   "description": "By using feature inversion to visualize millions of activations from an image classification network, we create an explorable activation atlas of features the network has learned and what concepts it typically represents.",
+  "password": "atlas",
   "authors": [
     {
       "author": "Shan Carter",
@@ -129,12 +130,12 @@
     Grid cells are labeled with the classification they most support.
     <d-footnote>More specifically, We show a linear approximation of the effect of these average activation vectors of a grid cell on the logits.</d-footnote> Grid cells are also sized according to the density of the number of activations that are averaged within. <a href="app.html">View full-screen version</a>
     <div style="margin-top: 8px; text-align: right;">
-      <span data-notebook-url="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb"></span>
+      <span data-notebook-url="’’"></span>
     </div>
   </div>
 </d-title>
 
-<script src="./_generated/main.min.js"></script>
+<script src="./_generated/main.js"></script>
 
 <d-article>
 <section class="base-grid">
@@ -190,7 +191,7 @@
   </p>
 
   <p>
-    InceptionV1 consists of a number of layers, which we refer to as "mixed3a", "mixed3b", "mixed4a", etc., and sometimes shortened to just "3a". Each layer successively builds on the previous layers.
+    InceptionV1 consists of a number of layers, which we refer to as "mixed3a", "mixed3b", "mixed4a", etc., and sometimes shortened to just "3a". Each layer successively builds on the previous layers. 
   </p>
 
   <figure style="grid-column: page;">
@@ -211,7 +212,7 @@
   <figure style="grid-column: page;">
     <div id="activation-grid"></div>
     <div style="text-align: right; margin-top: 8px;">
-      <span data-notebook-url="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/building-blocks/ActivationGrid.ipynb"></span>
+      <span data-notebook-url="https://colab.sandbox.google.com/github/tensorflow/lucid/blob/master/notebooks/building-blocks/ActivationGrid.ipynb"></span>
     </div>
   </figure>
 
@@ -237,18 +238,18 @@
       <div class="figcaption">We then draw a grid and average the activations that fall within a cell and run feature inversion on the averaged activation. We also optionally size the grid cells according to the density of the number of activations that are averaged within.</div>
     </div>
     <div style="text-align: right; margin-top: 8px;">
-      <span data-notebook-url="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-simple.ipynb"></span>
+      <span data-notebook-url=""></span>
     </div>
   </figure>
 
   </p><p>
     We perform feature visualization with the regularizations described in Feature Visualization <d-cite key="olah2017feature"></d-cite> (in particular, <a href="https://distill.pub/2017/feature-visualization/#regularizer-playground-robust">transformation robustness</a>).
     However, we use a slightly non-standard objective.
-    Normally, to visualize a direction in activation space, $v$, one maximizes the dot product with the activation vector
-    <span id="attribution-math-1"></span>
+    Normally, to visualize a direction in activation space, $v$, one maximizes the dot product with the activation vector 
+    <span id="attribution-math-1">$h_{x,y}$: $h_{x,y} \\cdot v$</span>
     .
     We find it helpful to use an objective that emphasizes angle more heavily by multiplying the dot product by cosine similarity, leading to objectives of the form
-    <span id="attribution-math-2"></span>
+    <span id="attribution-math-2">$(h_{x,y} \\cdot v)^{n+1} / (||h_{x,y} \\cdot v|| \\cdot ||v||)^{n}$</span>
     .
     We also find that whitening the activation space to unstretch it can help improve feature visualization.
     We don't yet fully understand this phenomenon.
@@ -260,11 +261,11 @@
     The attribution vector has an entry for each class, and approximates the amount that the activation vector influenced the logit for each class.
     Attribution vectors generally depend on the surrounding context.
     We follow Building Blocks <d-cite key="olah2018building"></d-cite> in computing the attribution of the activation vector at a position,
-    <span id="attribution-math-3"></span>
-    , to a class logit,
-    <span id="attribution-math-4"></span>
-    as
-    <span id="attribution-math-5"></span>
+    <span id="attribution-math-3">$h_{x,y}$</span>
+    , to a class logit, 
+    <span id="attribution-math-4">$\\text{logit}_c$</span>
+    as 
+    <span id="attribution-math-5">$h_{x,y} \\cdot \\nabla_{h_{x,y}} \\text{logit}_c$</span>
     .
     That is, we estimate that the effect of a neuron on a logit is the rate at which increasing the neuron affects the logit.
     This is similar to Grad-CAM <d-cite key="selvaraju2016grad"></d-cite>, but without the spatial averaging of the gradient.
@@ -438,7 +439,7 @@
         <div>
           <h4>Mixed4c</h4>
           <div class="figcaption">
-            All the concepts are further refined and differentiated into small "peninsulas".
+            All the concepts are further refined and differntiated into small "peninsulas".
           </div>
         </div>
       </div>
@@ -559,9 +560,9 @@
   </p><p>The failure mode here seems to be that the model is using its detectors for the class "steam locomotive" to identify air tanks to help classify "scuba diver". We'll call these "multi-use" features -- detectors that react to very different concepts that are nonetheless visually similar. Let’s look at the differences between a “grey whale” and a “great white shark” to see another example of this issue.
 
   <figure id="class-gradient-shark" style="grid-column: text;"></figure>
-
+  
   </p><p>In this example we see another detector that seems to be playing two roles: detecting red stitching on a baseball and a sharks's white teeth and pink inner mouth. This detector also shows up in the <a href="#focus-playground">activation atlas at layer mixed5b filtered to "great white shark"</a> and it's attribution points towards all sorts of balls, the top one being "baseball".
-
+    
 
    </p><p>Let’s add a picture of a baseball to a picture of a “grey whale” from ImageNet and see how it effects the classification.
 
@@ -583,7 +584,7 @@
   </p><h3>Testing dozens of patches on thousands of images</h3>
 
   <p>So far we've only shown single examples of these patches. Below we show the result of ten sample patches (each set includes the one example we explored above), run on 1,000 images from the ImageNet training set for the class in question. While they aren't effective in all cases, they do flip the image classification to the target class in about 2 in 5 images. The success rate reaches about 1 in 2 images if we also allow to position the patch in the best of the four corners of the image (top left, top right, bottom left, bottom right) at the most effective size. To ensure our attack isn't just blocking out evidence for the original class, we also compare each attack to a random noise image patch.</p>
-
+  
   <style>
     #adversarial-analysis {
       display: none;
@@ -625,7 +626,7 @@
           font-variant-numeric: tabular-nums;
       }
     }
-  </style>
+  </style>  
 
 
   
@@ -641,7 +642,7 @@
   </p>
 
   <p>
-    We also want to emphasize that not all class comparisons reveal these type of patches and not all icons in the visualization have the same (or any) effectiveness and we've only tested them on one model. If wanted to find these patches more systematically, a different approach would most likely be more effective. However, the class activation atlas technique was what revealed the existence of these patches before we knew to look for them. If you'd like to explore your own comparisons and search for your own patches, we've provided a notebook to get you started: <span data-notebook-url="https://colab.research.google.com/github/tensorflow/lucid/blob/master/notebooks/activation-atlas/activation-atlas-adversarial.ipynb"></span>
+    We also want to emphasize that not all class comparisons reveal these type of patches and not all icons in the visualization have the same (or any) effectiveness and we've only tested them on one model. If wanted to find these patches more systematically, a different approach would most likely be more effective. However, the class activation atlas technique was what revealed the existence of these patches before we knew to look for them. If you'd like to explore your own comparisons and search for your own patches, we've provided a notebook to get you started: <span data-notebook-url="’’"></span>
   </p>
 </section>
 
@@ -735,18 +736,9 @@
   <h3 id="author-contributions">Author Contributions</h3>
   <p>Shan Carter wrote the majority of the article and performed most of the experiments. Zan Armstrong helped with the interactive diagrams and the writing. Ludwig Schubert provided technical help throughout and performed the numerical analysis of the manual patches. Ian Johnson provided inspiration for the original idea and advice throughout. Chris Olah provided essential technical contributions and substantial writing contributions throughout.</p>
   <h3 id="acknowledgements">Acknowledgments</h3>
-  <p>Thanks to Ludwig Schubert for extensive technical advice and general support. Thanks to Kevin Quealy and Sam Greydanus for substantial editing help. Thanks to Colin Raffel, Arvind Satyanarayan, Alexander Mordvintsev, and Nick Cammarata for additional feedback during development. </p>
-  <p>We're also very grateful to Phillip Isola for stepping in as acting Distill editor for this article, and to our reviewers who took time to give us feedback, significantly improving our paper.</p>
-  <p>The photo used to illustrate a sub-manifold in the introduction was taken by <a href="https://unsplash.com/photos/_STiCuGSxa8">Alexandru-Bogdan Ghita</a>.</p>
+  <p>Thanks to Ludwig Schubert for extensive technical advice and general support. Thanks to Kevin Quealy and Sam Greydanus for substantial editing help. Thanks to Colin Raffel, Arvind Satyanarayan and Nick Cammarata for additional feedback during development. </p>
+  <p>The photo used to illustrate a sub-manifold in the introduction was taken by <a href="https://unsplash.com/photos/_STiCuGSxa8">Alexandru-Bogdan Ghita</a></p>
 
-  <h3>Discussion and Review</h3>
-  <p>
-    <a href="https://github.com/distillpub/post--activation-atlas/issues/2">Review 1 - Anonymous </a><br>
-    <a href="https://github.com/distillpub/post--activation-atlas/issues/3">Review 2 - Anonymous </a><br>
-    <a href="https://github.com/distillpub/post--activation-atlas/issues/4">Review 3 - David Bau </a><br>
-  </p>
-
-  
 	<d-footnote-list></d-footnote-list>
   <d-citation-list></d-citation-list>
 </d-appendix>

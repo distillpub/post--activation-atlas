@@ -50,10 +50,10 @@ export default [
 		},
 		context: "window",
 		plugins: [
-			indexify({
-				input: "./src/index.html",
-				output: "./public/index.html"
-			}), 
+			// indexify({
+			// 	input: "./src/index.html",
+			// 	output: "./public/index.html"
+			// }), 
 			json(),
 			svelte({
 				dev: !production,
