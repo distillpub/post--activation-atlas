@@ -246,10 +246,10 @@
     We perform feature visualization with the regularizations described in Feature Visualization <d-cite key="olah2017feature"></d-cite> (in particular, <a href="https://distill.pub/2017/feature-visualization/#regularizer-playground-robust">transformation robustness</a>).
     However, we use a slightly non-standard objective.
     Normally, to visualize a direction in activation space, $v$, one maximizes the dot product with the activation vector 
-    <span id="attribution-math-1">$h_{x,y}$: $h_{x,y} \\cdot v$</span>
+    <span id="attribution-math-1"></span>
     .
     We find it helpful to use an objective that emphasizes angle more heavily by multiplying the dot product by cosine similarity, leading to objectives of the form
-    <span id="attribution-math-2">$(h_{x,y} \\cdot v)^{n+1} / (||h_{x,y} \\cdot v|| \\cdot ||v||)^{n}$</span>
+    <span id="attribution-math-2"></span>
     .
     We also find that whitening the activation space to unstretch it can help improve feature visualization.
     We don't yet fully understand this phenomenon.
@@ -261,11 +261,11 @@
     The attribution vector has an entry for each class, and approximates the amount that the activation vector influenced the logit for each class.
     Attribution vectors generally depend on the surrounding context.
     We follow Building Blocks <d-cite key="olah2018building"></d-cite> in computing the attribution of the activation vector at a position,
-    <span id="attribution-math-3">$h_{x,y}$</span>
+    <span id="attribution-math-3"></span>
     , to a class logit, 
-    <span id="attribution-math-4">$\\text{logit}_c$</span>
+    <span id="attribution-math-4"></span>
     as 
-    <span id="attribution-math-5">$h_{x,y} \\cdot \\nabla_{h_{x,y}} \\text{logit}_c$</span>
+    <span id="attribution-math-5"></span>
     .
     That is, we estimate that the effect of a neuron on a logit is the rate at which increasing the neuron affects the logit.
     This is similar to Grad-CAM <d-cite key="selvaraju2016grad"></d-cite>, but without the spatial averaging of the gradient.
@@ -689,8 +689,6 @@
 
 </section>
 </d-article>
-
-
 
 <d-appendix>
 <h3>Technical Notes and Limitations</h3>
