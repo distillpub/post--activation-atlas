@@ -516,7 +516,7 @@
 		}
 	});
 
-	var Labels = {
+	var inceptionLabels = {
 	  inception: [
 	    "dummy",
 	    "kit fox",
@@ -1526,7 +1526,7 @@
 
 	const store = new MyStore({
 	  scroll: false,
-	  inceptionLabels: Labels.inception,
+	  inceptionLabels: inceptionLabels.inception,
 	  currentClass: 62,
 	  currentClassAtlasIndex: 507,
 	  currentClassAtlasCompareIndex: 507,
@@ -1680,7 +1680,7 @@
 	    { id: "67_62", leftLabel: "grey fox", rightLabel: "red fox", left: 67, right: 62, annotation: [] },
 	    { id: "1_62", leftLabel: "kit fox", rightLabel: "red fox", left: 1, right: 62, annotation: [] },
 	    {
-	      id: "6_442", leftLabel: Labels.inception[6], rightLabel: Labels.inception[442], left: 6, right: 442, annotation: [
+	      id: "6_442", leftLabel: inceptionLabels.inception[6], rightLabel: inceptionLabels.inception[442], left: 6, right: 442, annotation: [
 	        { pos: { x: 2, y: 7 }, desc: "baseball?" }
 	      ]
 	    },
@@ -5987,14 +5987,14 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.layer;
 				input.value = input.__value;
-				input.className = "svelte-1tpwqxh";
+				input.className = "svelte-1lxnb2u";
 				addLoc(input, file$h, 3, 4, 114);
-				div.className = "thumb svelte-1tpwqxh";
+				div.className = "thumb svelte-1lxnb2u";
 				setStyle(div, "position", "relative");
 				addLoc(div, file$h, 4, 4, 172);
-				span.className = "svelte-1tpwqxh";
+				span.className = "svelte-1lxnb2u";
 				addLoc(span, file$h, 7, 4, 301);
-				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-1tpwqxh";
+				label.className = label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-1lxnb2u";
 				addLoc(label, file$h, 2, 2, 49);
 			},
 
@@ -6030,7 +6030,7 @@
 					setData(text2, text2_value);
 				}
 
-				if ((changed.layerName || changed.layers) && label_class_value !== (label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-1tpwqxh")) {
+				if ((changed.layerName || changed.layers) && label_class_value !== (label_class_value = "layer " + (ctx.layerName == ctx.layer ? 'selected' : '') + " svelte-1lxnb2u")) {
 					label.className = label_class_value;
 				}
 			},
@@ -6081,9 +6081,9 @@
 
 
 
-	function labels({inceptionLabels}) {
+	function labels({inceptionLabels: inceptionLabels$$1}) {
 	  let out = classesToKeep.map(k => {
-	    let l = inceptionLabels.inception[k];
+	    let l = inceptionLabels$$1.inception[k];
 	    return {label: l, i: k};
 	  });
 	  return [{label: "show all", i: -1}].concat(out);
@@ -6092,7 +6092,7 @@
 	function data$d() {
 	  return {
 	    classesToKeep,
-	    inceptionLabels: Labels,
+	    inceptionLabels,
 	    classHeatmap: 235
 	  }
 	}
@@ -6122,7 +6122,7 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "chooser svelte-h2ed57";
+				div.className = "chooser svelte-xexspk";
 				addLoc(div, file$i, 0, 0, 0);
 			},
 
@@ -6188,11 +6188,11 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.l.i;
 				input.value = input.__value;
-				input.className = "svelte-h2ed57";
+				input.className = "svelte-xexspk";
 				addLoc(input, file$i, 3, 6, 111);
 				span.title = span_title_value = ctx.l.i;
 				addLoc(span, file$i, 4, 6, 172);
-				label.className = label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-h2ed57";
+				label.className = label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-xexspk";
 				addLoc(label, file$i, 2, 4, 48);
 			},
 
@@ -6223,7 +6223,7 @@
 					span.title = span_title_value;
 				}
 
-				if ((changed.classHeatmap || changed.labels) && label_class_value !== (label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-h2ed57")) {
+				if ((changed.classHeatmap || changed.labels) && label_class_value !== (label_class_value = "" + (ctx.classHeatmap === ctx.l.i ? 'selected' : '') + " svelte-xexspk")) {
 					label.className = label_class_value;
 				}
 			},
@@ -6626,7 +6626,7 @@
 	  // root: "assets",
 	    root: "https://storage.googleapis.com/activation-atlas/build",
 	    id: "inceptionv1",
-	    labels: Labels.inception,
+	    labels: inceptionLabels.inception,
 	    layer: 0,
 	    classFilter: 0,
 	    filter: 0,
@@ -11740,6 +11740,7 @@
 	    homeY: .5,
 	    homeScale: 1,
 	    shareLink: false,
+	    backLink: false
 	  }
 	}
 	var format_1$1 = formatFloat;
@@ -11762,7 +11763,7 @@
 	    const {gcx, gcy, scale} = this.refs.atlas.get();
 	    const query = `layer=${encodeURIComponent(layerName)}&poi=${[gcx, gcy, scale].map(formatFloat).join(",")}`;
 	    const url = locationWithoutQuery() + "?" + query;
-	    navigator.clipboard.writeText(url).then(function() {
+	    window.navigator.clipboard.writeText(url).then(function() {
 	      console.log("Copied to clipboard");
 	    }, function() {
 	      console.error("Unable to copy to clipboard");
@@ -11793,13 +11794,15 @@
 	const file$o = "src/components/App.html";
 
 	function create_main_fragment$p(component, ctx) {
-		var div26, div1, h20, text1, div0, appclassfilter_updating = {}, text2, div3, h21, text4, div2, applayerchooser_updating = {}, text5, div25, div24, atlas_updating = {}, text6, div23, div7, div5, div4, appminimap_updating = {}, text7, div6, text8, text9, text10, div21, div8, label0, input0, text11, text12, label1, input1, text13, text14, label2, input2, text15, text16, button3, text17, text18, div20, div19, div11, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div10, div9, text33, raw0_before, text34, input9, text35, div12, h31, text36, raw1_before, text37, input10, text38, div14, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div13, text45, raw2_before, text46, input13, text47, div18, h33, text49, div15, text50, text51_value = format_1$1(ctx.gcx), text51, text52, div16, text53, text54_value = format_1$1(ctx.gcy), text54, text55, div17, text56, text57_value = format_1$1(ctx.scale), text57, text58, div22, button4, raw3_value = ctx.showOptions ? 'fewer options' : 'more options', div23_class_value;
+		var div27, aside, text0, div4, div1, h20, text2, div0, appclassfilter_updating = {}, text3, div3, h21, text5, div2, applayerchooser_updating = {}, text6, div26, div25, atlas_updating = {}, text7, div24, div8, div6, div5, appminimap_updating = {}, text8, div7, text9, text10, text11, div22, div9, label0, input0, text12, text13, label1, input1, text14, text15, label2, input2, text16, text17, text18, div21, div20, div12, h30, text20, label3, input3, text21, text22, label4, input4, text23, text24, label5, input5, text25, text26, label6, input6, text27, text28, label7, input7, text29, text30, label8, input8, text31, text32, div11, div10, text33, raw0_before, text34, input9, text35, div13, h31, text36, raw1_before, text37, input10, text38, div15, h32, text40, label9, input11, text41, text42, label10, input12, text43, text44, div14, text45, raw2_before, text46, input13, text47, div19, h33, text49, div16, text50, text51_value = format_1$1(ctx.gcx), text51, text52, div17, text53, text54_value = format_1$1(ctx.gcy), text54, text55, div18, text56, text57_value = format_1$1(ctx.scale), text57, text58, div23, button3, raw3_value = ctx.showOptions ? 'fewer options' : 'more options', div24_class_value;
+
+		var if_block0 = (ctx.backLink) && create_if_block_1$2(component, ctx);
 
 		var appclassfilter_initial_data = {};
 		if (ctx.classHeatmap
-	           !== void 0) {
+	             !== void 0) {
 			appclassfilter_initial_data.classHeatmap = ctx.classHeatmap
-	          ;
+	            ;
 			appclassfilter_updating.classHeatmap = true;
 		}
 		var appclassfilter = new AppClassFilter({
@@ -11828,9 +11831,9 @@
 
 		var applayerchooser_initial_data = { classHeatmap: ctx.classHeatmap };
 		if (ctx.layerName
-	             !== void 0) {
+	               !== void 0) {
 			applayerchooser_initial_data.layerName = ctx.layerName
-	            ;
+	              ;
 			applayerchooser_updating.layerName = true;
 		}
 		var applayerchooser = new AppLayerChooser({
@@ -12110,9 +12113,7 @@
 			component.store.set({ scroll: input2.checked });
 		}
 
-		function click_handler(event) {
-			component.copyShareLink();
-		}
+		var if_block1 = (ctx.shareLink) && create_if_block$6(component, ctx);
 
 		function input3_change_handler() {
 			component.set({ gridSize: input3.__value });
@@ -12158,7 +12159,7 @@
 			component.set({ classHeatmapMultiplier: toNumber(input13.value) });
 		}
 
-		function click_handler_1(event) {
+		function click_handler(event) {
 			component.toggle();
 		}
 
@@ -12176,63 +12177,66 @@
 
 		return {
 			c: function create() {
-				div26 = createElement("div");
+				div27 = createElement("div");
+				aside = createElement("aside");
+				if (if_block0) if_block0.c();
+				text0 = createText("\n    ");
+				div4 = createElement("div");
 				div1 = createElement("div");
 				h20 = createElement("h2");
 				h20.textContent = "Class Filter";
-				text1 = createText("\n        ");
+				text2 = createText("\n          ");
 				div0 = createElement("div");
 				appclassfilter._fragment.c();
 				panel0._fragment.c();
-				text2 = createText("\n    ");
+				text3 = createText("\n      ");
 				div3 = createElement("div");
 				h21 = createElement("h2");
 				h21.textContent = "Layer";
-				text4 = createText("\n        ");
+				text5 = createText("\n          ");
 				div2 = createElement("div");
 				applayerchooser._fragment.c();
 				panel1._fragment.c();
-				text5 = createText("\n  ");
+				text6 = createText("\n  ");
+				div26 = createElement("div");
 				div25 = createElement("div");
-				div24 = createElement("div");
 				atlas._fragment.c();
-				text6 = createText("\n        ");
-				div23 = createElement("div");
-				div7 = createElement("div");
-				div5 = createElement("div");
-				div4 = createElement("div");
-				appminimap._fragment.c();
-				text7 = createText("\n            ");
+				text7 = createText("\n        ");
+				div24 = createElement("div");
+				div8 = createElement("div");
 				div6 = createElement("div");
+				div5 = createElement("div");
+				appminimap._fragment.c();
+				text8 = createText("\n            ");
+				div7 = createElement("div");
 				navigation0._fragment.c();
 				button0._fragment.c();
-				text8 = createText("\n              ");
+				text9 = createText("\n              ");
 				navigation1._fragment.c();
 				button1._fragment.c();
-				text9 = createText("\n              ");
+				text10 = createText("\n              ");
 				navigation2._fragment.c();
 				button2._fragment.c();
-				text10 = createText("\n          ");
-				div21 = createElement("div");
-				div8 = createElement("div");
+				text11 = createText("\n          ");
+				div22 = createElement("div");
+				div9 = createElement("div");
 				label0 = createElement("label");
 				input0 = createElement("input");
-				text11 = createText(" attribution labels");
-				text12 = createText("\n              ");
+				text12 = createText(" attribution labels");
+				text13 = createText("\n              ");
 				label1 = createElement("label");
 				input1 = createElement("input");
-				text13 = createText(" show tooltip");
-				text14 = createText("\n              ");
+				text14 = createText(" show tooltip");
+				text15 = createText("\n              ");
 				label2 = createElement("label");
 				input2 = createElement("input");
-				text15 = createText(" scroll to zoom");
-				text16 = createText("\n              ");
-				button3 = createElement("button");
-				text17 = createText("Copy link to this view");
+				text16 = createText(" scroll to zoom");
+				text17 = createText("\n              ");
+				if (if_block1) if_block1.c();
 				text18 = createText("\n            ");
+				div21 = createElement("div");
 				div20 = createElement("div");
-				div19 = createElement("div");
-				div11 = createElement("div");
+				div12 = createElement("div");
 				h30 = createElement("h3");
 				h30.textContent = "Grid size";
 				text20 = createText("\n                  ");
@@ -12260,21 +12264,21 @@
 				input8 = createElement("input");
 				text31 = createText(" auto");
 				text32 = createText("\n                  ");
+				div11 = createElement("div");
 				div10 = createElement("div");
-				div9 = createElement("div");
 				text33 = createText("auto threshold: ");
 				raw0_before = createElement('noscript');
 				text34 = createText("\n                    ");
 				input9 = createElement("input");
 				text35 = createText("\n                ");
-				div12 = createElement("div");
+				div13 = createElement("div");
 				h31 = createElement("h3");
 				text36 = createText("Icon density: ");
 				raw1_before = createElement('noscript');
 				text37 = createText("\n                  ");
 				input10 = createElement("input");
 				text38 = createText("\n                ");
-				div14 = createElement("div");
+				div15 = createElement("div");
 				h32 = createElement("h3");
 				h32.textContent = "Class filter";
 				text40 = createText("\n                  ");
@@ -12286,400 +12290,415 @@
 				input12 = createElement("input");
 				text43 = createText(" negative influence");
 				text44 = createText("\n                  ");
-				div13 = createElement("div");
+				div14 = createElement("div");
 				text45 = createText("Intensity: ");
 				raw2_before = createElement('noscript');
 				text46 = createText("\n                  ");
 				input13 = createElement("input");
 				text47 = createText("\n                ");
-				div18 = createElement("div");
+				div19 = createElement("div");
 				h33 = createElement("h3");
 				h33.textContent = "Location";
 				text49 = createText("\n                  ");
-				div15 = createElement("div");
+				div16 = createElement("div");
 				text50 = createText("x: ");
 				text51 = createText(text51_value);
 				text52 = createText("\n                  ");
-				div16 = createElement("div");
+				div17 = createElement("div");
 				text53 = createText("y: ");
 				text54 = createText(text54_value);
 				text55 = createText("\n                  ");
-				div17 = createElement("div");
+				div18 = createElement("div");
 				text56 = createText("scale: ");
 				text57 = createText(text57_value);
 				text58 = createText("\n          ");
-				div22 = createElement("div");
-				button4 = createElement("button");
+				div23 = createElement("div");
+				button3 = createElement("button");
 				responsiveresizer._fragment.c();
 				setAttribute(h20, "slot", "head");
-				addLoc(h20, file$o, 4, 8, 192);
+				addLoc(h20, file$o, 9, 10, 346);
 				setAttribute(div0, "slot", "body");
-				addLoc(div0, file$o, 5, 8, 234);
-				div1.className = "filter svelte-1mmgffy";
+				addLoc(div0, file$o, 10, 10, 390);
+				div1.className = "filter svelte-csxh56";
 				setStyle(div1, "display", (ctx.showClassFilter ? 'block' : 'none'));
-				addLoc(div1, file$o, 2, 4, 94);
+				addLoc(div1, file$o, 7, 6, 245);
 				setAttribute(h21, "slot", "head");
-				addLoc(h21, file$o, 14, 8, 464);
+				addLoc(h21, file$o, 19, 10, 638);
 				setAttribute(div2, "slot", "body");
-				addLoc(div2, file$o, 15, 8, 499);
-				div3.className = "stack svelte-1mmgffy";
+				addLoc(div2, file$o, 20, 10, 675);
+				div3.className = "stack svelte-csxh56";
 				setStyle(div3, "display", (ctx.showLayerChooser ? 'block' : 'none'));
-				addLoc(div3, file$o, 12, 4, 366);
-				div4.className = "map-container svelte-1mmgffy";
-				setStyle(div4, "width", "100px");
-				setStyle(div4, "height", "100px");
-				setStyle(div4, "position", "absolute");
-				addLoc(div4, file$o, 52, 14, 1468);
-				div5.className = "map svelte-1mmgffy";
-				addLoc(div5, file$o, 51, 12, 1436);
-				div6.className = "buttons svelte-1mmgffy";
-				addLoc(div6, file$o, 64, 12, 1943);
-				div7.className = "nav svelte-1mmgffy";
-				addLoc(div7, file$o, 50, 10, 1406);
+				addLoc(div3, file$o, 17, 6, 536);
+				div4.className = "panels svelte-csxh56";
+				addLoc(div4, file$o, 6, 4, 218);
+				aside.className = "sidebar svelte-csxh56";
+				addLoc(aside, file$o, 2, 2, 92);
+				div5.className = "map-container svelte-csxh56";
+				setStyle(div5, "width", "100px");
+				setStyle(div5, "height", "100px");
+				setStyle(div5, "position", "absolute");
+				addLoc(div5, file$o, 59, 14, 1680);
+				div6.className = "map svelte-csxh56";
+				addLoc(div6, file$o, 58, 12, 1648);
+				div7.className = "buttons svelte-csxh56";
+				addLoc(div7, file$o, 71, 12, 2155);
+				div8.className = "nav svelte-csxh56";
+				addLoc(div8, file$o, 57, 10, 1618);
 				addListener(input0, "change", input0_change_handler);
 				setAttribute(input0, "type", "checkbox");
-				addLoc(input0, file$o, 72, 91, 2475);
+				addLoc(input0, file$o, 79, 91, 2687);
 				setStyle(label0, "white-space", "nowrap");
 				setStyle(label0, "text-overflow", "ellipsis");
 				setStyle(label0, "overflow", "hidden");
-				label0.className = "svelte-1mmgffy";
-				addLoc(label0, file$o, 72, 14, 2398);
+				label0.className = "svelte-csxh56";
+				addLoc(label0, file$o, 79, 14, 2610);
 				addListener(input1, "change", input1_change_handler);
 				setAttribute(input1, "type", "checkbox");
-				addLoc(input1, file$o, 73, 21, 2569);
-				label1.className = "svelte-1mmgffy";
-				addLoc(label1, file$o, 73, 14, 2562);
+				addLoc(input1, file$o, 80, 21, 2781);
+				label1.className = "svelte-csxh56";
+				addLoc(label1, file$o, 80, 14, 2774);
 				addListener(input2, "change", input2_change_handler);
 				setAttribute(input2, "type", "checkbox");
-				addLoc(input2, file$o, 74, 21, 2660);
-				label2.className = "svelte-1mmgffy";
-				addLoc(label2, file$o, 74, 14, 2653);
-				addListener(button3, "click", click_handler);
-				setStyle(button3, "font-size", "10px");
-				setStyle(button3, "display", (ctx.shareLink ? 'block' : 'none'));
-				setAttribute(button3, "href", "#");
-				addLoc(button3, file$o, 75, 14, 2742);
-				div8.className = "essential";
-				addLoc(div8, file$o, 71, 12, 2360);
-				h30.className = "svelte-1mmgffy";
-				addLoc(h30, file$o, 81, 18, 3058);
+				addLoc(input2, file$o, 81, 21, 2872);
+				label2.className = "svelte-csxh56";
+				addLoc(label2, file$o, 81, 14, 2865);
+				div9.className = "essential";
+				addLoc(div9, file$o, 78, 12, 2572);
+				h30.className = "svelte-csxh56";
+				addLoc(h30, file$o, 90, 18, 3298);
 				component._bindingGroups[0].push(input3);
 				addListener(input3, "change", input3_change_handler);
 				setAttribute(input3, "type", "radio");
 				input3.__value = 0;
 				input3.value = input3.__value;
-				addLoc(input3, file$o, 82, 25, 3102);
-				label3.className = "svelte-1mmgffy";
-				addLoc(label3, file$o, 82, 18, 3095);
+				addLoc(input3, file$o, 91, 25, 3342);
+				label3.className = "svelte-csxh56";
+				addLoc(label3, file$o, 91, 18, 3335);
 				component._bindingGroups[0].push(input4);
 				addListener(input4, "change", input4_change_handler);
 				setAttribute(input4, "type", "radio");
 				input4.__value = 1;
 				input4.value = input4.__value;
-				addLoc(input4, file$o, 83, 25, 3190);
-				label4.className = "svelte-1mmgffy";
-				addLoc(label4, file$o, 83, 18, 3183);
+				addLoc(input4, file$o, 92, 25, 3430);
+				label4.className = "svelte-csxh56";
+				addLoc(label4, file$o, 92, 18, 3423);
 				component._bindingGroups[0].push(input5);
 				addListener(input5, "change", input5_change_handler);
 				setAttribute(input5, "type", "radio");
 				input5.__value = 2;
 				input5.value = input5.__value;
-				addLoc(input5, file$o, 84, 25, 3278);
-				label5.className = "svelte-1mmgffy";
-				addLoc(label5, file$o, 84, 18, 3271);
+				addLoc(input5, file$o, 93, 25, 3518);
+				label5.className = "svelte-csxh56";
+				addLoc(label5, file$o, 93, 18, 3511);
 				component._bindingGroups[0].push(input6);
 				addListener(input6, "change", input6_change_handler);
 				setAttribute(input6, "type", "radio");
 				input6.__value = 3;
 				input6.value = input6.__value;
-				addLoc(input6, file$o, 85, 25, 3366);
-				label6.className = "svelte-1mmgffy";
-				addLoc(label6, file$o, 85, 18, 3359);
+				addLoc(input6, file$o, 94, 25, 3606);
+				label6.className = "svelte-csxh56";
+				addLoc(label6, file$o, 94, 18, 3599);
 				component._bindingGroups[0].push(input7);
 				addListener(input7, "change", input7_change_handler);
 				setAttribute(input7, "type", "radio");
 				input7.__value = 4;
 				input7.value = input7.__value;
-				addLoc(input7, file$o, 86, 25, 3456);
-				label7.className = "svelte-1mmgffy";
-				addLoc(label7, file$o, 86, 18, 3449);
+				addLoc(input7, file$o, 95, 25, 3696);
+				label7.className = "svelte-csxh56";
+				addLoc(label7, file$o, 95, 18, 3689);
 				component._bindingGroups[0].push(input8);
 				addListener(input8, "change", input8_change_handler);
 				setAttribute(input8, "type", "radio");
 				input8.__value = -1;
 				input8.value = input8.__value;
-				addLoc(input8, file$o, 87, 25, 3546);
-				label8.className = "svelte-1mmgffy";
-				addLoc(label8, file$o, 87, 18, 3539);
-				addLoc(div9, file$o, 89, 20, 3705);
+				addLoc(input8, file$o, 96, 25, 3786);
+				label8.className = "svelte-csxh56";
+				addLoc(label8, file$o, 96, 18, 3779);
+				addLoc(div10, file$o, 98, 20, 3945);
 				addListener(input9, "change", input9_change_input_handler);
 				addListener(input9, "input", input9_change_input_handler);
 				setAttribute(input9, "type", "range");
 				input9.min = 0.5;
 				input9.max = 1.4;
 				input9.step = 0.01;
-				addLoc(input9, file$o, 90, 20, 3783);
-				setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
-				addLoc(div10, file$o, 88, 18, 3627);
-				div11.className = "section svelte-1mmgffy";
-				addLoc(div11, file$o, 80, 16, 3018);
-				h31.className = "svelte-1mmgffy";
-				addLoc(h31, file$o, 94, 18, 3977);
+				addLoc(input9, file$o, 99, 20, 4023);
+				setStyle(div11, "display", (ctx.gridSize == -1 ? 'none': 'none'));
+				addLoc(div11, file$o, 97, 18, 3867);
+				div12.className = "section svelte-csxh56";
+				addLoc(div12, file$o, 89, 16, 3258);
+				h31.className = "svelte-csxh56";
+				addLoc(h31, file$o, 103, 18, 4217);
 				addListener(input10, "change", input10_change_input_handler);
 				addListener(input10, "input", input10_change_input_handler);
 				setAttribute(input10, "type", "range");
 				input10.min = 0.2;
 				input10.max = 8;
 				input10.step = 0.01;
-				addLoc(input10, file$o, 95, 18, 4034);
-				div12.className = "section svelte-1mmgffy";
-				addLoc(div12, file$o, 93, 16, 3936);
-				h32.className = "svelte-1mmgffy";
-				addLoc(h32, file$o, 101, 18, 4413);
+				addLoc(input10, file$o, 104, 18, 4274);
+				div13.className = "section svelte-csxh56";
+				addLoc(div13, file$o, 102, 16, 4176);
+				h32.className = "svelte-csxh56";
+				addLoc(h32, file$o, 110, 18, 4653);
 				component._bindingGroups[1].push(input11);
 				addListener(input11, "change", input11_change_handler);
 				setAttribute(input11, "type", "radio");
 				input11.__value = 1;
 				input11.value = input11.__value;
-				addLoc(input11, file$o, 102, 25, 4460);
-				label9.className = "svelte-1mmgffy";
-				addLoc(label9, file$o, 102, 18, 4453);
+				addLoc(input11, file$o, 111, 25, 4700);
+				label9.className = "svelte-csxh56";
+				addLoc(label9, file$o, 111, 18, 4693);
 				component._bindingGroups[1].push(input12);
 				addListener(input12, "change", input12_change_handler);
 				setAttribute(input12, "type", "radio");
 				input12.__value = -1;
 				input12.value = input12.__value;
-				addLoc(input12, file$o, 103, 25, 4573);
-				label10.className = "svelte-1mmgffy";
-				addLoc(label10, file$o, 103, 18, 4566);
-				addLoc(div13, file$o, 104, 18, 4680);
+				addLoc(input12, file$o, 112, 25, 4813);
+				label10.className = "svelte-csxh56";
+				addLoc(label10, file$o, 112, 18, 4806);
+				addLoc(div14, file$o, 113, 18, 4920);
 				addListener(input13, "change", input13_change_input_handler);
 				addListener(input13, "input", input13_change_input_handler);
 				setAttribute(input13, "type", "range");
 				input13.min = "0.5";
 				input13.max = "2";
 				input13.step = "0.1";
-				addLoc(input13, file$o, 105, 18, 4751);
-				div14.className = "section svelte-1mmgffy";
-				setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
-				addLoc(div14, file$o, 100, 16, 4316);
-				h33.className = "svelte-1mmgffy";
-				addLoc(h33, file$o, 108, 18, 4908);
-				addLoc(div15, file$o, 109, 18, 4944);
-				addLoc(div16, file$o, 110, 18, 4990);
-				addLoc(div17, file$o, 111, 18, 5036);
-				div18.className = "section svelte-1mmgffy";
-				addLoc(div18, file$o, 107, 16, 4868);
-				div19.className = "grid-size";
-				addLoc(div19, file$o, 78, 14, 2961);
-				div20.className = "expand svelte-1mmgffy";
-				addLoc(div20, file$o, 77, 12, 2915);
-				div21.className = "options svelte-1mmgffy";
-				addLoc(div21, file$o, 70, 10, 2326);
-				addListener(button4, "click", click_handler_1);
-				button4.className = "svelte-1mmgffy";
-				addLoc(button4, file$o, 117, 12, 5200);
-				div22.className = "expand-toggle svelte-1mmgffy";
-				addLoc(div22, file$o, 116, 10, 5160);
-				div23.className = div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls";
-				addLoc(div23, file$o, 49, 8, 1326);
-				div24.className = "atlas svelte-1mmgffy";
-				addLoc(div24, file$o, 24, 4, 677);
-				div25.className = "main svelte-1mmgffy";
-				addLoc(div25, file$o, 23, 2, 654);
-				div26.className = "container svelte-1mmgffy";
-				addLoc(div26, file$o, 1, 2, 66);
+				addLoc(input13, file$o, 114, 18, 4991);
+				div15.className = "section svelte-csxh56";
+				setStyle(div15, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
+				addLoc(div15, file$o, 109, 16, 4556);
+				h33.className = "svelte-csxh56";
+				addLoc(h33, file$o, 117, 18, 5148);
+				addLoc(div16, file$o, 118, 18, 5184);
+				addLoc(div17, file$o, 119, 18, 5230);
+				addLoc(div18, file$o, 120, 18, 5276);
+				div19.className = "section svelte-csxh56";
+				addLoc(div19, file$o, 116, 16, 5108);
+				div20.className = "grid-size";
+				addLoc(div20, file$o, 87, 14, 3201);
+				div21.className = "expand svelte-csxh56";
+				addLoc(div21, file$o, 86, 12, 3155);
+				div22.className = "options svelte-csxh56";
+				addLoc(div22, file$o, 77, 10, 2538);
+				addListener(button3, "click", click_handler);
+				button3.className = "svelte-csxh56";
+				addLoc(button3, file$o, 126, 12, 5440);
+				div23.className = "expand-toggle svelte-csxh56";
+				addLoc(div23, file$o, 125, 10, 5400);
+				div24.className = div24_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-csxh56" + " svelte-ref-controls";
+				addLoc(div24, file$o, 56, 8, 1538);
+				div25.className = "atlas svelte-csxh56";
+				addLoc(div25, file$o, 31, 4, 889);
+				div26.className = "main svelte-csxh56";
+				addLoc(div26, file$o, 30, 2, 866);
+				div27.className = "container svelte-csxh56";
+				addLoc(div27, file$o, 1, 2, 66);
 			},
 
 			m: function mount(target, anchor) {
-				append(responsiveresizer._slotted.default, div26);
-				append(div26, div1);
+				append(responsiveresizer._slotted.default, div27);
+				append(div27, aside);
+				if (if_block0) if_block0.m(aside, null);
+				append(aside, text0);
+				append(aside, div4);
+				append(div4, div1);
 				append(panel0._slotted.head, h20);
-				append(panel0._slotted.default, text1);
+				append(panel0._slotted.default, text2);
 				append(panel0._slotted.body, div0);
 				appclassfilter._mount(div0, null);
 				panel0._mount(div1, null);
-				append(div26, text2);
-				append(div26, div3);
+				append(div4, text3);
+				append(div4, div3);
 				append(panel1._slotted.head, h21);
-				append(panel1._slotted.default, text4);
+				append(panel1._slotted.default, text5);
 				append(panel1._slotted.body, div2);
 				applayerchooser._mount(div2, null);
 				panel1._mount(div3, null);
-				append(div26, text5);
+				append(div27, text6);
+				append(div27, div26);
 				append(div26, div25);
+				atlas._mount(div25, null);
+				append(div25, text7);
 				append(div25, div24);
-				atlas._mount(div24, null);
-				append(div24, text6);
-				append(div24, div23);
-				append(div23, div7);
-				append(div7, div5);
-				append(div5, div4);
-				appminimap._mount(div4, null);
-				append(div7, text7);
-				append(div7, div6);
+				append(div24, div8);
+				append(div8, div6);
+				append(div6, div5);
+				appminimap._mount(div5, null);
+				append(div8, text8);
+				append(div8, div7);
 				navigation0._mount(button0._slotted.default, null);
-				button0._mount(div6, null);
-				append(div6, text8);
+				button0._mount(div7, null);
+				append(div7, text9);
 				navigation1._mount(button1._slotted.default, null);
-				button1._mount(div6, null);
-				append(div6, text9);
+				button1._mount(div7, null);
+				append(div7, text10);
 				navigation2._mount(button2._slotted.default, null);
-				button2._mount(div6, null);
-				append(div23, text10);
-				append(div23, div21);
-				append(div21, div8);
-				append(div8, label0);
+				button2._mount(div7, null);
+				append(div24, text11);
+				append(div24, div22);
+				append(div22, div9);
+				append(div9, label0);
 				append(label0, input0);
 
 				input0.checked = ctx.showLabels;
 
-				append(label0, text11);
-				append(div8, text12);
-				append(div8, label1);
+				append(label0, text12);
+				append(div9, text13);
+				append(div9, label1);
 				append(label1, input1);
 
 				input1.checked = ctx.enableHover;
 
-				append(label1, text13);
-				append(div8, text14);
-				append(div8, label2);
+				append(label1, text14);
+				append(div9, text15);
+				append(div9, label2);
 				append(label2, input2);
 
 				input2.checked = ctx.$scroll;
 
-				append(label2, text15);
-				append(div8, text16);
-				append(div8, button3);
-				append(button3, text17);
-				append(div21, text18);
+				append(label2, text16);
+				append(div9, text17);
+				if (if_block1) if_block1.m(div9, null);
+				append(div22, text18);
+				append(div22, div21);
 				append(div21, div20);
-				append(div20, div19);
-				append(div19, div11);
-				append(div11, h30);
-				append(div11, text20);
-				append(div11, label3);
+				append(div20, div12);
+				append(div12, h30);
+				append(div12, text20);
+				append(div12, label3);
 				append(label3, input3);
 
 				input3.checked = input3.__value === ctx.gridSize;
 
 				append(label3, text21);
-				append(div11, text22);
-				append(div11, label4);
+				append(div12, text22);
+				append(div12, label4);
 				append(label4, input4);
 
 				input4.checked = input4.__value === ctx.gridSize;
 
 				append(label4, text23);
-				append(div11, text24);
-				append(div11, label5);
+				append(div12, text24);
+				append(div12, label5);
 				append(label5, input5);
 
 				input5.checked = input5.__value === ctx.gridSize;
 
 				append(label5, text25);
-				append(div11, text26);
-				append(div11, label6);
+				append(div12, text26);
+				append(div12, label6);
 				append(label6, input6);
 
 				input6.checked = input6.__value === ctx.gridSize;
 
 				append(label6, text27);
-				append(div11, text28);
-				append(div11, label7);
+				append(div12, text28);
+				append(div12, label7);
 				append(label7, input7);
 
 				input7.checked = input7.__value === ctx.gridSize;
 
 				append(label7, text29);
-				append(div11, text30);
-				append(div11, label8);
+				append(div12, text30);
+				append(div12, label8);
 				append(label8, input8);
 
 				input8.checked = input8.__value === ctx.gridSize;
 
 				append(label8, text31);
-				append(div11, text32);
+				append(div12, text32);
+				append(div12, div11);
 				append(div11, div10);
-				append(div10, div9);
-				append(div9, text33);
-				append(div9, raw0_before);
+				append(div10, text33);
+				append(div10, raw0_before);
 				raw0_before.insertAdjacentHTML("afterend", ctx.autoGridSizeMultiplier);
-				append(div10, text34);
-				append(div10, input9);
+				append(div11, text34);
+				append(div11, input9);
 
 				input9.value = ctx.autoGridSizeMultiplier;
 
-				append(div19, text35);
-				append(div19, div12);
-				append(div12, h31);
+				append(div20, text35);
+				append(div20, div13);
+				append(div13, h31);
 				append(h31, text36);
 				append(h31, raw1_before);
 				raw1_before.insertAdjacentHTML("afterend", ctx.density);
-				append(div12, text37);
-				append(div12, input10);
+				append(div13, text37);
+				append(div13, input10);
 
 				input10.value = ctx.density;
 
-				append(div19, text38);
-				append(div19, div14);
-				append(div14, h32);
-				append(div14, text40);
-				append(div14, label9);
+				append(div20, text38);
+				append(div20, div15);
+				append(div15, h32);
+				append(div15, text40);
+				append(div15, label9);
 				append(label9, input11);
 
 				input11.checked = input11.__value === ctx.classHeatmapPositive;
 
 				append(label9, text41);
-				append(div14, text42);
-				append(div14, label10);
+				append(div15, text42);
+				append(div15, label10);
 				append(label10, input12);
 
 				input12.checked = input12.__value === ctx.classHeatmapPositive;
 
 				append(label10, text43);
-				append(div14, text44);
-				append(div14, div13);
-				append(div13, text45);
-				append(div13, raw2_before);
+				append(div15, text44);
+				append(div15, div14);
+				append(div14, text45);
+				append(div14, raw2_before);
 				raw2_before.insertAdjacentHTML("afterend", ctx.classHeatmapMultiplier);
-				append(div14, text46);
-				append(div14, input13);
+				append(div15, text46);
+				append(div15, input13);
 
 				input13.value = ctx.classHeatmapMultiplier;
 
-				append(div19, text47);
+				append(div20, text47);
+				append(div20, div19);
+				append(div19, h33);
+				append(div19, text49);
+				append(div19, div16);
+				append(div16, text50);
+				append(div16, text51);
+				append(div19, text52);
+				append(div19, div17);
+				append(div17, text53);
+				append(div17, text54);
+				append(div19, text55);
 				append(div19, div18);
-				append(div18, h33);
-				append(div18, text49);
-				append(div18, div15);
-				append(div15, text50);
-				append(div15, text51);
-				append(div18, text52);
-				append(div18, div16);
-				append(div16, text53);
-				append(div16, text54);
-				append(div18, text55);
-				append(div18, div17);
-				append(div17, text56);
-				append(div17, text57);
-				component.refs.expand = div20;
-				append(div23, text58);
-				append(div23, div22);
-				append(div22, button4);
-				button4.innerHTML = raw3_value;
-				component.refs.controls = div23;
+				append(div18, text56);
+				append(div18, text57);
+				component.refs.expand = div21;
+				append(div24, text58);
+				append(div24, div23);
+				append(div23, button3);
+				button3.innerHTML = raw3_value;
+				component.refs.controls = div24;
 				responsiveresizer._mount(target, anchor);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
+				if (ctx.backLink) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_1$2(component, ctx);
+						if_block0.c();
+						if_block0.m(aside, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
 				var appclassfilter_changes = {};
 				if (!appclassfilter_updating.classHeatmap && changed.classHeatmap) {
 					appclassfilter_changes.classHeatmap = ctx.classHeatmap
-	          ;
+	            ;
 					appclassfilter_updating.classHeatmap = ctx.classHeatmap
-	           !== void 0;
+	             !== void 0;
 				}
 				appclassfilter._set(appclassfilter_changes);
 				appclassfilter_updating = {};
@@ -12692,9 +12711,9 @@
 				if (changed.classHeatmap) applayerchooser_changes.classHeatmap = ctx.classHeatmap;
 				if (!applayerchooser_updating.layerName && changed.layerName) {
 					applayerchooser_changes.layerName = ctx.layerName
-	            ;
+	              ;
 					applayerchooser_updating.layerName = ctx.layerName
-	             !== void 0;
+	               !== void 0;
 				}
 				applayerchooser._set(applayerchooser_changes);
 				applayerchooser_updating = {};
@@ -12805,8 +12824,16 @@
 				if (changed.showLabels) input0.checked = ctx.showLabels;
 				if (changed.enableHover) input1.checked = ctx.enableHover;
 				if (changed.$scroll) input2.checked = ctx.$scroll;
-				if (changed.shareLink) {
-					setStyle(button3, "display", (ctx.shareLink ? 'block' : 'none'));
+
+				if (ctx.shareLink) {
+					if (!if_block1) {
+						if_block1 = create_if_block$6(component, ctx);
+						if_block1.c();
+						if_block1.m(div9, null);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
 				}
 
 				if (changed.gridSize) input3.checked = input3.__value === ctx.gridSize;
@@ -12822,7 +12849,7 @@
 
 				if (changed.autoGridSizeMultiplier) input9.value = ctx.autoGridSizeMultiplier;
 				if (changed.gridSize) {
-					setStyle(div10, "display", (ctx.gridSize == -1 ? 'none': 'none'));
+					setStyle(div11, "display", (ctx.gridSize == -1 ? 'none': 'none'));
 				}
 
 				if (changed.density) {
@@ -12840,7 +12867,7 @@
 
 				if (changed.classHeatmapMultiplier) input13.value = ctx.classHeatmapMultiplier;
 				if (changed.classHeatmap) {
-					setStyle(div14, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
+					setStyle(div15, "display", (ctx.classHeatmap > -1 ? 'block' : 'none'));
 				}
 
 				if ((changed.gcx) && text51_value !== (text51_value = format_1$1(ctx.gcx))) {
@@ -12856,11 +12883,11 @@
 				}
 
 				if ((changed.showOptions) && raw3_value !== (raw3_value = ctx.showOptions ? 'fewer options' : 'more options')) {
-					button4.innerHTML = raw3_value;
+					button3.innerHTML = raw3_value;
 				}
 
-				if ((changed.showOptions) && div23_class_value !== (div23_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-1mmgffy" + " svelte-ref-controls")) {
-					div23.className = div23_class_value;
+				if ((changed.showOptions) && div24_class_value !== (div24_class_value = "controls " + (ctx.showOptions ? 'open' : 'closed') + " svelte-csxh56" + " svelte-ref-controls")) {
+					div24.className = div24_class_value;
 				}
 
 				var responsiveresizer_changes = {};
@@ -12870,6 +12897,7 @@
 			},
 
 			d: function destroy$$1(detach) {
+				if (if_block0) if_block0.d();
 				appclassfilter.destroy();
 				panel0.destroy();
 				applayerchooser.destroy();
@@ -12886,7 +12914,7 @@
 				removeListener(input0, "change", input0_change_handler);
 				removeListener(input1, "change", input1_change_handler);
 				removeListener(input2, "change", input2_change_handler);
-				removeListener(button3, "click", click_handler);
+				if (if_block1) if_block1.d();
 				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input3), 1);
 				removeListener(input3, "change", input3_change_handler);
 				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input4), 1);
@@ -12909,10 +12937,75 @@
 				removeListener(input12, "change", input12_change_handler);
 				removeListener(input13, "change", input13_change_input_handler);
 				removeListener(input13, "input", input13_change_input_handler);
-				if (component.refs.expand === div20) component.refs.expand = null;
-				removeListener(button4, "click", click_handler_1);
-				if (component.refs.controls === div23) component.refs.controls = null;
+				if (component.refs.expand === div21) component.refs.expand = null;
+				removeListener(button3, "click", click_handler);
+				if (component.refs.controls === div24) component.refs.controls = null;
 				responsiveresizer.destroy(detach);
+			}
+		};
+	}
+
+	// (4:4) {#if backLink}
+	function create_if_block_1$2(component, ctx) {
+		var a, text;
+
+		return {
+			c: function create() {
+				a = createElement("a");
+				text = createText("← back to main article");
+				a.className = "backlink svelte-csxh56";
+				a.href = ctx.backLink;
+				addLoc(a, file$o, 4, 6, 141);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, a, anchor);
+				append(a, text);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.backLink) {
+					a.href = ctx.backLink;
+				}
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(a);
+				}
+			}
+		};
+	}
+
+	// (83:14) {#if shareLink}
+	function create_if_block$6(component, ctx) {
+		var button;
+
+		function click_handler(event) {
+			component.copyShareLink();
+		}
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				button.textContent = "Copy link to this view";
+				addListener(button, "click", click_handler);
+				setStyle(button, "font-size", "10px");
+				setStyle(button, "margin-top", "4px");
+				setAttribute(button, "href", "#");
+				addLoc(button, file$o, 83, 16, 2986);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+			},
+
+			d: function destroy$$1(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				removeListener(button, "click", click_handler);
 			}
 		};
 	}
@@ -12937,6 +13030,7 @@
 
 		if (!('clientWidth' in this._state)) console.warn("<App> was created without expected data property 'clientWidth'");
 		if (!('clientHeight' in this._state)) console.warn("<App> was created without expected data property 'clientHeight'");
+		if (!('backLink' in this._state)) console.warn("<App> was created without expected data property 'backLink'");
 		if (!('showClassFilter' in this._state)) console.warn("<App> was created without expected data property 'showClassFilter'");
 		if (!('classHeatmap' in this._state)) console.warn("<App> was created without expected data property 'classHeatmap'");
 		if (!('showLayerChooser' in this._state)) console.warn("<App> was created without expected data property 'showLayerChooser'");
@@ -13986,15 +14080,15 @@
 				text5 = createText("\n");
 				div4 = createElement("div");
 				notebooklink._fragment.c();
-				h4.className = "svelte-kl8ujq";
+				h4.className = "svelte-1u8cgll";
 				addLoc(h4, file$t, 0, 0, 0);
 				setStyle(div0, "position", "relative");
 				addLoc(div0, file$t, 2, 2, 112);
-				div1.className = "chooser svelte-kl8ujq";
+				div1.className = "chooser svelte-1u8cgll";
 				addLoc(div1, file$t, 6, 4, 249);
-				div2.className = "chooser-container svelte-kl8ujq";
+				div2.className = "chooser-container svelte-1u8cgll";
 				addLoc(div2, file$t, 5, 2, 213);
-				div3.className = "svelte-kl8ujq svelte-ref-root";
+				div3.className = "svelte-1u8cgll svelte-ref-root";
 				addLoc(div3, file$t, 1, 0, 95);
 				setStyle(div4, "margin-top", "16px");
 				addLoc(div4, file$t, 16, 0, 559);
@@ -14095,9 +14189,9 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
-				input.className = "svelte-kl8ujq";
+				input.className = "svelte-1u8cgll";
 				addLoc(input, file$t, 9, 10, 405);
-				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-kl8ujq";
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1u8cgll";
 				label.title = label_title_value = ctx.c;
 				addLoc(label, file$t, 8, 8, 317);
 			},
@@ -14123,7 +14217,7 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-kl8ujq")) {
+				if ((changed.$currentClassAtlasIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasIndex === ctx.c ? 'selected' : '') + " svelte-1u8cgll")) {
 					label.className = label_class_value;
 				}
 
@@ -14267,26 +14361,26 @@
 					each_blocks[i].c();
 				}
 				addLoc(br0, file$u, 5, 67, 99);
-				h40.className = "svelte-4ghdgj";
+				h40.className = "svelte-d043v6";
 				addLoc(h40, file$u, 5, 4, 36);
 				div0.className = "atlas";
 				addLoc(div0, file$u, 6, 4, 133);
-				div1.className = "figcaption svelte-4ghdgj";
+				div1.className = "figcaption svelte-d043v6";
 				addLoc(div1, file$u, 9, 4, 277);
 				addLoc(div2, file$u, 4, 2, 26);
 				addLoc(br1, file$u, 12, 67, 672);
-				h41.className = "svelte-4ghdgj";
+				h41.className = "svelte-d043v6";
 				addLoc(h41, file$u, 12, 4, 609);
 				div3.className = "atlas";
 				addLoc(div3, file$u, 13, 4, 715);
-				div4.className = "figcaption svelte-4ghdgj";
+				div4.className = "figcaption svelte-d043v6";
 				addLoc(div4, file$u, 16, 4, 856);
 				addLoc(div5, file$u, 11, 2, 599);
-				div6.className = "chooser svelte-4ghdgj";
+				div6.className = "chooser svelte-d043v6";
 				addLoc(div6, file$u, 19, 4, 1442);
-				div7.className = "chooser-container svelte-4ghdgj";
+				div7.className = "chooser-container svelte-d043v6";
 				addLoc(div7, file$u, 18, 2, 1406);
-				div8.className = "root svelte-4ghdgj";
+				div8.className = "root svelte-d043v6";
 				addLoc(div8, file$u, 2, 0, 2);
 			},
 
@@ -14404,9 +14498,9 @@
 				setAttribute(input, "type", "radio");
 				input.__value = input_value_value = ctx.c;
 				input.value = input.__value;
-				input.className = "svelte-4ghdgj";
+				input.className = "svelte-d043v6";
 				addLoc(input, file$u, 22, 10, 1605);
-				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-4ghdgj";
+				label.className = label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-d043v6";
 				label.title = label_title_value = ctx.c;
 				addLoc(label, file$u, 21, 8, 1510);
 			},
@@ -14433,7 +14527,7 @@
 					setData(text1, text1_value);
 				}
 
-				if ((changed.$currentClassAtlasCompareIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-4ghdgj")) {
+				if ((changed.$currentClassAtlasCompareIndex || changed.$classAtlasIndices) && label_class_value !== (label_class_value = "" + (ctx.$currentClassAtlasCompareIndex === ctx.c ? 'selected' : '') + " svelte-d043v6")) {
 					label.className = label_class_value;
 				}
 
@@ -14524,7 +14618,7 @@
 	function create_main_fragment$w(component, ctx) {
 		var text0, div4, div1, h40, text1, text2_value = ctx.$inceptionLabels[ctx.leftIndex], text2, text3, text4, div0, text5, div3, h41, text6, text7_value = ctx.$inceptionLabels[ctx.rightIndex], text7, text8, text9, div2;
 
-		var if_block = (ctx.showControls) && create_if_block$6(component, ctx);
+		var if_block = (ctx.showControls) && create_if_block$7(component, ctx);
 
 		var classatlas0_initial_data = {
 		 	classFilter: ctx.leftIndex,
@@ -14613,7 +14707,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$6(component, ctx);
+						if_block = create_if_block$7(component, ctx);
 						if_block.c();
 						if_block.m(text0.parentNode, text0);
 					}
@@ -14655,7 +14749,7 @@
 	}
 
 	// (1:0) {#if showControls}
-	function create_if_block$6(component, ctx) {
+	function create_if_block$7(component, ctx) {
 		var each_anchor;
 
 		var each_value = ctx.$classComparisons;
@@ -14887,7 +14981,7 @@
 			each1_blocks[i] = create_each_block_1$1(component, get_each1_context$1(ctx, each1_value, i));
 		}
 
-		var if_block = (ctx.comparison.annotation) && create_if_block$7(component, ctx);
+		var if_block = (ctx.comparison.annotation) && create_if_block$8(component, ctx);
 
 		return {
 			c: function create() {
@@ -15211,7 +15305,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$7(component, ctx);
+						if_block = create_if_block$8(component, ctx);
 						if_block.c();
 						if_block.m(g5, null);
 					}
@@ -15318,7 +15412,7 @@
 	}
 
 	// (78:6) {#if comparison.annotation}
-	function create_if_block$7(component, ctx) {
+	function create_if_block$8(component, ctx) {
 		var each_anchor;
 
 		var each_value = ctx.comparison.annotation;
@@ -17077,7 +17171,7 @@
 	}
 
 	// (55:8) {#if i !== activations[windowX][windowY].length - 1}
-	function create_if_block$8(component, ctx) {
+	function create_if_block$9(component, ctx) {
 		var g, text_1, text, line, line_x__value, g_transform_value;
 
 		return {
@@ -17127,7 +17221,7 @@
 	function create_each_block_2$2(component, ctx) {
 		var g, text3, text0, text1_value = ctx.i === ctx.activations[0][0].length - 1 ? 512 : ctx.i, text1, text2, text5, text4_value = format_1$2(ctx.activation), text4, text5_dx_value, line, g_transform_value;
 
-		var if_block = (ctx.i !== ctx.activations[ctx.windowX][ctx.windowY].length - 1) && create_if_block$8(component, ctx);
+		var if_block = (ctx.i !== ctx.activations[ctx.windowX][ctx.windowY].length - 1) && create_if_block$9(component, ctx);
 
 		return {
 			c: function create() {
@@ -17175,7 +17269,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$8(component, ctx);
+						if_block = create_if_block$9(component, ctx);
 						if_block.c();
 						if_block.m(g.parentNode, g);
 					}
@@ -17878,7 +17972,7 @@
 	}
 
 	// (48:8) {#if i !== inputs.length - 1}
-	function create_if_block$9(component, ctx) {
+	function create_if_block$a(component, ctx) {
 		var line, line_y__value, line_y__value_1, line_x__value;
 
 		return {
@@ -17930,7 +18024,7 @@
 			each_blocks[i_1] = create_each_block_4$1(component, get_each_context$9(ctx, each_value, i_1));
 		}
 
-		var if_block = (ctx.i !== ctx.inputs.length - 1) && create_if_block$9(component, ctx);
+		var if_block = (ctx.i !== ctx.inputs.length - 1) && create_if_block$a(component, ctx);
 
 		return {
 			c: function create() {
@@ -18093,7 +18187,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$9(component, ctx);
+						if_block = create_if_block$a(component, ctx);
 						if_block.c();
 						if_block.m(g2, null);
 					}
@@ -19586,7 +19680,7 @@
 	function create_main_fragment$I(component, ctx) {
 		var div3, div0, text0, div2, div1, text1, svg, defs, marker0, circle, marker0_id_value, marker1, path0, marker1_id_value, path1, path1_marker_end_value, path1_marker_start_value, svg_viewBox_value, radar_updating = {};
 
-		var if_block = (ctx.ready) && create_if_block$a(component, ctx);
+		var if_block = (ctx.ready) && create_if_block$b(component, ctx);
 
 		var lazyimage_initial_data = {
 		 	background: false,
@@ -19715,7 +19809,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$a(component, ctx);
+						if_block = create_if_block$b(component, ctx);
 						if_block.c();
 						if_block.m(div0, null);
 					}
@@ -19784,7 +19878,7 @@
 	}
 
 	// (4:2) {#if ready}
-	function create_if_block$a(component, ctx) {
+	function create_if_block$b(component, ctx) {
 
 		var setoficons_initial_data = {
 		 	pointList: ctx.pointList,
@@ -19939,7 +20033,7 @@
 	function create_main_fragment$J(component, ctx) {
 		var div;
 
-		var if_block = (ctx.scale) && create_if_block$b(component, ctx);
+		var if_block = (ctx.scale) && create_if_block$c(component, ctx);
 
 		return {
 			c: function create() {
@@ -19959,7 +20053,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$b(component, ctx);
+						if_block = create_if_block$c(component, ctx);
 						if_block.c();
 						if_block.m(div, null);
 					}
@@ -19980,10 +20074,10 @@
 	}
 
 	// (2:2) {#if scale}
-	function create_if_block$b(component, ctx) {
+	function create_if_block$c(component, ctx) {
 		var div, div_class_value;
 
-		var if_block = (ctx.annotationValue) && create_if_block_1$2(component, ctx);
+		var if_block = (ctx.annotationValue) && create_if_block_1$3(component, ctx);
 
 		return {
 			c: function create() {
@@ -20009,7 +20103,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_1$2(component, ctx);
+						if_block = create_if_block_1$3(component, ctx);
 						if_block.c();
 						if_block.m(div, null);
 					}
@@ -20054,7 +20148,7 @@
 	}
 
 	// (13:4) {#if annotationValue}
-	function create_if_block_1$2(component, ctx) {
+	function create_if_block_1$3(component, ctx) {
 		var div2, div1, div0, text;
 
 		return {
@@ -20370,7 +20464,7 @@
 	function create_main_fragment$L(component, ctx) {
 		var div1, div0, slot_content_default = component._slotted.default, text;
 
-		var if_block = (ctx.label) && create_if_block$c(component, ctx);
+		var if_block = (ctx.label) && create_if_block$d(component, ctx);
 
 		return {
 			c: function create() {
@@ -20408,7 +20502,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$c(component, ctx);
+						if_block = create_if_block$d(component, ctx);
 						if_block.c();
 						if_block.m(div1, null);
 					}
@@ -20441,7 +20535,7 @@
 	}
 
 	// (5:2) {#if label}
-	function create_if_block$c(component, ctx) {
+	function create_if_block$d(component, ctx) {
 		var div, text;
 
 		return {
@@ -22224,7 +22318,7 @@
 	}
 
 	// (46:10) {#if method == "dynamic"}
-	function create_if_block_1$3(component, ctx) {
+	function create_if_block_1$4(component, ctx) {
 		var div;
 
 		return {
@@ -22372,7 +22466,7 @@
 
 		var if_block2 = (ctx.method == "dynamic") && create_if_block_2$1(component, ctx);
 
-		var if_block3 = (ctx.method == "dynamic") && create_if_block_1$3(component, ctx);
+		var if_block3 = (ctx.method == "dynamic") && create_if_block_1$4(component, ctx);
 
 		var each_value = ctx.comparisons;
 
@@ -22486,7 +22580,7 @@
 
 				if (ctx.method == "dynamic") {
 					if (!if_block3) {
-						if_block3 = create_if_block_1$3(component, ctx);
+						if_block3 = create_if_block_1$4(component, ctx);
 						if_block3.c();
 						if_block3.m(th2, null);
 					}
@@ -22595,7 +22689,7 @@
 	}
 
 	// (111:18) {#if i === 0}
-	function create_if_block$d(component, ctx) {
+	function create_if_block$e(component, ctx) {
 		var text;
 
 		return {
@@ -22620,7 +22714,7 @@
 		var option;
 
 		function select_block_type_2(ctx) {
-			if (ctx.i === 0) return create_if_block$d;
+			if (ctx.i === 0) return create_if_block$e;
 			return create_else_block$2;
 		}
 

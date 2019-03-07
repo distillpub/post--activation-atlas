@@ -739,3 +739,80 @@ subjects.forEach(s => {
     link.click();
   });
 }
+
+
+// 
+// atlas-mixed4a-tiny
+// 
+{
+
+  let h = document.createElement("h2");
+  h.textContent = "atlas-mixed4a-tiny";
+  app.appendChild(h);
+  let e = document.createElement("div");
+  e.style.width = "600px";
+  e.style.height = "600px";
+  e.style.position = "relative";
+  app.appendChild(e);
+
+  let atlas = new Atlas({
+    target: e,
+    store,
+    data: {
+      homeScale: 0.999,
+      id: "inceptionv1_mixed4a",
+      gridSize: 0,
+      alphaAttributionFactor: 2,
+      classHeatmapMultiplier: 2,
+      scaleCountFactor: 500,
+      iconCrop: 0.3,
+      strokeColor: "rgb(150, 150, 150)",
+      strokeThickness: 1.5,
+      showLabels: false,
+      textShadow: false,
+      enableDragToPan: false,
+      enableClickToZoom: false,
+      enableHover: false
+    }
+  });
+
+}
+
+
+
+// 
+// atlas-mixed4c-tiny
+// 
+{
+
+  let h = document.createElement("h2");
+  h.textContent = "atlas-mixed4c-tiny";
+  app.appendChild(h);
+  let e = document.createElement("div");
+  e.style.width = "600px";
+  e.style.height = "600px";
+  e.style.position = "relative";
+  app.appendChild(e);
+
+  let atlas = new Atlas({
+    target: e,
+    store,
+    data: {
+      homeScale: 0.999,
+      id: "inceptionv1_mixed4c",
+      gridSize: 0,
+      alphaAttributionFactor: 2,
+      classHeatmapMultiplier: 2,
+      scaleCountFactor: 500,
+      iconCrop: 0.3,
+      strokeColor: "rgb(150, 150, 150)",
+      strokeThickness: 1.5,
+      showLabels: false,
+      textShadow: false,
+      enableDragToPan: false,
+      enableClickToZoom: false,
+      enableHover: false
+    }
+  });
+
+}
