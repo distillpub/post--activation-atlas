@@ -28,6 +28,38 @@ store.set({
 
 let app = document.querySelector("#app")
 
+let h = document.createElement("h2");
+h.textContent = "atlas-print";
+app.appendChild(h);
+let e = document.createElement("div");
+e.style.width = "2400px";
+e.style.height = "2400px";
+e.style.position = "relative";
+app.appendChild(e);
+
+let atlas = new Atlas({
+  target: e,
+  store,
+  data: {
+    homeScale: 0.999,
+    id: "inceptionv1_mixed3b",
+    gridSize: 2,
+    alphaAttributionFactor: 2,
+    classHeatmapMultiplier: 2,
+    scaleCountFactor: 500,
+    iconCrop: 0.3,
+    strokeColor: "rgb(150, 150, 150)",
+    strokeThickness: 1.5,
+    showLabels: false,
+    textShadow: false,
+    enableDragToPan: false,
+    enableClickToZoom: false,
+    enableHover: false
+  }
+});
+
+
+
 // 
 // Atlas Thumbnails
 // 
