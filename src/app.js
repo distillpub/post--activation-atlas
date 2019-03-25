@@ -23,6 +23,6 @@ new AppStandalone({
   target: document.querySelector("#app"),
   store,
   data: {
-    
+    backLink: "index.html"
   }
 });

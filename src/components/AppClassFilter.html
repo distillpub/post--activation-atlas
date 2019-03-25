@@ -37,6 +37,7 @@ export default {
   }
   .chooser label {
     position: relative;
+    cursor: pointer;
     font-size: 11px;
     line-height: 1.2em;
     display: block;
@@ -50,6 +51,9 @@ export default {
   .chooser label input {
     position: absolute;
     opacity: 0;
+  }
+  .chooser label:hover {
+    background-color: rgba(255, 130, 0, 0.04);
   }
   .chooser label.selected {
     border-left-color: rgb(255, 130, 0);

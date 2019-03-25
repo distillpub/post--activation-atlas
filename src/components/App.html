@@ -1,26 +1,33 @@
 <ResponsiveResizer {clientWidth} {clientHeight} minWidth={768}>
   <div class="container">
-    <div class="filter" style="display: {showClassFilter ? 'block' : 'none'};">
-      <Panel>
-        <h2 slot="head">Class Filter</h2>
-        <div slot="body">
-          <AppClassFilter
-            bind:classHeatmap
-          />
-        </div>
-      </Panel>
+  <aside class="sidebar">
+    {#if backLink}
+      <a class="backlink" href={backLink}>← back to main article</a>
+    {/if}
+    <div class="panels">
+      <div class="filter" style="display: {showClassFilter ? 'block' : 'none'}">
+        <Panel>
+          <h2 slot="head">Class Filter</h2>
+          <div slot="body">
+            <AppClassFilter
+              bind:classHeatmap
+            />
+          </div>
+        </Panel>
+      </div>
+      <div class="stack" style="display: {showLayerChooser ? 'block' : 'none'};">
+        <Panel>
+          <h2 slot="head">Layer</h2>
+          <div slot="body">
+            <AppLayerChooser
+              bind:layerName
+              {classHeatmap}
+            />
+          </div>
+        </Panel>
+      </div>
     </div>
-    <div class="stack" style="display: {showLayerChooser ? 'block' : 'none'};">
-      <Panel>
-        <h2 slot="head">Layer</h2>
-        <div slot="body">
-          <AppLayerChooser
-            bind:layerName
-            {classHeatmap}
-          />
-        </div>
-      </Panel>
-    </div>
+  </aside>
   <div class="main">
     <div class="atlas">
         <Atlas
@@ -73,7 +80,9 @@
               <label style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"><input type=checkbox bind:checked=showLabels> attribution labels</label>
               <label><input type=checkbox bind:checked="enableHover"> show tooltip</label>
               <label><input type=checkbox bind:checked="$scroll"> scroll to zoom</label>
-              <button style="font-size: 10px; display: {shareLink ? 'block' : 'none'};" href="#" on:click="copyShareLink()">Copy link to this view</button>
+              {#if shareLink}
+                <button style="font-size: 10px; margin-top: 4px;" href="#" on:click="copyShareLink()">Copy link to this view</button>
+              {/if}
             </div>
             <div ref:expand class="expand">
               <div class="grid-size">
@@ -154,6 +163,7 @@ export default {
       homeY: .5,
       homeScale: 1,
       shareLink: false,
+      backLink: false
     }
   },
   oncreate() {
@@ -198,7 +208,7 @@ export default {
       const {gcx, gcy, scale} = this.refs.atlas.get();
       const query = `layer=${encodeURIComponent(layerName)}&poi=${[gcx, gcy, scale].map(formatFloat).join(",")}`;
       const url = locationWithoutQuery() + "?" + query;
-      navigator.clipboard.writeText(url).then(function() {
+      window.navigator.clipboard.writeText(url).then(function() {
         console.log("Copied to clipboard");
       }, function() {
         console.error("Unable to copy to clipboard");
@@ -221,6 +231,36 @@ export default {
     contain: strict;
     font-size: 12px;
     position: relative;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panels {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  .backlink {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0 16px;
+    font-size: 11px;
+    font-weight: 500;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: black;
+  }
+
+  .backlink:hover {
+    background-color: rgba(255, 130, 0, 0.04);
   }
 
   /*  */
