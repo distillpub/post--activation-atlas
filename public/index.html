@@ -144,7 +144,7 @@
 
   </p><p>Feature visualization is a thread of research that tries to answer this question by letting us “see through the eyes” of the network <d-cite key="erhan2009visualizing,olah2017feature,simonyan2013deep,nguyen2015deep,mordvintsev2015inceptionism,nguyen2016plug"></d-cite>. It began with research into <a href="https://distill.pub/2017/feature-visualization/">visualizing individual neurons</a> and trying to determine what they respond to. Because neurons don’t work in isolation, this led to applying feature visualization to <a href="https://distill.pub/2017/feature-visualization/#interaction">simple combinations of neurons</a>. But there was still a problem — what combinations of neurons should we be studying? A natural answer (foreshadowed by work on model inversion <d-cite key="mahendran2015understanding"></d-cite>) is to  <a href="https://distill.pub/2018/building-blocks/#ActivationGridSingle">visualize activations</a> <d-cite key="olah2018building"></d-cite>, the combination of neurons firing in response to a particular input.
 
-  </p><p>These approaches are exciting because they can make the hidden layers of networks comprehensible. These layers are the heart of how neural networks outperform more traditional approaches to machine learning and historically, we’ve little understanding of what happens in them<d-footnote>With the exception of the first hidden layer.</d-footnote>. Feature visualization addresses this by connecting hidden layers back to the input, making them meaningful.
+  </p><p>These approaches are exciting because they can make the hidden layers of networks comprehensible. These layers are the heart of how neural networks outperform more traditional approaches to machine learning and historically, we’ve had little understanding of what happens in them<d-footnote>With the exception of the first hidden layer.</d-footnote>. Feature visualization addresses this by connecting hidden layers back to the input, making them meaningful.
 
   </p><p>Unfortunately, visualizing activations has a major weakness — it is limited to seeing only how the network sees a single input. Because of this, it doesn’t give us a big picture view of the network. When what we want is a map of an entire forest, inspecting one tree at a time will not suffice.
 
@@ -285,7 +285,7 @@
 
   <figure id="layer-annotation-2" style="grid-column: text/page;"></figure>
 
-  </p><p>Below this, we find different animal legs and feet resting on different types of grounds.
+  </p><p>Below this, we find different animal legs and feet resting on different types of ground.
   <figure id="layer-annotation-3" style="grid-column: text/page;"></figure>
 
   </p><p>Below the feet we start to lose any identifiable parts of animals, and see isolated grounds and floors. We see attribution toward environments like "sandbar" and also toward things that are found on the ground, like "doormat" or "ant".
@@ -336,7 +336,7 @@
   <figure style="display: grid; grid-column: page; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
     <div style="width: 100%; grid-area: 1 / 1 / 2 / 4;" data-lazy-image-aspect-ratio="6.306" data-lazy-image="model2.svg" alt="model"></div>
   <div class="figcaption">In early layers (eg. <a href="”https://distill.pub/2017/feature-visualization/appendix/googlenet/3b.html”">mixed3b</a>), the network seems to represents textures and simple patterns.</div>
-    <div class="figcaption"> By mid layers (eg. <a href="”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”">mixed4c</a>), icons are evocative of individual concepts like eyes, leaves, water, that are shared among many classes.</div>
+    <div class="figcaption"> By mid layers (eg. <a href="”https://distill.pub/2017/feature-visualization/appendix/googlenet/4c.html”">mixed4c</a>), icons evoke individual concepts like eyes, leaves, water, that are shared among many classes.</div>
     <div class="figcaption"> In the final layers (eg. <a href="”https://distill.pub/2017/feature-visualization/appendix/googlenet/5b.html”">mixed5b</a>), abstractions become more closely aligned with the output classes.</div>
   </figure>
 
@@ -708,7 +708,7 @@
 
   <p>Because it is based on dimensionality reduction, the final output can be very sensitive to the hyperparameters chosen for the reduction step. UMAP and t-SNE are both reasonable choices and each could also produce different results.
 
-  </p><p>Because the choice of a grid size is somewhat arbitrary, much like choosing a histogram bin size <d-cite key="aranm2017exploring"></d-cite>, your choice of grid size will determine the effectiveness of the final output. Choosing the wrong bin size can sometimes *hide* important features in the averages. In some of the later examples we bind this value to the zoom level so the detail of the visualizations dynamic changes as you zoom in. A more principled clustering method might be better.
+  </p><p>Because the choice of a grid size is somewhat arbitrary, much like choosing a histogram bin size <d-cite key="aranm2017exploring"></d-cite>, your choice of grid size will determine the effectiveness of the final output. Choosing the wrong bin size can sometimes <em>hide</em> important features in the averages. In some of the later examples we bind this value to the zoom level so the detail of the visualizations dynamically change as you zoom in. A more principled clustering method might be better.
 
   <figure id="class-grids" style="grid-column: page;"></figure>
 
