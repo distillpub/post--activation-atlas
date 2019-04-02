@@ -20662,7 +20662,7 @@
 				loupe._fragment.c();
 				text2 = createText("\n  ");
 				div2 = createElement("div");
-				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\", we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
+				div2.textContent = "When we map opacity to the amount that each activation contributes to \"fireboat\" in the layer mixed5b, we see a main cluster of icons showing red boats and splashing, spraying water. While there are some stray areas elsewhere, it seems that this is region of the atlas that is dedicated specifically to classifying red boats with splashing water nearby.";
 				div0.className = "main svelte-17cyjzl";
 				addLoc(div0, file$L, 2, 2, 22);
 				div1.className = "detail svelte-17cyjzl";
