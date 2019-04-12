@@ -5136,6 +5136,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -5678,7 +5679,7 @@
 
 	function data$b() {
 	  return {
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "_cache",
 	    model: "inceptionv1",
 	    layerName: "mixed4d",
 	    grid: 1,
@@ -6623,7 +6624,7 @@
 	  return {
 	    fingerprint: Math.random() + Date.now(),
 	  // root: "assets",
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "_cache",
 	    id: "inceptionv1",
 	    labels: Labels.inception,
 	    layer: 0,
@@ -13579,7 +13580,7 @@
 	}
 
 	function root$2({filterType}) {
-		return `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/`;
+		return `_cache/class_filter_inceptionv1_${filterType}/`;
 	}
 
 	function ticks$1({gridSize}) {

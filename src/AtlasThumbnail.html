@@ -7,7 +7,6 @@
 import { load } from 'lucid-components';
 import classesToKeep from './classesToKeep.js';
 
-
 import inceptionv1_mixed3a from "../public/_cache/inceptionv1_mixed3a/inceptionv1_mixed3a.json";
 import inceptionv1_mixed3b from "../public/_cache/inceptionv1_mixed3b/inceptionv1_mixed3b.json";
 import inceptionv1_mixed4a from "../public/_cache/inceptionv1_mixed4a/inceptionv1_mixed4a.json";
@@ -33,7 +32,7 @@ const configs = {
 export default {
   data() {
     return {
-      root: "https://storage.googleapis.com/activation-atlas/build",
+      root: "_cache",
       model: "inceptionv1",
       layerName: "mixed4d",
       grid: 1,

@@ -4037,6 +4037,7 @@
 	  }
 	  return loaders.has(ext) ? ext : 'text';
 	}
+	//# sourceMappingURL=index.js.map
 
 	var classesToKeep = [
 	  235, //"fireboat"
@@ -4579,7 +4580,7 @@
 
 	function data$8() {
 	  return {
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "_cache",
 	    model: "inceptionv1",
 	    layerName: "mixed4d",
 	    grid: 1,
@@ -5510,7 +5511,7 @@
 	  return {
 	    fingerprint: Math.random() + Date.now(),
 	  // root: "assets",
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "_cache",
 	    id: "inceptionv1",
 	    labels: Labels.inception,
 	    layer: 0,
