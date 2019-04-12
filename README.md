@@ -1,3 +1,9 @@
+If you want to cache the assets locally, for offline access, you need to run the caching script once, which will download *a lot* of images to the `_cache` directory.
+
+```
+python3 cache.py
+```
+
 To view the output you need a server:
 
 ```
