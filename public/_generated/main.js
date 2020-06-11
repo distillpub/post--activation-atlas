@@ -5678,7 +5678,7 @@
 
 	function data$b() {
 	  return {
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "gcs-back",
 	    model: "inceptionv1",
 	    layerName: "mixed4d",
 	    grid: 1,
@@ -6623,7 +6623,7 @@
 	  return {
 	    fingerprint: Math.random() + Date.now(),
 	  // root: "assets",
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "gcs-back",
 	    id: "inceptionv1",
 	    labels: Labels.inception,
 	    layer: 0,
@@ -13579,7 +13579,7 @@
 	}
 
 	function root$2({filterType}) {
-		return `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/`;
+		return `gcs-back/class_filter_inceptionv1_${filterType}/`;
 	}
 
 	function ticks$1({gridSize}) {
@@ -15050,7 +15050,7 @@
 				setAttribute(image, "id", "comparisonImg");
 				setAttribute(image, "width", ctx.width);
 				setAttribute(image, "height", ctx.height);
-				setXlinkAttribute(image, "xlink:href", image_xlink_href_value = "https://storage.googleapis.com/activation-atlas/build/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg");
+				setXlinkAttribute(image, "xlink:href", image_xlink_href_value = "gcs-back/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg");
 				setAttribute(image, "alt", image_alt_value = ctx.comparison.label);
 				addLoc(image, file$w, 19, 6, 625);
 				setAttribute(tspan0, "x", "-10");
@@ -15204,7 +15204,7 @@
 					setAttribute(image, "height", ctx.height);
 				}
 
-				if ((changed.comparison) && image_xlink_href_value !== (image_xlink_href_value = "https://storage.googleapis.com/activation-atlas/build/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg")) {
+				if ((changed.comparison) && image_xlink_href_value !== (image_xlink_href_value = "gcs-back/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg")) {
 					setXlinkAttribute(image, "xlink:href", image_xlink_href_value);
 				}
 
@@ -17539,9 +17539,9 @@
 	    iconHighlight: {x: 2, y: 0},
 	    layoutData: [],
 	    webData: [],
-	    webURL: "https://storage.googleapis.com/activation-atlas/build/process/web/web--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
-	    dataURL: "https://storage.googleapis.com/activation-atlas/build/process/layout_data/layout_data--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
-	    renderURL: "https://storage.googleapis.com/activation-atlas/build/process/render/render--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=2048--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.jpg",
+	    webURL: "gcs-back/process/web/web--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
+	    dataURL: "gcs-back/process/layout_data/layout_data--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
+	    renderURL: "gcs-back/process/render/render--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=2048--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.jpg",
 	    inputs: [
 	      { id: "dogcat", x:2, y:1, px:.25, py:.033 },
 	      { id: "dog", x:3, y:3, px:.28, py:.066 },

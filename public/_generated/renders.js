@@ -2501,7 +2501,7 @@
 	  return {
 	    fingerprint: Math.random() + Date.now(),
 	  // root: "assets",
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "gcs-back",
 	    id: "inceptionv1",
 	    labels: Labels.inception,
 	    layer: 0,
@@ -8153,7 +8153,7 @@
 
 	function data$5() {
 	  return {
-	    root: "https://storage.googleapis.com/activation-atlas/build",
+	    root: "gcs-back",
 	    model: "inceptionv1",
 	    layerName: "mixed4d",
 	    grid: 1,

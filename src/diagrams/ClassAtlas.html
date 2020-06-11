@@ -43,7 +43,7 @@
     },
     computed: {
       cellSize: ({w, gridSize}) => w / gridSize,
-      root: ({filterType}) => `https://storage.googleapis.com/activation-atlas/build/class_filter_inceptionv1_${filterType}/`,
+      root: ({filterType}) => `gcs-back/class_filter_inceptionv1_${filterType}/`,
       ticks: ({gridSize}) => range(1, gridSize),
       config: ({root, classFilter, gridSize, filterType}) => `${root}web/web--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.json`,
       src: ({root, classFilter, gridSize, filterType}) => `${root}render/render--x=0--y=0--tries=3--alpha=False--tile_size=8--whiten=true--steps=1056--icon_size=80--grid_size=${gridSize}--layout=20_0.02_cosine--class_filter=${classFilter}_${filterType}--filter=None--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg`
