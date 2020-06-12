@@ -198,7 +198,7 @@
     <div class="figcaption">InceptionV1 builds up its understanding of images over several layers (see <a href="https://distill.pub/2017/feature-visualization/appendix/">overview</a> from <d-cite key="olah2017feature"></d-cite>). It was trained on ImageNet ILSVRC <d-cite key="deng2009imagenet"></d-cite>. Each layer actually has several component parts, but for this article we’ll focus on these larger groups.</div>
   </figure>
 
-  <p>To visualize how InceptionV1 sees an image, the first step is to feed the image into the network and run it through to the layer of interest. Then we collect the activations — the numerical values of how much each neuron fired. If a neuron is excited by what it is shown, it's activation value will be positive.
+  <p>To visualize how InceptionV1 sees an image, the first step is to feed the image into the network and run it through to the layer of interest. Then we collect the activations — the numerical values of how much each neuron fired. If a neuron is excited by what it is shown, its activation value will be positive.
 
   </p><p>Unfortunately these vectors of activation values are just vectors of unitless numbers and not particularly interpretable by people. This is where <a href="https://distill.pub/2017/feature-visualization/">feature visualization</a> comes in.
 
@@ -551,7 +551,7 @@
 
   <figure id="class-gradient-shark" style="grid-column: text;"></figure>
   
-  </p><p>In this example we see another detector that seems to be playing two roles: detecting red stitching on a baseball and a sharks's white teeth and pink inner mouth. This detector also shows up in the <a href="#focus-playground">activation atlas at layer mixed5b filtered to "great white shark"</a> and it's attribution points towards all sorts of balls, the top one being "baseball".
+  </p><p>In this example we see another detector that seems to be playing two roles: detecting red stitching on a baseball and a sharks's white teeth and pink inner mouth. This detector also shows up in the <a href="#focus-playground">activation atlas at layer mixed5b filtered to "great white shark"</a> and its attribution points towards all sorts of balls, the top one being "baseball".
     
 
    </p><p>Let’s add a picture of a baseball to a picture of a “grey whale” from ImageNet and see how it effects the classification.
