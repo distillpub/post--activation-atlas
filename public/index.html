@@ -246,7 +246,7 @@
     However, we use a slightly non-standard objective.
     Normally, to visualize a direction in activation space, $v$, one maximizes the dot product with the activation vector $h$ at a position: $h_{x,y} \cdot v$.
     We find it helpful to use an objective that emphasizes angle more heavily by multiplying the dot product by cosine similarity, leading to objectives of the following form:
-    $\frac{(h_{x,y} \cdot v)^{n+1}}{(||h_{x,y}|| \cdot ||v||)^{n}}$
+    $\frac{(h_{x,y} \cdot v)^{n+1}}{(||h_{x,y}|| \cdot ||v||)^{n}}$.
     We also find that whitening the activation space to unstretch it can help improve feature visualization.
     We don't yet fully understand this phenomenon.
     A reference implementation of this can be seen in the attached notebooks, and more general discussion can be found in this <a href="https://github.com/tensorflow/lucid/issues/116">github issue</a>.
