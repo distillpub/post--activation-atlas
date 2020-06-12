@@ -5678,7 +5678,7 @@
 
 	function data$b() {
 	  return {
-	    root: "gcs-back",
+	    root: "https://storage.googleapis.com/distill-2019-activation-atlas/build",
 	    model: "inceptionv1",
 	    layerName: "mixed4d",
 	    grid: 1,
@@ -6623,7 +6623,7 @@
 	  return {
 	    fingerprint: Math.random() + Date.now(),
 	  // root: "assets",
-	    root: "gcs-back",
+	    root: "https://storage.googleapis.com/distill-2019-activation-atlas/build",
 	    id: "inceptionv1",
 	    labels: Labels.inception,
 	    layer: 0,
@@ -13579,7 +13579,7 @@
 	}
 
 	function root$2({filterType}) {
-		return `gcs-back/class_filter_inceptionv1_${filterType}/`;
+		return `https://storage.googleapis.com/distill-2019-activation-atlas/build/class_filter_inceptionv1_${filterType}/`;
 	}
 
 	function ticks$1({gridSize}) {
@@ -15050,85 +15050,85 @@
 				setAttribute(image, "id", "comparisonImg");
 				setAttribute(image, "width", ctx.width);
 				setAttribute(image, "height", ctx.height);
-				setXlinkAttribute(image, "xlink:href", image_xlink_href_value = "gcs-back/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg");
+				setXlinkAttribute(image, "xlink:href", image_xlink_href_value = "https://storage.googleapis.com/distill-2019-activation-atlas/build/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg");
 				setAttribute(image, "alt", image_alt_value = ctx.comparison.label);
 				addLoc(image, file$w, 19, 6, 625);
 				setAttribute(tspan0, "x", "-10");
 				setAttribute(tspan0, "dy", "1.3em");
-				addLoc(tspan0, file$w, 31, 10, 1167);
+				addLoc(tspan0, file$w, 31, 10, 1180);
 				setAttribute(tspan1, "x", "-10");
 				setAttribute(tspan1, "dy", "1.3em");
 				setAttribute(tspan1, "font-weight", "bold");
-				addLoc(tspan1, file$w, 32, 10, 1231);
+				addLoc(tspan1, file$w, 32, 10, 1244);
 				setAttribute(text2, "y", "-50");
 				setAttribute(text2, "text-anchor", "end");
 				setAttribute(text2, "class", "svelte-1jr0ob8");
-				addLoc(text2, file$w, 30, 8, 1124);
+				addLoc(text2, file$w, 30, 8, 1137);
 				setAttribute(tspan2, "x", "10");
 				setAttribute(tspan2, "dy", "1.3em");
-				addLoc(tspan2, file$w, 35, 10, 1356);
+				addLoc(tspan2, file$w, 35, 10, 1369);
 				setAttribute(tspan3, "x", "10");
 				setAttribute(tspan3, "dy", "1.3em");
 				setAttribute(tspan3, "font-weight", "bold");
-				addLoc(tspan3, file$w, 36, 10, 1419);
+				addLoc(tspan3, file$w, 36, 10, 1432);
 				setAttribute(text5, "y", "-50");
 				setAttribute(text5, "class", "svelte-1jr0ob8");
-				addLoc(text5, file$w, 34, 8, 1331);
+				addLoc(text5, file$w, 34, 8, 1344);
 				setAttribute(line0, "x2", "-50");
 				setAttribute(line0, "transform", "translate(-120,0)");
 				setAttribute(line0, "stroke", ctx.color);
 				setAttribute(line0, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line0, file$w, 40, 10, 1564);
+				addLoc(line0, file$w, 40, 10, 1577);
 				setAttribute(line1, "x2", "50");
 				setAttribute(line1, "transform", "translate(120,0)");
 				setAttribute(line1, "stroke", ctx.color);
 				setAttribute(line1, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line1, file$w, 41, 10, 1671);
+				addLoc(line1, file$w, 41, 10, 1684);
 				setAttribute(g0, "transform", "translate(0, -28)");
-				addLoc(g0, file$w, 39, 8, 1520);
+				addLoc(g0, file$w, 39, 8, 1533);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + ctx.width / 2 + ", 0)");
-				addLoc(g1, file$w, 29, 6, 1074);
+				addLoc(g1, file$w, 29, 6, 1087);
 				setAttribute(line2, "y2", "-50");
 				setAttribute(line2, "transform", "translate(0,-38)");
 				setAttribute(line2, "stroke", ctx.color);
 				setAttribute(line2, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line2, file$w, 49, 10, 1936);
+				addLoc(line2, file$w, 49, 10, 1949);
 				setAttribute(line3, "y2", "50");
 				setAttribute(line3, "transform", "translate(0,30)");
 				setAttribute(line3, "stroke", ctx.color);
 				setAttribute(line3, "marker-end", "url(#" + 'arrow' + ")");
-				addLoc(line3, file$w, 50, 10, 2042);
+				addLoc(line3, file$w, 50, 10, 2055);
 				setAttribute(g2, "transform", "translate(10, 0)");
-				addLoc(g2, file$w, 48, 8, 1893);
+				addLoc(g2, file$w, 48, 8, 1906);
 				setAttribute(tspan4, "x", "0");
 				setAttribute(tspan4, "y", "-1.8em");
-				addLoc(tspan4, file$w, 53, 10, 2202);
+				addLoc(tspan4, file$w, 53, 10, 2215);
 				setAttribute(tspan5, "x", "0");
 				setAttribute(tspan5, "y", "-0.6em");
-				addLoc(tspan5, file$w, 54, 10, 2255);
+				addLoc(tspan5, file$w, 54, 10, 2268);
 				setAttribute(tspan6, "x", "0");
 				setAttribute(tspan6, "y", "0.6em");
-				addLoc(tspan6, file$w, 55, 10, 2311);
+				addLoc(tspan6, file$w, 55, 10, 2324);
 				setAttribute(tspan7, "x", "0");
 				setAttribute(tspan7, "y", "1.8em");
-				addLoc(tspan7, file$w, 56, 10, 2369);
+				addLoc(tspan7, file$w, 56, 10, 2382);
 				setAttribute(text10, "alignment-baseline", "middle");
 				setAttribute(text10, "class", "svelte-1jr0ob8");
-				addLoc(text10, file$w, 52, 8, 2157);
+				addLoc(text10, file$w, 52, 8, 2170);
 				setAttribute(g3, "transform", g3_transform_value = "translate(" + (- ctx.margin.left + 8) + "," + ctx.height/2 + ")");
-				addLoc(g3, file$w, 47, 6, 1827);
+				addLoc(g3, file$w, 47, 6, 1840);
 				setAttribute(line4, "y1", line4_y__value = -ctx.margin.top + 4);
 				setAttribute(line4, "y2", line4_y__value_1 = ctx.height + 8);
 				setAttribute(line4, "stroke", "white");
 				setAttribute(line4, "stroke-width", "5");
 				setAttribute(line4, "stroke-opacity", "0.6");
-				addLoc(line4, file$w, 63, 8, 2513);
+				addLoc(line4, file$w, 63, 8, 2526);
 				setAttribute(line5, "y1", line5_y__value = -ctx.margin.top + 4);
 				setAttribute(line5, "y2", line5_y__value_1 = ctx.height + 8);
 				setAttribute(line5, "stroke", "black");
-				addLoc(line5, file$w, 64, 8, 2627);
+				addLoc(line5, file$w, 64, 8, 2640);
 				setAttribute(g4, "transform", g4_transform_value = "translate(" + ctx.width / 2 + ", 0)");
-				addLoc(g4, file$w, 62, 6, 2463);
+				addLoc(g4, file$w, 62, 6, 2476);
 				setAttribute(g5, "transform", g5_transform_value = "translate(" + ctx.margin.left + "," + ctx.margin.top + ")");
 				addLoc(g5, file$w, 15, 4, 542);
 				setAttribute(svg, "class", "overlay svelte-1jr0ob8");
@@ -15204,7 +15204,7 @@
 					setAttribute(image, "height", ctx.height);
 				}
 
-				if ((changed.comparison) && image_xlink_href_value !== (image_xlink_href_value = "gcs-back/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg")) {
+				if ((changed.comparison) && image_xlink_href_value !== (image_xlink_href_value = "https://storage.googleapis.com/distill-2019-activation-atlas/build/gradients/gradients/gradients--comparison=" + ctx.comparison.id + "--tries=4--alpha=False--tile_size=10--whiten=true--steps=1024--icon_size=90--grid_size=10--layer=mixed5b--model=InceptionV1--sample_images=1000000--sample_type=random.jpg")) {
 					setXlinkAttribute(image, "xlink:href", image_xlink_href_value);
 				}
 
@@ -15348,7 +15348,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$w, 68, 8, 2747);
+				addLoc(line, file$w, 68, 8, 2760);
 			},
 
 			m: function mount(target, anchor) {
@@ -15385,7 +15385,7 @@
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.15");
 				setAttribute(line, "stroke-dasharray", "2,2");
-				addLoc(line, file$w, 72, 8, 2930);
+				addLoc(line, file$w, 72, 8, 2943);
 			},
 
 			m: function mount(target, anchor) {
@@ -15489,26 +15489,26 @@
 				setAttribute(line, "x2", line_x__value_1 = ctx.width + 5);
 				setAttribute(line, "stroke", "black");
 				setAttribute(line, "stroke-opacity", "0.4");
-				addLoc(line, file$w, 80, 12, 3283);
+				addLoc(line, file$w, 80, 12, 3296);
 				setAttribute(text1, "x", text1_x_value = ctx.width + 10);
 				setAttribute(text1, "alignment-baseline", "middle");
 				setAttribute(text1, "class", "svelte-1jr0ob8");
-				addLoc(text1, file$w, 81, 12, 3427);
+				addLoc(text1, file$w, 81, 12, 3440);
 				setAttribute(g0, "transform", g0_transform_value = "translate(0, " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g0, file$w, 79, 10, 3202);
+				addLoc(g0, file$w, 79, 10, 3215);
 				setAttribute(circle0, "r", circle0_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle0, "fill", "none");
 				setAttribute(circle0, "stroke", "white");
 				setAttribute(circle0, "stroke-opacity", "0.5");
 				setAttribute(circle0, "stroke-width", "5");
-				addLoc(circle0, file$w, 84, 12, 3644);
+				addLoc(circle0, file$w, 84, 12, 3657);
 				setAttribute(circle1, "r", circle1_r_value = ctx.cellWidth / 2 * ctx.Math.sqrt(2));
 				setAttribute(circle1, "fill", "none");
 				setAttribute(circle1, "stroke", "black");
 				setAttribute(circle1, "stroke-opacity", "1");
-				addLoc(circle1, file$w, 85, 12, 3764);
+				addLoc(circle1, file$w, 85, 12, 3777);
 				setAttribute(g1, "transform", g1_transform_value = "translate(" + (ctx.annotation.pos.y + 0.5) * ctx.cellWidth + ", " + (ctx.annotation.pos.x + 0.5) * ctx.cellWidth + ")");
-				addLoc(g1, file$w, 83, 10, 3526);
+				addLoc(g1, file$w, 83, 10, 3539);
 			},
 
 			m: function mount(target, anchor) {
@@ -17539,9 +17539,9 @@
 	    iconHighlight: {x: 2, y: 0},
 	    layoutData: [],
 	    webData: [],
-	    webURL: "gcs-back/process/web/web--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
-	    dataURL: "gcs-back/process/layout_data/layout_data--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
-	    renderURL: "gcs-back/process/render/render--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=2048--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.jpg",
+	    webURL: "https://storage.googleapis.com/distill-2019-activation-atlas/build/process/web/web--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
+	    dataURL: "https://storage.googleapis.com/distill-2019-activation-atlas/build/process/layout_data/layout_data--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.json",
+	    renderURL: "https://storage.googleapis.com/distill-2019-activation-atlas/build/process/render/render--x=0--y=0--tries=4--alpha=False--tile_size=10--whiten=true--steps=2048--icon_size=80--grid_size=10--layout=50_0.05_cosine--class_filter=None--filter=30000--layer=mixed4c--model=InceptionV1--sample_images=1000000--sample_type=random.jpg",
 	    inputs: [
 	      { id: "dogcat", x:2, y:1, px:.25, py:.033 },
 	      { id: "dog", x:3, y:3, px:.28, py:.066 },

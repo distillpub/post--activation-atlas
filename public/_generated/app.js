@@ -4579,7 +4579,7 @@
 
 	function data$8() {
 	  return {
-	    root: "gcs-back",
+	    root: "https://storage.googleapis.com/distill-2019-activation-atlas/build",
 	    model: "inceptionv1",
 	    layerName: "mixed4d",
 	    grid: 1,
@@ -5510,7 +5510,7 @@
 	  return {
 	    fingerprint: Math.random() + Date.now(),
 	  // root: "assets",
-	    root: "gcs-back",
+	    root: "https://storage.googleapis.com/distill-2019-activation-atlas/build",
 	    id: "inceptionv1",
 	    labels: Labels.inception,
 	    layer: 0,
